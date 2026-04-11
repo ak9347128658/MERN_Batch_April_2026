@@ -1,0 +1,206 @@
+
+<style>
+@keyframes travel { 0%{offset-distance:0%;opacity:1} 90%{opacity:1} 100%{offset-distance:100%;opacity:0} }
+@keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:.4} }
+@media (prefers-reduced-motion: no-preference) {
+  .ball-true  { animation: travel 1.6s ease-in-out forwards; offset-path: path('M340,90 L340,160'); }
+  .ball-false { animation: travel 1.6s ease-in-out forwards; offset-path: path('M340,160 L520,230'); }
+  .ball-true2 { animation: travel 1.4s ease-in-out forwards; offset-path: path('M200,230 L200,300'); }
+  .ball-false2{ animation: travel 1.4s ease-in-out forwards; offset-path: path('M520,230 L520,300'); }
+  .blink { animation: pulse .6s ease-in-out 3; }
+}
+
+/* Node box styles */
+body { font-family: system-ui, sans-serif; background: #fff; margin: 1rem; }
+
+.node { cursor: pointer; }
+.node rect, .node polygon { transition: opacity 0.2s; }
+
+/* Gray nodes (Start / End) */
+.c-gray rect  { fill: #F3F3F2; stroke: #888780; }
+.c-gray .th   { fill: #37352F; font-size: 13px; font-weight: 600; }
+
+/* Purple node (Condition diamond) */
+.c-purple polygon { fill: #EEEDFE; stroke: #534AB7; }
+.c-purple .th { fill: #534AB7; font-size: 13px; font-weight: 600; }
+.c-purple .ts { fill: #7F77DD; font-size: 11px; }
+
+/* Teal node (if block) */
+.c-teal rect  { fill: #E6F7F2; stroke: #1D9E75; }
+.c-teal .th   { fill: #0F6E56; font-size: 13px; font-weight: 600; }
+.c-teal .ts   { fill: #1D9E75; font-size: 11px; }
+
+/* Coral node (else block) */
+.c-coral rect  { fill: #FDECEB; stroke: #A32D2D; }
+.c-coral .th   { fill: #A32D2D; font-size: 13px; font-weight: 600; }
+.c-coral .ts   { fill: #C74A4A; font-size: 11px; }
+
+/* Arrow lines */
+.arr { stroke-width: 1; }
+
+/* Buttons */
+button {
+  background: #EEEDFE;
+  border: 1px solid #534AB7;
+  color: #534AB7;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+button:hover { background: #DDD9FE; }
+</style>
+
+<svg width="100%" viewBox="0 0 680 400" role="img" id="flow-svg">
+  <title>if-else decision flow diagram</title>
+  <desc>A ball travels down from start, hits a diamond decision node, splits true-left or false-right, then merges at the end</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- START -->
+  <g class="node c-gray">
+    <rect x="270" y="20" width="140" height="44" rx="22" stroke-width="0.5"/>
+    <text class="th" x="340" y="42" text-anchor="middle" dominant-baseline="central">Start</text>
+  </g>
+  <line x1="340" y1="64" x2="340" y2="108" class="arr" marker-end="url(#arrow)" stroke="#888780"/>
+
+  <!-- CONDITION diamond -->
+  <g class="node c-purple" id="diamond-node" onclick="sendPrompt('How does the if condition work in JavaScript?')">
+    <polygon points="340,108 430,155 340,202 250,155" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+    <text class="th" x="340" y="148" text-anchor="middle" dominant-baseline="central">condition</text>
+    <text class="ts" x="340" y="167" text-anchor="middle" dominant-baseline="central">true or false?</text>
+  </g>
+
+  <!-- TRUE branch line (left) -->
+  <line x1="250" y1="155" x2="180" y2="155" stroke="#1D9E75" stroke-width="1"/>
+  <line x1="180" y1="155" x2="180" y2="225" class="arr" marker-end="url(#arrow)" stroke="#1D9E75"/>
+  <text class="ts" x="212" y="146" text-anchor="middle" style="fill:#0F6E56">true</text>
+
+  <!-- FALSE branch line (right) -->
+  <line x1="430" y1="155" x2="500" y2="155" stroke="#A32D2D" stroke-width="1"/>
+  <line x1="500" y1="155" x2="500" y2="225" class="arr" marker-end="url(#arrow)" stroke="#A32D2D"/>
+  <text class="ts" x="468" y="146" text-anchor="middle" style="fill:#A32D2D">false</text>
+
+  <!-- TRUE block -->
+  <g class="node c-teal" id="true-block" onclick="sendPrompt('What code runs inside the if block?')">
+    <rect x="90" y="225" width="180" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="180" y="247" text-anchor="middle" dominant-baseline="central">if block runs</text>
+    <text class="ts" x="180" y="266" text-anchor="middle" dominant-baseline="central">code inside { } executes</text>
+  </g>
+
+  <!-- FALSE block -->
+  <g class="node c-coral" id="false-block" onclick="sendPrompt('What code runs inside the else block?')">
+    <rect x="410" y="225" width="180" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="500" y="247" text-anchor="middle" dominant-baseline="central">else block runs</text>
+    <text class="ts" x="500" y="266" text-anchor="middle" dominant-baseline="central">code inside { } executes</text>
+  </g>
+
+  <!-- Merge lines to END -->
+  <line x1="180" y1="281" x2="180" y2="330" stroke="#1D9E75" stroke-width="1"/>
+  <line x1="180" y1="330" x2="310" y2="330" stroke="#888780" stroke-width="1"/>
+  <line x1="500" y1="281" x2="500" y2="330" stroke="#A32D2D" stroke-width="1"/>
+  <line x1="500" y1="330" x2="370" y2="330" stroke="#888780" stroke-width="1"/>
+  <line x1="340" y1="330" x2="340" y2="358" class="arr" marker-end="url(#arrow)" stroke="#888780"/>
+
+  <!-- END -->
+  <g class="node c-gray">
+    <rect x="270" y="358" width="140" height="30" rx="15" stroke-width="0.5"/>
+    <text class="th" x="340" y="373" text-anchor="middle" dominant-baseline="central">Continue program</text>
+  </g>
+
+  <!-- animated ball layer (injected by JS) -->
+  <g id="ball-layer"/>
+</svg>
+
+<div style="display:flex;gap:8px;margin:.75rem 0;flex-wrap:wrap;align-items:center">
+  <button onclick="animateTrue()">Simulate: condition = true</button>
+  <button onclick="animateFalse()">Simulate: condition = false</button>
+  <span id="sim-label" style="font-size:13px;color:var(--color-text-secondary)"></span>
+</div>
+
+<script>
+let animTimer = [];
+function clearAnim() { animTimer.forEach(clearTimeout); animTimer=[]; document.getElementById('ball-layer').innerHTML=''; }
+
+function spawnBall(cx,cy,color) {
+  const ns='http://www.w3.org/2000/svg';
+  const c=document.createElementNS(ns,'circle');
+  c.setAttribute('cx',cx); c.setAttribute('cy',cy);
+  c.setAttribute('r','10'); c.setAttribute('fill',color);
+  c.setAttribute('opacity','0.9');
+  document.getElementById('ball-layer').appendChild(c);
+  return c;
+}
+
+function animateBall(ball, path, dur, cb) {
+  let start=null;
+  function step(ts) {
+    if(!start) start=ts;
+    const p=Math.min((ts-start)/dur,1);
+    const ease=p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+    const [x1,y1,x2,y2]=path;
+    ball.setAttribute('cx', x1+(x2-x1)*ease);
+    ball.setAttribute('cy', y1+(y2-y1)*ease);
+    if(p<1) requestAnimationFrame(step);
+    else if(cb) cb();
+  }
+  requestAnimationFrame(step);
+}
+
+function highlight(id, color) {
+  const el=document.getElementById(id);
+  if(!el) return;
+  const shapes=el.querySelectorAll('rect,polygon');
+  const orig=[];
+  shapes.forEach(s=>{ orig.push(s.style.opacity); s.style.opacity='1'; s.style.outline='2px solid '+color; });
+  animTimer.push(setTimeout(()=>{ shapes.forEach((s,i)=>{ s.style.opacity=orig[i]; s.style.outline=''; }); },900));
+}
+
+function animateTrue() {
+  clearAnim();
+  document.getElementById('sim-label').textContent='→ running the if block...';
+  const b=spawnBall(340,42,'#7F77DD');
+  animateBall(b,[340,42,340,130],400,()=>{
+    highlight('diamond-node','#1D9E75');
+    animateBall(b,[340,155,180,155],350,()=>{
+      animateBall(b,[180,155,180,225],300,()=>{
+        highlight('true-block','#1D9E75');
+        b.setAttribute('fill','#1D9E75');
+        animateBall(b,[180,253,180,330],300,()=>{
+          animateBall(b,[180,330,340,330],300,()=>{
+            animateBall(b,[340,330,340,370],200,()=>{
+              document.getElementById('sim-label').textContent='✓ if block ran — condition was true';
+            });
+          });
+        });
+      });
+    });
+  });
+}
+
+function animateFalse() {
+  clearAnim();
+  document.getElementById('sim-label').textContent='→ running the else block...';
+  const b=spawnBall(340,42,'#7F77DD');
+  animateBall(b,[340,42,340,130],400,()=>{
+    highlight('diamond-node','#A32D2D');
+    animateBall(b,[340,155,500,155],350,()=>{
+      animateBall(b,[500,155,500,225],300,()=>{
+        highlight('false-block','#A32D2D');
+        b.setAttribute('fill','#D85A30');
+        animateBall(b,[500,253,500,330],300,()=>{
+          animateBall(b,[500,330,340,330],300,()=>{
+            animateBall(b,[340,330,340,370],200,()=>{
+              document.getElementById('sim-label').textContent='✓ else block ran — condition was false';
+            });
+          });
+        });
+      });
+    });
+  });
+}
+</script>
