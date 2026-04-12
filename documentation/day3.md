@@ -6,17 +6,26 @@
 
 ## Part 1 — All Conditional Statements TogetherGo through all 4 tabs — especially **"compare all 3"** which shows `if`, `switch`, and ternary doing the exact same job. The slider helps you feel how the conditions fire at different values.
 
+[Click link to open Simulation for All Conditional Statements](https://ak9347128658.github.io/MERN_Batch_April_2026/day3/conditional_mega_lab.html)
+
 ---
 
 ## Part 2 — All Loop Types with AnimationGo through every tab. Most importantly — on **do...while** press **"Run (max 0)"** to see the famous difference: it runs once even when the condition is already false!
+
+[Click link to open Simulation for All Conditional Statements](https://ak9347128658.github.io/MERN_Batch_April_2026/day3/all_loops_animated_comparison.html)
+
 
 ---
 
 ## Part 3 — break, continue, return side by sideAll three jump statements animated side by side! Change the `break` slider, try all 3 `continue` modes, and use `find` to search for different values with `return`.
 
+[Click link to open Simulation for All Conditional Statements](https://ak9347128658.github.io/MERN_Batch_April_2026/day3/break_continue_return_animated.html)
+
 ---
 
 ## Part 4 — Full Revision Quiz10 questions covering every control statement. Read the explanation after each answer — they reveal the tricky details!
+
+[Click link to open Simulation for All Conditional Statements](https://ak9347128658.github.io/MERN_Batch_April_2026/day3/control_statements_quiz.html)
 
 ---
 
