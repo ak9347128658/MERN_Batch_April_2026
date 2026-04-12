@@ -1,0 +1,68 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:.5rem 0}
+  .side{border-radius:var(--border-radius-lg);overflow:hidden;border:0.5px solid var(--color-border-secondary)}
+  .side-head{padding:.6rem 1rem;font-size:13px;font-weight:500;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .side-body{padding:.75rem 1rem}
+  .code{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.6rem .85rem;font-family:var(--font-mono);font-size:12px;line-height:1.75;color:var(--color-text-primary);margin:.35rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.cls{color:#185FA5}.this{color:#993C1D}
+  .point{font-size:12px;color:var(--color-text-secondary);padding:.25rem 0 .25rem .5rem;display:flex;gap:6px}
+  @media(max-width:500px){.two{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Comparison between plain objects repeated and using a class once</h2>
+
+<div class="two">
+  <div class="side">
+    <div class="side-head" style="background:#FCEBEB;color:#791F1F">Without class — BAD approach</div>
+    <div class="side-body">
+      <div class="code">
+<span class="cm">// Make 3 students manually</span><br>
+<span class="cm">// Copy-paste same structure 3 times!</span><br><br>
+<span class="kw">const</span> s1 = {<br>
+&nbsp;&nbsp;name:<span class="str">"Ali"</span>, age:<span class="num">22</span>,<br>
+&nbsp;&nbsp;greet(){<span class="kw">return</span> <span class="str">"Hi "+</span>this.name;}<br>
+};<br>
+<span class="kw">const</span> s2 = {<br>
+&nbsp;&nbsp;name:<span class="str">"Sara"</span>, age:<span class="num">21</span>,<br>
+&nbsp;&nbsp;greet(){<span class="kw">return</span> <span class="str">"Hi "+</span>this.name;}<br>
+};<br>
+<span class="kw">const</span> s3 = {<br>
+&nbsp;&nbsp;name:<span class="str">"Raj"</span>, age:<span class="num">23</span>,<br>
+&nbsp;&nbsp;greet(){<span class="kw">return</span> <span class="str">"Hi "+</span>this.name;}<br>
+};<br><br>
+<span class="cm">// 1000 students = 1000 copies of greet!</span>
+      </div>
+      <div class="point"><span style="color:#A32D2D">✕</span> greet() copied 3 times</div>
+      <div class="point"><span style="color:#A32D2D">✕</span> Change means fixing everywhere</div>
+      <div class="point"><span style="color:#A32D2D">✕</span> Not scalable at all</div>
+      <div class="point"><span style="color:#A32D2D">✕</span> Inconsistent structure</div>
+    </div>
+  </div>
+  <div class="side">
+    <div class="side-head" style="background:#E1F5EE;color:#085041">With class — GOOD approach</div>
+    <div class="side-body">
+      <div class="code">
+<span class="cm">// Write template ONCE</span><br>
+<span class="kw">class</span> <span class="cls">Student</span> {<br>
+&nbsp;&nbsp;constructor(name, age) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.name = name;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.age  = age;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;greet() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="str">"Hi " +</span> <span class="this">this</span>.name;<br>
+&nbsp;&nbsp;}<br>
+}<br><br>
+<span class="cm">// Create 1000 students in 3 lines!</span><br>
+<span class="kw">const</span> s1 = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Ali"</span>,  <span class="num">22</span>);<br>
+<span class="kw">const</span> s2 = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Sara"</span>, <span class="num">21</span>);<br>
+<span class="kw">const</span> s3 = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Raj"</span>,  <span class="num">23</span>);
+      </div>
+      <div class="point"><span style="color:#0F6E56">✓</span> greet() defined once, used by all</div>
+      <div class="point"><span style="color:#0F6E56">✓</span> Change in one place — fixes all</div>
+      <div class="point"><span style="color:#0F6E56">✓</span> Scale to 1 million students easily</div>
+      <div class="point"><span style="color:#0F6E56">✓</span> Guaranteed same structure every time</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,122 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  @keyframes popIn{0%{opacity:0;transform:translateY(-12px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.cls{color:#185FA5}.this{color:#993C1D}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:.6rem 0}
+  .form-group{display:flex;flex-direction:column;gap:4px}
+  .form-group label{font-size:11px;color:var(--color-text-secondary);font-weight:500}
+  .form-group input{font-family:var(--font-mono);font-size:13px}
+  .instances-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;margin:.6rem 0}
+  .instance-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden;animation:popIn .35s ease}
+  .ic-head{padding:.4rem .75rem;font-size:11px;font-weight:500;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .ic-body{padding:.6rem .75rem}
+  .ic-prop{font-size:12px;font-family:var(--font-mono);padding:2px 0;color:var(--color-text-secondary)}
+  .ic-prop span{color:var(--color-text-primary);font-weight:500}
+  .ic-methods{display:flex;gap:4px;flex-wrap:wrap;margin-top:.4rem}
+  .ic-btn{font-size:11px;padding:3px 8px;border-radius:20px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);transition:all .2s}
+  .ic-btn:hover{background:var(--color-background-tertiary)}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:12.5px;min-height:40px;color:#86efac;margin:.4rem 0}
+  .info{background:var(--color-background-secondary);border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.5rem .9rem;font-size:13px;color:var(--color-text-secondary);margin:.4rem 0}
+  @media(max-width:500px){.form-grid{grid-template-columns:1fr 1fr}}
+</style>
+
+<h2 class="sr-only">Live class builder — create Student instances interactively</h2>
+
+<div class="code">
+<span class="kw">class</span> <span class="cls">Student</span> {<br>
+&nbsp;&nbsp;<span class="kw">constructor</span>(name, age, score) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.name  = name;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.age   = age;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.score = score;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;greet()    { <span class="kw">return</span> <span class="str">`Hi! I am ${</span><span class="this">this</span>.name<span class="str">}`</span>; }<br>
+&nbsp;&nbsp;getGrade() { <span class="kw">return</span> <span class="this">this</span>.score >= <span class="num">90</span> ? <span class="str">"A"</span> : <span class="this">this</span>.score >= <span class="num">75</span> ? <span class="str">"B"</span> : <span class="str">"C"</span>; }<br>
+&nbsp;&nbsp;study()    { <span class="kw">return</span> <span class="str">`${</span><span class="this">this</span>.name<span class="str">} is studying hard!`</span>; }<br>
+}
+</div>
+
+<div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin:.5rem 0">Create a new Student using <code>new Student(...)</code>:</div>
+
+<div class="form-grid">
+  <div class="form-group">
+    <label>Name</label>
+    <input type="text" id="inp-name" placeholder="Ali" value="Ali"/>
+  </div>
+  <div class="form-group">
+    <label>Age</label>
+    <input type="number" id="inp-age" placeholder="22" value="22"/>
+  </div>
+  <div class="form-group">
+    <label>Score</label>
+    <input type="number" id="inp-score" placeholder="88" value="88"/>
+  </div>
+</div>
+
+<button onclick="createStudent()" style="margin-bottom:.5rem">new Student( name, age, score )</button>
+
+<div id="code-preview" style="font-family:var(--font-mono);font-size:13px;color:#534AB7;padding:.3rem 0;min-height:22px"></div>
+
+<div style="font-size:12px;color:var(--color-text-secondary);margin:.4rem 0" id="count-label">No instances yet — press the button!</div>
+<div class="instances-grid" id="instances-grid"></div>
+
+<div class="out" id="method-out">Click a method button on any card</div>
+<div class="info">Each card is a separate object (instance) — same blueprint, different data. They don't know about each other!</div>
+
+<script>
+const colors=[
+  ['#E6F1FB','#042C53','#378ADD'],
+  ['#E1F5EE','#04342C','#1D9E75'],
+  ['#FAEEDA','#412402','#BA7517'],
+  ['#EEEDFE','#26215C','#534AB7'],
+  ['#FAECE7','#4A1B0C','#993C1D'],
+];
+
+class Student {
+  constructor(name,age,score){this.name=name;this.age=age;this.score=score;}
+  greet(){return'Hi! I am '+this.name;}
+  getGrade(){return this.score>=90?'A':this.score>=75?'B':this.score>=60?'C':'F';}
+  study(){return this.name+' is studying hard!';}
+}
+
+let instances=[];
+
+function createStudent(){
+  const name=document.getElementById('inp-name').value.trim()||'Student';
+  const age=parseInt(document.getElementById('inp-age').value)||18;
+  const score=parseInt(document.getElementById('inp-score').value)||0;
+  const s=new Student(name,age,score);
+  instances.push(s);
+  document.getElementById('code-preview').textContent='const '+name.toLowerCase().replace(/\s+/g,'')+' = new Student("'+name+'", '+age+', '+score+');';
+  renderInstances();
+  document.getElementById('method-out').textContent='Created: new Student("'+name+'", '+age+', '+score+') — instance #'+instances.length;
+}
+
+function renderInstances(){
+  const g=document.getElementById('instances-grid');g.innerHTML='';
+  document.getElementById('count-label').textContent=instances.length+' instance'+(instances.length!==1?'s':'')+' created so far:';
+  instances.forEach((s,i)=>{
+    const [bg,tc,bc]=colors[i%colors.length];
+    const grade=s.getGrade();
+    const d=document.createElement('div');d.className='instance-card';
+    d.innerHTML='<div class="ic-head" style="background:'+bg+';color:'+tc+'">Instance #'+(i+1)+' — '+s.name+'</div>'
+      +'<div class="ic-body">'
+      +'<div class="ic-prop">name: <span>"'+s.name+'"</span></div>'
+      +'<div class="ic-prop">age: <span>'+s.age+'</span></div>'
+      +'<div class="ic-prop">score: <span>'+s.score+'</span></div>'
+      +'<div class="ic-prop">grade: <span style="color:'+bc+'">'+grade+'</span></div>'
+      +'<div class="ic-methods">'
+      +'<span class="ic-btn" onclick="callMethod('+i+',\'greet\')">greet()</span>'
+      +'<span class="ic-btn" onclick="callMethod('+i+',\'study\')">study()</span>'
+      +'<span class="ic-btn" onclick="callMethod('+i+',\'getGrade\')">getGrade()</span>'
+      +'</div></div>';
+    g.appendChild(d);
+  });
+}
+
+function callMethod(i,m){
+  const s=instances[i];
+  document.getElementById('method-out').textContent=s.name+'.'+m+'() → "'+s[m]()+'"';
+}
+</script>

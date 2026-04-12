@@ -1,0 +1,150 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .tab-row{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+  .tab{padding:5px 13px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+  .panel{display:none}.panel.active{display:block}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary);margin:.4rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.cls{color:#185FA5}.this{color:#993C1D}.get{color:#1D9E75;font-weight:500}.set{color:#854F0B;font-weight:500}.stat{color:#534AB7;font-weight:500}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:13px;min-height:44px;color:#86efac;margin:.4rem 0}
+  .ctrl{display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap;align-items:center}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+  .ctrl input{font-family:var(--font-mono);font-size:13px}
+  .info{background:var(--color-background-secondary);border-left:3px solid #534AB7;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.55rem .9rem;font-size:13px;color:var(--color-text-secondary);margin:.4rem 0}
+</style>
+
+<h2 class="sr-only">Getters setters and static methods in JavaScript classes</h2>
+
+<div class="tab-row">
+  <button class="tab active" onclick="sw('get')">get (getter)</button>
+  <button class="tab" onclick="sw('set')">set (setter)</button>
+  <button class="tab" onclick="sw('static')">static</button>
+</div>
+
+<!-- GETTER -->
+<div class="panel active" id="p-get">
+  <div class="code">
+<span class="cm">// get — access like a property but runs a function</span><br>
+<span class="kw">class</span> <span class="cls">Student</span> {<br>
+&nbsp;&nbsp;constructor(name, score) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.name  = name;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.score = score;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="get">get</span> grade() {  <span class="cm">// no () when you access it!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="this">this</span>.score >= <span class="num">90</span> ? <span class="str">"A"</span> : <span class="this">this</span>.score >= <span class="num">75</span> ? <span class="str">"B"</span> : <span class="str">"C"</span>;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="get">get</span> summary() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="str">`${</span><span class="this">this</span>.name<span class="str">} → grade ${</span><span class="this">this</span>.grade<span class="str">}`</span>;<br>
+&nbsp;&nbsp;}<br>
+}<br><br>
+<span class="kw">const</span> ali = <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Ali"</span>, <span class="num">88</span>);<br>
+ali.grade    <span class="cm">// "B" — no () needed! looks like a property</span><br>
+ali.summary  <span class="cm">// "Ali → grade B"</span>
+  </div>
+  <div class="ctrl">
+    <label>score =</label>
+    <input type="range" min="0" max="100" value="88" step="1" style="flex:1" oninput="runGetter(this.value)"/>
+    <span id="score-g" style="font-family:var(--font-mono);font-size:13px;font-weight:500;min-width:28px;color:var(--color-text-primary)">88</span>
+  </div>
+  <div class="out" id="get-out">ali.grade → "B" &nbsp;|&nbsp; ali.summary → "Ali → grade B"</div>
+  <div class="info"><strong style="color:var(--color-text-primary)">Why getters?</strong> Computed values that look like properties. No parentheses needed when accessing — cleaner code!</div>
+</div>
+
+<!-- SETTER -->
+<div class="panel" id="p-set">
+  <div class="code">
+<span class="cm">// set — validate before storing a value</span><br>
+<span class="kw">class</span> <span class="cls">Student</span> {<br>
+&nbsp;&nbsp;constructor(name) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.name  = name;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>._score = <span class="num">0</span>; <span class="cm">// private by convention (_)</span><br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="get">get</span>  score()  { <span class="kw">return</span> <span class="this">this</span>._score; }<br>
+&nbsp;&nbsp;<span class="set">set</span>  score(v) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (v &lt; <span class="num">0</span> || v &gt; <span class="num">100</span>) <span class="kw">throw</span> <span class="str">"Score must be 0-100!"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>._score = v;<br>
+&nbsp;&nbsp;}<br>
+}<br><br>
+ali.score = <span class="num">88</span>;   <span class="cm">// ✓ valid — stored</span><br>
+ali.score = <span class="num">200</span>;  <span class="cm">// ✕ Error: Score must be 0-100!</span>
+  </div>
+  <div class="ctrl">
+    <label>Try setting score to:</label>
+    <input type="number" id="set-score" value="88" style="width:80px"/>
+    <button onclick="runSetter()">ali.score = value</button>
+  </div>
+  <div class="out" id="set-out">—</div>
+  <div class="info"><strong style="color:var(--color-text-primary)">Why setters?</strong> Validate data BEFORE it's stored. Prevents invalid values entering your object.</div>
+</div>
+
+<!-- STATIC -->
+<div class="panel" id="p-static">
+  <div class="code">
+<span class="cm">// static — belongs to the CLASS, not instances</span><br>
+<span class="kw">class</span> <span class="cls">MathHelper</span> {<br>
+&nbsp;&nbsp;<span class="stat">static</span> add(a, b)      { <span class="kw">return</span> a + b; }<br>
+&nbsp;&nbsp;<span class="stat">static</span> multiply(a, b) { <span class="kw">return</span> a * b; }<br>
+&nbsp;&nbsp;<span class="stat">static</span> PI = <span class="num">3.14159</span>;<br>
+}<br><br>
+<span class="cm">// Call directly on the CLASS — no new needed!</span><br>
+MathHelper.add(<span class="num">5</span>, <span class="num">3</span>)       <span class="cm">// 8</span><br>
+MathHelper.multiply(<span class="num">4</span>, <span class="num">5</span>)  <span class="cm">// 20</span><br>
+MathHelper.PI              <span class="cm">// 3.14159</span><br><br>
+<span class="cm">// ✕ Cannot call on instance:</span><br>
+<span class="kw">const</span> m = <span class="kw">new</span> <span class="cls">MathHelper</span>();<br>
+m.add(<span class="num">1</span>, <span class="num">2</span>); <span class="cm">// TypeError: m.add is not a function</span>
+  </div>
+  <div style="display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap">
+    <button onclick="runStatic('add')">MathHelper.add(5, 3)</button>
+    <button onclick="runStatic('multiply')">MathHelper.multiply(4, 5)</button>
+    <button onclick="runStatic('pi')">MathHelper.PI</button>
+    <button onclick="runStatic('error')">instance.add() — see error</button>
+  </div>
+  <div class="out" id="static-out">—</div>
+  <div class="info"><strong style="color:var(--color-text-primary)">Why static?</strong> Utility functions that don't need object data. Like Math.round(), Math.max() — you call them on Math directly, not on an instance.</div>
+</div>
+
+<script>
+function sw(id){
+  ['get','set','static'].forEach((x,i)=>{
+    document.querySelectorAll('.tab')[i].classList.toggle('active',x===id);
+    document.getElementById('p-'+x).classList.toggle('active',x===id);
+  });
+}
+
+function runGetter(v){
+  document.getElementById('score-g').textContent=v;
+  const s=Number(v);
+  const grade=s>=90?'A':s>=75?'B':s>=60?'C':'F';
+  document.getElementById('get-out').textContent='ali.score = '+v+' → ali.grade = "'+grade+'" | ali.summary = "Ali → grade '+grade+'"';
+}
+
+class StudentWithSetter{
+  constructor(n){this.name=n;this._score=0;}
+  get score(){return this._score;}
+  set score(v){if(v<0||v>100)throw new Error('Score must be 0-100!');this._score=v;}
+}
+const setStudent=new StudentWithSetter('Ali');
+function runSetter(){
+  const v=parseInt(document.getElementById('set-score').value);
+  try{
+    setStudent.score=v;
+    document.getElementById('set-out').textContent='ali.score = '+v+' → stored! ali.score is now '+setStudent.score;
+  }catch(e){
+    document.getElementById('set-out').textContent='ali.score = '+v+' → ERROR: '+e.message;
+  }
+}
+
+class MathHelper{
+  static add(a,b){return a+b;}
+  static multiply(a,b){return a*b;}
+  static PI=3.14159;
+}
+function runStatic(t){
+  if(t==='add') document.getElementById('static-out').textContent='MathHelper.add(5, 3) → '+MathHelper.add(5,3);
+  else if(t==='multiply') document.getElementById('static-out').textContent='MathHelper.multiply(4, 5) → '+MathHelper.multiply(4,5);
+  else if(t==='pi') document.getElementById('static-out').textContent='MathHelper.PI → '+MathHelper.PI;
+  else document.getElementById('static-out').textContent='TypeError: m.add is not a function — static methods live on the CLASS, not instances!';
+}
+</script>

@@ -1,0 +1,231 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .tab-row{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+  .tab{padding:5px 13px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+  .panel{display:none}.panel.active{display:block}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary);margin:.4rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.key{color:#185FA5}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:12.5px;min-height:52px;max-height:200px;overflow-y:auto;margin:.4rem 0}
+  .co{color:#86efac}.ci{color:#60a5fa}.cx{color:#9ca3af;font-style:italic}.cw{color:#EF9F27}
+  .ctrl{display:flex;gap:8px;margin:.4rem 0;align-items:center;flex-wrap:wrap}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+  .ctrl input{font-family:var(--font-mono);font-size:13px}
+  .res{padding:.6rem 1rem;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;margin:.4rem 0;font-family:var(--font-mono);transition:all .3s;background:var(--color-background-secondary);color:var(--color-text-primary)}
+  .user-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1rem;margin:.5rem 0}
+  .uc-name{font-size:18px;font-weight:500;color:var(--color-text-primary)}
+  .uc-row{display:flex;gap:16px;flex-wrap:wrap;margin:.4rem 0;font-size:13px;color:var(--color-text-secondary)}
+  .uc-skill{display:inline-block;background:#EEEDFE;color:#3C3489;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:500;margin:2px}
+  textarea{width:100%;box-sizing:border-box;font-family:var(--font-mono);font-size:12.5px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem;color:var(--color-text-primary);resize:vertical}
+</style>
+
+<h2 class="sr-only">Complete object and JSON mega lab with multiple real world examples</h2>
+
+<div class="tab-row">
+  <button class="tab active" onclick="sw('loop')">Loop object</button>
+  <button class="tab" onclick="sw('nested')">Nested object</button>
+  <button class="tab" onclick="sw('api')">Fake API</button>
+  <button class="tab" onclick="sw('spread')">Spread &amp; merge</button>
+  <button class="tab" onclick="sw('free')">Playground</button>
+</div>
+
+<!-- LOOP -->
+<div class="panel active" id="p-loop">
+  <div class="code">
+<span class="cm">// 3 ways to loop through an object</span><br>
+<span class="kw">const</span> user = { name:<span class="str">"Ali"</span>, age:<span class="num">22</span>, city:<span class="str">"Hyderabad"</span>, score:<span class="num">88</span> };<br><br>
+<span class="cm">// 1. for...in loop</span><br>
+<span class="kw">for</span> (<span class="kw">let</span> key <span class="kw">in</span> user) { console.log(key, <span class="str">"→"</span>, user[key]); }<br><br>
+<span class="cm">// 2. Object.keys() + forEach</span><br>
+Object.keys(user).forEach(k => console.log(k, user[k]));<br><br>
+<span class="cm">// 3. Object.entries() — best for both key and value</span><br>
+Object.entries(user).forEach(([k, v]) => console.log(k, v));
+  </div>
+  <div style="display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap">
+    <button onclick="runLoop('forin')">for...in loop</button>
+    <button onclick="runLoop('keys')">Object.keys()</button>
+    <button onclick="runLoop('values')">Object.values()</button>
+    <button onclick="runLoop('entries')">Object.entries()</button>
+  </div>
+  <div class="con" id="loop-con"><div class="cx">// press a button to loop through the object</div></div>
+</div>
+
+<!-- NESTED -->
+<div class="panel" id="p-nested">
+  <div class="code">
+<span class="kw">const</span> user = {<br>
+&nbsp;&nbsp;name: <span class="str">"Ali Khan"</span>,<br>
+&nbsp;&nbsp;age: <span class="num">22</span>,<br>
+&nbsp;&nbsp;address: {           <span class="cm">// nested object</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;city: <span class="str">"Hyderabad"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pin:  <span class="num">500001</span><br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;skills: [<span class="str">"JS"</span>, <span class="str">"React"</span>, <span class="str">"Node"</span>]  <span class="cm">// array inside object</span><br>
+};<br><br>
+user.address.city    <span class="cm">// "Hyderabad"</span><br>
+user.skills[0]       <span class="cm">// "JS"</span><br>
+user.skills.length   <span class="cm">// 3</span>
+  </div>
+  <div style="display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap">
+    <button onclick="runNested('name')">user.name</button>
+    <button onclick="runNested('city')">user.address.city</button>
+    <button onclick="runNested('pin')">user.address.pin</button>
+    <button onclick="runNested('skill0')">user.skills[0]</button>
+    <button onclick="runNested('allskills')">user.skills</button>
+  </div>
+  <div class="con" id="nested-con"><div class="cx">// press a button</div></div>
+</div>
+
+<!-- API SIMULATION -->
+<div class="panel" id="p-api">
+  <div class="code">
+<span class="cm">// This is what a real API response looks like!</span><br>
+<span class="cm">// When you call fetch("https://api.example.com/user")</span><br>
+<span class="cm">// you get back JSON text like this:</span><br><br>
+<span class="kw">const</span> jsonText = <span class="str">'{"id":1,"name":"Ali Khan","email":"ali@gmail.com","role":"student"}'</span>;<br><br>
+<span class="cm">// STEP 1: Parse it into a JS object</span><br>
+<span class="kw">const</span> user = JSON.parse(jsonText);<br><br>
+<span class="cm">// STEP 2: Now you can use it normally!</span><br>
+console.log(user.name);   <span class="cm">// "Ali Khan"</span>
+  </div>
+  <div class="ctrl">
+    <label>Simulate API for user ID:</label>
+    <input type="range" min="1" max="4" value="1" step="1" style="flex:1" oninput="runAPI(this.value)"/>
+    <span id="api-id" style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--color-text-primary)">1</span>
+  </div>
+  <div class="user-card" id="api-card"></div>
+  <div class="con" id="api-con"><div class="cx">// drag slider to simulate API calls</div></div>
+</div>
+
+<!-- SPREAD -->
+<div class="panel" id="p-spread">
+  <div class="code">
+<span class="cm">// Spread operator — copy and merge objects</span><br>
+<span class="kw">const</span> base   = { name: <span class="str">"Ali"</span>, age: <span class="num">22</span> };<br>
+<span class="kw">const</span> extra  = { city: <span class="str">"Hyderabad"</span>, score: <span class="num">88</span> };<br><br>
+<span class="cm">// Copy an object (so changes don't affect original)</span><br>
+<span class="kw">const</span> copy   = { ...base };  <span class="cm">// {name:"Ali", age:22}</span><br><br>
+<span class="cm">// Merge two objects together</span><br>
+<span class="kw">const</span> merged = { ...base, ...extra };  <span class="cm">// all 4 properties!</span><br><br>
+<span class="cm">// Update one property, keep rest</span><br>
+<span class="kw">const</span> updated = { ...base, age: <span class="num">23</span> };  <span class="cm">// age updated!</span>
+  </div>
+  <div style="display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap">
+    <button onclick="runSpread('copy')">Copy with ...</button>
+    <button onclick="runSpread('merge')">Merge two objects</button>
+    <button onclick="runSpread('update')">Update one property</button>
+    <button onclick="runSpread('api')">Real API update pattern</button>
+  </div>
+  <div class="con" id="spread-con"><div class="cx">// press a button</div></div>
+</div>
+
+<!-- FREE -->
+<div class="panel" id="p-free">
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:.4rem">Write and run your own object code:</div>
+  <textarea id="free-code" rows="7" placeholder="const person = {&#10;  name: 'Your Name',&#10;  age: 20,&#10;  city: 'Hyderabad'&#10;};&#10;console.log(person.name);&#10;console.log(JSON.stringify(person));"></textarea>
+  <div style="display:flex;gap:8px;margin:.4rem 0">
+    <button onclick="runFree()">Run code</button>
+    <button onclick="document.getElementById('free-con').innerHTML='<div class=cx>// cleared</div>'">Clear</button>
+  </div>
+  <div class="con" id="free-con"><div class="cx">// output appears here</div></div>
+</div>
+
+<script>
+function sw(id){
+  const ids=['loop','nested','api','spread','free'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',ids[i]===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  if(id==='api') runAPI(1);
+}
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+const loopUser={name:"Ali",age:22,city:"Hyderabad",score:88};
+function runLoop(mode){
+  document.getElementById('loop-con').innerHTML='';
+  if(mode==='forin'){
+    addL('loop-con','for...in loop:','ci');
+    Object.entries(loopUser).forEach(([k,v])=>addL('loop-con',k+' → '+v,'co'));
+  } else if(mode==='keys'){
+    addL('loop-con','Object.keys(user) → ['+Object.keys(loopUser).join(', ')+']','co');
+    Object.keys(loopUser).forEach(k=>addL('loop-con','  key: '+k,'co'));
+  } else if(mode==='values'){
+    addL('loop-con','Object.values(user) → ['+Object.values(loopUser).join(', ')+']','co');
+  } else {
+    addL('loop-con','Object.entries(user):','ci');
+    Object.entries(loopUser).forEach(([k,v])=>addL('loop-con','  ['+k+', '+v+']','co'));
+  }
+}
+
+const nestedUser={name:"Ali Khan",age:22,address:{city:"Hyderabad",pin:500001},skills:["JS","React","Node"]};
+function runNested(what){
+  document.getElementById('nested-con').innerHTML='';
+  if(what==='name') addL('nested-con','user.name → "'+nestedUser.name+'"','co');
+  else if(what==='city') addL('nested-con','user.address.city → "'+nestedUser.address.city+'"','co');
+  else if(what==='pin') addL('nested-con','user.address.pin → '+nestedUser.address.pin,'co');
+  else if(what==='skill0') addL('nested-con','user.skills[0] → "'+nestedUser.skills[0]+'"','co');
+  else addL('nested-con','user.skills → ["'+nestedUser.skills.join('","')+'"]  (length: '+nestedUser.skills.length+')','co');
+}
+
+const apiUsers=[
+  {id:1,name:"Ali Khan",email:"ali@gmail.com",role:"student",score:88,skills:["JavaScript","React"]},
+  {id:2,name:"Sara Ahmed",email:"sara@gmail.com",role:"student",score:92,skills:["Node.js","MongoDB"]},
+  {id:3,name:"Raj Kumar",email:"raj@gmail.com",role:"instructor",score:null,skills:["React","Express","MongoDB"]},
+  {id:4,name:"Priya Sharma",email:"priya@gmail.com",role:"student",score:75,skills:["JavaScript","CSS"]},
+];
+function runAPI(id){
+  document.getElementById('api-id').textContent=id;
+  const u=apiUsers[id-1];
+  const json=JSON.stringify(u);
+  const card=document.getElementById('api-card');
+  card.innerHTML='<div class="uc-name">'+u.name+'</div>'
+    +'<div class="uc-row"><span>ID: '+u.id+'</span><span>'+u.email+'</span><span style="color:'+(u.role==='instructor'?'#534AB7':'#085041')+'">'+u.role+'</span>'+(u.score!==null?'<span>Score: '+u.score+'</span>':'')+'</div>'
+    +'<div>'+u.skills.map(s=>'<span class="uc-skill">'+s+'</span>').join('')+'</div>';
+  document.getElementById('api-con').innerHTML='';
+  addL('api-con','GET /api/user/'+id+' → received JSON:','ci');
+  addL('api-con',json,'cw');
+  addL('api-con','JSON.parse(response) → object with .name = "'+u.name+'"','co');
+}
+
+const base={name:"Ali",age:22}, extra={city:"Hyderabad",score:88};
+function runSpread(t){
+  document.getElementById('spread-con').innerHTML='';
+  if(t==='copy'){
+    const c={...base};
+    addL('spread-con','const copy = { ...base }','ci');
+    addL('spread-con','copy → '+JSON.stringify(c),'co');
+    addL('spread-con','Changing copy does NOT affect original!','cx');
+  } else if(t==='merge'){
+    const m={...base,...extra};
+    addL('spread-con','const merged = { ...base, ...extra }','ci');
+    addL('spread-con','merged → '+JSON.stringify(m),'co');
+  } else if(t==='update'){
+    const u={...base,age:23};
+    addL('spread-con','const updated = { ...base, age: 23 }','ci');
+    addL('spread-con','updated → '+JSON.stringify(u),'co');
+    addL('spread-con','original base unchanged → '+JSON.stringify(base),'cx');
+  } else {
+    const original={name:"Ali",age:22,score:88};
+    const patched={...original,score:95,updatedAt:"2024-01-01"};
+    addL('spread-con','// Simulate PATCH /api/user API call:','ci');
+    addL('spread-con','original → '+JSON.stringify(original),'cw');
+    addL('spread-con','patched  → '+JSON.stringify(patched),'co');
+    addL('spread-con','Only score changed, everything else kept!','cx');
+  }
+}
+
+function runFree(){
+  const code=document.getElementById('free-code').value.trim();
+  if(!code)return;
+  const logs=[];const orig=console.log;
+  console.log=(...a)=>logs.push(a.map(x=>typeof x==='object'?JSON.stringify(x):String(x)).join(' '));
+  document.getElementById('free-con').innerHTML='';
+  try{
+    eval(code);console.log=orig;
+    if(logs.length)logs.forEach(l=>addL('free-con',l,'co'));
+    else addL('free-con','(no output — add console.log() to see results)','cx');
+  }catch(e){console.log=orig;addL('free-con','Error: '+e.message,'ce');}
+}
+runAPI(1);
+</script>

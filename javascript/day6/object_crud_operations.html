@@ -1,0 +1,119 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.key{color:#185FA5}
+  .obj-live{display:flex;flex-direction:column;gap:3px;margin:.5rem 0;min-height:44px}
+  .kv{display:flex;border-radius:var(--border-radius-md);overflow:hidden;border:0.5px solid var(--color-border-secondary);transition:all .4s}
+  .kv.new{border-color:#1D9E75;background:#E1F5EE}
+  .kv.updated{border-color:#BA7517;background:#FAEEDA}
+  .kv.deleted{opacity:.3;text-decoration:line-through}
+  .kv-k{padding:.45rem .85rem;font-family:var(--font-mono);font-size:12.5px;font-weight:500;color:#185FA5;background:var(--color-background-secondary);min-width:90px;border-right:0.5px solid var(--color-border-tertiary)}
+  .kv-v{padding:.45rem .85rem;font-family:var(--font-mono);font-size:12.5px;font-weight:500;flex:1;color:var(--color-text-primary);background:var(--color-background-primary)}
+  .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:.65rem 0}
+  .op-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.7rem}
+  .op-title{font-size:12px;font-weight:500;margin-bottom:.35rem}
+  .op-code{font-family:var(--font-mono);font-size:11px;color:var(--color-text-secondary);margin-bottom:.4rem;line-height:1.6}
+  .ctrl{display:flex;flex-direction:column;gap:5px}
+  .ctrl input{font-family:var(--font-mono);font-size:12px}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.4rem .7rem;font-family:var(--font-mono);font-size:11.5px;min-height:26px;color:#86efac;margin-top:.35rem}
+  @media(max-width:520px){.three-col{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Object CRUD operations add update delete properties live</h2>
+
+<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:.3rem">Your object right now (green = new, orange = updated):</div>
+<div class="obj-live" id="obj-live"></div>
+
+<div class="three-col">
+
+  <!-- ADD -->
+  <div class="op-card">
+    <div class="op-title" style="color:#085041">Add new property</div>
+    <div class="op-code">student.key = value;<br>// adds if doesn't exist</div>
+    <div class="ctrl">
+      <input type="text" id="add-k" placeholder="key (e.g. email)"/>
+      <input type="text" id="add-v" placeholder="value"/>
+      <button onclick="addProp()" style="font-size:12px">Add</button>
+    </div>
+    <div class="out" id="add-out">—</div>
+  </div>
+
+  <!-- UPDATE -->
+  <div class="op-card">
+    <div class="op-title" style="color:#633806">Update existing</div>
+    <div class="op-code">student.key = newValue;<br>// same key, new value</div>
+    <div class="ctrl">
+      <input type="text" id="upd-k" placeholder="key (e.g. age)"/>
+      <input type="text" id="upd-v" placeholder="new value"/>
+      <button onclick="updProp()" style="font-size:12px">Update</button>
+    </div>
+    <div class="out" id="upd-out">—</div>
+  </div>
+
+  <!-- DELETE -->
+  <div class="op-card">
+    <div class="op-title" style="color:#791F1F">Delete property</div>
+    <div class="op-code">delete student.key;<br>// removes forever</div>
+    <div class="ctrl">
+      <input type="text" id="del-k" placeholder="key to delete"/>
+      <button onclick="delProp()" style="font-size:12px">Delete</button>
+    </div>
+    <div class="out" id="del-out">—</div>
+  </div>
+
+</div>
+
+<script>
+let obj={name:"Ali Khan",age:22,city:"Hyderabad",course:"MERN Stack"};
+let states={};
+
+function renderObj(){
+  const c=document.getElementById('obj-live');c.innerHTML='';
+  Object.entries(obj).forEach(([k,v])=>{
+    const d=document.createElement('div');
+    const t=typeof v;
+    const display=t==='string'?'"'+v+'"':String(v);
+    d.className='kv'+(states[k]==='new'?' new':states[k]==='updated'?' updated':'');
+    d.innerHTML='<div class="kv-k">'+k+'</div><div class="kv-v">'+display+'</div>';
+    c.appendChild(d);
+  });
+}
+
+function addProp(){
+  const k=document.getElementById('add-k').value.trim();
+  const v=document.getElementById('add-v').value.trim();
+  if(!k){document.getElementById('add-out').textContent='Enter a key!';return;}
+  const isNum=!isNaN(v)&&v!=='';
+  obj[k]=isNum?Number(v):v;
+  states[k]='new';
+  renderObj();
+  document.getElementById('add-out').textContent='student.'+k+' = "'+v+'" → added!';
+  setTimeout(()=>{delete states[k];renderObj();},1500);
+}
+
+function updProp(){
+  const k=document.getElementById('upd-k').value.trim();
+  const v=document.getElementById('upd-v').value.trim();
+  if(!k){document.getElementById('upd-out').textContent='Enter a key!';return;}
+  if(!(k in obj)){document.getElementById('upd-out').textContent=k+' does not exist!';return;}
+  const old=obj[k];
+  const isNum=!isNaN(v)&&v!=='';
+  obj[k]=isNum?Number(v):v;
+  states[k]='updated';
+  renderObj();
+  document.getElementById('upd-out').textContent='student.'+k+': "'+old+'" → "'+v+'" updated!';
+  setTimeout(()=>{delete states[k];renderObj();},1500);
+}
+
+function delProp(){
+  const k=document.getElementById('del-k').value.trim();
+  if(!k){document.getElementById('del-out').textContent='Enter a key!';return;}
+  if(!(k in obj)){document.getElementById('del-out').textContent=k+' does not exist!';return;}
+  delete obj[k];
+  delete states[k];
+  renderObj();
+  document.getElementById('del-out').textContent='delete student.'+k+' → removed!';
+}
+renderObj();
+</script>

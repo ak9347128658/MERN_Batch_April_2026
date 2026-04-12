@@ -1,0 +1,106 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.cls{color:#185FA5}.this{color:#993C1D}
+  .bank-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden;margin:.6rem 0}
+  .bc-header{padding:.75rem 1.25rem;background:#185FA5;color:#fff;display:flex;justify-content:space-between;align-items:center}
+  .bc-name{font-size:15px;font-weight:500}
+  .bc-num{font-size:12px;opacity:.8;font-family:var(--font-mono)}
+  .bc-body{padding:1rem 1.25rem}
+  .bc-balance{font-size:32px;font-weight:500;font-family:var(--font-mono);color:#185FA5;margin:.25rem 0}
+  .bc-label{font-size:11px;color:var(--color-text-tertiary);font-weight:500;text-transform:uppercase}
+  .txn-list{margin:.5rem 0;max-height:130px;overflow-y:auto}
+  .txn{display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:12.5px;font-family:var(--font-mono)}
+  .txn-credit{color:#0F6E56} .txn-debit{color:#A32D2D}
+  .action-row{display:flex;gap:8px;margin:.6rem 0;flex-wrap:wrap;align-items:center}
+  .action-row label{font-size:12px;color:var(--color-text-secondary)}
+  .action-row input{font-family:var(--font-mono);font-size:13px;width:100px}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.5rem .85rem;font-family:var(--font-mono);font-size:12.5px;min-height:36px;color:#86efac;margin:.4rem 0}
+</style>
+
+<h2 class="sr-only">Real world BankAccount class demonstration with deposit withdraw and transactions</h2>
+
+<div class="code">
+<span class="kw">class</span> <span class="cls">BankAccount</span> {<br>
+&nbsp;&nbsp;constructor(owner, initialBalance = <span class="num">0</span>) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.owner    = owner;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.balance  = initialBalance;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.transactions = [];<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;deposit(amount) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (amount &lt;= <span class="num">0</span>) <span class="kw">throw</span> <span class="str">"Amount must be positive"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.balance += amount;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.transactions.push({ type:<span class="str">"credit"</span>, amount });<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;withdraw(amount) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (amount &gt; <span class="this">this</span>.balance) <span class="kw">throw</span> <span class="str">"Insufficient balance"</span>;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.balance -= amount;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.transactions.push({ type:<span class="str">"debit"</span>, amount });<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;<span class="kw">get</span> summary() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="str">`${</span><span class="this">this</span>.owner<span class="str">} — Balance: ₹${</span><span class="this">this</span>.balance<span class="str">}`</span>;<br>
+&nbsp;&nbsp;}<br>
+}
+</div>
+
+<div class="bank-card">
+  <div class="bc-header">
+    <div>
+      <div class="bc-name" id="bc-name">Ali Khan</div>
+      <div class="bc-num">ACC-001</div>
+    </div>
+    <div style="text-align:right">
+      <div class="bc-label">Balance</div>
+      <div class="bc-balance" id="bc-balance">₹1,000</div>
+    </div>
+  </div>
+  <div class="bc-body">
+    <div class="bc-label" style="margin-bottom:.3rem">Transactions</div>
+    <div class="txn-list" id="txn-list">
+      <div class="txn"><span>Opening balance</span><span class="txn-credit">+₹1,000</span></div>
+    </div>
+    <div class="action-row" style="margin-top:.75rem">
+      <label>Amount ₹</label>
+      <input type="number" id="amount-inp" value="500" min="1"/>
+      <button onclick="doDeposit()" style="background:#E1F5EE;border-color:#1D9E75;color:#085041">Deposit</button>
+      <button onclick="doWithdraw()" style="background:#FCEBEB;border-color:#E24B4A;color:#791F1F">Withdraw</button>
+    </div>
+    <div class="out" id="bank-out">Use the buttons to interact with the account</div>
+  </div>
+</div>
+
+<script>
+class BankAccount2{
+  constructor(owner,bal=0){this.owner=owner;this.balance=bal;this.transactions=[];}
+  deposit(a){if(a<=0)throw new Error('Amount must be positive');this.balance+=a;this.transactions.push({type:'credit',amount:a});}
+  withdraw(a){if(a>this.balance)throw new Error('Insufficient balance! Have ₹'+this.balance);this.balance-=a;this.transactions.push({type:'debit',amount:a});}
+  get summary(){return this.owner+' — Balance: ₹'+this.balance.toLocaleString();}
+}
+
+const acc=new BankAccount2('Ali Khan',1000);
+
+function updateCard(){
+  document.getElementById('bc-balance').textContent='₹'+acc.balance.toLocaleString();
+  const list=document.getElementById('txn-list');
+  list.innerHTML='<div class="txn"><span>Opening balance</span><span class="txn-credit">+₹1,000</span></div>';
+  acc.transactions.forEach(t=>{
+    const d=document.createElement('div');d.className='txn';
+    const isC=t.type==='credit';
+    d.innerHTML='<span>'+(isC?'Deposit':'Withdrawal')+'</span><span class="'+(isC?'txn-credit':'txn-debit')+'">'+(isC?'+':'-')+'₹'+t.amount.toLocaleString()+'</span>';
+    list.appendChild(d);
+  });
+  list.scrollTop=list.scrollHeight;
+}
+
+function doDeposit(){
+  const a=parseInt(document.getElementById('amount-inp').value)||0;
+  try{acc.deposit(a);updateCard();document.getElementById('bank-out').textContent='deposit('+a+') → '+acc.summary;}
+  catch(e){document.getElementById('bank-out').textContent='Error: '+e.message;}
+}
+function doWithdraw(){
+  const a=parseInt(document.getElementById('amount-inp').value)||0;
+  try{acc.withdraw(a);updateCard();document.getElementById('bank-out').textContent='withdraw('+a+') → '+acc.summary;}
+  catch(e){document.getElementById('bank-out').textContent='Error: '+e.message;}
+}
+</script>

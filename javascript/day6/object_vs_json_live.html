@@ -1,0 +1,112 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:.5rem 0}
+  .side{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden}
+  .side-head{padding:.6rem 1rem;font-size:13px;font-weight:500;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .side-body{padding:.75rem 1rem}
+  .code{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.6rem .85rem;font-family:var(--font-mono);font-size:12px;line-height:1.75;color:var(--color-text-primary);margin:.35rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.key{color:#185FA5}
+  .diff-row{display:flex;gap:6px;align-items:flex-start;font-size:12px;margin:.25rem 0;color:var(--color-text-secondary)}
+  .diff-icon{flex-shrink:0;font-size:12px}
+  .convert-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:.85rem 1rem;margin:.65rem 0}
+  .conv-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:.6rem;text-align:center}
+  .conv-row{display:flex;align-items:center;gap:8px;margin:.4rem 0;flex-wrap:wrap}
+  .conv-label{font-size:11px;color:var(--color-text-secondary);min-width:110px}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.4rem .75rem;font-family:var(--font-mono);font-size:12px;min-height:28px;flex:1;color:#86efac}
+  .arrow-btn{font-size:22px;color:#534AB7;cursor:pointer;padding:0 4px}
+  @media(max-width:500px){.two{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">JavaScript object vs JSON comparison with stringify and parse live demo</h2>
+
+<div class="two">
+  <div class="side">
+    <div class="side-head" style="background:#E6F1FB;color:#042C53">JavaScript Object</div>
+    <div class="side-body">
+      <div class="code">
+<span class="kw">const</span> user = {<br>
+&nbsp;&nbsp;<span class="key">name</span>: <span class="str">"Ali"</span>,<br>
+&nbsp;&nbsp;<span class="key">age</span>: <span class="num">22</span>,<br>
+&nbsp;&nbsp;<span class="key">active</span>: <span class="kw">true</span><br>
+};
+      </div>
+      <div class="diff-row"><span class="diff-icon" style="color:#0F6E56">✓</span> Keys don't need quotes</div>
+      <div class="diff-row"><span class="diff-icon" style="color:#0F6E56">✓</span> Can have functions</div>
+      <div class="diff-row"><span class="diff-icon" style="color:#0F6E56">✓</span> Values: any JS type</div>
+      <div class="diff-row"><span class="diff-icon" style="color:#0F6E56">✓</span> Lives in memory</div>
+      <div class="diff-row"><span class="diff-icon" style="color:#A32D2D">✕</span> Cannot be sent over internet as-is</div>
+    </div>
+  </div>
+  <div class="side">
+    <div class="side-head" style="background:#E1F5EE;color:#04342C">JSON (string)</div>
+    <div class="side-body">
+      <div class="code">
+<span class="str">'{</span><br>
+<span class="str">&nbsp;&nbsp;"name": "Ali",</span><br>
+<span class="str">&nbsp;&nbsp;"age": 22,</span><br>
+<span class="str">&nbsp;&nbsp;"active": true</span><br>
+<span class="str">}'</span>
+      </div>
+      <div class="diff-row"><span class="diff-icon" style="color:#A32D2D">✕</span> Keys MUST have double quotes</div>
+      <div class="diff-row"><span class="diff-icon" style="color:#A32D2D">✕</span> No functions allowed</div>
+      <div class="diff-row"><span class="diff-icon" style="color:#A32D2D">✕</span> No undefined or NaN</div>
+      <div class="diff-row"><span class="diff-icon" style="color:#0F6E56">✓</span> Just plain text (a string)</div>
+      <div class="diff-row"><span class="diff-icon" style="color:#0F6E56">✓</span> Can be sent over internet!</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONVERTER -->
+<div class="convert-box">
+  <div class="conv-title">Converting between Object ↔ JSON — live demo</div>
+
+  <div class="conv-row">
+    <span class="conv-label" style="color:#534AB7;font-weight:500">JSON.stringify( )</span>
+    <span style="font-size:12px;color:var(--color-text-secondary)">Object → JSON string</span>
+  </div>
+  <div class="conv-row">
+    <div class="out" id="str-in" style="background:var(--color-background-secondary);color:var(--color-text-primary)">{name:"Ali", age:22, active:true}</div>
+    <span class="arrow-btn" onclick="doStringify()">→</span>
+    <div class="out" id="str-out">press →</div>
+  </div>
+
+  <div style="height:.5rem"></div>
+
+  <div class="conv-row">
+    <span class="conv-label" style="color:#1D9E75;font-weight:500">JSON.parse( )</span>
+    <span style="font-size:12px;color:var(--color-text-secondary)">JSON string → Object</span>
+  </div>
+  <div class="conv-row">
+    <div class="out" id="parse-in" style="background:var(--color-background-secondary);color:var(--color-text-primary);font-size:11px">{"name":"Ali","age":22,"active":true}</div>
+    <span class="arrow-btn" onclick="doParse()">→</span>
+    <div class="out" id="parse-out">press →</div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin:.5rem 0">
+    <button onclick="doStringify()">Stringify (Object→JSON)</button>
+    <button onclick="doParse()">Parse (JSON→Object)</button>
+    <button onclick="doBoth()">See full cycle</button>
+  </div>
+  <div style="background:#111;border-radius:var(--border-radius-md);padding:.5rem .75rem;font-family:var(--font-mono);font-size:12px;min-height:44px;color:#86efac" id="cycle-out">// press a button above</div>
+</div>
+
+<script>
+const obj2={name:"Ali",age:22,active:true};
+function doStringify(){
+  const j=JSON.stringify(obj2);
+  document.getElementById('str-out').textContent=j;
+  document.getElementById('cycle-out').textContent='JSON.stringify({name:"Ali",age:22,active:true}) → \''+j+'\'';
+}
+function doParse(){
+  const j='{"name":"Ali","age":22,"active":true}';
+  const o=JSON.parse(j);
+  document.getElementById('parse-out').textContent='Object: name='+o.name+', age='+o.age+', type='+typeof o;
+  document.getElementById('cycle-out').textContent='JSON.parse(\'{"name":"Ali",...}\') → object with .name="'+o.name+'"';
+}
+function doBoth(){
+  const j=JSON.stringify(obj2);
+  const o=JSON.parse(j);
+  document.getElementById('cycle-out').textContent='Object → stringify → "'+j+'" → parse → back to object. o.name = "'+o.name+'"';
+}
+</script>

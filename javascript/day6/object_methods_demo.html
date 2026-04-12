@@ -1,0 +1,85 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.key{color:#185FA5}.fn{color:#993C1D}
+  .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:.65rem 0}
+  .m-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.75rem}
+  .m-head{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:.3rem}
+  .m-desc{font-size:11px;color:var(--color-text-secondary);margin-bottom:.4rem}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.45rem .75rem;font-family:var(--font-mono);font-size:12.5px;min-height:30px;color:#86efac;margin-top:.35rem}
+  .info-box{background:var(--color-background-secondary);border-left:3px solid #534AB7;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.6rem 1rem;font-size:13px;color:var(--color-text-secondary);margin:.5rem 0}
+  @media(max-width:500px){.method-grid{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Object methods — functions stored inside objects with this keyword</h2>
+
+<div class="code">
+<span class="kw">const</span> student = {<br>
+&nbsp;&nbsp;<span class="key">name</span>:   <span class="str">"Ali Khan"</span>,<br>
+&nbsp;&nbsp;<span class="key">score</span>:  <span class="num">88</span>,<br>
+&nbsp;&nbsp;<span class="key">course</span>: <span class="str">"MERN Stack"</span>,<br><br>
+&nbsp;&nbsp;<span class="cm">// method — a function INSIDE the object</span><br>
+&nbsp;&nbsp;<span class="key">greet</span>: <span class="kw">function</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="str">`Hello! I am </span><span class="fn">${this.name}</span><span class="str">`</span>; <span class="cm">// 'this' = the object itself</span><br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;<span class="key">getGrade</span>: <span class="kw">function</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="fn">this</span>.score >= <span class="num">90</span> ? <span class="str">"A"</span> : <span class="fn">this</span>.score >= <span class="num">75</span> ? <span class="str">"B"</span> : <span class="str">"C"</span>;<br>
+&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;<span class="key">introduce</span>: <span class="kw">function</span>() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="str">`I study </span><span class="fn">${this.course}</span><span class="str"> and scored </span><span class="fn">${this.score}</span><span class="str">`</span>;<br>
+&nbsp;&nbsp;}<br>
+};
+</div>
+
+<div class="info-box">
+  <strong style="color:var(--color-text-primary)">What is <code>this</code>?</strong> — Inside a method, <code>this</code> refers to the object itself. So <code>this.name</code> means <code>student.name</code>.
+</div>
+
+<div class="method-grid">
+  <div class="m-card">
+    <div class="m-head">student.greet( )</div>
+    <div class="m-desc">Calls the greet method</div>
+    <div class="code" style="font-size:12px;padding:.45rem .7rem">student.greet()  <span class="cm">// call it!</span></div>
+    <button onclick="runMethod('greet')" style="width:100%;margin-top:.35rem">Call greet()</button>
+    <div class="out" id="m-greet">—</div>
+  </div>
+  <div class="m-card">
+    <div class="m-head">student.getGrade( )</div>
+    <div class="m-desc">Calculates grade from score</div>
+    <div class="code" style="font-size:12px;padding:.45rem .7rem">student.getGrade()  <span class="cm">// A, B or C</span></div>
+    <button onclick="runMethod('getGrade')" style="width:100%;margin-top:.35rem">Call getGrade()</button>
+    <div class="out" id="m-getGrade">—</div>
+  </div>
+  <div class="m-card">
+    <div class="m-head">student.introduce( )</div>
+    <div class="m-desc">Full introduction string</div>
+    <div class="code" style="font-size:12px;padding:.45rem .7rem">student.introduce()  <span class="cm">// full intro</span></div>
+    <button onclick="runMethod('introduce')" style="width:100%;margin-top:.35rem">Call introduce()</button>
+    <div class="out" id="m-introduce">—</div>
+  </div>
+  <div class="m-card">
+    <div class="m-head" style="color:#534AB7">Built-in Object methods</div>
+    <div class="m-desc">JavaScript gives you these for free</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin:.35rem 0">
+      <button onclick="runBuiltin('keys')" style="font-size:11px">Object.keys()</button>
+      <button onclick="runBuiltin('values')" style="font-size:11px">Object.values()</button>
+      <button onclick="runBuiltin('entries')" style="font-size:11px">Object.entries()</button>
+    </div>
+    <div class="out" id="m-builtin">—</div>
+  </div>
+</div>
+
+<script>
+const stu={name:"Ali Khan",score:88,course:"MERN Stack",
+  greet:function(){return'Hello! I am '+this.name;},
+  getGrade:function(){return this.score>=90?'A':this.score>=75?'B':'C';},
+  introduce:function(){return'I study '+this.course+' and scored '+this.score;}
+};
+function runMethod(m){document.getElementById('m-'+m).textContent='student.'+m+'() → "'+stu[m]()+'"';}
+function runBuiltin(t){
+  if(t==='keys') document.getElementById('m-builtin').textContent='Object.keys(student) → ['+Object.keys(stu).filter(k=>typeof stu[k]!=='function').join(', ')+']';
+  else if(t==='values') document.getElementById('m-builtin').textContent='Object.values(student) → ['+Object.values(stu).filter(v=>typeof v!=='function').map(v=>typeof v==='string'?'"'+v+'"':v).join(', ')+']';
+  else document.getElementById('m-builtin').textContent='Object.entries(student) → [[key,val],[key,val],...]';
+}
+</script>

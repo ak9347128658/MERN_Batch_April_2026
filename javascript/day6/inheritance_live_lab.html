@@ -1,0 +1,112 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary);margin:.4rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.cls{color:#185FA5}.this{color:#993C1D}.ext{color:#1D9E75;font-weight:500}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:.6rem 0}
+  .inst-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden}
+  .ib-head{padding:.55rem .9rem;font-size:13px;font-weight:500;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .ib-body{padding:.7rem .9rem}
+  .ib-prop{font-size:12px;font-family:var(--font-mono);padding:2px 0;color:var(--color-text-secondary)}
+  .ib-prop span{color:var(--color-text-primary);font-weight:500}
+  .ib-tag{font-size:10px;padding:1px 6px;border-radius:20px;font-weight:500}
+  .tag-inherited{background:#F1EFE8;color:#444441}
+  .tag-own{background:#EEEDFE;color:#3C3489}
+  .tag-own-t{background:#E1F5EE;color:#085041}
+  .method-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:.5rem}
+  .m-btn{font-size:11px;padding:3px 9px;border-radius:20px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);transition:all .2s}
+  .m-btn:hover{background:var(--color-background-tertiary)}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:13px;min-height:44px;color:#86efac;margin:.5rem 0}
+  .info-row{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--color-text-secondary);margin:.25rem 0}
+  @media(max-width:500px){.two-col{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Inheritance live lab with Teacher and Student extending Person</h2>
+
+<div class="code">
+<span class="cm">// PARENT class</span><br>
+<span class="kw">class</span> <span class="cls">Person</span> {<br>
+&nbsp;&nbsp;constructor(name, age) { <span class="this">this</span>.name = name; <span class="this">this</span>.age = age; }<br>
+&nbsp;&nbsp;greet()     { <span class="kw">return</span> <span class="str">`Hello! I am ${</span><span class="this">this</span>.name<span class="str">}`</span>; }<br>
+&nbsp;&nbsp;introduce() { <span class="kw">return</span> <span class="str">`I am ${</span><span class="this">this</span>.name<span class="str">}, age ${</span><span class="this">this</span>.age<span class="str">}`</span>; }<br>
+}<br><br>
+<span class="cm">// CHILD class — inherits Person + adds its own</span><br>
+<span class="kw">class</span> <span class="cls">Teacher</span> <span class="ext">extends</span> <span class="cls">Person</span> {<br>
+&nbsp;&nbsp;constructor(name, age, subject) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">super</span>(name, age); <span class="cm">// calls Person's constructor</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.subject = subject;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;teach() { <span class="kw">return</span> <span class="str">`${</span><span class="this">this</span>.name<span class="str">} teaches ${</span><span class="this">this</span>.subject<span class="str">}`</span>; }<br>
+}<br><br>
+<span class="kw">class</span> <span class="cls">Student</span> <span class="ext">extends</span> <span class="cls">Person</span> {<br>
+&nbsp;&nbsp;constructor(name, age, score) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">super</span>(name, age); <span class="cm">// calls Person's constructor</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="this">this</span>.score = score;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;study()    { <span class="kw">return</span> <span class="str">`${</span><span class="this">this</span>.name<span class="str">} is studying!`</span>; }<br>
+&nbsp;&nbsp;getGrade() { <span class="kw">return</span> <span class="this">this</span>.score >= <span class="num">90</span> ? <span class="str">"A"</span> : <span class="str">"B"</span>; }<br>
+}
+</div>
+
+<div class="two-col">
+
+  <div class="inst-box">
+    <div class="ib-head" style="background:#EEEDFE;color:#26215C">Teacher instance</div>
+    <div class="ib-body">
+      <div style="font-family:var(--font-mono);font-size:12px;color:#534AB7;margin-bottom:.4rem">new Teacher("Mr Ali", 35, "Maths")</div>
+      <div class="ib-prop">name: <span>"Mr Ali"</span> <span class="ib-tag tag-inherited">inherited from Person</span></div>
+      <div class="ib-prop">age: <span>35</span> <span class="ib-tag tag-inherited">inherited from Person</span></div>
+      <div class="ib-prop">subject: <span>"Maths"</span> <span class="ib-tag tag-own">Teacher's own</span></div>
+      <div class="method-row">
+        <span class="m-btn" onclick="callT('greet')">greet() ← from Person</span>
+        <span class="m-btn" onclick="callT('introduce')">introduce() ← from Person</span>
+        <span class="m-btn" onclick="callT('teach')">teach() ← Teacher's own</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="inst-box">
+    <div class="ib-head" style="background:#E1F5EE;color:#04342C">Student instance</div>
+    <div class="ib-body">
+      <div style="font-family:var(--font-mono);font-size:12px;color:#1D9E75;margin-bottom:.4rem">new Student("Sara", 21, 92)</div>
+      <div class="ib-prop">name: <span>"Sara"</span> <span class="ib-tag tag-inherited">inherited from Person</span></div>
+      <div class="ib-prop">age: <span>21</span> <span class="ib-tag tag-inherited">inherited from Person</span></div>
+      <div class="ib-prop">score: <span>92</span> <span class="ib-tag tag-own-t">Student's own</span></div>
+      <div class="method-row">
+        <span class="m-btn" onclick="callS('greet')">greet() ← from Person</span>
+        <span class="m-btn" onclick="callS('introduce')">introduce() ← from Person</span>
+        <span class="m-btn" onclick="callS('study')">study() ← Student's own</span>
+        <span class="m-btn" onclick="callS('getGrade')">getGrade()</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="out" id="inherit-out">Click any method button above</div>
+
+<div style="background:var(--color-background-secondary);border-left:3px solid #534AB7;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.6rem 1rem;font-size:13px;color:var(--color-text-secondary);margin:.5rem 0">
+  <strong style="color:var(--color-text-primary)">super( )</strong> — calls the parent class constructor. Always the first line in a child constructor. It sets up the inherited properties (name, age) before adding new ones.
+</div>
+
+<script>
+class Person2{
+  constructor(n,a){this.name=n;this.age=a;}
+  greet(){return'Hello! I am '+this.name;}
+  introduce(){return'I am '+this.name+', age '+this.age;}
+}
+class Teacher2 extends Person2{
+  constructor(n,a,s){super(n,a);this.subject=s;}
+  teach(){return this.name+' teaches '+this.subject+'!';}
+}
+class Student2 extends Person2{
+  constructor(n,a,sc){super(n,a);this.score=sc;}
+  study(){return this.name+' is studying hard!';}
+  getGrade(){return this.score>=90?'A':this.score>=75?'B':'C';}
+}
+const teacher=new Teacher2('Mr Ali',35,'Maths');
+const student=new Student2('Sara',21,92);
+
+function callT(m){document.getElementById('inherit-out').textContent='teacher.'+m+'() → "'+teacher[m]()+'"';}
+function callS(m){document.getElementById('inherit-out').textContent='student.'+m+'() → "'+student[m]()+'"';}
+</script>

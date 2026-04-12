@@ -1,0 +1,118 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.key{color:#185FA5}.bool{color:#993C1D}
+  .obj-visual{display:flex;flex-direction:column;gap:3px;margin:.65rem 0}
+  .kv-row{display:flex;align-items:center;gap:0;border-radius:var(--border-radius-md);overflow:hidden;border:0.5px solid var(--color-border-secondary);cursor:pointer;transition:all .2s}
+  .kv-row:hover{border-color:#534AB7}
+  .kv-row.active{border-color:#1D9E75;border-width:1.5px}
+  .kv-key{padding:.5rem .9rem;font-family:var(--font-mono);font-size:13px;font-weight:500;color:#185FA5;background:var(--color-background-secondary);min-width:100px;border-right:0.5px solid var(--color-border-tertiary)}
+  .kv-colon{padding:.5rem 4px;font-size:13px;color:var(--color-text-tertiary);background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary)}
+  .kv-val{padding:.5rem .9rem;font-family:var(--font-mono);font-size:13px;font-weight:500;flex:1;background:var(--color-background-primary)}
+  .kv-type{padding:.5rem .75rem;font-size:10px;color:var(--color-text-tertiary);background:var(--color-background-secondary);border-left:0.5px solid var(--color-border-tertiary)}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.65rem .9rem;font-family:var(--font-mono);font-size:13px;min-height:44px;color:#86efac;margin:.4rem 0}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:.5rem 0}
+  .method-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.75rem}
+  .m-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:.4rem}
+  .m-badge{font-size:10px;padding:1px 7px;border-radius:20px;font-weight:500;display:inline-block;margin-bottom:.4rem}
+  .ctrl{display:flex;gap:8px;margin:.4rem 0;flex-wrap:wrap;align-items:center}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+  @media(max-width:500px){.two-col{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Interactive object creation and property access with dot and bracket notation</h2>
+
+<div class="code">
+<span class="kw">const</span> student = {<br>
+&nbsp;&nbsp;<span class="key">name</span>:    <span class="str">"Ali Khan"</span>,<br>
+&nbsp;&nbsp;<span class="key">age</span>:     <span class="num">22</span>,<br>
+&nbsp;&nbsp;<span class="key">city</span>:    <span class="str">"Hyderabad"</span>,<br>
+&nbsp;&nbsp;<span class="key">course</span>:  <span class="str">"MERN Stack"</span>,<br>
+&nbsp;&nbsp;<span class="key">passed</span>:  <span class="bool">true</span>,<br>
+&nbsp;&nbsp;<span class="key">score</span>:   <span class="num">88</span>,<br>
+};
+</div>
+
+<div style="font-size:12px;color:var(--color-text-secondary);margin:.5rem 0">Click any property to access it:</div>
+<div class="obj-visual" id="obj-visual"></div>
+<div class="out" id="obj-out">Click a property to access it</div>
+
+<div class="two-col">
+  <div class="method-box">
+    <div class="m-title">Dot notation</div>
+    <span class="m-badge" style="background:#E1F5EE;color:#085041">most common — use this!</span>
+    <div class="code" style="font-size:12px;padding:.5rem .75rem">
+student.<span class="key">name</span>   <span class="cm">// "Ali Khan"</span><br>
+student.<span class="key">age</span>    <span class="cm">// 22</span><br>
+student.<span class="key">city</span>   <span class="cm">// "Hyderabad"</span>
+    </div>
+    <div class="ctrl">
+      <label>property:</label>
+      <input type="text" id="dot-key" value="name" style="font-family:var(--font-mono);font-size:13px;flex:1"/>
+      <button onclick="runDot()">student.key</button>
+    </div>
+    <div class="out" id="dot-out">—</div>
+  </div>
+  <div class="method-box">
+    <div class="m-title">Bracket notation</div>
+    <span class="m-badge" style="background:#E6F1FB;color:#0C447C">use when key is in a variable</span>
+    <div class="code" style="font-size:12px;padding:.5rem .75rem">
+student[<span class="str">"name"</span>]  <span class="cm">// "Ali Khan"</span><br>
+student[<span class="str">"age"</span>]   <span class="cm">// 22</span><br>
+<span class="kw">let</span> k = <span class="str">"city"</span>;<br>
+student[k]     <span class="cm">// "Hyderabad"</span>
+    </div>
+    <div class="ctrl">
+      <label>key:</label>
+      <input type="text" id="brk-key" value="city" style="font-family:var(--font-mono);font-size:13px;flex:1"/>
+      <button onclick="runBrk()">student["key"]</button>
+    </div>
+    <div class="out" id="brk-out">—</div>
+  </div>
+</div>
+
+<script>
+const student={name:"Ali Khan",age:22,city:"Hyderabad",course:"MERN Stack",passed:true,score:88};
+const typeColors={string:['#E1F5EE','#085041'],number:['#FAEEDA','#633806'],boolean:['#EEEDFE','#3C3489']};
+
+function buildVisual(){
+  const v=document.getElementById('obj-visual');v.innerHTML='';
+  Object.entries(student).forEach(([k,val])=>{
+    const t=typeof val;
+    const [bg,tc]=typeColors[t]||['#F1EFE8','#444441'];
+    const display=t==='string'?'"'+val+'"':String(val);
+    const d=document.createElement('div');d.className='kv-row';d.id='kv-'+k;
+    d.innerHTML='<div class="kv-key">'+k+'</div><div class="kv-colon">:</div>'
+      +'<div class="kv-val" style="color:'+tc+'">'+display+'</div>'
+      +'<div class="kv-type">'+t+'</div>';
+    d.onclick=()=>clickProp(k);
+    v.appendChild(d);
+  });
+}
+
+function clickProp(k){
+  document.querySelectorAll('.kv-row').forEach(r=>r.classList.remove('active'));
+  document.getElementById('kv-'+k).classList.add('active');
+  const val=student[k];const t=typeof val;
+  const display=t==='string'?'"'+val+'"':String(val);
+  document.getElementById('obj-out').textContent='student.'+k+' → '+display+'  (type: '+t+')';
+}
+
+function runDot(){
+  const k=document.getElementById('dot-key').value.trim();
+  const val=student[k];
+  const t=typeof val;
+  document.getElementById('dot-out').textContent=val!==undefined?'student.'+k+' → '+(t==='string'?'"'+val+'"':val):'student.'+k+' → undefined (key not found!)';
+  if(val!==undefined) clickProp(k);
+}
+
+function runBrk(){
+  const k=document.getElementById('brk-key').value.trim();
+  const val=student[k];
+  const t=typeof val;
+  document.getElementById('brk-out').textContent=val!==undefined?'student["'+k+'"] → '+(t==='string'?'"'+val+'"':val):'student["'+k+'"] → undefined (key not found!)';
+  if(val!==undefined) clickProp(k);
+}
+buildVisual();
+</script>
