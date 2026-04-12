@@ -40,7 +40,10 @@ These combine **multiple conditions** together. Think of them as the words **"AN
 
 ---
 
-## Category 5 — String & Ternary OperatorsOn the left — type your own words and see how `+` joins them. On the right — change `age` and `min` to see the ternary flip between Adult and Minor. Try all 4 real-world examples at the bottom!
+## Category 5 — String & Ternary Operators On the left — type your own words and see how `+` joins them. On the right — change `age` and `min` to see the ternary flip between Adult and Minor. Try all 4 real-world examples at the bottom!
+
+[Click link to open Simulation for String & Ternary Operators](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/string_ternary_operators.html)
+
 
 ---
 
