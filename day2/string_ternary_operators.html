@@ -1,0 +1,137 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.str{color:#0F6E56}.op{color:#D85A30;font-weight:500}.vn{color:#185FA5}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:.75rem 0}
+  .panel-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.9rem}
+  .panel-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:.6rem;display:flex;align-items:center;gap:8px}
+  .panel-badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.5rem .8rem;font-family:var(--font-mono);font-size:13px;min-height:36px;color:#86efac;margin-top:.5rem}
+  .inp-row{display:flex;gap:6px;margin:.5rem 0;align-items:center;flex-wrap:wrap}
+  .inp-row input{font-family:var(--font-mono);font-size:13px;flex:1;min-width:60px}
+  .inp-row label{font-size:12px;color:var(--color-text-secondary)}
+  .ternary-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.75rem;margin:.5rem 0;font-family:var(--font-mono);font-size:13px;line-height:1.75}
+  .part-cond{color:#534AB7;font-weight:500}
+  .part-q{color:#D85A30;font-weight:500;font-size:16px}
+  .part-t{color:#0F6E56;font-weight:500}
+  .part-c{color:#888}
+  .part-f{color:#A32D2D;font-weight:500}
+  .result-banner{padding:.6rem 1rem;border-radius:var(--border-radius-md);font-size:15px;font-weight:500;margin:.4rem 0;font-family:var(--font-mono);transition:all .3s}
+  .res-t{background:#E1F5EE;color:#085041} .res-f{background:#FCEBEB;color:#791F1F}
+  @media(max-width:520px){.two-col{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">String concatenation and ternary operator interactive examples</h2>
+
+<div class="two-col">
+
+<!-- STRING OPERATOR -->
+<div class="panel-box">
+  <div class="panel-title">
+    String <code>+</code> operator
+    <span class="panel-badge" style="background:#FAECE7;color:#4A1B0C">concatenation</span>
+  </div>
+  <div class="code">
+<span class="cm">// + joins strings together</span><br>
+<span class="str">"Hello"</span> + <span class="str">" World"</span><br>
+<span class="cm">// → "Hello World"</span><br><br>
+<span class="cm">// Template literal (backtick)</span><br>
+<span class="kw">let</span> <span class="vn">name</span> = <span class="str">"Alice"</span>;<br>
+<span class="str">`Hello ${name}!`</span><br>
+<span class="cm">// → "Hello Alice!"</span>
+  </div>
+  <div class="inp-row">
+    <label>First:</label>
+    <input type="text" id="str1" value="Hello" oninput="runStr()"/>
+  </div>
+  <div class="inp-row">
+    <label>Second:</label>
+    <input type="text" id="str2" value="World" oninput="runStr()"/>
+  </div>
+  <div style="display:flex;gap:6px;margin:.4rem 0;flex-wrap:wrap">
+    <button onclick="joinStr('+')">Join with +</button>
+    <button onclick="joinStr('template')">Template literal</button>
+    <button onclick="joinStr('space')">Add space</button>
+  </div>
+  <div class="out" id="str-out">"Hello" + "World" → "HelloWorld"</div>
+</div>
+
+<!-- TERNARY OPERATOR -->
+<div class="panel-box">
+  <div class="panel-title">
+    Ternary <code>? :</code> operator
+    <span class="panel-badge" style="background:#EEEDFE;color:#26215C">if-else shortcut</span>
+  </div>
+  <div class="ternary-box">
+    <span class="part-cond">condition</span>
+    <span class="part-q"> ? </span>
+    <span class="part-t">valueIfTrue</span>
+    <span class="part-c"> : </span>
+    <span class="part-f">valueIfFalse</span>
+  </div>
+  <div class="code">
+<span class="cm">// same as if/else but one line!</span><br>
+<span class="kw">let</span> age = <span class="num">20</span>;<br>
+<span class="kw">let</span> msg = age >= <span class="num">18</span><br>
+&nbsp;&nbsp;<span class="op">?</span> <span class="str">"Adult"</span><br>
+&nbsp;&nbsp;<span class="op">:</span> <span class="str">"Minor"</span>;
+  </div>
+  <div class="inp-row">
+    <label>age =</label>
+    <input type="number" id="tern-age" value="20" style="width:70px" oninput="runTern()"/>
+  </div>
+  <div class="inp-row">
+    <label>min =</label>
+    <input type="number" id="tern-min" value="18" style="width:70px" oninput="runTern()"/>
+  </div>
+  <div class="result-banner res-t" id="tern-result">age (20) >= 18 ? "Adult" : "Minor" → "Adult"</div>
+</div>
+
+</div>
+
+<!-- Ternary real-world examples -->
+<div style="margin:.75rem 0">
+  <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:.5rem">More ternary examples — click to try:</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button style="font-size:12px" onclick="tryTern('score >= 50','Pass','Fail','score',75)">Grade pass/fail</button>
+    <button style="font-size:12px" onclick="tryTern('isLoggedIn','Dashboard','Login',null,null)">Login routing</button>
+    <button style="font-size:12px" onclick="tryTern('n % 2 === 0','Even','Odd','n',7)">Even or odd?</button>
+    <button style="font-size:12px" onclick="tryTern('items > 0','Show cart','Empty cart','items',3)">Cart check</button>
+  </div>
+  <div class="out" id="tern-extra" style="margin-top:.5rem">Press a button above</div>
+</div>
+
+<script>
+function runStr(){
+  const a=document.getElementById('str1').value;
+  const b=document.getElementById('str2').value;
+  document.getElementById('str-out').textContent='"'+a+'" + "'+b+'" → "'+(a+b)+'"';
+}
+function joinStr(mode){
+  const a=document.getElementById('str1').value;
+  const b=document.getElementById('str2').value;
+  let r;
+  if(mode==='+') r='"'+a+'" + "'+b+'" → "'+(a+b)+'"';
+  else if(mode==='space') r='"'+a+'" + " " + "'+b+'" → "'+(a+' '+b)+'"';
+  else r='`${'+a+'} ${'+b+'}` → "'+a+' '+b+'"';
+  document.getElementById('str-out').textContent=r;
+}
+function runTern(){
+  const age=parseFloat(document.getElementById('tern-age').value)||0;
+  const min=parseFloat(document.getElementById('tern-min').value)||0;
+  const r=age>=min;
+  const el=document.getElementById('tern-result');
+  el.textContent='age ('+age+') >= '+min+' ? "Adult" : "Minor" → "'+(r?'Adult':'Minor')+'"';
+  el.className='result-banner '+(r?'res-t':'res-f');
+}
+function tryTern(cond,t,f,varName,val){
+  let result, expr;
+  if(cond.includes('score')){result=val>=50;expr='score('+val+') >= 50 ? "'+t+'" : "'+f+'" → "'+(result?t:f)+'"';}
+  else if(cond.includes('isLoggedIn')){result=true;expr='isLoggedIn(true) ? "'+t+'" : "'+f+'" → "'+t+'"';}
+  else if(cond.includes('n %')){result=val%2===0;expr='n('+val+') % 2 === 0 ? "'+t+'" : "'+f+'" → "'+(result?t:f)+'"';}
+  else{result=val>0;expr='items('+val+') > 0 ? "'+t+'" : "'+f+'" → "'+(result?t:f)+'"';}
+  document.getElementById('tern-extra').textContent=expr;
+}
+runStr(); runTern();
+</script>

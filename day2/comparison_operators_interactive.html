@@ -1,0 +1,133 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.str{color:#0F6E56}
+  .cmp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:.75rem 0}
+  .c-btn{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.55rem .5rem;text-align:center;cursor:pointer;transition:all .2s}
+  .c-btn:hover{background:var(--color-background-secondary)}
+  .c-btn.active{border-color:#378ADD;border-width:1.5px;background:#E6F1FB}
+  .c-sym{font-size:20px;font-weight:500;font-family:var(--font-mono);color:#185FA5}
+  .c-name{font-size:10px;color:var(--color-text-secondary);margin-top:2px}
+  .test-area{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1rem;margin:.5rem 0}
+  .test-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .inp{font-family:var(--font-mono);font-size:15px;width:80px;text-align:center}
+  .cur-op{font-size:24px;font-weight:500;color:#185FA5;font-family:var(--font-mono);min-width:42px;text-align:center}
+  .result-pill{font-size:22px;font-weight:500;padding:.4rem 1.2rem;border-radius:30px;transition:all .3s;font-family:var(--font-mono)}
+  .pill-true{background:#E1F5EE;color:#085041;border:1.5px solid #1D9E75}
+  .pill-false{background:#FCEBEB;color:#791F1F;border:1.5px solid #E24B4A}
+  .warn-box{background:#FAEEDA;border-left:3px solid #BA7517;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.65rem 1rem;font-size:13px;color:#412402;margin:.5rem 0}
+  .type-row{display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap}
+  .type-test{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.5rem .8rem;font-family:var(--font-mono);font-size:12px;cursor:pointer;color:var(--color-text-primary)}
+  .type-test:hover{background:var(--color-background-secondary)}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:12.5px;min-height:44px;max-height:150px;overflow-y:auto;margin-top:.5rem}
+  .co{color:#86efac}.ce{color:#f87171}.cx{color:#9ca3af;font-style:italic}.ci{color:#60a5fa}
+  @media(max-width:480px){.cmp-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<h2 class="sr-only">Interactive comparison operators tester — true or false</h2>
+
+<div class="cmp-grid">
+  <div class="c-btn active" onclick="pickCmp('===',this)">
+    <div class="c-sym">===</div><div class="c-name">strictly equal</div>
+  </div>
+  <div class="c-btn" onclick="pickCmp('!==',this)">
+    <div class="c-sym">!==</div><div class="c-name">not equal</div>
+  </div>
+  <div class="c-btn" onclick="pickCmp('>',this)">
+    <div class="c-sym">&gt;</div><div class="c-name">greater than</div>
+  </div>
+  <div class="c-btn" onclick="pickCmp('<',this)">
+    <div class="c-sym">&lt;</div><div class="c-name">less than</div>
+  </div>
+  <div class="c-btn" onclick="pickCmp('>=',this)">
+    <div class="c-sym">&gt;=</div><div class="c-name">greater or equal</div>
+  </div>
+  <div class="c-btn" onclick="pickCmp('<=',this)">
+    <div class="c-sym">&lt;=</div><div class="c-name">less or equal</div>
+  </div>
+</div>
+
+<div class="test-area">
+  <div class="test-row">
+    <input type="text" class="inp" id="cmp-a" value="10" oninput="runCmp()"/>
+    <span class="cur-op" id="cmp-op">===</span>
+    <input type="text" class="inp" id="cmp-b" value="10" oninput="runCmp()"/>
+    <span style="font-size:20px;color:var(--color-text-secondary)">=</span>
+    <div class="result-pill pill-true" id="cmp-result">true</div>
+  </div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin:.5rem 0" id="cmp-explain">
+    === checks value AND type. Both must match exactly.
+  </div>
+</div>
+
+<div class="warn-box">
+  <strong>⚠️ Most important rule in JS:</strong> Always use <code>===</code> (triple equals) — never use <code>==</code> (double equals).<br>
+  <code>0 == false</code> → true (wrong! double equals is too loose)<br>
+  <code>0 === false</code> → false (correct! different types)
+</div>
+
+<div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin:.5rem 0">Try these tricky ones — click to test:</div>
+<div class="type-row">
+  <button class="type-test" onclick="tryTricky('5','5','===')">5 === 5</button>
+  <button class="type-test" onclick="tryTricky('5',`'5'`,'===')">5 === "5"</button>
+  <button class="type-test" onclick="tryTricky('0','false','===')">0 === false</button>
+  <button class="type-test" onclick="tryTricky('null','undefined','===')">null === undefined</button>
+  <button class="type-test" onclick="tryTricky('10','10','>=')">10 >= 10</button>
+  <button class="type-test" onclick="tryTricky('9','10','>=')">9 >= 10</button>
+</div>
+<div class="con" id="cmp-con"><div class="cx">// click a tricky test above</div></div>
+
+<script>
+let curCmp='===';
+const cmpExp={
+  '===':'=== checks VALUE and TYPE — both must match. "10" === 10 → false (string vs number).',
+  '!==':'!== is true when the values are different. "10" !== 10 → true (they differ).',
+  '>':'> is true when left is bigger than right.',
+  '<':'< is true when left is smaller than right.',
+  '>=':'>= is true when left is bigger OR equal to right.',
+  '<=':'<= is true when left is smaller OR equal to right.'
+};
+function pickCmp(op,el){
+  curCmp=op;
+  document.querySelectorAll('.c-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cmp-op').textContent=op;
+  document.getElementById('cmp-explain').textContent=cmpExp[op];
+  runCmp();
+}
+function evaluate(a,op,b){
+  try{
+    const av=isNaN(a)?a:Number(a);
+    const bv=isNaN(b)?b:Number(b);
+    if(op==='===') return av===bv;
+    if(op==='!==') return av!==bv;
+    if(op==='>') return av>bv;
+    if(op==='<') return av<bv;
+    if(op==='>=') return av>=bv;
+    if(op==='<=') return av<=bv;
+  }catch(e){return false;}
+}
+function runCmp(){
+  const a=document.getElementById('cmp-a').value.trim();
+  const b=document.getElementById('cmp-b').value.trim();
+  const r=evaluate(a,curCmp,b);
+  const pill=document.getElementById('cmp-result');
+  pill.textContent=String(r);
+  pill.className='result-pill '+(r?'pill-true':'pill-false');
+}
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function tryTricky(a,bv,op){
+  document.getElementById('cmp-a').value=a;
+  document.getElementById('cmp-b').value=bv.replace(/'/g,'');
+  document.querySelectorAll('.c-btn').forEach((btn,i)=>{
+    const ops=['===','!==','>','<','>=','<='];
+    btn.classList.toggle('active',ops[i]===op);
+  });
+  curCmp=op;
+  document.getElementById('cmp-op').textContent=op;
+  runCmp();
+  const r=evaluate(a.replace(/'/g,''),op,bv.replace(/'/g,''));
+  addL('cmp-con',a+' '+op+' '+bv+' → '+r,(r?'co':'ce'));
+}
+</script>

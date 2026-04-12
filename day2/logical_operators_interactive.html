@@ -1,0 +1,167 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.str{color:#0F6E56}.op{color:#D85A30;font-weight:500}
+  .logic-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:.75rem 0}
+  .l-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.75rem;transition:all .2s}
+  .l-head{font-size:22px;font-weight:500;font-family:var(--font-mono);color:#854F0B;margin-bottom:.3rem}
+  .l-name{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:.2rem}
+  .l-rule{font-size:11px;color:var(--color-text-secondary);margin-bottom:.5rem}
+  .truth-table{width:100%;font-size:11px;border-collapse:collapse}
+  .truth-table th{padding:3px 5px;background:var(--color-background-secondary);color:var(--color-text-secondary);text-align:center;border:0.5px solid var(--color-border-tertiary)}
+  .truth-table td{padding:3px 5px;text-align:center;border:0.5px solid var(--color-border-tertiary);font-family:var(--font-mono)}
+  .t{color:#0F6E56;font-weight:500}.f{color:#A32D2D;font-weight:500}
+  .live-box{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1rem;margin:.5rem 0}
+  .live-row{display:flex;gap:10px;align-items:center;margin-bottom:.6rem;flex-wrap:wrap}
+  .toggle-wrap{display:flex;align-items:center;gap:6px;cursor:pointer}
+  .toggle-lbl{font-size:13px;font-family:var(--font-mono);color:var(--color-text-primary)}
+  .tog{width:38px;height:22px;border-radius:11px;background:var(--color-border-secondary);position:relative;transition:background .2s;cursor:pointer;flex-shrink:0}
+  .tog.on{background:#1D9E75}
+  .tog-knob{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .2s}
+  .tog.on .tog-knob{transform:translateX(16px)}
+  .result-big{font-size:28px;font-weight:500;font-family:var(--font-mono);padding:.5rem 1.2rem;border-radius:var(--border-radius-md);transition:all .3s;margin:.5rem 0;display:inline-block}
+  .res-t{background:#E1F5EE;color:#085041}
+  .res-f{background:#FCEBEB;color:#791F1F}
+  .real-world{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1rem;margin:.75rem 0}
+  .rw-title{font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:.5rem}
+  .scenario{display:flex;align-items:center;gap:8px;margin:.4rem 0;font-size:13px;flex-wrap:wrap}
+  .pill{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500}
+  .pill-t{background:#E1F5EE;color:#085041} .pill-f{background:#FCEBEB;color:#791F1F}
+  @media(max-width:520px){.logic-grid{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Interactive logical operators AND OR NOT with truth tables and live toggles</h2>
+
+<div class="logic-grid">
+  <!-- AND -->
+  <div class="l-card">
+    <div class="l-head">&amp;&amp;</div>
+    <div class="l-name">AND operator</div>
+    <div class="l-rule">Both must be true</div>
+    <table class="truth-table">
+      <tr><th>A</th><th>B</th><th>A &amp;&amp; B</th></tr>
+      <tr><td class="t">true</td><td class="t">true</td><td class="t">true</td></tr>
+      <tr><td class="t">true</td><td class="f">false</td><td class="f">false</td></tr>
+      <tr><td class="f">false</td><td class="t">true</td><td class="f">false</td></tr>
+      <tr><td class="f">false</td><td class="f">false</td><td class="f">false</td></tr>
+    </table>
+  </div>
+  <!-- OR -->
+  <div class="l-card">
+    <div class="l-head">||</div>
+    <div class="l-name">OR operator</div>
+    <div class="l-rule">At least one must be true</div>
+    <table class="truth-table">
+      <tr><th>A</th><th>B</th><th>A || B</th></tr>
+      <tr><td class="t">true</td><td class="t">true</td><td class="t">true</td></tr>
+      <tr><td class="t">true</td><td class="f">false</td><td class="t">true</td></tr>
+      <tr><td class="f">false</td><td class="t">true</td><td class="t">true</td></tr>
+      <tr><td class="f">false</td><td class="f">false</td><td class="f">false</td></tr>
+    </table>
+  </div>
+  <!-- NOT -->
+  <div class="l-card">
+    <div class="l-head">!</div>
+    <div class="l-name">NOT operator</div>
+    <div class="l-rule">Flips true↔false</div>
+    <table class="truth-table">
+      <tr><th>A</th><th>!A</th></tr>
+      <tr><td class="t">true</td><td class="f">false</td></tr>
+      <tr><td class="f">false</td><td class="t">true</td></tr>
+    </table>
+    <div style="font-size:11px;color:var(--color-text-secondary);margin-top:.5rem">
+      !true → false<br>
+      !false → true<br>
+      !!value → converts to boolean
+    </div>
+  </div>
+</div>
+
+<!-- Live Toggle Tester -->
+<div class="live-box">
+  <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:.6rem">Toggle the values — watch results update live:</div>
+
+  <div class="live-row">
+    <div class="toggle-wrap" onclick="toggle('A')">
+      <div class="tog on" id="tog-A"><div class="tog-knob"></div></div>
+      <span class="toggle-lbl">isLoggedIn (A) = </span>
+      <span id="val-A" style="font-weight:500;color:#1D9E75;font-family:var(--font-mono)">true</span>
+    </div>
+    <div class="toggle-wrap" onclick="toggle('B')" style="margin-left:16px">
+      <div class="tog on" id="tog-B"><div class="tog-knob"></div></div>
+      <span class="toggle-lbl">hasPermission (B) = </span>
+      <span id="val-B" style="font-weight:500;color:#1D9E75;font-family:var(--font-mono)">true</span>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:.5rem;align-items:center">
+    <div>
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:3px">A &amp;&amp; B</div>
+      <div class="result-big res-t" id="and-result">true</div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:3px">A || B</div>
+      <div class="result-big res-t" id="or-result">true</div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:3px">!A</div>
+      <div class="result-big res-f" id="not-result">false</div>
+    </div>
+  </div>
+</div>
+
+<!-- Real-world examples -->
+<div class="real-world">
+  <div class="rw-title">Real-world usage in a web app — try toggling above:</div>
+  <div class="scenario">
+    <code style="font-size:12px">isLoggedIn &amp;&amp; hasPermission</code>
+    <span>→ Can access admin panel?</span>
+    <span class="pill" id="rw-and">true</span>
+  </div>
+  <div class="scenario">
+    <code style="font-size:12px">isLoggedIn || hasPermission</code>
+    <span>→ Can see any content?</span>
+    <span class="pill" id="rw-or">true</span>
+  </div>
+  <div class="scenario">
+    <code style="font-size:12px">!isLoggedIn</code>
+    <span>→ Show login button?</span>
+    <span class="pill" id="rw-not">false</span>
+  </div>
+</div>
+
+<script>
+let stateA=true, stateB=true;
+function toggle(which){
+  if(which==='A') stateA=!stateA;
+  else stateB=!stateB;
+  const togA=document.getElementById('tog-A');
+  const togB=document.getElementById('tog-B');
+  togA.classList.toggle('on',stateA);
+  togB.classList.toggle('on',stateB);
+  document.getElementById('val-A').textContent=stateA;
+  document.getElementById('val-A').style.color=stateA?'#1D9E75':'#A32D2D';
+  document.getElementById('val-B').textContent=stateB;
+  document.getElementById('val-B').style.color=stateB?'#1D9E75':'#A32D2D';
+  updateLogic();
+}
+function setRes(id,val){
+  const el=document.getElementById(id);
+  el.textContent=String(val);
+  el.className='result-big '+(val?'res-t':'res-f');
+}
+function setPill(id,val){
+  const el=document.getElementById(id);
+  el.textContent=String(val);
+  el.className='pill '+(val?'pill-t':'pill-f');
+}
+function updateLogic(){
+  setRes('and-result',stateA&&stateB);
+  setRes('or-result',stateA||stateB);
+  setRes('not-result',!stateA);
+  setPill('rw-and',stateA&&stateB);
+  setPill('rw-or',stateA||stateB);
+  setPill('rw-not',!stateA);
+}
+</script>
