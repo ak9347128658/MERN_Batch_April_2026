@@ -1,0 +1,102 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .quiz-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin:.6rem 0}
+  .expr{font-family:var(--font-mono);font-size:24px;font-weight:500;color:var(--color-text-primary);text-align:center;padding:.75rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);margin:.5rem 0;letter-spacing:.05em}
+  .options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:.6rem 0}
+  .opt{padding:.65rem 1rem;border-radius:var(--border-radius-md);border:1.5px solid var(--color-border-secondary);font-family:var(--font-mono);font-size:16px;font-weight:500;text-align:center;cursor:pointer;transition:all .2s;color:var(--color-text-primary);background:var(--color-background-secondary)}
+  .opt:hover{border-color:#534AB7;background:#EEEDFE}
+  .opt.correct{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+  .opt.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
+  .opt.reveal-correct{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+  .feedback{padding:.65rem 1rem;border-radius:var(--border-radius-md);font-size:13px;margin:.5rem 0;min-height:44px;text-align:center;font-weight:500;transition:all .3s}
+  .fb-correct{background:#E1F5EE;color:#085041}
+  .fb-wrong{background:#FCEBEB;color:#791F1F}
+  .score-row{display:flex;gap:12px;align-items:center;margin:.4rem 0;font-size:13px;color:var(--color-text-secondary)}
+  .score-val{font-size:18px;font-weight:500;color:var(--color-text-primary);font-family:var(--font-mono)}
+  .progress-bar{flex:1;height:8px;background:var(--color-background-secondary);border-radius:4px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+  .progress-fill{height:100%;background:#1D9E75;border-radius:4px;transition:width .4s}
+  .explain-box{background:var(--color-background-secondary);border-left:3px solid #534AB7;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.6rem 1rem;font-size:13px;color:var(--color-text-secondary);margin:.4rem 0;display:none}
+  .next-btn{width:100%;margin-top:.5rem}
+  @media(max-width:480px){.options{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Operator precedence quiz — guess the answer before running</h2>
+
+<div class="score-row">
+  <span>Score:</span>
+  <span class="score-val" id="score-disp">0 / 0</span>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  <span id="q-counter" style="font-size:12px">Q 1 of 8</span>
+</div>
+
+<div class="quiz-card">
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:.25rem">What does this expression evaluate to?</div>
+  <div class="expr" id="q-expr">2 + 3 * 4</div>
+  <div class="options" id="q-opts"></div>
+  <div class="feedback" id="q-feedback" style="display:none"></div>
+  <div class="explain-box" id="q-explain"></div>
+  <button class="next-btn" id="next-btn" style="display:none" onclick="nextQ()">Next question →</button>
+</div>
+
+<script>
+const questions=[
+  {expr:'2 + 3 * 4',      ans:14,    opts:[14,20,10,24],  explain:'* runs before +. So 3*4=12 first, then 2+12=14.'},
+  {expr:'(2 + 3) * 4',    ans:20,    opts:[14,20,10,24],  explain:'Brackets override! (2+3)=5 first, then 5*4=20.'},
+  {expr:'10 - 2 ** 3',    ans:2,     opts:[512,2,8,64],   explain:'** runs before -. 2**3=8, then 10-8=2.'},
+  {expr:'20 / 4 + 3 * 2', ans:11,    opts:[11,13,30,8],   explain:'Divide and multiply first: 20/4=5, 3*2=6. Then 5+6=11.'},
+  {expr:'5 + 3 > 2 * 4',  ans:'false',opts:['false','true','8','NaN'], explain:'5+3=8, 2*4=8, then 8>8 is false (not greater, equal).'},
+  {expr:'!false || true',  ans:'true', opts:['true','false','null','undefined'], explain:'!false=true. Then true||true=true.'},
+  {expr:'2 ** 3 ** 2',    ans:512,   opts:[64,512,8,729], explain:'** is right-to-left! 3**2=9, then 2**9=512.'},
+  {expr:'true && false || true', ans:'true', opts:['true','false','null','0'], explain:'&& before ||. (true&&false)=false. false||true=true.'},
+];
+
+let qi=0, correct=0, total=0, answered=false;
+
+function renderQ(){
+  const q=questions[qi];
+  answered=false;
+  document.getElementById('q-expr').textContent=q.expr;
+  document.getElementById('q-counter').textContent='Q '+(qi+1)+' of '+questions.length;
+  document.getElementById('q-feedback').style.display='none';
+  document.getElementById('q-explain').style.display='none';
+  document.getElementById('next-btn').style.display='none';
+  const opts=document.getElementById('q-opts'); opts.innerHTML='';
+  q.opts.forEach(o=>{
+    const d=document.createElement('div');
+    d.className='opt'; d.textContent=String(o);
+    d.onclick=()=>pick(String(o),d,q);
+    opts.appendChild(d);
+  });
+}
+
+function pick(chosen, el, q){
+  if(answered) return;
+  answered=true; total++;
+  const isCorrect=String(chosen)===String(q.ans);
+  if(isCorrect){correct++; el.classList.add('correct');}
+  else{
+    el.classList.add('wrong');
+    document.querySelectorAll('.opt').forEach(o=>{
+      if(o.textContent===String(q.ans)) o.classList.add('reveal-correct');
+    });
+  }
+  const fb=document.getElementById('q-feedback');
+  fb.style.display='block';
+  fb.className='feedback '+(isCorrect?'fb-correct':'fb-wrong');
+  fb.textContent=isCorrect?'Correct! Well done! ':'Wrong — the answer is '+q.ans+'.';
+  const ex=document.getElementById('q-explain');
+  ex.style.display='block'; ex.textContent='Why: '+q.explain;
+  document.getElementById('next-btn').style.display='block';
+  const pct=Math.round((correct/total)*100);
+  document.getElementById('score-disp').textContent=correct+' / '+total;
+  document.getElementById('prog-fill').style.width=pct+'%';
+}
+
+function nextQ(){
+  qi=(qi+1)%questions.length;
+  renderQ();
+}
+
+renderQ();
+</script>

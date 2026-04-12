@@ -1,0 +1,108 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .mistake-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);margin:.6rem 0;overflow:hidden}
+  .mc-head{display:flex;align-items:center;gap:10px;padding:.65rem 1rem;border-bottom:0.5px solid var(--color-border-tertiary);cursor:pointer;user-select:none}
+  .mc-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+  .mc-title{font-size:13px;font-weight:500;color:var(--color-text-primary);flex:1}
+  .mc-arrow{color:var(--color-text-tertiary);transition:transform .2s;font-size:16px}
+  .mc-body{padding:.75rem 1rem;display:none}
+  .mc-body.open{display:block}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:.5rem 0}
+  .wrong-box{background:#FCEBEB;border:0.5px solid #F09595;border-radius:var(--border-radius-md);padding:.65rem .9rem}
+  .right-box{background:#E1F5EE;border:0.5px solid #5DCAA5;border-radius:var(--border-radius-md);padding:.65rem .9rem}
+  .box-head{font-size:11px;font-weight:500;margin-bottom:.4rem}
+  .wrong-head{color:#A32D2D} .right-head{color:#085041}
+  .code-line{font-family:var(--font-mono);font-size:13px;line-height:1.75;color:var(--color-text-primary)}
+  .ans{font-family:var(--font-mono);font-size:13px;font-weight:500;margin-top:.35rem}
+  .wrong-ans{color:#A32D2D} .right-ans{color:#085041}
+  .rule-pill{display:inline-block;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:20px;padding:3px 10px;font-size:12px;color:var(--color-text-secondary);margin-top:.5rem}
+  @media(max-width:480px){.two-col{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Common operator precedence mistakes in JavaScript with correct solutions</h2>
+
+<div id="mistakes"></div>
+
+<script>
+const mistakes=[
+  {
+    num:1, color:'#FAEEDA', textColor:'#633806',
+    title:'Forgetting * runs before +',
+    wrong:{code:'let total = 2 + 3 * 4;', comment:'// thinks: (2+3)*4 = 20', ans:'total = 20  ✗ WRONG'},
+    right:{code:'let total = 2 + 3 * 4;', comment:'// actually: 2+(3*4) = 14', ans:'total = 14  ✓ CORRECT'},
+    fix:'If you want 20, write: (2 + 3) * 4',
+    rule:'* / % always run before + -'
+  },
+  {
+    num:2, color:'#EEEDFE', textColor:'#3C3489',
+    title:'Forgetting () overrides everything',
+    wrong:{code:'let x = 10 - 2 ** 3;', comment:'// thinks: (10-2)**3 = 512', ans:'x = 512  ✗ WRONG'},
+    right:{code:'let x = 10 - 2 ** 3;', comment:'// actually: 10-(2**3) = 2', ans:'x = 2  ✓ CORRECT'},
+    fix:'To get 512, write: (10 - 2) ** 3',
+    rule:'** runs before - and +'
+  },
+  {
+    num:3, color:'#FAECE7', textColor:'#4A1B0C',
+    title:'Comparing before arithmetic is done',
+    wrong:{code:'if (5 + 3 > 2 * 4)', comment:'// thinks: 5 + (3 > 2) * 4', ans:'confused result  ✗'},
+    right:{code:'if (5 + 3 > 2 * 4)', comment:'// actually: (5+3) > (2*4) → 8>8 → false', ans:'false  ✓ CORRECT'},
+    fix:'Arithmetic always finishes BEFORE comparison',
+    rule:'+ - * / all run before > < === !=='
+  },
+  {
+    num:4, color:'#E1F5EE', textColor:'#085041',
+    title:'&& and || order — && wins over ||',
+    wrong:{code:'true || false && false', comment:'// thinks: (true||false) && false = false', ans:'false  ✗ WRONG'},
+    right:{code:'true || false && false', comment:'// actually: true || (false&&false) = true', ans:'true  ✓ CORRECT'},
+    fix:'&& always runs before ||. Use () to control it.',
+    rule:'&& has higher precedence than ||'
+  },
+  {
+    num:5, color:'#E6F1FB', textColor:'#042C53',
+    title:'Assignment runs LAST — not first',
+    wrong:{code:'let result = 2 + 3 * 4;', comment:'// thinks: (result = 2) + 3 * 4', ans:'confused  ✗ WRONG'},
+    right:{code:'let result = 2 + 3 * 4;', comment:'// actually: compute 2+3*4=14, THEN store', ans:'result = 14  ✓ CORRECT'},
+    fix:'= always runs last. The right side computes fully first.',
+    rule:'= assignment always has the LOWEST priority'
+  },
+];
+
+const container=document.getElementById('mistakes');
+mistakes.forEach((m,mi)=>{
+  const d=document.createElement('div');
+  d.className='mistake-card';
+  d.innerHTML=`
+    <div class="mc-head" onclick="toggleMC(${mi})">
+      <div class="mc-num" style="background:${m.color};color:${m.textColor}">${m.num}</div>
+      <div class="mc-title">Mistake ${m.num}: ${m.title}</div>
+      <div class="mc-arrow" id="arr-${mi}">${mi===0?'▲':'▼'}</div>
+    </div>
+    <div class="mc-body${mi===0?' open':''}" id="body-${mi}">
+      <div class="two-col">
+        <div class="wrong-box">
+          <div class="box-head wrong-head">✕ What beginners think</div>
+          <div class="code-line">${m.wrong.code}</div>
+          <div class="code-line" style="color:var(--color-text-tertiary);font-style:italic;font-family:var(--font-mono);font-size:12px">${m.wrong.comment}</div>
+          <div class="ans wrong-ans">${m.wrong.ans}</div>
+        </div>
+        <div class="right-box">
+          <div class="box-head right-head">✓ What JavaScript actually does</div>
+          <div class="code-line">${m.right.code}</div>
+          <div class="code-line" style="color:var(--color-text-tertiary);font-style:italic;font-family:var(--font-mono);font-size:12px">${m.right.comment}</div>
+          <div class="ans right-ans">${m.right.ans}</div>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-secondary);margin:.4rem 0"><strong style="color:var(--color-text-primary)">Fix:</strong> ${m.fix}</div>
+      <span class="rule-pill">Rule: ${m.rule}</span>
+    </div>`;
+  container.appendChild(d);
+});
+
+function toggleMC(i){
+  const body=document.getElementById('body-'+i);
+  const arr=document.getElementById('arr-'+i);
+  const open=body.classList.toggle('open');
+  arr.textContent=open?'▲':'▼';
+}
+</script>

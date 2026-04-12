@@ -1,0 +1,186 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  @keyframes highlight{0%{background:#FAC775}100%{background:var(--color-background-secondary)}}
+  .hl{animation:highlight .6s ease forwards}
+  .expr-display{font-family:var(--font-mono);font-size:22px;font-weight:500;padding:1rem 1.25rem;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-secondary);margin:.5rem 0;min-height:58px;color:var(--color-text-primary);letter-spacing:.04em;transition:all .3s;line-height:1.4;word-break:break-all}
+  .step-list{margin:.5rem 0}
+  .step-item{display:flex;gap:10px;align-items:flex-start;padding:.5rem .75rem;border-radius:var(--border-radius-md);margin:.25rem 0;font-size:13px;transition:all .3s;border:0.5px solid transparent}
+  .step-item.active{background:var(--color-background-secondary);border-color:var(--color-border-secondary)}
+  .step-item.done{opacity:.55}
+  .step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;margin-top:1px}
+  .step-rule{font-weight:500;color:var(--color-text-primary);font-size:12px}
+  .step-calc{font-family:var(--font-mono);font-size:12px;color:var(--color-text-secondary);margin-top:1px}
+  .step-result{font-family:var(--font-mono);font-size:13px;font-weight:500;margin-left:auto;padding:2px 8px;border-radius:var(--border-radius-md);white-space:nowrap}
+  .example-btns{display:flex;gap:6px;flex-wrap:wrap;margin:.6rem 0}
+  .ex-btn{padding:5px 12px;border-radius:var(--border-radius-md);font-family:var(--font-mono);font-size:12px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;transition:all .2s}
+  .ex-btn:hover{background:var(--color-background-tertiary)}
+  .ex-btn.active{border-color:#534AB7;background:#EEEDFE;color:#3C3489}
+  .final-box{padding:.75rem 1.25rem;border-radius:var(--border-radius-lg);font-size:18px;font-weight:500;font-family:var(--font-mono);margin:.5rem 0;text-align:center;transition:all .3s}
+  .nav-row{display:flex;gap:8px;margin:.5rem 0;align-items:center;flex-wrap:wrap}
+  .progress{font-size:12px;color:var(--color-text-secondary);margin-left:auto}
+</style>
+
+<h2 class="sr-only">Step-by-step BODMAS operator precedence solver</h2>
+
+<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:.4rem">Choose an expression to solve:</div>
+<div class="example-btns" id="ex-btns">
+  <span class="ex-btn active" onclick="loadEx(0,this)">2 + 3 * 4</span>
+  <span class="ex-btn" onclick="loadEx(1,this)">(2 + 3) * 4</span>
+  <span class="ex-btn" onclick="loadEx(2,this)">10 - 2 ** 3</span>
+  <span class="ex-btn" onclick="loadEx(3,this)">20 / 4 + 3 * 2</span>
+  <span class="ex-btn" onclick="loadEx(4,this)">5 + 3 > 2 * 4</span>
+  <span class="ex-btn" onclick="loadEx(5,this)">!(3 > 2) || 5 === 5</span>
+  <span class="ex-btn" onclick="loadEx(6,this)">(2 + 3) ** 2 - 4 * 3</span>
+</div>
+
+<div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin:.5rem 0 .2rem">Expression:</div>
+<div class="expr-display" id="expr-display">2 + 3 * 4</div>
+
+<div class="step-list" id="step-list"></div>
+<div class="final-box" id="final-box" style="display:none"></div>
+
+<div class="nav-row">
+  <button onclick="prevStep()">← Back</button>
+  <button onclick="nextStep()">Next step →</button>
+  <button onclick="playAll()">Play all</button>
+  <button onclick="resetSteps()">Reset</button>
+  <span class="progress" id="progress">Step 0 of 0</span>
+</div>
+
+<script>
+const examples = [
+  {
+    expr: "2 + 3 * 4",
+    steps: [
+      {rule:"Multiplication first (* before +)", calc:"3 * 4", result:"12", why:"* has higher precedence than +", color:"#FAEEDA"},
+      {rule:"Now do the addition", calc:"2 + 12", result:"14", why:"Left to right now", color:"#E1F5EE"},
+    ],
+    final: "14",
+    lesson: "2 + 3 * 4 = 14 (NOT 20! Many beginners make this mistake.)"
+  },
+  {
+    expr: "(2 + 3) * 4",
+    steps: [
+      {rule:"Brackets first — always!", calc:"(2 + 3)", result:"5", why:"( ) overrides everything", color:"#EEEDFE"},
+      {rule:"Now multiply", calc:"5 * 4", result:"20", why:"Bracket result × 4", color:"#FAEEDA"},
+    ],
+    final: "20",
+    lesson: "Brackets changed the answer: (2+3)*4 = 20 vs 2+3*4 = 14"
+  },
+  {
+    expr: "10 - 2 ** 3",
+    steps: [
+      {rule:"Exponent ** runs before subtraction", calc:"2 ** 3", result:"8", why:"2³ = 2×2×2 = 8", color:"#E6F1FB"},
+      {rule:"Now subtract", calc:"10 - 8", result:"2", why:"Subtraction last", color:"#E1F5EE"},
+    ],
+    final: "2",
+    lesson: "10 - 2**3 = 2 (not 512 — exponent runs BEFORE subtraction)"
+  },
+  {
+    expr: "20 / 4 + 3 * 2",
+    steps: [
+      {rule:"Division and multiplication — left to right", calc:"20 / 4", result:"5", why:"Left-most * or / runs first", color:"#FAEEDA"},
+      {rule:"Next multiplication", calc:"3 * 2", result:"6", why:"Same level — left to right", color:"#FAEEDA"},
+      {rule:"Finally addition", calc:"5 + 6", result:"11", why:"+ comes after * and /", color:"#E1F5EE"},
+    ],
+    final: "11",
+    lesson: "20/4 + 3*2 = 11 — division and multiplication run before addition"
+  },
+  {
+    expr: "5 + 3 > 2 * 4",
+    steps: [
+      {rule:"Arithmetic before comparison", calc:"5 + 3", result:"8", why:"+ runs before >", color:"#E1F5EE"},
+      {rule:"Multiplication next", calc:"2 * 4", result:"8", why:"* runs before >", color:"#FAEEDA"},
+      {rule:"Now compare", calc:"8 > 8", result:"false", why:"8 is NOT greater than 8 (equal, not greater)", color:"#FCEBEB"},
+    ],
+    final: "false",
+    lesson: "5+3 > 2*4 → 8 > 8 → false. Arithmetic always runs before comparison!"
+  },
+  {
+    expr: "!(3 > 2) || 5 === 5",
+    steps: [
+      {rule:"Comparison runs before logical", calc:"3 > 2", result:"true", why:"Comparison before || or !", color:"#E6F1FB"},
+      {rule:"Equality check next", calc:"5 === 5", result:"true", why:"=== before ||", color:"#E6F1FB"},
+      {rule:"NOT (!) flips the result", calc:"!true", result:"false", why:"! applies to (3 > 2) result", color:"#EEEDFE"},
+      {rule:"Finally OR combines", calc:"false || true", result:"true", why:"|| — one true is enough", color:"#FAEEDA"},
+    ],
+    final: "true",
+    lesson: "!(3>2) || 5===5 → !true || true → false || true → true"
+  },
+  {
+    expr: "(2 + 3) ** 2 - 4 * 3",
+    steps: [
+      {rule:"Brackets first", calc:"(2 + 3)", result:"5", why:"Always first", color:"#EEEDFE"},
+      {rule:"Exponent next", calc:"5 ** 2", result:"25", why:"** before - and *", color:"#E6F1FB"},
+      {rule:"Multiplication next", calc:"4 * 3", result:"12", why:"* before -", color:"#FAEEDA"},
+      {rule:"Finally subtraction", calc:"25 - 12", result:"13", why:"Last step", color:"#E1F5EE"},
+    ],
+    final: "13",
+    lesson: "(2+3)**2 - 4*3 = 25 - 12 = 13"
+  }
+];
+
+let curEx=0, curStep=-1, playTimer=null;
+
+function loadEx(i, el){
+  curEx=i; curStep=-1;
+  if(playTimer){clearInterval(playTimer); playTimer=null;}
+  document.querySelectorAll('.ex-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('expr-display').textContent=examples[i].expr;
+  renderSteps();
+}
+
+function renderSteps(){
+  const ex=examples[curEx];
+  const list=document.getElementById('step-list'); list.innerHTML='';
+  const colors=['#534AB7','#185FA5','#1D9E75','#854F0B','#993C1D','#444441'];
+  ex.steps.forEach((s,i)=>{
+    const d=document.createElement('div');
+    const isDone=i<curStep, isActive=i===curStep;
+    d.className='step-item'+(isActive?' active':isDone?' done':'');
+    const col=colors[i%colors.length];
+    d.innerHTML=`<div class="step-num" style="background:${s.color};color:${col}">${i+1}</div>`
+      +`<div style="flex:1"><div class="step-rule">${s.rule}</div>`
+      +(isActive||isDone?`<div class="step-calc">${s.calc} = ${s.result} &nbsp;·&nbsp; ${s.why}</div>`:'')
+      +'</div>'
+      +(isActive||isDone?`<div class="step-result" style="background:${s.color};color:${col}">${s.result}</div>`:'');
+    list.appendChild(d);
+  });
+
+  const finalBox=document.getElementById('final-box');
+  if(curStep>=ex.steps.length){
+    finalBox.style.display='block';
+    finalBox.style.background='#E1F5EE';
+    finalBox.style.color='#085041';
+    finalBox.textContent='Final answer: '+ex.final+'  ·  '+ex.lesson;
+  } else {
+    finalBox.style.display='none';
+  }
+  document.getElementById('progress').textContent='Step '+Math.max(0,curStep)+' of '+ex.steps.length;
+}
+
+function nextStep(){
+  if(playTimer){clearInterval(playTimer); playTimer=null;}
+  curStep=Math.min(curStep+1, examples[curEx].steps.length);
+  renderSteps();
+}
+function prevStep(){
+  if(playTimer){clearInterval(playTimer); playTimer=null;}
+  curStep=Math.max(curStep-1,-1);
+  renderSteps();
+}
+function resetSteps(){ curStep=-1; renderSteps(); }
+function playAll(){
+  if(playTimer){clearInterval(playTimer); playTimer=null;}
+  curStep=-1; renderSteps();
+  playTimer=setInterval(()=>{
+    curStep++;
+    renderSteps();
+    if(curStep>=examples[curEx].steps.length){clearInterval(playTimer); playTimer=null;}
+  },900);
+}
+
+renderSteps();
+</script>

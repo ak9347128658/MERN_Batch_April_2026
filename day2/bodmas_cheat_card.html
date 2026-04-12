@@ -1,0 +1,127 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden;margin:.5rem 0}
+  .card-head{padding:.6rem 1rem;font-size:13px;font-weight:500;border-bottom:0.5px solid var(--color-border-tertiary)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{padding:.5rem .9rem;text-align:left;background:var(--color-background-secondary);font-weight:500;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+  td{padding:.5rem .9rem;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  .rank{font-family:var(--font-mono);font-weight:500;font-size:13px}
+  .ops{font-family:var(--font-mono);font-weight:500;font-size:14px}
+  .eg{font-family:var(--font-mono);font-size:12px;color:var(--color-text-secondary)}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+  .tip-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:.75rem 1rem}
+  .tip{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.6rem .75rem;font-size:12.5px;border-left:3px solid transparent}
+  .tip strong{display:block;font-size:12px;margin-bottom:2px;color:var(--color-text-primary)}
+  @media(max-width:480px){.tip-grid{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">BODMAS operator precedence reference card with examples and tips</h2>
+
+<div class="card">
+  <div class="card-head">Operator Precedence — Highest to Lowest</div>
+  <table>
+    <tr><th>Priority</th><th>Operator(s)</th><th>Name</th><th>Example</th><th>Result</th></tr>
+    <tr>
+      <td><span class="rank" style="color:#534AB7">1st</span></td>
+      <td><span class="ops" style="color:#534AB7">( )</span></td>
+      <td>Brackets</td>
+      <td class="eg">(2 + 3) * 4</td>
+      <td class="eg" style="color:#0F6E56">20</td>
+    </tr>
+    <tr>
+      <td><span class="rank" style="color:#185FA5">2nd</span></td>
+      <td><span class="ops" style="color:#185FA5">**</span></td>
+      <td>Exponent (power)</td>
+      <td class="eg">2 ** 8</td>
+      <td class="eg" style="color:#0F6E56">256</td>
+    </tr>
+    <tr>
+      <td><span class="rank" style="color:#1D9E75">3rd</span></td>
+      <td><span class="ops" style="color:#1D9E75">++ -- ! -n</span></td>
+      <td>Unary</td>
+      <td class="eg">!true &nbsp; -5 &nbsp; ++n</td>
+      <td class="eg" style="color:#0F6E56">false &nbsp; -5 &nbsp; n+1</td>
+    </tr>
+    <tr style="background:var(--color-background-secondary)">
+      <td><span class="rank" style="color:#854F0B">4th</span></td>
+      <td><span class="ops" style="color:#854F0B">* / %</span></td>
+      <td>Multiply · Divide · Modulus</td>
+      <td class="eg">10 / 2 * 3</td>
+      <td class="eg" style="color:#0F6E56">15 (left→right)</td>
+    </tr>
+    <tr>
+      <td><span class="rank" style="color:#854F0B">5th</span></td>
+      <td><span class="ops" style="color:#854F0B">+ -</span></td>
+      <td>Add · Subtract</td>
+      <td class="eg">10 - 3 + 2</td>
+      <td class="eg" style="color:#0F6E56">9 (left→right)</td>
+    </tr>
+    <tr style="background:var(--color-background-secondary)">
+      <td><span class="rank" style="color:#993C1D">6th</span></td>
+      <td><span class="ops" style="color:#993C1D">&gt; &lt; &gt;= &lt;=</span></td>
+      <td>Comparison</td>
+      <td class="eg">5 + 3 > 2 * 4</td>
+      <td class="eg" style="color:#0F6E56">false</td>
+    </tr>
+    <tr>
+      <td><span class="rank" style="color:#993C1D">7th</span></td>
+      <td><span class="ops" style="color:#993C1D">=== !==</span></td>
+      <td>Equality</td>
+      <td class="eg">5 + 5 === 10</td>
+      <td class="eg" style="color:#0F6E56">true</td>
+    </tr>
+    <tr style="background:var(--color-background-secondary)">
+      <td><span class="rank" style="color:#5F5E5A">8th</span></td>
+      <td><span class="ops" style="color:#5F5E5A">&amp;&amp;</span></td>
+      <td>Logical AND</td>
+      <td class="eg">true &amp;&amp; false</td>
+      <td class="eg" style="color:#A32D2D">false</td>
+    </tr>
+    <tr>
+      <td><span class="rank" style="color:#5F5E5A">9th</span></td>
+      <td><span class="ops" style="color:#5F5E5A">||</span></td>
+      <td>Logical OR</td>
+      <td class="eg">false || true</td>
+      <td class="eg" style="color:#0F6E56">true</td>
+    </tr>
+    <tr style="background:var(--color-background-secondary)">
+      <td><span class="rank" style="color:#A32D2D">LAST</span></td>
+      <td><span class="ops" style="color:#A32D2D">= += -= *=</span></td>
+      <td>Assignment</td>
+      <td class="eg">x = 2 + 3 * 4</td>
+      <td class="eg" style="color:#0F6E56">x = 14</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <div class="card-head">Golden Rules to Remember</div>
+  <div class="tip-grid">
+    <div class="tip" style="border-color:#534AB7">
+      <strong>Brackets always win</strong>
+      When in doubt, add ( ) to force the order you want.
+    </div>
+    <div class="tip" style="border-color:#854F0B">
+      <strong>* / % before + -</strong>
+      Same as school maths. Always.
+    </div>
+    <div class="tip" style="border-color:#1D9E75">
+      <strong>Maths before comparison</strong>
+      5 + 3 > 2 * 4 → compute both sides first, then compare.
+    </div>
+    <div class="tip" style="border-color:#185FA5">
+      <strong>&amp;&amp; before ||</strong>
+      true || false &amp;&amp; false → true || (false) → true
+    </div>
+    <div class="tip" style="border-color:#993C1D">
+      <strong>Same level = left to right</strong>
+      10 / 2 * 5 = (10/2)*5 = 25 — not 10/(2*5)=1
+    </div>
+    <div class="tip" style="border-color:#A32D2D">
+      <strong>Assignment always last</strong>
+      let x = 2 + 3 * 4 — right side fully calculated first, then stored.
+    </div>
+  </div>
+</div>
