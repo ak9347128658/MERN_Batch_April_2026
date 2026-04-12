@@ -1,0 +1,245 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .tab-row{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+  .tab{padding:5px 13px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+  .panel{display:none}.panel.active{display:block}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary);margin:.4rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:12.5px;min-height:44px;max-height:150px;overflow-y:auto;margin:.4rem 0}
+  .co{color:#86efac}.ci{color:#60a5fa}.cx{color:#9ca3af;font-style:italic}
+  .ctrl{display:flex;gap:8px;margin:.5rem 0;align-items:center;flex-wrap:wrap}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+  .res{padding:.6rem 1rem;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;margin:.4rem 0;font-family:var(--font-mono);transition:all .3s}
+  .res-g{background:#E1F5EE;color:#085041} .res-n{background:var(--color-background-secondary);color:var(--color-text-primary)}
+
+  /* Timetable */
+  .tt-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:.5rem 0}
+  .tt-table th{padding:.4rem .6rem;background:var(--color-background-secondary);font-weight:500;font-size:11px;color:var(--color-text-secondary);text-align:center;border:0.5px solid var(--color-border-tertiary)}
+  .tt-table td{padding:.4rem .6rem;text-align:center;border:0.5px solid var(--color-border-tertiary);font-size:12px;cursor:pointer;transition:all .2s}
+  .tt-table td:hover{background:var(--color-background-secondary)}
+  .tt-table td.sel{background:#EEEDFE;color:#3C3489;font-weight:500}
+
+  /* Marks */
+  .marks-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:.5rem 0}
+  .m-row{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.6rem .85rem}
+  .m-name{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:.25rem}
+  .m-scores{display:flex;gap:4px;flex-wrap:wrap}
+  .m-score{padding:2px 8px;border-radius:20px;font-size:12px;font-family:var(--font-mono);font-weight:500}
+
+  /* TTT */
+  .ttt-board{display:grid;grid-template-columns:repeat(3,80px);gap:6px;margin:.75rem auto;width:max-content}
+  .ttt-cell{width:80px;height:80px;border:2px solid var(--color-border-secondary);border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:500;cursor:pointer;transition:all .2s;background:var(--color-background-primary)}
+  .ttt-cell:hover{background:var(--color-background-secondary)}
+  .ttt-cell.x{color:#534AB7;background:#EEEDFE}
+  .ttt-cell.o{color:#993C1D;background:#FAECE7}
+  .ttt-status{font-size:14px;font-weight:500;text-align:center;margin:.4rem 0;color:var(--color-text-primary)}
+</style>
+
+<h2 class="sr-only">Real world nested array examples timetable marks and tic tac toe</h2>
+
+<div class="tab-row">
+  <button class="tab active" onclick="sw('tt')">Timetable</button>
+  <button class="tab" onclick="sw('marks')">Student Marks</button>
+  <button class="tab" onclick="sw('ttt')">Tic-Tac-Toe</button>
+</div>
+
+<!-- TIMETABLE -->
+<div class="panel active" id="p-tt">
+  <div class="code">
+<span class="cm">// School timetable — 5 days × 4 periods</span><br>
+<span class="kw">const</span> timetable = [<br>
+&nbsp;&nbsp;[<span class="str">"Maths"</span>,  <span class="str">"English"</span>, <span class="str">"Science"</span>, <span class="str">"Hindi"</span>],  <span class="cm">// Mon</span><br>
+&nbsp;&nbsp;[<span class="str">"Science"</span>,<span class="str">"Maths"</span>,   <span class="str">"Hindi"</span>,   <span class="str">"English"</span>], <span class="cm">// Tue</span><br>
+&nbsp;&nbsp;[<span class="str">"English"</span>,<span class="str">"Science"</span>, <span class="str">"Maths"</span>,   <span class="str">"PE"</span>],     <span class="cm">// Wed</span><br>
+&nbsp;&nbsp;[<span class="str">"Hindi"</span>,  <span class="str">"PE"</span>,      <span class="str">"English"</span>, <span class="str">"Maths"</span>],  <span class="cm">// Thu</span><br>
+&nbsp;&nbsp;[<span class="str">"PE"</span>,     <span class="str">"Hindi"</span>,   <span class="str">"Science"</span>, <span class="str">"Maths"</span>],  <span class="cm">// Fri</span><br>
+];<br>
+<span class="cm">// Tuesday 3rd period: timetable[1][2] → "Hindi"</span>
+  </div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin:.4rem 0">Click any cell to access it:</div>
+  <table class="tt-table" id="tt-table"></table>
+  <div class="res res-g" id="tt-res">Click a subject to access it</div>
+  <div class="con" id="tt-con"><div class="cx">// click any cell</div></div>
+</div>
+
+<!-- MARKS -->
+<div class="panel" id="p-marks">
+  <div class="code">
+<span class="cm">// Each student has marks for 3 subjects</span><br>
+<span class="kw">const</span> marks = [<br>
+&nbsp;&nbsp;[<span class="num">85</span>, <span class="num">90</span>, <span class="num">78</span>],  <span class="cm">// Alice:   Maths, English, Science</span><br>
+&nbsp;&nbsp;[<span class="num">60</span>, <span class="num">55</span>, <span class="num">70</span>],  <span class="cm">// Bob</span><br>
+&nbsp;&nbsp;[<span class="num">92</span>, <span class="num">88</span>, <span class="num">95</span>],  <span class="cm">// Charlie</span><br>
+&nbsp;&nbsp;[<span class="num">45</span>, <span class="num">50</span>, <span class="num">40</span>],  <span class="cm">// Diana</span><br>
+];<br>
+<span class="cm">// Charlie's Science: marks[2][2] → 95</span>
+  </div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin:.4rem 0">All students with their marks:</div>
+  <div class="marks-grid" id="marks-grid"></div>
+  <div class="ctrl">
+    <button onclick="calcAverages()">Calculate all averages</button>
+    <button onclick="findTopStudent()">Find top student</button>
+    <button onclick="findFailed()">Who failed?</button>
+  </div>
+  <div class="con" id="marks-con"><div class="cx">// press a button above</div></div>
+</div>
+
+<!-- TIC TAC TOE -->
+<div class="panel" id="p-ttt">
+  <div class="code">
+<span class="cm">// 3x3 game board — perfect nested array use case</span><br>
+<span class="kw">let</span> board = [<br>
+&nbsp;&nbsp;[<span class="str">""</span>, <span class="str">""</span>, <span class="str">""</span>],  <span class="cm">// row 0</span><br>
+&nbsp;&nbsp;[<span class="str">""</span>, <span class="str">""</span>, <span class="str">""</span>],  <span class="cm">// row 1</span><br>
+&nbsp;&nbsp;[<span class="str">""</span>, <span class="str">""</span>, <span class="str">""</span>],  <span class="cm">// row 2</span><br>
+];<br>
+<span class="cm">// board[row][col] = "X" or "O"</span>
+  </div>
+  <div class="ttt-status" id="ttt-status">X's turn — click a cell!</div>
+  <div class="ttt-board" id="ttt-board"></div>
+  <div style="display:flex;gap:8px;justify-content:center;margin:.5rem 0">
+    <button onclick="resetTTT()">Reset game</button>
+  </div>
+  <div class="con" id="ttt-con"><div class="cx">// board state shown here</div></div>
+</div>
+
+<script>
+function sw(id){
+  ['tt','marks','ttt'].forEach((x,i)=>{
+    document.querySelectorAll('.tab')[i].classList.toggle('active',x===id);
+    document.getElementById('p-'+x).classList.toggle('active',x===id);
+  });
+  if(id==='marks') buildMarks();
+  if(id==='ttt') buildTTT();
+}
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+// TIMETABLE
+const tt=[['Maths','English','Science','Hindi'],['Science','Maths','Hindi','English'],['English','Science','Maths','PE'],['Hindi','PE','English','Maths'],['PE','Hindi','Science','Maths']];
+const days=['Mon','Tue','Wed','Thu','Fri'];
+const periods=['Period 1','Period 2','Period 3','Period 4'];
+const subColors={'Maths':'#EEEDFE','English':'#E6F1FB','Science':'#E1F5EE','Hindi':'#FAEEDA','PE':'#FAECE7'};
+const subText={'Maths':'#3C3489','English':'#042C53','Science':'#04342C','Hindi':'#412402','PE':'#4A1B0C'};
+
+(function buildTT(){
+  const t=document.getElementById('tt-table');t.innerHTML='';
+  const hr=document.createElement('tr');
+  hr.innerHTML='<th></th>'+periods.map(p=>'<th>'+p+'</th>').join('');
+  t.appendChild(hr);
+  tt.forEach((row,r)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML='<th>'+days[r]+'</th>'+row.map((sub,c)=>'<td style="background:'+subColors[sub]+';color:'+subText[sub]+'" onclick="clickTT('+r+','+c+')">'+sub+'</td>').join('');
+    t.appendChild(tr);
+  });
+})();
+
+function clickTT(r,c){
+  document.querySelectorAll('.tt-table td').forEach(x=>x.classList.remove('sel'));
+  event.target.classList.add('sel');
+  const sub=tt[r][c];
+  document.getElementById('tt-res').textContent='timetable['+r+']['+c+'] → "'+sub+'" ('+days[r]+', '+periods[c]+')';
+  document.getElementById('tt-con').innerHTML='';
+  addL('tt-con','timetable['+r+']['+c+'] → "'+sub+'"','co');
+}
+
+// MARKS
+const students=['Alice','Bob','Charlie','Diana'];
+const marks=[[85,90,78],[60,55,70],[92,88,95],[45,50,40]];
+const subjects=['Maths','English','Science'];
+
+function buildMarks(){
+  const g=document.getElementById('marks-grid');g.innerHTML='';
+  marks.forEach((row,i)=>{
+    const d=document.createElement('div');d.className='m-row';
+    const avg=(row.reduce((s,n)=>s+n,0)/row.length).toFixed(0);
+    const color=avg>=75?'#E1F5EE':avg>=50?'#FAEEDA':'#FCEBEB';
+    const textColor=avg>=75?'#085041':avg>=50?'#633806':'#791F1F';
+    d.innerHTML='<div class="m-name">'+students[i]+'</div>'
+      +'<div class="m-scores">'+row.map((s,j)=>'<span class="m-score" style="background:'+color+';color:'+textColor+'">'+subjects[j]+': '+s+'</span>').join('')+'</div>';
+    g.appendChild(d);
+  });
+}
+
+function calcAverages(){
+  document.getElementById('marks-con').innerHTML='';
+  addL('marks-con','Calculating averages using reduce...','ci');
+  marks.forEach((row,i)=>{
+    const avg=(row.reduce((s,n)=>s+n,0)/row.length).toFixed(1);
+    addL('marks-con',students[i]+': marks['+i+'] → avg = '+avg,'co');
+  });
+}
+
+function findTopStudent(){
+  document.getElementById('marks-con').innerHTML='';
+  addL('marks-con','Finding top student...','ci');
+  let topIdx=0,topAvg=0;
+  marks.forEach((row,i)=>{
+    const avg=row.reduce((s,n)=>s+n,0)/row.length;
+    if(avg>topAvg){topAvg=avg;topIdx=i;}
+  });
+  addL('marks-con','Top student: '+students[topIdx]+' with avg '+topAvg.toFixed(1),'co');
+}
+
+function findFailed(){
+  document.getElementById('marks-con').innerHTML='';
+  addL('marks-con','Finding students with any score < 50...','ci');
+  marks.forEach((row,i)=>{
+    const failed=row.some(s=>s<50);
+    addL('marks-con',students[i]+': '+(failed?'FAILED (has score below 50)':'all passed'),'co');
+  });
+}
+
+// TIC TAC TOE
+let tttBoard=[['','',''],['','',''],['','','']];
+let tttTurn='X', tttOver=false;
+
+function buildTTT(){
+  const b=document.getElementById('ttt-board');b.innerHTML='';
+  tttBoard.forEach((row,r)=>row.forEach((val,c)=>{
+    const d=document.createElement('div');
+    d.className='ttt-cell'+(val?' '+val.toLowerCase():'');
+    d.textContent=val;
+    d.onclick=()=>playTTT(r,c);
+    b.appendChild(d);
+  }));
+}
+
+function playTTT(r,c){
+  if(tttOver||tttBoard[r][c]) return;
+  tttBoard[r][c]=tttTurn;
+  buildTTT();
+  document.getElementById('ttt-con').innerHTML='';
+  addL('ttt-con','board['+r+']['+c+'] = "'+tttTurn+'"','co');
+  addL('ttt-con','board: '+JSON.stringify(tttBoard),'cx');
+  if(checkWinner()){
+    document.getElementById('ttt-status').textContent=tttTurn+' wins!';
+    tttOver=true; return;
+  }
+  const flat=tttBoard.flat();
+  if(!flat.includes('')){document.getElementById('ttt-status').textContent="It's a draw!";tttOver=true;return;}
+  tttTurn=tttTurn==='X'?'O':'X';
+  document.getElementById('ttt-status').textContent=tttTurn+"'s turn!";
+}
+
+function checkWinner(){
+  const b=tttBoard;const t=tttTurn;
+  for(let i=0;i<3;i++){
+    if(b[i][0]===t&&b[i][1]===t&&b[i][2]===t) return true;
+    if(b[0][i]===t&&b[1][i]===t&&b[2][i]===t) return true;
+  }
+  if(b[0][0]===t&&b[1][1]===t&&b[2][2]===t) return true;
+  if(b[0][2]===t&&b[1][1]===t&&b[2][0]===t) return true;
+  return false;
+}
+
+function resetTTT(){
+  tttBoard=[['','',''],['','',''],['','','']];
+  tttTurn='X'; tttOver=false;
+  buildTTT();
+  document.getElementById('ttt-status').textContent="X's turn — click a cell!";
+  document.getElementById('ttt-con').innerHTML='<div class="cx">// board state shown here</div>';
+}
+buildMarks(); buildTTT();
+</script>

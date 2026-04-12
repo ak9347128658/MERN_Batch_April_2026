@@ -1,0 +1,92 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}
+  .grid-wrap{display:inline-grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:.75rem 0;width:100%}
+  .gcell{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.65rem .5rem;text-align:center;cursor:pointer;transition:all .2s;background:var(--color-background-primary)}
+  .gcell:hover{border-color:#534AB7;background:#EEEDFE}
+  .gcell.active{border-color:#1D9E75;border-width:2px;background:#E1F5EE;transform:scale(1.04)}
+  .gcell-idx{font-size:10px;color:var(--color-text-tertiary);font-family:var(--font-mono);margin-bottom:3px}
+  .gcell-val{font-size:14px;font-weight:500;font-family:var(--font-mono);color:var(--color-text-primary)}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.65rem .9rem;font-family:var(--font-mono);font-size:13px;min-height:44px;color:#86efac;margin:.4rem 0}
+  .ctrl{display:flex;gap:8px;margin:.5rem 0;align-items:center;flex-wrap:wrap}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+  .ctrl input{font-family:var(--font-mono);font-size:13px;width:50px;text-align:center}
+  .info-bar{background:var(--color-background-secondary);border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.5rem .9rem;font-size:13px;color:var(--color-text-secondary);margin:.4rem 0}
+</style>
+
+<h2 class="sr-only">Interactive nested array grid — click cells to access them</h2>
+
+<div class="code">
+<span class="kw">const</span> classroom = [<br>
+&nbsp;&nbsp;[<span class="str">"Ali"</span>,   <span class="str">"Sara"</span>,  <span class="str">"Ravi"</span>],   <span class="cm">// row 0</span><br>
+&nbsp;&nbsp;[<span class="str">"John"</span>,  <span class="str">"Priya"</span>, <span class="str">"Tom"</span>],    <span class="cm">// row 1</span><br>
+&nbsp;&nbsp;[<span class="str">"Zara"</span>,  <span class="str">"Raj"</span>,   <span class="str">"Maya"</span>],   <span class="cm">// row 2</span><br>
+];<br><br>
+<span class="cm">// classroom[row][column]</span><br>
+classroom[<span class="num">0</span>][<span class="num">0</span>]  <span class="cm">// "Ali"</span><br>
+classroom[<span class="num">1</span>][<span class="num">2</span>]  <span class="cm">// "Tom"</span><br>
+classroom[<span class="num">2</span>][<span class="num">1</span>]  <span class="cm">// "Raj"</span>
+</div>
+
+<div style="font-size:12px;color:var(--color-text-secondary);margin:.5rem 0">Click any student to access them:</div>
+<div class="grid-wrap" id="class-grid"></div>
+<div class="out" id="grid-out">Click a cell to see how to access it</div>
+<div class="info-bar" id="grid-info">classroom has 3 rows and 3 columns = 9 students total</div>
+
+<div class="ctrl">
+  <label>row:</label>
+  <input type="number" id="row-inp" value="0" min="0" max="2"/>
+  <label>col:</label>
+  <input type="number" id="col-inp" value="0" min="0" max="2"/>
+  <button onclick="accessCell()">classroom[row][col]</button>
+  <button onclick="getRow()">Get whole row</button>
+</div>
+
+<script>
+const classroom=[["Ali","Sara","Ravi"],["John","Priya","Tom"],["Zara","Raj","Maya"]];
+const rowColors=[['#E6F1FB','#185FA5'],['#E1F5EE','#085041'],['#FAEEDA','#633806']];
+
+function buildGrid(){
+  const g=document.getElementById('class-grid');g.innerHTML='';
+  classroom.forEach((row,r)=>{
+    row.forEach((val,c)=>{
+      const d=document.createElement('div');
+      d.className='gcell'; d.id='gc-'+r+'-'+c;
+      d.style.background=rowColors[r][0];
+      d.innerHTML='<div class="gcell-idx">['+r+']['+c+']</div><div class="gcell-val">'+val+'</div>';
+      d.onclick=()=>clickCell(r,c);
+      g.appendChild(d);
+    });
+  });
+}
+
+function clickCell(r,c){
+  document.querySelectorAll('.gcell').forEach(x=>x.classList.remove('active'));
+  document.getElementById('gc-'+r+'-'+c).classList.add('active');
+  document.getElementById('grid-out').textContent='classroom['+r+']['+c+'] → "'+classroom[r][c]+'" (row '+r+', column '+c+')';
+  document.getElementById('row-inp').value=r;
+  document.getElementById('col-inp').value=c;
+}
+
+function accessCell(){
+  const r=parseInt(document.getElementById('row-inp').value);
+  const c=parseInt(document.getElementById('col-inp').value);
+  if(r>=0&&r<3&&c>=0&&c<3){
+    clickCell(r,c);
+  } else {
+    document.getElementById('grid-out').textContent='Index out of bounds! Valid: row 0-2, column 0-2';
+  }
+}
+
+function getRow(){
+  const r=parseInt(document.getElementById('row-inp').value);
+  if(r>=0&&r<3){
+    document.querySelectorAll('.gcell').forEach(x=>x.classList.remove('active'));
+    classroom[r].forEach((_,c)=>document.getElementById('gc-'+r+'-'+c).classList.add('active'));
+    document.getElementById('grid-out').textContent='classroom['+r+'] → ["'+classroom[r].join('","')+'"] — entire row '+r;
+  }
+}
+buildGrid();
+</script>

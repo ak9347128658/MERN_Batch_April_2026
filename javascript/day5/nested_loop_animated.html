@@ -1,0 +1,133 @@
+
+<style>
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.18)}100%{transform:scale(1)}}
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.vn{color:#185FA5}
+  .grid-wrap{display:inline-grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:.65rem 0;width:100%}
+  .gc{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.6rem .4rem;text-align:center;transition:all .25s;background:var(--color-background-secondary)}
+  .gc-idx{font-size:9px;color:var(--color-text-tertiary);font-family:var(--font-mono);margin-bottom:2px}
+  .gc-val{font-size:13px;font-weight:500;font-family:var(--font-mono);color:var(--color-text-primary)}
+  .gc.outer-hi{background:#FAEEDA;border-color:#BA7517}
+  .gc.inner-hi{background:#1D9E75;border-color:#085041;color:#fff;animation:pop .3s ease}
+  .gc.inner-hi .gc-val{color:#fff}
+  .gc.inner-hi .gc-idx{color:#E1F5EE}
+  .gc.done{background:#E1F5EE;border-color:#5DCAA5}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.65rem .9rem;font-family:var(--font-mono);font-size:12.5px;min-height:60px;max-height:180px;overflow-y:auto;margin:.4rem 0}
+  .co{color:#86efac}.ci{color:#60a5fa}.cx{color:#9ca3af;font-style:italic}.cw{color:#EF9F27}
+  .state-bar{display:flex;gap:12px;margin:.4rem 0;flex-wrap:wrap}
+  .state-pill{padding:4px 12px;border-radius:20px;font-family:var(--font-mono);font-size:12px;font-weight:500;transition:all .3s;background:var(--color-background-secondary);color:var(--color-text-secondary);border:0.5px solid var(--color-border-tertiary)}
+  .state-pill.active{background:#534AB7;color:#fff;border-color:#534AB7}
+  .ctrl{display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap;align-items:center}
+</style>
+
+<h2 class="sr-only">Animated nested loop going through every cell of a nested array</h2>
+
+<div class="code">
+<span class="cm">// Outer loop → goes row by row</span><br>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="vn">row</span> = <span class="num">0</span>; <span class="vn">row</span> &lt; classroom.length; <span class="vn">row</span>++) {<br><br>
+&nbsp;&nbsp;<span class="cm">// Inner loop → goes through each column in that row</span><br>
+&nbsp;&nbsp;<span class="kw">for</span> (<span class="kw">let</span> <span class="vn">col</span> = <span class="num">0</span>; <span class="vn">col</span> &lt; classroom[<span class="vn">row</span>].length; <span class="vn">col</span>++) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;console.log(classroom[<span class="vn">row</span>][<span class="vn">col</span>]);<br>
+&nbsp;&nbsp;}<br>
+}
+</div>
+
+<div class="state-bar">
+  <span class="state-pill" id="sp-row">outer: row = ?</span>
+  <span class="state-pill" id="sp-col">inner: col = ?</span>
+  <span class="state-pill" id="sp-val">value = ?</span>
+</div>
+
+<div class="grid-wrap" id="loop-grid"></div>
+
+<div class="ctrl">
+  <button onclick="playLoop()">Play animation</button>
+  <button onclick="stepLoop()">Step one cell</button>
+  <button onclick="resetLoop()">Reset</button>
+  <span id="loop-progress" style="font-size:12px;color:var(--color-text-secondary)">0 / 9 cells visited</span>
+</div>
+
+<div class="con" id="loop-con"><div class="cx">// press Play or Step to visit each cell</div></div>
+
+<script>
+const grid=[["Ali","Sara","Ravi"],["John","Priya","Tom"],["Zara","Raj","Maya"]];
+let loopI=0, loopTimer=null;
+const allCells=[];
+grid.forEach((row,r)=>row.forEach((val,c)=>allCells.push({r,c,val})));
+
+function buildLoopGrid(){
+  const g=document.getElementById('loop-grid');g.innerHTML='';
+  grid.forEach((row,r)=>row.forEach((val,c)=>{
+    const d=document.createElement('div');d.className='gc';d.id='lg-'+r+'-'+c;
+    d.innerHTML='<div class="gc-idx">['+r+']['+c+']</div><div class="gc-val">'+val+'</div>';
+    g.appendChild(d);
+  }));
+}
+
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+function visitCell(i){
+  if(i>=allCells.length) return false;
+  const {r,c,val}=allCells[i];
+  // mark previous as done
+  if(i>0){
+    const prev=allCells[i-1];
+    const pe=document.getElementById('lg-'+prev.r+'-'+prev.c);
+    if(pe) pe.className='gc done';
+  }
+  // highlight outer row (all in row)
+  grid[r].forEach((_,cc)=>{
+    const e=document.getElementById('lg-'+r+'-'+cc);
+    if(e&&cc!==c) e.className='gc outer-hi';
+  });
+  // highlight current cell
+  const el=document.getElementById('lg-'+r+'-'+c);
+  if(el) el.className='gc inner-hi';
+  // update state pills
+  document.getElementById('sp-row').className='state-pill active';
+  document.getElementById('sp-row').textContent='outer: row = '+r;
+  document.getElementById('sp-col').className='state-pill active';
+  document.getElementById('sp-col').textContent='inner: col = '+c;
+  document.getElementById('sp-val').className='state-pill active';
+  document.getElementById('sp-val').textContent='value = "'+val+'"';
+  addL('loop-con','classroom['+r+']['+c+'] → "'+val+'"','co');
+  document.getElementById('loop-progress').textContent=(i+1)+' / 9 cells visited';
+  return true;
+}
+
+function stepLoop(){
+  if(loopTimer){clearInterval(loopTimer);loopTimer=null;}
+  if(loopI>=allCells.length){addL('loop-con','--- all 9 cells visited! ---','cx');return;}
+  visitCell(loopI++);
+}
+
+function playLoop(){
+  if(loopTimer) return;
+  resetLoop();
+  loopTimer=setInterval(()=>{
+    if(loopI>=allCells.length){
+      // mark last as done
+      const prev=allCells[loopI-1];
+      const pe=document.getElementById('lg-'+prev.r+'-'+prev.c);
+      if(pe) pe.className='gc done';
+      addL('loop-con','--- all 9 cells visited! ---','cx');
+      clearInterval(loopTimer);loopTimer=null;return;
+    }
+    visitCell(loopI++);
+  },700);
+}
+
+function resetLoop(){
+  if(loopTimer){clearInterval(loopTimer);loopTimer=null;}
+  loopI=0; buildLoopGrid();
+  document.getElementById('loop-con').innerHTML='<div class="cx">// press Play or Step to visit each cell</div>';
+  document.getElementById('loop-progress').textContent='0 / 9 cells visited';
+  ['sp-row','sp-col','sp-val'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.className='state-pill';
+    el.textContent=id.replace('sp-','').replace('-',' ')+' = ?';
+  });
+}
+buildLoopGrid();
+</script>

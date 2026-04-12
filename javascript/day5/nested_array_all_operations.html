@@ -1,0 +1,164 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .ops-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:.5rem 0}
+  .op-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden}
+  .op-head{padding:.55rem 1rem;font-size:13px;font-weight:500;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .op-body{padding:.75rem 1rem}
+  .code{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.55rem .8rem;font-family:var(--font-mono);font-size:12px;line-height:1.75;color:var(--color-text-primary);margin:.35rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}
+  .ctrl{display:flex;gap:6px;margin:.4rem 0;flex-wrap:wrap;align-items:center}
+  .ctrl label{font-size:11px;color:var(--color-text-secondary)}
+  .ctrl input{font-family:var(--font-mono);font-size:12px}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.4rem .7rem;font-family:var(--font-mono);font-size:12px;min-height:28px;color:#86efac;margin-top:.35rem}
+  .grid-mini{display:inline-grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:.4rem 0;width:100%}
+  .gm-cell{border:0.5px solid var(--color-border-secondary);border-radius:4px;padding:.4rem .3rem;text-align:center;font-size:11px;font-family:var(--font-mono);font-weight:500;background:var(--color-background-secondary);transition:all .3s}
+  .gm-cell.hi{background:#1D9E75;color:#fff;border-color:#085041}
+  .gm-cell.dim{opacity:.3}
+  @media(max-width:520px){.ops-grid{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">All nested array operations read write add row remove item loop</h2>
+
+<div class="ops-grid">
+
+  <!-- READ -->
+  <div class="op-card">
+    <div class="op-head" style="background:#E6F1FB;color:#042C53">Read — access items</div>
+    <div class="op-body">
+      <div class="code">
+<span class="cm">// Read one item</span><br>
+grid[<span class="num">1</span>][<span class="num">2</span>]  <span class="cm">// "Tom"</span><br><br>
+<span class="cm">// Read whole row</span><br>
+grid[<span class="num">0</span>]    <span class="cm">// ["Ali","Sara","Ravi"]</span><br><br>
+<span class="cm">// Read total rows</span><br>
+grid.length  <span class="cm">// 3</span>
+      </div>
+      <div class="ctrl">
+        <label>row:</label><input type="number" id="r-row" value="1" min="0" max="2" style="width:44px"/>
+        <label>col:</label><input type="number" id="r-col" value="2" min="0" max="2" style="width:44px"/>
+        <button onclick="readCell()" style="font-size:11px">Read</button>
+      </div>
+      <div class="out" id="read-out">—</div>
+    </div>
+  </div>
+
+  <!-- WRITE -->
+  <div class="op-card">
+    <div class="op-head" style="background:#E1F5EE;color:#04342C">Write — change a value</div>
+    <div class="op-body">
+      <div class="code">
+<span class="cm">// Change one item</span><br>
+grid[<span class="num">0</span>][<span class="num">0</span>] = <span class="str">"Ahmed"</span>;<br><br>
+<span class="cm">// Change whole row</span><br>
+grid[<span class="num">1</span>] = [<span class="str">"X"</span>, <span class="str">"Y"</span>, <span class="str">"Z"</span>];
+      </div>
+      <div class="ctrl">
+        <label>row:</label><input type="number" id="w-row" value="0" min="0" max="2" style="width:44px"/>
+        <label>col:</label><input type="number" id="w-col" value="0" min="0" max="2" style="width:44px"/>
+        <label>value:</label><input type="text" id="w-val" value="Ahmed" style="width:70px;font-size:12px"/>
+        <button onclick="writeCell()" style="font-size:11px">Write</button>
+      </div>
+      <div class="grid-mini" id="write-grid"></div>
+      <div class="out" id="write-out">—</div>
+    </div>
+  </div>
+
+  <!-- ADD ROW -->
+  <div class="op-card">
+    <div class="op-head" style="background:#EEEDFE;color:#26215C">Add — push a new row</div>
+    <div class="op-body">
+      <div class="code">
+<span class="cm">// Add a whole new row</span><br>
+grid.push([<span class="str">"New1"</span>, <span class="str">"New2"</span>, <span class="str">"New3"</span>]);<br><br>
+<span class="cm">// Add to existing row</span><br>
+grid[<span class="num">0</span>].push(<span class="str">"ExtraItem"</span>);
+      </div>
+      <div class="ctrl">
+        <input type="text" id="add1" value="Ayaan" style="width:70px;font-size:12px"/>
+        <input type="text" id="add2" value="Noor" style="width:70px;font-size:12px"/>
+        <input type="text" id="add3" value="Dev" style="width:70px;font-size:12px"/>
+        <button onclick="addRow()" style="font-size:11px">push new row</button>
+      </div>
+      <div class="grid-mini" id="add-grid"></div>
+      <div class="out" id="add-out">—</div>
+    </div>
+  </div>
+
+  <!-- LOOP forEach -->
+  <div class="op-card">
+    <div class="op-head" style="background:#FAEEDA;color:#412402">Loop — forEach on nested</div>
+    <div class="op-body">
+      <div class="code">
+<span class="cm">// forEach on each inner array</span><br>
+grid.forEach((row, r) => {<br>
+&nbsp;row.forEach((item, c) => {<br>
+&nbsp;&nbsp;console.log(r, c, item);<br>
+&nbsp;});<br>
+});
+      </div>
+      <div class="ctrl">
+        <button onclick="runForEach()" style="font-size:11px">Run forEach</button>
+        <button onclick="flattenArr()" style="font-size:11px">flat() — flatten it</button>
+      </div>
+      <div class="out" id="fe-head" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">grid.flat() collapses nested → one flat array</div>
+      <div class="out" id="fe-out" style="max-height:90px;overflow-y:auto">—</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let g=[["Ali","Sara","Ravi"],["John","Priya","Tom"],["Zara","Raj","Maya"]];
+
+function renderMini(id,hiR=-1,hiC=-1){
+  const el=document.getElementById(id);el.innerHTML='';
+  g.forEach((row,r)=>row.forEach((v,c)=>{
+    const d=document.createElement('div');
+    d.className='gm-cell'+(r===hiR&&c===hiC?' hi':'');
+    d.textContent=v; el.appendChild(d);
+  }));
+}
+
+function readCell(){
+  const r=parseInt(document.getElementById('r-row').value);
+  const c=parseInt(document.getElementById('r-col').value);
+  if(r<0||r>=g.length||c<0||c>=g[r].length){document.getElementById('read-out').textContent='Out of bounds!';return;}
+  document.getElementById('read-out').textContent='grid['+r+']['+c+'] → "'+g[r][c]+'"';
+}
+
+(function initWrite(){renderMini('write-grid');})();
+
+function writeCell(){
+  const r=parseInt(document.getElementById('w-row').value);
+  const c=parseInt(document.getElementById('w-col').value);
+  const v=document.getElementById('w-val').value||'?';
+  if(r<0||r>=g.length||c<0||c>=g[r].length){document.getElementById('write-out').textContent='Out of bounds!';return;}
+  const old=g[r][c];
+  g[r][c]=v;
+  renderMini('write-grid',r,c);
+  document.getElementById('write-out').textContent='grid['+r+']['+c+'] was "'+old+'" → now "'+v+'"';
+}
+
+(function initAdd(){renderMini('add-grid');})();
+
+function addRow(){
+  const v1=document.getElementById('add1').value||'A';
+  const v2=document.getElementById('add2').value||'B';
+  const v3=document.getElementById('add3').value||'C';
+  g.push([v1,v2,v3]);
+  renderMini('add-grid');
+  document.getElementById('add-out').textContent='push(["'+v1+'","'+v2+'","'+v3+'"]) → rows now: '+g.length;
+}
+
+function runForEach(){
+  let result='';
+  g.forEach((row,r)=>row.forEach((item,c)=>{result+='['+r+']['+c+'] "'+item+'" | ';}));
+  document.getElementById('fe-out').textContent=result;
+}
+
+function flattenArr(){
+  const flat=g.flat();
+  document.getElementById('fe-out').textContent='grid.flat() → ['+flat.map(x=>'"'+x+'"').join(', ')+']';
+}
+</script>
