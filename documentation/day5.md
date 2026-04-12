@@ -768,3 +768,169 @@ console.log("Sorted:", sorted.join(" | "));
 | **sort needs compare for numbers** | `.sort((a,b) => a-b)` for correct number sort |
 | **slice vs splice** | sli**c**e = **c**opy (safe), spli**c**e = **c**hange (destructive) |
 | **map/filter = new array** | Original is never touched |
+
+
+==============================
+
+## **Nested Arrays** — arrays inside arrays. This sounds scary but you already use them every day in real life. Let me prove it:
+
+> **A nested array is just a list where each item is also a list.**
+
+Think of it like this:
+
+![alt](../images/javascript/day5/nested_array_real_world.svg)
+
+See? Your classroom has rows, and each row has students. That's a nested array — **an array of arrays**. Now let's learn how to read it, write it, and work with it.
+
+---
+
+## Lesson 1 — Creating & Understanding Nested Arrays
+
+![alt](../images/javascript/day5/nested_array_grid_visual.svg)
+
+**Two indexes. Always two.** First picks the row (outer array). Second picks the column (inner array). Let's see this live:
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day5/nested_array_interactive_grid.html)
+
+
+Click every cell — watch the exact code to access it appear. Type your own row/col numbers. Press **Get whole row** — this shows that `classroom[1]` gives you the entire inner array!
+
+---
+
+## Lesson 2 — Looping Through Nested Arrays
+
+To visit every item in a nested array, you need **a loop inside a loop** — called a **nested loop**:
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day5/nested_loop_animated.html)
+
+
+Press **Play** — watch it go row by row, column by column. The orange cells show the current row, green shows the exact cell being visited. Press **Step** to go one at a time and really understand it!
+
+---
+
+## Lesson 3 — Real World Examples
+
+Nested arrays are used everywhere. Let me show you 3 real scenarios:
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day5/nested_array_real_world_examples.html)
+
+Three real uses of nested arrays! Click the timetable cells, try the marks buttons, and play a full game of Tic-Tac-Toe (which is literally just `board[row][col] = "X"` or `"O"`!). Watch the console show the exact array code running.
+
+---
+
+## Lesson 4 — All Operations on Nested Arrays
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day5/nested_array_all_operations.html)
+
+
+Try every operation — change a value and watch the mini-grid update live. Add new rows. Press `flat()` to see how a nested array collapses into a single flat array!
+
+---
+
+## Complete Class Notes — Everything in One Place
+
+```js
+// ════════════════════════════════════════════
+//  WHAT IS A NESTED ARRAY?
+//  An array where each item is also an array.
+//  Think: grid, table, classroom, board game.
+// ════════════════════════════════════════════
+
+
+// ─── CREATING ───────────────────────────────
+const grid = [
+    ["Ali",  "Sara",  "Ravi"],   // row 0
+    ["John", "Priya", "Tom"],    // row 1
+    ["Zara", "Raj",   "Maya"],   // row 2
+];
+
+
+// ─── READING ────────────────────────────────
+grid[0]         // ["Ali","Sara","Ravi"]  whole row
+grid[0][0]      // "Ali"     row 0, col 0
+grid[1][2]      // "Tom"     row 1, col 2
+grid[2][1]      // "Raj"     row 2, col 1
+grid.length     // 3  (number of rows)
+grid[0].length  // 3  (number of columns)
+
+
+// ─── WRITING ────────────────────────────────
+grid[0][0] = "Ahmed";      // change one item
+grid[1] = ["X","Y","Z"];   // replace whole row
+
+
+// ─── ADD / REMOVE ───────────────────────────
+grid.push(["A","B","C"]);  // add new row at end
+grid.pop();                // remove last row
+grid[0].push("Extra");     // add to inner array
+
+
+// ─── LOOPING (nested for loop) ──────────────
+for (let row = 0; row < grid.length; row++) {
+    for (let col = 0; col < grid[row].length; col++) {
+        console.log(grid[row][col]);
+    }
+}
+
+// OR with forEach:
+grid.forEach((row, r) => {
+    row.forEach((item, c) => {
+        console.log(`[${r}][${c}] = ${item}`);
+    });
+});
+
+
+// ─── USEFUL TRICKS ──────────────────────────
+grid.flat()        // → ["Ali","Sara","Ravi","John",...] flatten
+grid.flat(Infinity) // flatten deeply nested arrays
+
+
+// ─── REAL WORLD USES ────────────────────────
+// Exam marks:    marks[studentIndex][subjectIndex]
+// Timetable:     schedule[dayIndex][periodIndex]
+// Game board:    board[row][col] = "X" or "O"
+// Spreadsheet:   cells[rowIndex][columnIndex]
+// Image pixels:  pixels[y][x] = color
+```
+
+---
+
+## Quick Memory Trick
+
+| Concept | Simple way to remember |
+|---|---|
+| Nested array | A list of lists |
+| `grid[0]` | First row (the whole inner array) |
+| `grid[0][0]` | First row, first column |
+| `grid[row][col]` | Always row first, column second |
+| Nested loop | Outer loop = rows, inner loop = columns |
+| `.flat()` | Squash nested into one flat array |
+
+---
+
+**Homework — paste in your console:**
+
+```js
+// 1. Create a 2x3 marks table
+const marks = [
+  [85, 90, 78],   // Alice
+  [60, 55, 70],   // Bob
+];
+
+// 2. Access items
+console.log(marks[0][1]);   // Alice's English mark?
+console.log(marks[1][0]);   // Bob's Maths mark?
+
+// 3. Loop and print all
+marks.forEach((row, i) => {
+  const avg = (row.reduce((s,n) => s+n, 0) / row.length).toFixed(1);
+  console.log("Student " + i + " average: " + avg);
+});
+
+// 4. Add a new student
+marks.push([92, 88, 95]);
+console.log("Now", marks.length, "students");
+
+// 5. Flatten it
+console.log(marks.flat());  // all marks in one array
+```
