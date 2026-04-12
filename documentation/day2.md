@@ -137,13 +137,19 @@ Let's start with the full picture:The tower is the rule — **higher = runs firs
 
 ## Part 1 — BODMAS in action: step-by-step solverPress **Play all** on each expression — watch the steps reveal one by one. Try `2 + 3 * 4` first — most beginners get this wrong thinking the answer is 20!
 
+[Click link to open Simulation for BODMAS](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/bodmas_step_solver.html)
+
 ---
 
 ## Part 2 — The most common mistakes (animated)Open every card — these are the **exact mistakes** every beginner makes in their first week. Knowing them now saves you hours of debugging later!
 
+[Click link to open Simulation for BODMAS](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/precedence_common_mistakes.html)
+
 ---
 
 ## Part 3 — Live expression tester: guess before you run**Guess before you click!** This quiz has 8 questions covering all the tricky cases. The explanation below each answer tells you exactly *why* the answer is what it is.
+
+[Click link to open Simulation for BODMAS](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/precedence_quiz_tester.html)
 
 ---
 
