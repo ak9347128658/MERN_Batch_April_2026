@@ -1,0 +1,185 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary);margin:.4rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}
+  .three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:.5rem 0}
+  .j-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden}
+  .j-head{padding:.5rem .85rem;font-size:13px;font-weight:500;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .j-body{padding:.75rem .85rem}
+  .num-row{display:flex;gap:4px;flex-wrap:wrap;margin:.4rem 0;min-height:44px}
+  .nb{width:36px;height:36px;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:500;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);transition:all .25s}
+  .nb.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
+  .nb.done{background:#E1F5EE;color:#085041;border-color:#5DCAA5}
+  .nb.skip{background:#FAEEDA;color:#633806;border-color:#EF9F27}
+  .nb.stop{background:#FCEBEB;color:#791F1F;border-color:#E24B4A}
+  .nb.ret{background:#EEEDFE;color:#3C3489;border-color:#534AB7}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.5rem .75rem;font-family:var(--font-mono);font-size:12px;min-height:44px;max-height:110px;overflow-y:auto;margin:.4rem 0}
+  .co{color:#86efac}.ci{color:#60a5fa}.cx{color:#9ca3af;font-style:italic}.cw{color:#EF9F27}.ce{color:#f87171}.cp{color:#a78bfa}
+  @media(max-width:520px){.three-col{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">break continue and return statements animated side by side</h2>
+
+<div class="three-col">
+
+  <!-- BREAK -->
+  <div class="j-card">
+    <div class="j-head" style="background:#FCEBEB;color:#791F1F">break — STOP</div>
+    <div class="j-body">
+      <div class="code" style="font-size:11px;padding:.5rem .65rem">
+<span class="kw">for</span>(i=0; i&lt;8; i++){<br>
+&nbsp;<span class="kw">if</span>(i===<span id="brk-at" class="num">5</span>)<br>
+&nbsp;&nbsp;<span class="kw">break</span>;<br>
+&nbsp;print(i);<br>
+}
+      </div>
+      <div class="num-row" id="brk-nums"></div>
+      <div style="display:flex;gap:5px;margin:.3rem 0;align-items:center;flex-wrap:wrap">
+        <label style="font-size:11px;color:var(--color-text-secondary)">stop at i=</label>
+        <input type="range" min="1" max="7" value="5" step="1" style="flex:1" oninput="setBrkAt(this.value)"/>
+        <span id="brk-badge" style="font-family:var(--font-mono);font-size:12px;font-weight:500;color:#A32D2D">5</span>
+      </div>
+      <button onclick="animBreak()" style="width:100%;font-size:12px">Animate</button>
+      <div class="con" id="brk-con"><div class="cx">// press animate</div></div>
+    </div>
+  </div>
+
+  <!-- CONTINUE -->
+  <div class="j-card">
+    <div class="j-head" style="background:#FAEEDA;color:#412402">continue — SKIP</div>
+    <div class="j-body">
+      <div class="code" style="font-size:11px;padding:.5rem .65rem">
+<span class="kw">for</span>(i=0; i&lt;8; i++){<br>
+&nbsp;<span class="kw">if</span>(i%2===0)<br>
+&nbsp;&nbsp;<span class="kw">continue</span>;<br>
+&nbsp;print(i);<br>
+}
+      </div>
+      <div class="num-row" id="cnt-nums"></div>
+      <div style="display:flex;gap:5px;margin:.3rem 0;flex-wrap:wrap">
+        <button onclick="animCont('even')" style="font-size:11px;flex:1">Skip even</button>
+        <button onclick="animCont('odd')"  style="font-size:11px;flex:1">Skip odd</button>
+        <button onclick="animCont('3')"    style="font-size:11px;flex:1">Skip ÷3</button>
+      </div>
+      <div class="con" id="cnt-con"><div class="cx">// press a button</div></div>
+    </div>
+  </div>
+
+  <!-- RETURN -->
+  <div class="j-card">
+    <div class="j-head" style="background:#EEEDFE;color:#26215C">return — EXIT</div>
+    <div class="j-body">
+      <div class="code" style="font-size:11px;padding:.5rem .65rem">
+<span class="kw">function</span> find(arr,val){<br>
+&nbsp;<span class="kw">for</span>(i=0;i&lt;arr.length;i++){<br>
+&nbsp;&nbsp;<span class="kw">if</span>(arr[i]===val)<br>
+&nbsp;&nbsp;&nbsp;<span class="kw">return</span> i;<br>
+&nbsp;}<br>
+&nbsp;<span class="kw">return</span> -1;<br>
+}
+      </div>
+      <div class="num-row" id="ret-nums"></div>
+      <div style="display:flex;gap:5px;margin:.3rem 0;align-items:center;flex-wrap:wrap">
+        <label style="font-size:11px;color:var(--color-text-secondary)">find value:</label>
+        <input type="number" id="ret-find" value="5" min="0" max="7" style="font-family:var(--font-mono);font-size:12px;width:50px"/>
+        <button onclick="animReturn()" style="font-size:12px">Find</button>
+      </div>
+      <div class="con" id="ret-con"><div class="cx">// press find</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const N=8;
+function makeNums(id,n){
+  const c=document.getElementById(id);c.innerHTML='';
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className='nb';d.id=id+'-'+i;d.textContent=i;c.appendChild(d);}
+}
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+// BREAK
+let brkAt=5, brkTimer=null;
+function setBrkAt(v){brkAt=Number(v);document.getElementById('brk-badge').textContent=v;document.getElementById('brk-at').textContent=v;makeNums('brk-nums',N);}
+function animBreak(){
+  if(brkTimer){clearInterval(brkTimer);brkTimer=null;}
+  makeNums('brk-nums',N);
+  document.getElementById('brk-con').innerHTML='';
+  addL('brk-con','break when i === '+brkAt,'ci');
+  let i=0;
+  brkTimer=setInterval(()=>{
+    if(i>=N){clearInterval(brkTimer);brkTimer=null;return;}
+    document.querySelectorAll('#brk-nums .nb').forEach((b,j)=>{if(j<i)b.className='nb done';});
+    const el=document.getElementById('brk-nums-'+i);
+    if(i===brkAt){
+      el.className='nb stop';
+      addL('brk-con','i='+i+' → BREAK! Stops here.','ce');
+      addL('brk-con','Printed: 0 to '+(brkAt-1),'cx');
+      clearInterval(brkTimer);brkTimer=null;
+    } else {
+      el.className='nb active';
+      addL('brk-con',String(i),'co');
+      setTimeout(()=>{if(el)el.className='nb done';},280);
+    }
+    i++;
+  },500);
+}
+makeNums('brk-nums',N);
+
+// CONTINUE
+let cntTimer=null;
+function animCont(mode){
+  if(cntTimer){clearInterval(cntTimer);cntTimer=null;}
+  makeNums('cnt-nums',N);
+  document.getElementById('cnt-con').innerHTML='';
+  const label={even:'skip even (0,2,4,6)',odd:'skip odd (1,3,5,7)',3:'skip multiples of 3'};
+  addL('cnt-con',label[mode],'ci');
+  let i=0;
+  cntTimer=setInterval(()=>{
+    if(i>=N){clearInterval(cntTimer);cntTimer=null;return;}
+    const skip=(mode==='even'&&i%2===0)||(mode==='odd'&&i%2!==0)||(mode==='3'&&i%3===0);
+    const el=document.getElementById('cnt-nums-'+i);
+    if(skip){el.className='nb skip';addL('cnt-con','i='+i+' → continue (skipped)','cw');}
+    else{el.className='nb active';addL('cnt-con',String(i),'co');setTimeout(()=>{if(el)el.className='nb done';},280);}
+    i++;
+  },450);
+}
+makeNums('cnt-nums',N);
+
+// RETURN
+const retArr=[3,1,4,1,5,9,2,6];
+function buildRetNums(){
+  const c=document.getElementById('ret-nums');c.innerHTML='';
+  retArr.forEach((v,i)=>{const d=document.createElement('div');d.className='nb';d.id='ret-nums-'+i;d.style.minWidth='36px';d.textContent=v;c.appendChild(d);});
+}
+let retTimer=null;
+function animReturn(){
+  if(retTimer){clearInterval(retTimer);retTimer=null;}
+  buildRetNums();
+  const target=parseInt(document.getElementById('ret-find').value);
+  document.getElementById('ret-con').innerHTML='';
+  addL('ret-con','find(arr, '+target+')','ci');
+  let i=0;
+  retTimer=setInterval(()=>{
+    if(i>=retArr.length){
+      addL('ret-con','Not found → return -1','ce');
+      clearInterval(retTimer);retTimer=null;return;
+    }
+    document.querySelectorAll('#ret-nums .nb').forEach((b,j)=>{if(j<i)b.className='nb done';});
+    const el=document.getElementById('ret-nums-'+i);
+    if(retArr[i]===target){
+      el.className='nb ret';
+      addL('ret-con','arr['+i+']='+retArr[i]+' matches! → return '+i,'cp');
+      addL('ret-con','Function exits immediately. Result = '+i,'cx');
+      clearInterval(retTimer);retTimer=null;
+    } else {
+      el.className='nb active';
+      addL('ret-con','arr['+i+']='+retArr[i]+' ≠ '+target+', keep going...','co');
+      setTimeout(()=>{if(el)el.className='nb done';},280);
+    }
+    i++;
+  },550);
+}
+buildRetNums();
+</script>

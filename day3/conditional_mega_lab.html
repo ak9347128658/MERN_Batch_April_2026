@@ -1,0 +1,178 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .tab-row{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+  .tab{padding:5px 14px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+  .panel{display:none}.panel.active{display:block}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary);margin:.4rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.vn{color:#185FA5}
+  .res{padding:.65rem 1rem;border-radius:var(--border-radius-md);font-size:14px;font-weight:500;margin:.5rem 0;transition:all .3s;font-family:var(--font-mono)}
+  .res-t{background:#E1F5EE;color:#085041} .res-f{background:#FAECE7;color:#4A1B0C}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:12.5px;min-height:44px;max-height:150px;overflow-y:auto;margin-top:.4rem}
+  .co{color:#86efac}.ci{color:#60a5fa}.cx{color:#9ca3af;font-style:italic}.ce{color:#f87171}
+  .ctrl{display:flex;gap:8px;margin:.5rem 0;align-items:center;flex-wrap:wrap}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+  .day-row{display:flex;gap:5px;flex-wrap:wrap;margin:.5rem 0}
+  .day-btn{padding:6px 10px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);transition:all .2s}
+  .day-btn.active{background:#534AB7;color:#fff;border-color:#534AB7}
+</style>
+
+<h2 class="sr-only">All conditional statements if else switch ternary in one lab</h2>
+
+<div class="tab-row">
+  <button class="tab active" onclick="showP('if')">if / else if / else</button>
+  <button class="tab" onclick="showP('sw')">switch</button>
+  <button class="tab" onclick="showP('tern')">ternary ? :</button>
+  <button class="tab" onclick="showP('compare')">compare all 3</button>
+</div>
+
+<!-- IF ELSE -->
+<div class="panel active" id="p-if">
+  <div class="code">
+<span class="kw">let</span> <span class="vn">score</span> = <span class="num" id="if-score-code">72</span>;<br><br>
+<span class="kw">if</span> (score &gt;= <span class="num">90</span>) {<br>
+&nbsp;&nbsp;console.log(<span class="str">"Grade A — Excellent!"</span>);<br>
+} <span class="kw">else if</span> (score &gt;= <span class="num">75</span>) {<br>
+&nbsp;&nbsp;console.log(<span class="str">"Grade B — Good"</span>);<br>
+} <span class="kw">else if</span> (score &gt;= <span class="num">60</span>) {<br>
+&nbsp;&nbsp;console.log(<span class="str">"Grade C — Average"</span>);<br>
+} <span class="kw">else</span> {<br>
+&nbsp;&nbsp;console.log(<span class="str">"Grade F — Study more!"</span>);<br>
+}
+  </div>
+  <div class="ctrl">
+    <label>score =</label>
+    <input type="range" min="0" max="100" value="72" step="1" style="flex:1" oninput="runIf(this.value)"/>
+    <span id="if-badge" style="font-family:var(--font-mono);font-size:14px;font-weight:500;min-width:32px;color:var(--color-text-primary)">72</span>
+  </div>
+  <div class="res" id="if-res" style="background:#E1F5EE;color:#085041">Grade C — Average</div>
+  <div class="con" id="if-con"><div class="cx">// drag slider to run</div></div>
+</div>
+
+<!-- SWITCH -->
+<div class="panel" id="p-sw">
+  <div class="code">
+<span class="kw">let</span> <span class="vn">day</span> = <span class="str" id="sw-day-code">"Monday"</span>;<br><br>
+<span class="kw">switch</span> (day) {<br>
+&nbsp;&nbsp;<span class="kw">case</span> <span class="str">"Monday"</span>:  console.log(<span class="str">"Start of week!"</span>); <span class="kw">break</span>;<br>
+&nbsp;&nbsp;<span class="kw">case</span> <span class="str">"Friday"</span>:  console.log(<span class="str">"Almost weekend!"</span>); <span class="kw">break</span>;<br>
+&nbsp;&nbsp;<span class="kw">case</span> <span class="str">"Saturday"</span>:<br>
+&nbsp;&nbsp;<span class="kw">case</span> <span class="str">"Sunday"</span>:  console.log(<span class="str">"Weekend!"</span>); <span class="kw">break</span>;<br>
+&nbsp;&nbsp;<span class="kw">default</span>:       console.log(<span class="str">"Regular workday"</span>);<br>
+}
+  </div>
+  <div class="day-row" id="day-row"></div>
+  <div class="res" id="sw-res" style="background:#E1F5EE;color:#085041">Start of week!</div>
+  <div class="con" id="sw-con"><div class="cx">// click a day</div></div>
+</div>
+
+<!-- TERNARY -->
+<div class="panel" id="p-tern">
+  <div class="code">
+<span class="cm">// Ternary = one-line if/else</span><br>
+<span class="cm">// condition ? valueIfTrue : valueIfFalse</span><br><br>
+<span class="kw">let</span> age = <span class="num" id="tern-age-code">20</span>;<br>
+<span class="kw">let</span> status = age &gt;= <span class="num">18</span> <span class="kw">?</span> <span class="str">"Adult"</span> <span class="kw">:</span> <span class="str">"Minor"</span>;<br><br>
+<span class="cm">// Chained ternary for grades:</span><br>
+<span class="kw">let</span> grade = score &gt;= <span class="num">90</span> <span class="kw">?</span> <span class="str">"A"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: score &gt;= <span class="num">75</span> <span class="kw">?</span> <span class="str">"B"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: score &gt;= <span class="num">60</span> <span class="kw">?</span> <span class="str">"C"</span> <span class="kw">:</span> <span class="str">"F"</span>;
+  </div>
+  <div class="ctrl">
+    <label>age =</label>
+    <input type="range" min="10" max="30" value="20" step="1" style="flex:1" oninput="runTern(this.value)"/>
+    <span id="tern-badge" style="font-family:var(--font-mono);font-size:14px;font-weight:500;min-width:28px;color:var(--color-text-primary)">20</span>
+  </div>
+  <div class="res res-t" id="tern-res">age >= 18 ? "Adult" : "Minor" → "Adult"</div>
+</div>
+
+<!-- COMPARE ALL 3 -->
+<div class="panel" id="p-compare">
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:.5rem">All 3 doing the same job — checking a score:</div>
+  <div class="code">
+<span class="cm">// 1. if/else — most readable, use for complex logic</span><br>
+<span class="kw">if</span> (score &gt;= <span class="num">60</span>) { console.log(<span class="str">"Pass"</span>); }<br>
+<span class="kw">else</span> { console.log(<span class="str">"Fail"</span>); }<br><br>
+<span class="cm">// 2. switch — best for exact value matching</span><br>
+<span class="kw">switch</span>(<span class="kw">true</span>) {<br>
+&nbsp;&nbsp;<span class="kw">case</span> score &gt;= <span class="num">60</span>: console.log(<span class="str">"Pass"</span>); <span class="kw">break</span>;<br>
+&nbsp;&nbsp;<span class="kw">default</span>: console.log(<span class="str">"Fail"</span>);<br>
+}<br><br>
+<span class="cm">// 3. ternary — shortest, use for simple one-liners</span><br>
+<span class="kw">let</span> result = score &gt;= <span class="num">60</span> ? <span class="str">"Pass"</span> : <span class="str">"Fail"</span>;
+  </div>
+  <div class="ctrl">
+    <label>score =</label>
+    <input type="range" min="0" max="100" value="65" step="1" style="flex:1" oninput="runCompare(this.value)"/>
+    <span id="cmp-badge" style="font-family:var(--font-mono);font-size:14px;font-weight:500;min-width:32px;color:var(--color-text-primary)">65</span>
+  </div>
+  <div class="res res-t" id="cmp-res">All 3 give the same answer: "Pass"</div>
+</div>
+
+<script>
+function showP(id){
+  ['if','sw','tern','compare'].forEach((x,i)=>{
+    document.querySelectorAll('.tab')[i].classList.toggle('active',x===id);
+    document.getElementById('p-'+x).classList.toggle('active',x===id);
+  });
+  if(id==='sw') buildDays();
+}
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+function runIf(v){
+  const s=Number(v);
+  document.getElementById('if-badge').textContent=v;
+  document.getElementById('if-score-code').textContent=v;
+  const g=s>=90?'Grade A — Excellent!':s>=75?'Grade B — Good':s>=60?'Grade C — Average':'Grade F — Study more!';
+  const pass=s>=60;
+  const el=document.getElementById('if-res');
+  el.textContent=g; el.className='res '+(pass?'res-t':'res-f');
+  document.getElementById('if-con').innerHTML='';
+  addL('if-con','score = '+v+' → checking conditions...','ci');
+  addL('if-con',g,'co');
+}
+
+const days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+function buildDays(){
+  const r=document.getElementById('day-row'); r.innerHTML='';
+  days.forEach(d=>{
+    const b=document.createElement('button');
+    b.className='day-btn'+(d==='Monday'?' active':'');
+    b.textContent=d.slice(0,3);
+    b.onclick=()=>pickDay(d,b);
+    r.appendChild(b);
+  });
+}
+function pickDay(d,el){
+  document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('sw-day-code').textContent='"'+d+'"';
+  const msg=d==='Monday'?'Start of week!':d==='Friday'?'Almost weekend!':(d==='Saturday'||d==='Sunday')?'Weekend!':'Regular workday';
+  const isGood=d==='Saturday'||d==='Sunday'||d==='Friday';
+  const el2=document.getElementById('sw-res');
+  el2.textContent=msg; el2.className='res '+(isGood?'res-t':'res-f');
+  document.getElementById('sw-con').innerHTML='';
+  addL('sw-con','switch("'+d+'")','ci');
+  addL('sw-con','→ matched case "'+d+'" → '+msg,'co');
+}
+
+function runTern(v){
+  document.getElementById('tern-badge').textContent=v;
+  document.getElementById('tern-age-code').textContent=v;
+  const r=Number(v)>=18;
+  const el=document.getElementById('tern-res');
+  el.textContent='age ('+v+') >= 18 ? "Adult" : "Minor" → "'+(r?'Adult':'Minor')+'"';
+  el.className='res '+(r?'res-t':'res-f');
+}
+
+function runCompare(v){
+  const s=Number(v);
+  document.getElementById('cmp-badge').textContent=v;
+  const r=s>=60;
+  const el=document.getElementById('cmp-res');
+  el.textContent='All 3 give the same answer: "'+(r?'Pass':'Fail')+'"  (score='+v+', '+(r?'passed':'failed')+')';
+  el.className='res '+(r?'res-t':'res-f');
+}
+buildDays();
+</script>

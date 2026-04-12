@@ -1,0 +1,298 @@
+
+<style>
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .tab-row{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+  .tab{padding:5px 13px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+  .panel{display:none}.panel.active{display:block}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary);margin:.4rem 0}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.vn{color:#185FA5}
+  .iter-row{display:flex;gap:5px;flex-wrap:wrap;margin:.5rem 0}
+  .iter-box{min-width:44px;height:44px;border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:13px;font-weight:500;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);transition:all .25s;flex-direction:column;gap:1px}
+  .iter-box .idx{font-size:9px;color:var(--color-text-tertiary)}
+  .iter-box.active{background:#1D9E75;color:#fff;border-color:#1D9E75;animation:pop .3s ease}
+  .iter-box.done{background:#E1F5EE;color:#085041;border-color:#5DCAA5}
+  .iter-box.skip{background:#FAEEDA;color:#633806;border-color:#EF9F27;opacity:.7}
+  .iter-box.stop{background:#FCEBEB;color:#791F1F;border-color:#E24B4A}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:12.5px;min-height:60px;max-height:160px;overflow-y:auto;margin-top:.4rem}
+  .co{color:#86efac}.ci{color:#60a5fa}.cx{color:#9ca3af;font-style:italic}.cw{color:#EF9F27}.ce{color:#f87171}
+  .ctrl{display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap;align-items:center}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+  .info-bar{background:var(--color-background-secondary);border-left:3px solid #1D9E75;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.5rem .9rem;font-size:13px;color:var(--color-text-secondary);margin:.4rem 0}
+</style>
+
+<h2 class="sr-only">All loop types animated and compared for while do-while forEach</h2>
+
+<div class="tab-row">
+  <button class="tab active" onclick="showL('for')">for loop</button>
+  <button class="tab" onclick="showL('while')">while loop</button>
+  <button class="tab" onclick="showL('dowhile')">do...while</button>
+  <button class="tab" onclick="showL('foreach')">forEach</button>
+  <button class="tab" onclick="showL('diff')">key differences</button>
+</div>
+
+<!-- FOR LOOP -->
+<div class="panel active" id="l-for">
+  <div class="code">
+<span class="kw">for</span> (<span class="kw">let</span> <span class="vn">i</span> = <span class="num">0</span>; <span class="vn">i</span> &lt; <span class="num" id="for-max-code">5</span>; <span class="vn">i</span>++) {<br>
+&nbsp;&nbsp;console.log(<span class="str">"Step "</span> + <span class="vn">i</span>);<br>
+}
+  </div>
+  <div class="ctrl">
+    <label>run</label>
+    <input type="range" min="1" max="8" value="5" step="1" style="width:120px" oninput="setForMax(this.value)"/>
+    <span id="for-max-badge" style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--color-text-primary)">5</span>
+    <label>times</label>
+    <button onclick="playFor()">Play</button>
+    <button onclick="stepFor()">Step</button>
+    <button onclick="resetFor()">Reset</button>
+  </div>
+  <div class="iter-row" id="for-boxes"></div>
+  <div class="info-bar" id="for-info">Press Play or Step to run the loop</div>
+  <div class="con" id="for-con"><div class="cx">// output appears here</div></div>
+</div>
+
+<!-- WHILE LOOP -->
+<div class="panel" id="l-while">
+  <div class="code">
+<span class="kw">let</span> <span class="vn">n</span> = <span class="num" id="while-n-code">5</span>;<br><br>
+<span class="kw">while</span> (<span class="vn">n</span> &gt; <span class="num">0</span>) {<br>
+&nbsp;&nbsp;console.log(<span class="str">"n = "</span> + <span class="vn">n</span>);<br>
+&nbsp;&nbsp;<span class="vn">n</span>--;  <span class="cm">// MUST decrease or infinite loop!</span><br>
+}<br>
+console.log(<span class="str">"Done! n = 0"</span>);
+  </div>
+  <div class="ctrl">
+    <label>start n =</label>
+    <input type="range" min="0" max="8" value="5" step="1" style="width:120px" oninput="setWhileN(this.value)"/>
+    <span id="while-badge" style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--color-text-primary)">5</span>
+    <button onclick="playWhile()">Play</button>
+    <button onclick="resetWhile()">Reset</button>
+  </div>
+  <div class="iter-row" id="while-boxes"></div>
+  <div class="info-bar" id="while-info">Press Play to run</div>
+  <div class="con" id="while-con"><div class="cx">// output appears here</div></div>
+</div>
+
+<!-- DO WHILE -->
+<div class="panel" id="l-dowhile">
+  <div class="code">
+<span class="kw">let</span> <span class="vn">tries</span> = <span class="num">0</span>;<br><br>
+<span class="kw">do</span> {<br>
+&nbsp;&nbsp;console.log(<span class="str">"Attempt #"</span> + tries);<br>
+&nbsp;&nbsp;<span class="vn">tries</span>++;<br>
+} <span class="kw">while</span> (<span class="vn">tries</span> &lt; <span class="num" id="dw-max-code">3</span>);<br><br>
+<span class="cm">// KEY: runs at least ONCE even if condition is false!</span>
+  </div>
+  <div class="ctrl">
+    <button onclick="runDW(3)">Run (max 3)</button>
+    <button onclick="runDW(0)">Run (max 0) — see the magic!</button>
+    <button onclick="resetDW()">Reset</button>
+  </div>
+  <div class="iter-row" id="dw-boxes"></div>
+  <div class="info-bar" id="dw-info">Press a button — try max=0 to see the key difference!</div>
+  <div class="con" id="dw-con"><div class="cx">// output appears here</div></div>
+</div>
+
+<!-- FOR EACH -->
+<div class="panel" id="l-foreach">
+  <div class="code">
+<span class="kw">const</span> <span class="vn">students</span> = [<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Charlie"</span>, <span class="str">"Diana"</span>];<br><br>
+<span class="cm">// forEach — runs a function on each item</span><br>
+<span class="vn">students</span>.forEach((<span class="vn">student</span>, <span class="vn">index</span>) => {<br>
+&nbsp;&nbsp;console.log(index + <span class="str">": "</span> + student);<br>
+});<br><br>
+<span class="cm">// for...of — cleaner syntax, same result</span><br>
+<span class="kw">for</span> (<span class="kw">let</span> <span class="vn">student</span> <span class="kw">of</span> <span class="vn">students</span>) {<br>
+&nbsp;&nbsp;console.log(student);<br>
+}
+  </div>
+  <div class="ctrl">
+    <button onclick="runForEach()">Run forEach</button>
+    <button onclick="runForOf()">Run for...of</button>
+    <button onclick="resetFE()">Reset</button>
+  </div>
+  <div class="iter-row" id="fe-boxes"></div>
+  <div class="con" id="fe-con"><div class="cx">// output appears here</div></div>
+</div>
+
+<!-- KEY DIFFERENCES -->
+<div class="panel" id="l-diff">
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:.5rem">Side-by-side comparison — when to use which:</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="diff-grid"></div>
+</div>
+
+<script>
+function showL(id){
+  ['for','while','dowhile','foreach','diff'].forEach((x,i)=>{
+    document.querySelectorAll('.tab')[i].classList.toggle('active',x===id);
+    document.getElementById('l-'+x).classList.toggle('active',x===id);
+  });
+  if(id==='for'){buildForBoxes(); }
+  if(id==='while'){buildWhileBoxes(); }
+  if(id==='foreach'){buildFEBoxes();}
+  if(id==='diff') buildDiff();
+}
+
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+// FOR LOOP
+let forMax=5, forI=-1, forTimer=null;
+function setForMax(v){forMax=Number(v);document.getElementById('for-max-badge').textContent=v;document.getElementById('for-max-code').textContent=v;forI=-1;buildForBoxes();}
+function buildForBoxes(){
+  const c=document.getElementById('for-boxes');c.innerHTML='';
+  for(let i=0;i<forMax;i++){const d=document.createElement('div');d.className='iter-box';d.id='fb-'+i;d.innerHTML='<span class="idx">i='+i+'</span><span>'+i+'</span>';c.appendChild(d);}
+  document.getElementById('for-con').innerHTML='<div class="cx">// output appears here</div>';
+  document.getElementById('for-info').textContent='Press Play or Step to run the loop';
+}
+function updateFor(){
+  document.querySelectorAll('.iter-box[id^="fb-"]').forEach((b,i)=>{
+    b.className='iter-box'+(i===forI?' active':i<forI?' done':'');
+  });
+  if(forI>=0&&forI<forMax){
+    document.getElementById('for-info').textContent='Iteration '+(forI+1)+'/'+forMax+' — i = '+forI;
+    addL('for-con','Step: '+forI,'co');
+  }
+  if(forI>=forMax){
+    document.getElementById('for-info').textContent='Loop finished! i reached '+forMax+' — condition (i < '+forMax+') is now false.';
+    addL('for-con','--- loop ended ---','cx');
+    if(forTimer){clearInterval(forTimer);forTimer=null;}
+  }
+}
+function stepFor(){if(forTimer){clearInterval(forTimer);forTimer=null;}if(forI<forMax){forI++;updateFor();}}
+function playFor(){
+  if(forTimer)return;
+  forI=-1;buildForBoxes();
+  forTimer=setInterval(()=>{forI++;updateFor();if(forI>=forMax){clearInterval(forTimer);forTimer=null;}},600);
+}
+function resetFor(){if(forTimer){clearInterval(forTimer);forTimer=null;}forI=-1;buildForBoxes();}
+buildForBoxes();
+
+// WHILE LOOP
+let whileN=5, whileTimer=null, wStart=5;
+function setWhileN(v){wStart=Number(v);whileN=wStart;document.getElementById('while-badge').textContent=v;document.getElementById('while-n-code').textContent=v;buildWhileBoxes();}
+function buildWhileBoxes(){
+  const c=document.getElementById('while-boxes');c.innerHTML='';
+  for(let i=wStart;i>0;i--){const d=document.createElement('div');d.className='iter-box';d.id='wb-'+i;d.innerHTML='<span class="idx">n='+i+'</span><span>'+i+'</span>';c.appendChild(d);}
+  document.getElementById('while-con').innerHTML='<div class="cx">// output appears here</div>';
+  document.getElementById('while-info').textContent='Press Play to run (starts at n='+wStart+')';
+  whileN=wStart;
+}
+function playWhile(){
+  if(whileTimer)return;
+  buildWhileBoxes();
+  if(wStart===0){addL('while-con','n=0 — condition (0 > 0) is ALREADY false — loop never runs!','cw');document.getElementById('while-info').textContent='Loop skipped! n=0 means condition is false from the start.';return;}
+  let cur=wStart;
+  whileTimer=setInterval(()=>{
+    if(cur>0){
+      const el=document.getElementById('wb-'+cur);
+      if(el){el.className='iter-box active';setTimeout(()=>{if(el)el.className='iter-box done';},400);}
+      addL('while-con','n = '+cur,'co');
+      cur--;
+    } else {
+      addL('while-con','Done! n = 0','cx');
+      document.getElementById('while-info').textContent='Loop finished — n reached 0';
+      clearInterval(whileTimer);whileTimer=null;
+    }
+  },600);
+}
+function resetWhile(){if(whileTimer){clearInterval(whileTimer);whileTimer=null;}buildWhileBoxes();}
+buildWhileBoxes();
+
+// DO WHILE
+let dwTimer=null;
+function buildDWBoxes(max){
+  const c=document.getElementById('dw-boxes');c.innerHTML='';
+  const n=Math.max(1,max);
+  for(let i=0;i<n;i++){const d=document.createElement('div');d.className='iter-box';d.id='dw-'+i;d.innerHTML='<span class="idx">#'+i+'</span><span>try</span>';c.appendChild(d);}
+}
+function runDW(max){
+  if(dwTimer){clearInterval(dwTimer);dwTimer=null;}
+  document.getElementById('dw-max-code').textContent=max;
+  document.getElementById('dw-con').innerHTML='';
+  buildDWBoxes(max);
+  addL('dw-con','do { } while(tries < '+max+')','ci');
+  let tries=0;
+  function tick(){
+    const el=document.getElementById('dw-'+tries);
+    if(el){el.className='iter-box active';setTimeout(()=>{if(el)el.className='iter-box done';},400);}
+    addL('dw-con','Attempt #'+tries,'co');
+    tries++;
+    if(tries<max){dwTimer=setTimeout(tick,600);}
+    else{
+      dwTimer=setTimeout(()=>{
+        document.getElementById('dw-info').textContent='Ran '+tries+' time'+(tries>1?'s':'')+'. '+(max===0?'KEY POINT: do-while always runs at least ONCE even when max=0!':'Condition became false so stopped.');
+        if(max===0) addL('dw-con','KEY: ran ONCE even though max=0! while checks AFTER running.','cw');
+        else addL('dw-con','--- done after '+tries+' attempts ---','cx');
+      },600);
+    }
+  }
+  tick();
+  document.getElementById('dw-info').textContent='Running...';
+}
+function resetDW(){if(dwTimer){clearTimeout(dwTimer);dwTimer=null;}document.getElementById('dw-boxes').innerHTML='';document.getElementById('dw-con').innerHTML='';}
+buildDWBoxes(3);
+
+// FOREACH
+const students=["Alice","Bob","Charlie","Diana"];
+let feTimer=null;
+function buildFEBoxes(){
+  const c=document.getElementById('fe-boxes');c.innerHTML='';
+  students.forEach((s,i)=>{const d=document.createElement('div');d.className='iter-box';d.id='fe-'+i;d.style.minWidth='64px';d.innerHTML='<span class="idx">['+i+']</span><span>'+s+'</span>';c.appendChild(d);});
+  document.getElementById('fe-con').innerHTML='<div class="cx">// output appears here</div>';
+}
+function runForEach(){
+  if(feTimer){clearInterval(feTimer);feTimer=null;}
+  buildFEBoxes();
+  document.getElementById('fe-con').innerHTML='';
+  addL('fe-con','students.forEach((s, i) => ...)','ci');
+  let i=0;
+  feTimer=setInterval(()=>{
+    if(i<students.length){
+      document.querySelectorAll('[id^="fe-"]').forEach((b,j)=>{if(j<i)b.className='iter-box done';});
+      const el=document.getElementById('fe-'+i);
+      if(el)el.className='iter-box active';
+      addL('fe-con',i+': '+students[i],'co');
+      i++;
+    } else {clearInterval(feTimer);feTimer=null;}
+  },600);
+}
+function runForOf(){
+  if(feTimer){clearInterval(feTimer);feTimer=null;}
+  buildFEBoxes();
+  document.getElementById('fe-con').innerHTML='';
+  addL('fe-con','for (let student of students) { ... }','ci');
+  let i=0;
+  feTimer=setInterval(()=>{
+    if(i<students.length){
+      const el=document.getElementById('fe-'+i);
+      if(el){document.querySelectorAll('[id^="fe-"]').forEach((b,j)=>{if(j<i)b.className='iter-box done';});el.className='iter-box active';}
+      addL('fe-con',students[i],'co');
+      i++;
+    } else {clearInterval(feTimer);feTimer=null;}
+  },600);
+}
+function resetFE(){if(feTimer){clearInterval(feTimer);feTimer=null;}buildFEBoxes();}
+buildFEBoxes();
+
+// DIFF TABLE
+function buildDiff(){
+  const g=document.getElementById('diff-grid');g.innerHTML='';
+  const cards=[
+    {title:'for loop',color:'#E1F5EE',border:'#1D9E75',when:'You know exactly how many times to repeat.',use:'Counting, array indexes, repeat N times.',eg:'for (let i=0; i<5; i++)'},
+    {title:'while loop',color:'#EEEDFE',border:'#534AB7',when:'You do NOT know how many times — repeat until a condition becomes false.',use:'Wait for input, game loops, retry logic.',eg:'while (user !== "quit")'},
+    {title:'do...while',color:'#FAEEDA',border:'#BA7517',when:'Same as while BUT must run at least once.',use:'Show a menu, ask for input once then repeat.',eg:'do { showMenu(); } while(choice !== 0)'},
+    {title:'forEach / for...of',color:'#FAECE7',border:'#993C1D',when:'You have an array and want to visit every item.',use:'Print list, transform items, send data.',eg:'students.forEach(s => console.log(s))'},
+  ];
+  cards.forEach(c=>{
+    const d=document.createElement('div');
+    d.style.cssText=`background:${c.color};border:0.5px solid ${c.border};border-radius:var(--border-radius-md);padding:.75rem;`;
+    d.innerHTML=`<div style="font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:.4rem">${c.title}</div>`
+      +`<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:.3rem"><strong>Use when:</strong> ${c.when}</div>`
+      +`<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:.4rem"><strong>Good for:</strong> ${c.use}</div>`
+      +`<div style="font-family:var(--font-mono);font-size:11px;color:var(--color-text-primary);background:rgba(255,255,255,.5);padding:4px 7px;border-radius:4px">${c.eg}</div>`;
+    g.appendChild(d);
+  });
+}
+</script>
