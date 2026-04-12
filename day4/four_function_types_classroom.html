@@ -1,0 +1,155 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .fn-wrap{display:flex;flex-direction:column;gap:10px}
+  .fn-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);overflow:hidden}
+  .fn-head{display:flex;align-items:center;gap:10px;padding:.6rem 1rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .fn-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;flex-shrink:0}
+  .fn-title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .fn-badge{font-size:11px;padding:2px 9px;border-radius:20px;font-weight:500;margin-left:auto}
+  .fn-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .fn-code{padding:.75rem 1rem;background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary)}
+  .fn-live{padding:.75rem 1rem}
+  .code{font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.fn{color:#185FA5}.num{color:#854F0B}.str{color:#0F6E56}.cm{color:var(--color-text-tertiary);font-style:italic}.ret{color:#1D9E75}
+  .live-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:.4rem}
+  .inp-row{display:flex;gap:6px;margin:.4rem 0;align-items:center;flex-wrap:wrap}
+  .inp-row input{font-family:var(--font-mono);font-size:13px;width:70px}
+  .out-box{background:#111;border-radius:var(--border-radius-md);padding:.4rem .75rem;font-family:var(--font-mono);font-size:13px;color:#86efac;margin-top:.4rem;min-height:32px}
+  @media(max-width:520px){.fn-body{grid-template-columns:1fr}.fn-code{border-right:none;border-bottom:0.5px solid var(--color-border-tertiary)}}
+</style>
+
+<h2 class="sr-only">Four ways to write functions in JavaScript with live examples</h2>
+
+<div class="fn-wrap">
+
+<!-- TYPE 1 -->
+<div class="fn-card">
+  <div class="fn-head">
+    <div class="fn-num" style="background:#EEEDFE;color:#534AB7">1</div>
+    <div class="fn-title">Function Declaration</div>
+    <span class="fn-badge" style="background:#EEEDFE;color:#3C3489">most common — learn this first</span>
+  </div>
+  <div class="fn-body">
+    <div class="fn-code">
+      <div class="code">
+<span class="kw">function</span> <span class="fn">greet</span>(name) {<br>
+&nbsp;&nbsp;<span class="kw">return</span> <span class="str">"Hello, "</span> + name + <span class="str">"!"</span>;<br>
+}<br><br>
+<span class="cm">// calling it:</span><br>
+greet(<span class="str">"Alice"</span>); <span class="cm">// "Hello, Alice!"</span>
+      </div>
+    </div>
+    <div class="fn-live">
+      <div class="live-label">Try it live:</div>
+      <div class="inp-row">
+        <input type="text" id="t1-name" value="Alice" placeholder="name"/>
+        <button onclick="runT1()">Run greet()</button>
+      </div>
+      <div class="out-box" id="t1-out">Hello, Alice!</div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:.4rem">Can be called BEFORE it is defined (hoisted)</div>
+    </div>
+  </div>
+</div>
+
+<!-- TYPE 2 -->
+<div class="fn-card">
+  <div class="fn-head">
+    <div class="fn-num" style="background:#E6F1FB;color:#185FA5">2</div>
+    <div class="fn-title">Function Expression (stored in variable)</div>
+    <span class="fn-badge" style="background:#E6F1FB;color:#0C447C">common — function stored in const</span>
+  </div>
+  <div class="fn-body">
+    <div class="fn-code">
+      <div class="code">
+<span class="kw">const</span> <span class="fn">multiply</span> = <span class="kw">function</span>(a, b) {<br>
+&nbsp;&nbsp;<span class="kw">return</span> a * b;<br>
+};<br><br>
+multiply(<span class="num">4</span>, <span class="num">5</span>); <span class="cm">// 20</span>
+      </div>
+    </div>
+    <div class="fn-live">
+      <div class="live-label">Try it live:</div>
+      <div class="inp-row">
+        <input type="number" id="t2-a" value="4"/>
+        <span style="color:var(--color-text-secondary)">×</span>
+        <input type="number" id="t2-b" value="5"/>
+        <button onclick="runT2()">Run</button>
+      </div>
+      <div class="out-box" id="t2-out">multiply(4, 5) → 20</div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:.4rem">Must be defined BEFORE you call it</div>
+    </div>
+  </div>
+</div>
+
+<!-- TYPE 3 -->
+<div class="fn-card">
+  <div class="fn-head">
+    <div class="fn-num" style="background:#E1F5EE;color:#085041">3</div>
+    <div class="fn-title">Arrow Function  <code style="font-size:12px">=></code></div>
+    <span class="fn-badge" style="background:#E1F5EE;color:#04342C">modern — used EVERYWHERE in React & Node</span>
+  </div>
+  <div class="fn-body">
+    <div class="fn-code">
+      <div class="code">
+<span class="cm">// full version:</span><br>
+<span class="kw">const</span> <span class="fn">square</span> = (n) => {<br>
+&nbsp;&nbsp;<span class="kw">return</span> n * n;<br>
+};<br><br>
+<span class="cm">// short version (one line):</span><br>
+<span class="kw">const</span> <span class="fn">square</span> = (n) => n * n;<br><br>
+square(<span class="num">6</span>); <span class="cm">// 36</span>
+      </div>
+    </div>
+    <div class="fn-live">
+      <div class="live-label">Try it live:</div>
+      <div class="inp-row">
+        <input type="number" id="t3-n" value="6"/>
+        <button onclick="runT3()">square(n)</button>
+      </div>
+      <div class="out-box" id="t3-out">square(6) → 36</div>
+      <div style="font-size:11px;color:var(--color-text-tertiary);margin-top:.4rem">No <code>function</code> keyword. Shorter and cleaner.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TYPE 4 -->
+<div class="fn-card">
+  <div class="fn-head">
+    <div class="fn-num" style="background:#FAEEDA;color:#633806">4</div>
+    <div class="fn-title">Default Parameters</div>
+    <span class="fn-badge" style="background:#FAEEDA;color:#412402">fallback when no value passed</span>
+  </div>
+  <div class="fn-body">
+    <div class="fn-code">
+      <div class="code">
+<span class="kw">function</span> <span class="fn">welcome</span>(<br>
+&nbsp;&nbsp;name = <span class="str">"Student"</span>,<br>
+&nbsp;&nbsp;course = <span class="str">"MERN"</span><br>
+) {<br>
+&nbsp;&nbsp;<span class="kw">return</span> <span class="str">`Hi ${name}, welcome to ${course}!`</span>;<br>
+}<br><br>
+welcome();               <span class="cm">// Hi Student, welcome to MERN!</span><br>
+welcome(<span class="str">"Ali"</span>);         <span class="cm">// Hi Ali, welcome to MERN!</span>
+      </div>
+    </div>
+    <div class="fn-live">
+      <div class="live-label">Try it live — leave blank to use defaults:</div>
+      <div class="inp-row">
+        <input type="text" id="t4-name"   placeholder="name (or leave empty)"/>
+        <input type="text" id="t4-course" placeholder="course (or leave empty)"/>
+        <button onclick="runT4()">Run</button>
+      </div>
+      <div class="out-box" id="t4-out">Hi Student, welcome to MERN!</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function runT1(){const n=document.getElementById('t1-name').value||'World';document.getElementById('t1-out').textContent='greet("'+n+'") → "Hello, '+n+'!"';}
+function runT2(){const a=parseFloat(document.getElementById('t2-a').value)||0;const b=parseFloat(document.getElementById('t2-b').value)||0;document.getElementById('t2-out').textContent='multiply('+a+', '+b+') → '+a*b;}
+function runT3(){const n=parseFloat(document.getElementById('t3-n').value)||0;document.getElementById('t3-out').textContent='square('+n+') → '+n*n;}
+function runT4(){const n=document.getElementById('t4-name').value.trim()||'Student';const c=document.getElementById('t4-course').value.trim()||'MERN';document.getElementById('t4-out').textContent='"Hi '+n+', welcome to '+c+'!"';}
+</script>

@@ -1,0 +1,94 @@
+
+<style>
+  @keyframes travel{0%{opacity:0;transform:translateX(-20px)}100%{opacity:1;transform:translateX(0)}}
+  @keyframes glow{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 3px #1D9E75}}
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.fn{color:#185FA5}.num{color:#854F0B}.str{color:#0F6E56}.cm{color:var(--color-text-tertiary);font-style:italic}.ret{color:#1D9E75;font-weight:500}
+  .step-pills{display:flex;gap:6px;flex-wrap:wrap;margin:.65rem 0}
+  .pill{padding:5px 14px;border-radius:30px;font-size:12px;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);transition:all .3s}
+  .pill.active{font-weight:500;color:var(--color-text-primary)}
+  .pill.s-call{} .pill.active.s-call{background:#EEEDFE;border-color:#534AB7;color:#3C3489}
+  .pill.s-enter{} .pill.active.s-enter{background:#FAEEDA;border-color:#BA7517;color:#412402}
+  .pill.s-run{} .pill.active.s-run{background:#E6F1FB;border-color:#378ADD;color:#042C53}
+  .pill.s-ret{} .pill.active.s-ret{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+  .pill.s-back{} .pill.active.s-back{background:#EEEDFE;border-color:#534AB7;color:#3C3489}
+  .result-box{font-size:28px;font-weight:500;font-family:var(--font-mono);padding:.75rem 1.25rem;border-radius:var(--border-radius-lg);text-align:center;margin:.5rem 0;min-height:60px;transition:all .4s;background:var(--color-background-secondary);color:var(--color-text-primary);border:0.5px solid var(--color-border-secondary)}
+  .result-box.lit{background:#E1F5EE;color:#085041;border-color:#1D9E75}
+  .explain-line{font-size:13px;color:var(--color-text-secondary);min-height:22px;margin:.3rem 0;transition:all .3s}
+  .inp-row{display:flex;gap:8px;margin:.5rem 0;align-items:center;flex-wrap:wrap}
+  .warn{background:#FCEBEB;border-left:3px solid #E24B4A;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.6rem 1rem;font-size:13px;color:#791F1F;margin:.5rem 0}
+</style>
+
+<h2 class="sr-only">Return statement animated explanation</h2>
+
+<div class="code">
+<span class="kw">function</span> <span class="fn">add</span>(a, b) {<br>
+&nbsp;&nbsp;<span class="kw">let</span> sum = a + b;<br>
+&nbsp;&nbsp;<span class="ret">return</span> sum;  <span class="cm">// sends sum BACK to whoever called add()</span><br>
+}<br><br>
+<span class="kw">let</span> answer = <span class="fn">add</span>(<span class="num">3</span>, <span class="num">5</span>);  <span class="cm">// answer gets the returned value</span><br>
+console.log(answer);         <span class="cm">// 8</span>
+</div>
+
+<div style="font-size:12px;color:var(--color-text-secondary);margin:.5rem 0">Watch what happens step by step:</div>
+
+<div class="step-pills">
+  <span class="pill s-call" id="sp1">1. Call add(3,5)</span>
+  <span style="color:var(--color-text-tertiary)">→</span>
+  <span class="pill s-enter" id="sp2">2. Enter function</span>
+  <span style="color:var(--color-text-tertiary)">→</span>
+  <span class="pill s-run" id="sp3">3. Run body</span>
+  <span style="color:var(--color-text-tertiary)">→</span>
+  <span class="pill s-ret" id="sp4">4. return 8</span>
+  <span style="color:var(--color-text-tertiary)">→</span>
+  <span class="pill s-back" id="sp5">5. answer = 8</span>
+</div>
+
+<div class="result-box" id="ret-result">Press Play to see</div>
+<div class="explain-line" id="ret-explain">Watch what return does — it sends the value back to the caller</div>
+
+<div class="inp-row">
+  <input type="number" id="ret-a" value="3" style="font-family:var(--font-mono);width:60px;font-size:14px"/>
+  <span style="color:var(--color-text-secondary)">+</span>
+  <input type="number" id="ret-b" value="5" style="font-family:var(--font-mono);width:60px;font-size:14px"/>
+  <button onclick="playReturn()">Play animation</button>
+  <button onclick="resetReturn()">Reset</button>
+</div>
+
+<div class="warn">
+  <strong>What if you forget return?</strong><br>
+  <code>function addBroken(a, b) { a + b; }</code> ← no return!<br>
+  <code>let x = addBroken(3, 5);</code><br>
+  <code>console.log(x);</code> → <strong>undefined</strong> — nothing came back!
+</div>
+
+<script>
+let retTimers=[];
+function clearPills(){['sp1','sp2','sp3','sp4','sp5'].forEach(id=>document.getElementById(id).classList.remove('active'));}
+function resetReturn(){retTimers.forEach(clearTimeout);retTimers=[];clearPills();document.getElementById('ret-result').className='result-box';document.getElementById('ret-result').textContent='Press Play to see';document.getElementById('ret-explain').textContent='Watch what return does — it sends the value back to the caller';}
+
+function playReturn(){
+  resetReturn();
+  const a=parseFloat(document.getElementById('ret-a').value)||0;
+  const b=parseFloat(document.getElementById('ret-b').value)||0;
+  const sum=a+b;
+  const steps=[
+    {pill:'sp1',msg:'Calling add('+a+', '+b+')...',res:'add( '+a+', '+b+' )'},
+    {pill:'sp2',msg:'Entering the function. a='+a+', b='+b,res:'a='+a+', b='+b},
+    {pill:'sp3',msg:'Running the body: sum = '+a+' + '+b+' = '+sum,res:'sum = '+sum},
+    {pill:'sp4',msg:'return '+sum+' — sending the value back out!',res:'→ '+sum+' flying back!'},
+    {pill:'sp5',msg:'answer = '+sum+'. Done! The caller received the value.',res:'answer = '+sum+' ✓'},
+  ];
+  steps.forEach((s,i)=>{
+    retTimers.push(setTimeout(()=>{
+      clearPills();
+      document.getElementById(s.pill).classList.add('active');
+      document.getElementById('ret-explain').textContent=s.msg;
+      const rb=document.getElementById('ret-result');
+      rb.textContent=s.res;
+      if(i===4){rb.classList.add('lit');}
+    },i*900));
+  });
+}
+</script>
