@@ -1,0 +1,128 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.op{color:#D85A30;font-weight:500}.vn{color:#185FA5}
+  .assign-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:.75rem 0}
+  .a-row{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.65rem .9rem;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s}
+  .a-row:hover,.a-row.active{border-color:#534AB7;background:#EEEDFE}
+  .a-op{font-family:var(--font-mono);font-size:16px;font-weight:500;color:#534AB7;min-width:36px}
+  .a-info{flex:1}
+  .a-name{font-size:12px;font-weight:500;color:var(--color-text-primary)}
+  .a-eq{font-size:11px;color:var(--color-text-tertiary);font-family:var(--font-mono)}
+  .demo-box{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1rem;margin:.5rem 0}
+  .var-display{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .var-box{border:2px solid #534AB7;border-radius:var(--border-radius-lg);text-align:center;padding:.5rem 1rem;min-width:90px}
+  .var-label{font-size:11px;color:#534AB7;font-family:var(--font-mono);margin-bottom:2px}
+  .var-val{font-size:28px;font-weight:500;font-family:var(--font-mono);color:#534AB7;transition:all .25s}
+  .arrow-op{font-size:20px;color:#D85A30;font-weight:500}
+  .result-val{font-size:28px;font-weight:500;font-family:var(--font-mono);color:#085041}
+  .operation-row{font-family:var(--font-mono);font-size:14px;color:var(--color-text-secondary);margin:.5rem 0}
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .pop{animation:pop .3s ease}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:13px;min-height:44px;max-height:140px;overflow-y:auto;margin-top:.5rem}
+  .co{color:#86efac}.ci{color:#60a5fa}.cx{color:#9ca3af;font-style:italic}
+  @media(max-width:480px){.assign-grid{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Interactive assignment operators demonstration</h2>
+
+<div class="assign-grid">
+  <div class="a-row active" onclick="pickOp('=',10,this)">
+    <div class="a-op">=</div>
+    <div class="a-info"><div class="a-name">Basic assign</div><div class="a-eq">x = value</div></div>
+  </div>
+  <div class="a-row" onclick="pickOp('+=',10,this)">
+    <div class="a-op">+=</div>
+    <div class="a-info"><div class="a-name">Add and assign</div><div class="a-eq">x = x + value</div></div>
+  </div>
+  <div class="a-row" onclick="pickOp('-=',10,this)">
+    <div class="a-op">-=</div>
+    <div class="a-info"><div class="a-name">Subtract and assign</div><div class="a-eq">x = x - value</div></div>
+  </div>
+  <div class="a-row" onclick="pickOp('*=',10,this)">
+    <div class="a-op">*=</div>
+    <div class="a-info"><div class="a-name">Multiply and assign</div><div class="a-eq">x = x * value</div></div>
+  </div>
+  <div class="a-row" onclick="pickOp('/=',10,this)">
+    <div class="a-op">/=</div>
+    <div class="a-info"><div class="a-name">Divide and assign</div><div class="a-eq">x = x / value</div></div>
+  </div>
+  <div class="a-row" onclick="pickOp('%=',10,this)">
+    <div class="a-op">%=</div>
+    <div class="a-info"><div class="a-name">Modulus and assign</div><div class="a-eq">x = x % value</div></div>
+  </div>
+</div>
+
+<div class="demo-box">
+  <div class="operation-row" id="op-row">let x = 10; &nbsp; x = 5; &nbsp; → x is now 5</div>
+  <div class="var-display">
+    <div>
+      <div class="var-label">x (before)</div>
+      <div class="var-val" id="before-val">10</div>
+    </div>
+    <div class="arrow-op" id="op-arrow">=</div>
+    <div>
+      <div class="var-label">operand</div>
+      <input type="number" id="operand" value="5" style="font-family:var(--font-mono);font-size:18px;width:72px;text-align:center"/>
+    </div>
+    <div class="arrow-op">→</div>
+    <div>
+      <div class="var-label" style="color:#085041">x (after)</div>
+      <div class="result-val" id="after-val">5</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin:.5rem 0;flex-wrap:wrap">
+    <button onclick="applyOp()">Apply operator</button>
+    <button onclick="resetX()">Reset x = 10</button>
+  </div>
+  <div class="con" id="assign-con"><div class="cx">// click an operator then press Apply</div></div>
+</div>
+
+<script>
+let curAssignOp='=', xVal=10;
+
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+function pickOp(op,reset,el){
+  curAssignOp=op;
+  document.querySelectorAll('.a-row').forEach(r=>r.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('op-arrow').textContent=op;
+  updateDisplay();
+}
+
+function updateDisplay(){
+  const v=parseFloat(document.getElementById('operand').value)||0;
+  document.getElementById('before-val').textContent=xVal;
+  let r;
+  if(curAssignOp==='=')  r=v;
+  else if(curAssignOp==='+=') r=xVal+v;
+  else if(curAssignOp==='-=') r=xVal-v;
+  else if(curAssignOp==='*=') r=xVal*v;
+  else if(curAssignOp==='/=') r=v!==0?parseFloat((xVal/v).toFixed(4)):'÷0 error';
+  else if(curAssignOp==='%=') r=xVal%v;
+  document.getElementById('after-val').textContent=r;
+  document.getElementById('op-row').textContent='x = '+xVal+';  x '+curAssignOp+' '+v+';  → x is now '+r;
+}
+
+document.getElementById('operand').oninput=updateDisplay;
+
+function applyOp(){
+  const v=parseFloat(document.getElementById('operand').value)||0;
+  const old=xVal;
+  if(curAssignOp==='=')  xVal=v;
+  else if(curAssignOp==='+=') xVal+=v;
+  else if(curAssignOp==='-=') xVal-=v;
+  else if(curAssignOp==='*=') xVal*=v;
+  else if(curAssignOp==='/=') xVal=v!==0?parseFloat((xVal/v).toFixed(4)):xVal;
+  else if(curAssignOp==='%=') xVal%=v;
+  addL('assign-con','x was '+old+'  →  x '+curAssignOp+' '+v+' = '+xVal,'co');
+  const rv=document.getElementById('after-val');
+  rv.classList.remove('pop'); void rv.offsetWidth; rv.classList.add('pop');
+  updateDisplay();
+}
+
+function resetX(){xVal=10;addL('assign-con','x reset to 10','cx');updateDisplay();}
+updateDisplay();
+</script>
