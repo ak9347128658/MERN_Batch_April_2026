@@ -42,6 +42,8 @@ These combine **multiple conditions** together. Think of them as the words **"AN
 
 ## Category 5 — String & Ternary Operators On the left — type your own words and see how `+` joins them. On the right — change `age` and `min` to see the ternary flip between Adult and Minor. Try all 4 real-world examples at the bottom!
 
+![alt](../images/day2/logical_operators_interactive.webp)
+
 [Click link to open Simulation for String & Ternary Operators](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/string_ternary_operators.html)
 
 
@@ -123,3 +125,80 @@ console.log(passed || topMark);  // either?
 let grade = score >= 90 ? "A" : score >= 75 ? "B" : "C";
 console.log(grade);
 ```
+
+=================================
+#  **Operator Precedence** — also called **BODMAS / BIDMAS** in school maths. In JavaScript it's the same idea: when there are multiple operators in one line, JavaScript follows a strict **order of who goes first**.
+
+Let's start with the full picture:The tower is the rule — **higher = runs first**. Brackets always win. Assignment always goes last. Now let's see this in action with animated step-by-step solving.
+
+![alt](../images/day2/operator_precedence_tower.svg)
+
+---
+
+## Part 1 — BODMAS in action: step-by-step solverPress **Play all** on each expression — watch the steps reveal one by one. Try `2 + 3 * 4` first — most beginners get this wrong thinking the answer is 20!
+
+---
+
+## Part 2 — The most common mistakes (animated)Open every card — these are the **exact mistakes** every beginner makes in their first week. Knowing them now saves you hours of debugging later!
+
+---
+
+## Part 3 — Live expression tester: guess before you run**Guess before you click!** This quiz has 8 questions covering all the tricky cases. The explanation below each answer tells you exactly *why* the answer is what it is.
+
+---
+
+## Part 4 — The BODMAS / Precedence Cheat Card---
+
+![alt](../images/day2/precedence_cheat_card.webp)
+
+## The Complete Summary
+
+```js
+// ── BODMAS RULE — same as school maths ─────────────────
+// B  → Brackets      ( )          runs 1st
+// O  → Orders/Power  **           runs 2nd
+// D  → Division      /            runs 3rd (with M)
+// M  → Multiplication *  %        runs 3rd
+// A  → Addition      +            runs 4th (with S)
+// S  → Subtraction   -            runs 4th
+
+// ── THEN in JavaScript: ────────────────────────────────
+// Comparison   > < >= <=          runs 5th
+// Equality     === !==            runs 6th
+// Logical AND  &&                 runs 7th
+// Logical OR   ||                 runs 8th
+// Assignment   = += -= etc.       runs LAST
+
+// ── EXAMPLES ───────────────────────────────────────────
+2 + 3 * 4          // 14  (not 20 — * before +)
+(2 + 3) * 4        // 20  (brackets first)
+10 - 2 ** 3        // 2   (** before -)
+20 / 4 + 3 * 2     // 11  (/ and * before +)
+5 + 3 > 2 * 4      // false  (8 > 8 → false)
+true || false && false  // true  (&& before ||)
+let x = 2 + 3 * 4  // x = 14  (right side first, then =)
+
+// ── GOLDEN RULE ────────────────────────────────────────
+// When in doubt — use BRACKETS!
+// (2 + 3) * 4   is better than hoping JS does what you think
+```
+
+---
+
+**Homework — predict the answer BEFORE running each one in your console:**
+
+```js
+// Predict each answer, THEN run it in console (F12)
+
+console.log( 2 + 5 * 3 );         // ?
+console.log( (2 + 5) * 3 );       // ?
+console.log( 10 - 3 + 2 );        // ?
+console.log( 2 ** 2 ** 3 );       // ? (hint: right to left!)
+console.log( 6 / 2 * 3 );         // ?
+console.log( 10 > 5 + 4 );        // ?
+console.log( true || false && false ); // ?
+console.log( !false && true );     // ?
+```
+
+---
+
