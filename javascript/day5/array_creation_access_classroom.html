@@ -1,0 +1,72 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--color-text-primary)}
+  .kw{color:#534AB7}.str{color:#0F6E56}.num{color:#854F0B}.cm{color:var(--color-text-tertiary);font-style:italic}.fn{color:#185FA5}
+  .arr-shelf{display:flex;gap:3px;flex-wrap:wrap;margin:.75rem 0}
+  .cell{border-radius:var(--border-radius-md);overflow:hidden;border:0.5px solid var(--color-border-secondary);text-align:center;min-width:74px;transition:all .25s;cursor:pointer}
+  .cell:hover{transform:translateY(-3px)}
+  .cell.active{transform:translateY(-5px);border-color:#1D9E75;border-width:1.5px}
+  .cell-idx{font-size:10px;padding:3px 4px;background:var(--color-background-secondary);color:var(--color-text-tertiary);font-family:var(--font-mono);border-bottom:0.5px solid var(--color-border-tertiary)}
+  .cell-val{font-size:13px;font-weight:500;padding:9px 6px;font-family:var(--font-mono);color:#185FA5;background:var(--color-background-primary)}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:13px;min-height:40px;color:#86efac;margin-top:.4rem}
+  .info{background:var(--color-background-secondary);border-left:3px solid #378ADD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.5rem .9rem;font-size:13px;color:var(--color-text-secondary);margin:.5rem 0}
+  .ctrl{display:flex;gap:8px;margin:.5rem 0;align-items:center;flex-wrap:wrap}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+</style>
+
+<h2 class="sr-only">Array creation and index access interactive visualizer</h2>
+
+<div class="code">
+<span class="cm">// Creating an array — use square brackets [ ]</span><br>
+<span class="kw">let</span> students = [<span class="str">"Alice"</span>, <span class="str">"Bob"</span>, <span class="str">"Charlie"</span>, <span class="str">"Diana"</span>, <span class="str">"Eve"</span>];<br><br>
+<span class="cm">// Accessing items — use the index number</span><br>
+students[<span class="num">0</span>]                   <span class="cm">// "Alice"   ← first</span><br>
+students[<span class="num">2</span>]                   <span class="cm">// "Charlie" ← third</span><br>
+students[students.length - <span class="num">1</span>]  <span class="cm">// "Eve"     ← last (always!)</span><br>
+students.length               <span class="cm">// 5 (total count)</span>
+</div>
+
+<div style="font-size:12px;color:var(--color-text-secondary);margin:.5rem 0">Click any student box to access it:</div>
+<div class="arr-shelf" id="student-shelf"></div>
+<div class="out" id="student-out">Click a box above to access that student</div>
+<div class="info" id="student-info">length = 5 &nbsp;|&nbsp; first = [0] &nbsp;|&nbsp; last = [length-1] = [4]</div>
+
+<div class="ctrl">
+  <label>Type an index:</label>
+  <input type="number" id="idx-inp" min="0" max="10" value="0" style="font-family:var(--font-mono);font-size:13px;width:60px"/>
+  <button onclick="accessByIndex()">students[ i ]</button>
+  <button onclick="accessLast()">Get last item</button>
+  <button onclick="showAll()">Show all</button>
+</div>
+
+<script>
+const students=["Alice","Bob","Charlie","Diana","Eve"];
+function buildShelf(){
+  const s=document.getElementById('student-shelf');s.innerHTML='';
+  students.forEach((v,i)=>{
+    const d=document.createElement('div');d.className='cell';d.id='sc-'+i;
+    d.innerHTML='<div class="cell-idx">['+i+']</div><div class="cell-val">'+v+'</div>';
+    d.onclick=()=>clickCell(i); s.appendChild(d);
+  });
+}
+function clickCell(i){
+  document.querySelectorAll('.cell').forEach(c=>c.classList.remove('active'));
+  document.getElementById('sc-'+i).classList.add('active');
+  document.getElementById('student-out').textContent='students['+i+'] → "'+students[i]+'"';
+}
+function accessByIndex(){
+  const i=parseInt(document.getElementById('idx-inp').value);
+  if(i>=0&&i<students.length) clickCell(i);
+  else document.getElementById('student-out').textContent='Index '+i+' does not exist! Valid range: 0 to '+(students.length-1);
+}
+function accessLast(){
+  clickCell(students.length-1);
+  document.getElementById('student-out').textContent='students[students.length-1] = students['+(students.length-1)+'] → "'+students[students.length-1]+'"';
+}
+function showAll(){
+  document.querySelectorAll('.cell').forEach(c=>c.classList.remove('active'));
+  document.getElementById('student-out').textContent='All: ['+students.map(s=>'"'+s+'"').join(', ')+']  |  length: '+students.length;
+}
+buildShelf();
+</script>

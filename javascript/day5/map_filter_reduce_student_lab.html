@@ -1,0 +1,178 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .tab-row{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+  .tab{padding:5px 13px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+  .panel{display:none}.panel.active{display:block}
+  .code{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.75rem 1rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.85;color:var(--color-text-primary);margin:.4rem 0}
+  .kw{color:#534AB7}.fn{color:#185FA5}.num{color:#854F0B}.str{color:#0F6E56}.cm{color:var(--color-text-tertiary);font-style:italic}
+  .student-grid{display:flex;flex-wrap:wrap;gap:6px;margin:.5rem 0}
+  .s-card{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.5rem .75rem;background:var(--color-background-primary);transition:all .3s;min-width:100px}
+  .s-card.hi{border-color:#1D9E75;background:#E1F5EE}
+  .s-card.dim{opacity:.3}
+  .s-name{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+  .s-score{font-size:12px;font-family:var(--font-mono);color:#854F0B}
+  .s-new{font-size:11px;color:#0F6E56;font-weight:500;margin-top:2px}
+  .res-bar{padding:.6rem 1rem;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;border-left:3px solid #534AB7;font-family:var(--font-mono);font-size:13px;background:var(--color-background-secondary);color:var(--color-text-primary);margin:.5rem 0}
+  .con{background:#111;border-radius:var(--border-radius-md);padding:.6rem .9rem;font-family:var(--font-mono);font-size:12.5px;min-height:44px;max-height:130px;overflow-y:auto;margin:.4rem 0}
+  .co{color:#86efac}.ci{color:#60a5fa}.cx{color:#9ca3af;font-style:italic}
+  .ctrl{display:flex;gap:8px;margin:.5rem 0;align-items:center;flex-wrap:wrap}
+  .ctrl label{font-size:12px;color:var(--color-text-secondary)}
+</style>
+
+<h2 class="sr-only">map filter and reduce with real student data interactive lab</h2>
+
+<div class="tab-row">
+  <button class="tab active" onclick="sw('map')">map</button>
+  <button class="tab" onclick="sw('filter')">filter</button>
+  <button class="tab" onclick="sw('reduce')">reduce</button>
+  <button class="tab" onclick="sw('chain')">chain all 3!</button>
+</div>
+
+<!-- MAP -->
+<div class="panel active" id="p-map">
+  <div class="code">
+<span class="cm">// map — give every student 5 bonus marks</span><br>
+<span class="kw">const</span> newScores = students.<span class="fn">map</span>(<span class="num">s</span> => ({<br>
+&nbsp;&nbsp;...s,<br>
+&nbsp;&nbsp;score: s.score + <span class="num">5</span>  <span class="cm">// add 5 to everyone</span><br>
+}));
+  </div>
+  <div class="ctrl">
+    <label>Bonus marks:</label>
+    <input type="range" min="1" max="20" value="5" step="1" style="flex:1" oninput="runMap(this.value)"/>
+    <span id="bonus-lbl" style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--color-text-primary)">+5</span>
+    <button onclick="runMap(document.getElementById('bonus-lbl').textContent.replace('+',''))">Apply map</button>
+  </div>
+  <div class="student-grid" id="map-grid"></div>
+  <div class="res-bar" id="map-res">Press Apply map</div>
+</div>
+
+<!-- FILTER -->
+<div class="panel" id="p-filter">
+  <div class="code">
+<span class="cm">// filter — only show students who passed (score >= 50)</span><br>
+<span class="kw">const</span> passed = students.<span class="fn">filter</span>(<span class="num">s</span> => s.score >= minScore);
+  </div>
+  <div class="ctrl">
+    <label>Min score:</label>
+    <input type="range" min="0" max="100" value="50" step="5" style="flex:1" oninput="runFilter(this.value)"/>
+    <span id="filter-lbl" style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--color-text-primary)">50</span>
+  </div>
+  <div class="student-grid" id="filter-grid"></div>
+  <div class="res-bar" id="filter-res"></div>
+</div>
+
+<!-- REDUCE -->
+<div class="panel" id="p-reduce">
+  <div class="code">
+<span class="cm">// reduce — calculate class average</span><br>
+<span class="kw">const</span> total = students.<span class="fn">reduce</span>((sum, s) => sum + s.score, <span class="num">0</span>);<br>
+<span class="kw">const</span> avg   = total / students.length;
+  </div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin:.4rem 0">Watch reduce add up scores step by step:</div>
+  <div class="student-grid" id="reduce-grid"></div>
+  <div class="ctrl">
+    <button onclick="runReduce()">Reduce — calculate total & average</button>
+  </div>
+  <div class="con" id="reduce-con"><div class="cx">// press button to see reduce working</div></div>
+  <div class="res-bar" id="reduce-res">Result appears here</div>
+</div>
+
+<!-- CHAIN -->
+<div class="panel" id="p-chain">
+  <div class="code">
+<span class="cm">// Chain: filter passing → map to name → join</span><br>
+<span class="kw">const</span> result = students<br>
+&nbsp;&nbsp;.<span class="fn">filter</span>(s => s.score >= <span class="num">50</span>)  <span class="cm">// 1. keep who passed</span><br>
+&nbsp;&nbsp;.<span class="fn">map</span>(s => s.name)             <span class="cm">// 2. get just names</span><br>
+&nbsp;&nbsp;.<span class="fn">join</span>(<span class="str">", "</span>);                  <span class="cm">// 3. combine to string</span>
+  </div>
+  <div class="ctrl">
+    <label>Min score:</label>
+    <input type="range" min="0" max="100" value="50" step="5" style="flex:1" oninput="runChain(this.value)"/>
+    <span id="chain-lbl" style="font-family:var(--font-mono);font-size:13px;font-weight:500;color:var(--color-text-primary)">50</span>
+  </div>
+  <div class="con" id="chain-con"><div class="cx">// drag slider to see chaining</div></div>
+  <div class="res-bar" id="chain-res">Result here</div>
+</div>
+
+<script>
+const students=[
+  {name:"Alice",score:88},{name:"Bob",score:42},{name:"Charlie",score:75},
+  {name:"Diana",score:91},{name:"Eve",score:55},{name:"Frank",score:38},
+  {name:"Grace",score:67},{name:"Henry",score:50}
+];
+
+function sw(id){
+  const ids=['map','filter','reduce','chain'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',ids[i]===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  if(id==='filter') runFilter(50);
+  if(id==='reduce') buildReduceGrid();
+  if(id==='chain')  runChain(50);
+}
+
+function addL(id,t,c){const b=document.getElementById(id);const d=document.createElement('div');d.className=c;d.textContent=t;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+
+function makeCard(s,highlight,newScore){
+  const d=document.createElement('div');
+  d.className='s-card'+(highlight?' hi':'');
+  d.innerHTML='<div class="s-name">'+s.name+'</div>'
+    +(newScore!==undefined?'<div class="s-score" style="text-decoration:line-through;color:var(--color-text-tertiary)">'+s.score+'</div><div class="s-new">'+newScore+' (new)</div>':'<div class="s-score">'+s.score+'</div>');
+  return d;
+}
+
+function runMap(v){
+  const bonus=Number(v);
+  document.getElementById('bonus-lbl').textContent='+'+bonus;
+  const g=document.getElementById('map-grid');g.innerHTML='';
+  students.forEach(s=>g.appendChild(makeCard(s,true,s.score+bonus)));
+  document.getElementById('map-res').textContent='map applied — all '+students.length+' students got +'+bonus+' marks';
+}
+
+function runFilter(v){
+  const min=Number(v);document.getElementById('filter-lbl').textContent=min;
+  const g=document.getElementById('filter-grid');g.innerHTML='';
+  let n=0;
+  students.forEach(s=>{
+    const pass=s.score>=min; if(pass)n++;
+    const d=document.createElement('div');
+    d.className='s-card'+(pass?' hi':' dim');
+    d.innerHTML='<div class="s-name">'+s.name+'</div><div class="s-score">'+s.score+'</div>';
+    g.appendChild(d);
+  });
+  document.getElementById('filter-res').textContent='filter(score >= '+min+') → '+n+' passed, '+(students.length-n)+' removed';
+}
+
+function buildReduceGrid(){
+  const g=document.getElementById('reduce-grid');g.innerHTML='';
+  students.forEach(s=>g.appendChild(makeCard(s,false)));
+}
+function runReduce(){
+  const con=document.getElementById('reduce-con');con.innerHTML='';
+  addL('reduce-con','reduce((sum, s) => sum + s.score, 0)','ci');
+  let sum=0;
+  students.forEach((s,i)=>{
+    sum+=s.score;
+    addL('reduce-con','step '+(i+1)+': sum = '+(sum-s.score)+' + '+s.score+' ('+s.name+') = '+sum,'co');
+  });
+  const avg=(sum/students.length).toFixed(1);
+  document.getElementById('reduce-res').textContent='total = '+sum+' | average = '+avg+' | '+students.length+' students';
+}
+
+function runChain(v){
+  const min=Number(v);document.getElementById('chain-lbl').textContent=min;
+  const con=document.getElementById('chain-con');con.innerHTML='';
+  const f=students.filter(s=>s.score>=min);
+  addL('chain-con','step 1 — filter(score >= '+min+'): ['+f.map(s=>s.name).join(', ')+'] ('+f.length+' students)','co');
+  const m=f.map(s=>s.name);
+  addL('chain-con','step 2 — map(s => s.name): ['+m.join(', ')+']','co');
+  const j=m.join(', ');
+  addL('chain-con','step 3 — join(", "): "'+j+'"','co');
+  document.getElementById('chain-res').textContent='Passed students: "'+j+'"';
+}
+buildReduceGrid(); runFilter(50);
+</script>

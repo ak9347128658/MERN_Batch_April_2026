@@ -1,0 +1,166 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .methods-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:.5rem 0}
+  .m-box{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.75rem}
+  .m-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:.2rem}
+  .m-desc{font-size:11px;color:var(--color-text-secondary);margin-bottom:.5rem}
+  .code{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.5rem .75rem;font-family:var(--font-mono);font-size:12px;line-height:1.75;color:var(--color-text-primary);margin:.35rem 0}
+  .kw{color:#534AB7}.fn{color:#185FA5}.num{color:#854F0B}.str{color:#0F6E56}.cm{color:var(--color-text-tertiary);font-style:italic}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.35rem .65rem;font-family:var(--font-mono);font-size:12px;color:#86efac;margin-top:.3rem;min-height:26px}
+  .ctrl{display:flex;gap:6px;margin:.4rem 0;align-items:center;flex-wrap:wrap}
+  .ctrl label{font-size:11px;color:var(--color-text-secondary)}
+  @media(max-width:520px){.methods-grid{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Other array methods includes indexOf find sort join slice forEach</h2>
+
+<div class="methods-grid">
+
+  <!-- includes -->
+  <div class="m-box">
+    <div class="m-title">includes( ) — does it exist?</div>
+    <div class="m-desc">Returns true or false</div>
+    <div class="code">
+<span class="kw">const</span> fruits = [<span class="str">"mango"</span>,<span class="str">"apple"</span>,<span class="str">"banana"</span>];<br>
+fruits.<span class="fn">includes</span>(<span class="str">"apple"</span>)   <span class="cm">// true</span><br>
+fruits.<span class="fn">includes</span>(<span class="str">"cherry"</span>)  <span class="cm">// false</span>
+    </div>
+    <div class="ctrl">
+      <input type="text" id="inc-v" value="apple" style="font-family:var(--font-mono);font-size:12px;flex:1"/>
+      <button onclick="runIncludes()" style="font-size:12px">includes( )</button>
+    </div>
+    <div class="out" id="inc-out">—</div>
+  </div>
+
+  <!-- indexOf -->
+  <div class="m-box">
+    <div class="m-title">indexOf( ) — find the position</div>
+    <div class="m-desc">Returns index number, or -1 if not found</div>
+    <div class="code">
+fruits.<span class="fn">indexOf</span>(<span class="str">"banana"</span>)  <span class="cm">// 2</span><br>
+fruits.<span class="fn">indexOf</span>(<span class="str">"cherry"</span>)  <span class="cm">// -1 (not found)</span>
+    </div>
+    <div class="ctrl">
+      <input type="text" id="idx-v" value="banana" style="font-family:var(--font-mono);font-size:12px;flex:1"/>
+      <button onclick="runIndexOf()" style="font-size:12px">indexOf( )</button>
+    </div>
+    <div class="out" id="idx-out">—</div>
+  </div>
+
+  <!-- find -->
+  <div class="m-box">
+    <div class="m-title">find( ) — get first matching item</div>
+    <div class="m-desc">Returns the actual item (not index)</div>
+    <div class="code">
+<span class="kw">const</span> nums = [<span class="num">10</span>,<span class="num">25</span>,<span class="num">8</span>,<span class="num">30</span>,<span class="num">5</span>];<br>
+nums.<span class="fn">find</span>(n => n > <span class="num">20</span>)  <span class="cm">// 25</span><br>
+<span class="cm">// returns FIRST item > 20</span>
+    </div>
+    <div class="ctrl">
+      <label>find first item &gt;</label>
+      <input type="number" id="find-v" value="20" style="font-family:var(--font-mono);font-size:12px;width:60px"/>
+      <button onclick="runFind()" style="font-size:12px">find( )</button>
+    </div>
+    <div class="out" id="find-out">—</div>
+  </div>
+
+  <!-- sort -->
+  <div class="m-box">
+    <div class="m-title">sort( ) — sort items</div>
+    <div class="m-desc">Strings: alphabetical. Numbers: need a compare function!</div>
+    <div class="code">
+[<span class="str">"banana"</span>,<span class="str">"apple"</span>,<span class="str">"mango"</span>].<span class="fn">sort</span>()<br>
+<span class="cm">// ["apple","banana","mango"]</span><br>
+[<span class="num">30</span>,<span class="num">5</span>,<span class="num">100</span>,<span class="num">2</span>].<span class="fn">sort</span>((a,b) => a-b)<br>
+<span class="cm">// [2, 5, 30, 100]</span>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin:.4rem 0">
+      <button onclick="runSort('str')" style="font-size:12px">Sort strings A-Z</button>
+      <button onclick="runSort('num')" style="font-size:12px">Sort numbers ↑</button>
+      <button onclick="runSort('desc')" style="font-size:12px">Sort numbers ↓</button>
+    </div>
+    <div class="out" id="sort-out">—</div>
+  </div>
+
+  <!-- join -->
+  <div class="m-box">
+    <div class="m-title">join( ) — array to string</div>
+    <div class="m-desc">Glues all items into one string</div>
+    <div class="code">
+[<span class="str">"Alice"</span>,<span class="str">"Bob"</span>,<span class="str">"Charlie"</span>].<span class="fn">join</span>(<span class="str">", "</span>)<br>
+<span class="cm">// "Alice, Bob, Charlie"</span><br>
+[<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>].<span class="fn">join</span>(<span class="str">"-"</span>)  <span class="cm">// "1-2-3"</span>
+    </div>
+    <div class="ctrl">
+      <label>separator:</label>
+      <input type="text" id="join-sep" value=", " style="font-family:var(--font-mono);font-size:12px;width:50px"/>
+      <button onclick="runJoin()" style="font-size:12px">join( )</button>
+    </div>
+    <div class="out" id="join-out">—</div>
+  </div>
+
+  <!-- slice -->
+  <div class="m-box">
+    <div class="m-title">slice( ) — copy a portion</div>
+    <div class="m-desc">Doesn't change original — returns new array</div>
+    <div class="code">
+<span class="kw">const</span> a = [<span class="str">"a"</span>,<span class="str">"b"</span>,<span class="str">"c"</span>,<span class="str">"d"</span>,<span class="str">"e"</span>];<br>
+a.<span class="fn">slice</span>(<span class="num">1</span>, <span class="num">4</span>)  <span class="cm">// ["b","c","d"]</span><br>
+<span class="cm">// from index 1, up to (not including) 4</span>
+    </div>
+    <div class="ctrl">
+      <label>from:</label>
+      <input type="number" id="sl-a" value="1" style="width:44px;font-family:var(--font-mono);font-size:12px"/>
+      <label>to:</label>
+      <input type="number" id="sl-b" value="4" style="width:44px;font-family:var(--font-mono);font-size:12px"/>
+      <button onclick="runSlice()" style="font-size:12px">slice( )</button>
+    </div>
+    <div class="out" id="slice-out">—</div>
+  </div>
+
+</div>
+
+<script>
+const fruits=["mango","apple","banana","cherry","grape"];
+const nums=[10,25,8,30,5,18];
+const letters=["a","b","c","d","e"];
+
+function runIncludes(){
+  const v=document.getElementById('inc-v').value.trim();
+  const r=fruits.includes(v);
+  document.getElementById('inc-out').textContent='fruits.includes("'+v+'") → '+r+(r?'  ✓ found!':'  ✗ not in array');
+}
+function runIndexOf(){
+  const v=document.getElementById('idx-v').value.trim();
+  const r=fruits.indexOf(v);
+  document.getElementById('idx-out').textContent='fruits.indexOf("'+v+'") → '+r+(r===-1?' (not found!)':' (position '+r+')');
+}
+function runFind(){
+  const v=parseInt(document.getElementById('find-v').value)||0;
+  const r=nums.find(n=>n>v);
+  document.getElementById('find-out').textContent='nums.find(n => n > '+v+') → '+(r!==undefined?r:'undefined (none found)');
+}
+function runSort(mode){
+  if(mode==='str'){
+    const r=[...fruits].sort();
+    document.getElementById('sort-out').textContent='sort() → ['+r.map(x=>'"'+x+'"').join(', ')+']';
+  } else if(mode==='num'){
+    const r=[...nums].sort((a,b)=>a-b);
+    document.getElementById('sort-out').textContent='sort((a,b)=>a-b) → ['+r.join(', ')+']';
+  } else {
+    const r=[...nums].sort((a,b)=>b-a);
+    document.getElementById('sort-out').textContent='sort((a,b)=>b-a) → ['+r.join(', ')+']';
+  }
+}
+function runJoin(){
+  const sep=document.getElementById('join-sep').value;
+  document.getElementById('join-out').textContent='["Alice","Bob","Charlie"].join("'+sep+'") → "'+["Alice","Bob","Charlie"].join(sep)+'"';
+}
+function runSlice(){
+  const a=parseInt(document.getElementById('sl-a').value)||0;
+  const b=parseInt(document.getElementById('sl-b').value)||letters.length;
+  const r=letters.slice(a,b);
+  document.getElementById('slice-out').textContent='["a","b","c","d","e"].slice('+a+','+b+') → ['+r.map(x=>'"'+x+'"').join(',')+']';
+}
+</script>

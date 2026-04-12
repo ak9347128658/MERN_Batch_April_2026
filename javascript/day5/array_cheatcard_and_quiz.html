@@ -1,0 +1,211 @@
+
+<style>
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .tab-row{display:flex;gap:4px;margin-bottom:.75rem;flex-wrap:wrap}
+  .tab{padding:5px 13px;border-radius:var(--border-radius-md);font-size:12px;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary)}
+  .tab.active{background:var(--color-background-primary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+  .panel{display:none}.panel.active{display:block}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{padding:.5rem .85rem;text-align:left;background:var(--color-background-secondary);font-weight:500;font-size:11px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+  td{padding:.5rem .85rem;border-bottom:0.5px solid var(--color-border-tertiary);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .method-name{font-family:var(--font-mono);font-weight:500;color:#185FA5}
+  .method-eg{font-family:var(--font-mono);font-size:11.5px;color:var(--color-text-secondary)}
+  .cat-badge{display:inline-block;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:500;white-space:nowrap}
+  .q-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem}
+  .q-code{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:.5rem .75rem;font-family:var(--font-mono);font-size:12.5px;line-height:1.7;color:var(--color-text-primary);margin:.4rem 0}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:.5rem 0}
+  .opt{padding:.55rem .85rem;border-radius:var(--border-radius-md);border:1.5px solid var(--color-border-secondary);font-family:var(--font-mono);font-size:13px;text-align:center;cursor:pointer;transition:all .2s;color:var(--color-text-primary);background:var(--color-background-secondary)}
+  .opt:hover{border-color:#534AB7;background:#EEEDFE}
+  .opt.correct{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+  .opt.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
+  .opt.show-c{background:#E1F5EE;border-color:#1D9E75;color:#085041}
+  .fb{padding:.55rem 1rem;border-radius:var(--border-radius-md);font-size:13px;margin:.4rem 0;display:none;font-weight:500}
+  .fb-ok{background:#E1F5EE;color:#085041}.fb-no{background:#FCEBEB;color:#791F1F}
+  .explain{background:var(--color-background-secondary);border-left:3px solid #534AB7;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0;padding:.5rem .9rem;font-size:12.5px;color:var(--color-text-secondary);margin:.3rem 0;display:none}
+  .score-row{display:flex;gap:10px;align-items:center;margin-bottom:.75rem;font-size:13px;color:var(--color-text-secondary)}
+  .sc-val{font-size:18px;font-weight:500;font-family:var(--font-mono);color:var(--color-text-primary)}
+  .prog{flex:1;height:7px;background:var(--color-background-secondary);border-radius:4px;overflow:hidden}
+  .prog-f{height:100%;background:#1D9E75;border-radius:4px;transition:width .4s}
+  @media(max-width:480px){.opts{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Array methods cheat card and quiz</h2>
+
+<div class="tab-row">
+  <button class="tab active" onclick="swt('ref')">Reference card</button>
+  <button class="tab" onclick="swt('quiz')">Quiz yourself!</button>
+</div>
+
+<!-- REFERENCE -->
+<div class="panel active" id="t-ref">
+  <table>
+    <tr><th>Method</th><th>What it does</th><th>Example</th><th>Returns</th><th>Category</th></tr>
+    <tr>
+      <td><span class="method-name">push(x)</span></td>
+      <td>Add to END</td>
+      <td class="method-eg">arr.push("hi")</td>
+      <td class="method-eg">new length</td>
+      <td><span class="cat-badge" style="background:#E1F5EE;color:#085041">add/remove</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">pop()</span></td>
+      <td>Remove from END</td>
+      <td class="method-eg">arr.pop()</td>
+      <td class="method-eg">removed item</td>
+      <td><span class="cat-badge" style="background:#E1F5EE;color:#085041">add/remove</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">unshift(x)</span></td>
+      <td>Add to START</td>
+      <td class="method-eg">arr.unshift("hi")</td>
+      <td class="method-eg">new length</td>
+      <td><span class="cat-badge" style="background:#E1F5EE;color:#085041">add/remove</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">shift()</span></td>
+      <td>Remove from START</td>
+      <td class="method-eg">arr.shift()</td>
+      <td class="method-eg">removed item</td>
+      <td><span class="cat-badge" style="background:#E1F5EE;color:#085041">add/remove</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">map(fn)</span></td>
+      <td>Transform every item</td>
+      <td class="method-eg">arr.map(x => x*2)</td>
+      <td class="method-eg">new array (same length)</td>
+      <td><span class="cat-badge" style="background:#EEEDFE;color:#3C3489">transform</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">filter(fn)</span></td>
+      <td>Keep items that pass</td>
+      <td class="method-eg">arr.filter(x => x>5)</td>
+      <td class="method-eg">new array (shorter)</td>
+      <td><span class="cat-badge" style="background:#EEEDFE;color:#3C3489">transform</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">reduce(fn,0)</span></td>
+      <td>Collapse to one value</td>
+      <td class="method-eg">arr.reduce((s,x)=>s+x,0)</td>
+      <td class="method-eg">single value</td>
+      <td><span class="cat-badge" style="background:#EEEDFE;color:#3C3489">transform</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">forEach(fn)</span></td>
+      <td>Loop over every item</td>
+      <td class="method-eg">arr.forEach(x => log(x))</td>
+      <td class="method-eg">undefined</td>
+      <td><span class="cat-badge" style="background:#E6F1FB;color:#0C447C">loop</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">find(fn)</span></td>
+      <td>First matching item</td>
+      <td class="method-eg">arr.find(x => x>10)</td>
+      <td class="method-eg">item or undefined</td>
+      <td><span class="cat-badge" style="background:#FAEEDA;color:#412402">search</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">includes(x)</span></td>
+      <td>Does it exist?</td>
+      <td class="method-eg">arr.includes("hi")</td>
+      <td class="method-eg">true / false</td>
+      <td><span class="cat-badge" style="background:#FAEEDA;color:#412402">search</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">indexOf(x)</span></td>
+      <td>Position of item</td>
+      <td class="method-eg">arr.indexOf("hi")</td>
+      <td class="method-eg">index or -1</td>
+      <td><span class="cat-badge" style="background:#FAEEDA;color:#412402">search</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">sort(fn)</span></td>
+      <td>Sort items</td>
+      <td class="method-eg">arr.sort((a,b)=>a-b)</td>
+      <td class="method-eg">sorted array</td>
+      <td><span class="cat-badge" style="background:#FAECE7;color:#4A1B0C">utility</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">join(sep)</span></td>
+      <td>Array → string</td>
+      <td class="method-eg">arr.join(", ")</td>
+      <td class="method-eg">string</td>
+      <td><span class="cat-badge" style="background:#FAECE7;color:#4A1B0C">utility</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">slice(a,b)</span></td>
+      <td>Copy portion</td>
+      <td class="method-eg">arr.slice(1, 4)</td>
+      <td class="method-eg">new array</td>
+      <td><span class="cat-badge" style="background:#FAECE7;color:#4A1B0C">utility</span></td>
+    </tr>
+    <tr>
+      <td><span class="method-name">reverse()</span></td>
+      <td>Flip order</td>
+      <td class="method-eg">arr.reverse()</td>
+      <td class="method-eg">reversed array</td>
+      <td><span class="cat-badge" style="background:#FAECE7;color:#4A1B0C">utility</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="t-quiz">
+  <div class="score-row">
+    <span>Score:</span>
+    <span class="sc-val" id="sc-v">0 / 0</span>
+    <div class="prog"><div class="prog-f" id="prog-f" style="width:0"></div></div>
+    <span id="q-num" style="font-size:12px">Q 1 of 10</span>
+  </div>
+  <div id="q-area"></div>
+</div>
+
+<script>
+function swt(id){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['ref','quiz'][i]===id));
+  document.getElementById('t-ref').classList.toggle('active',id==='ref');
+  document.getElementById('t-quiz').classList.toggle('active',id==='quiz');
+}
+
+const qs=[
+  {text:'What is the output?',code:'let a = [10,20,30];\nconsole.log(a[1]);',opts:['10','20','30','undefined'],ans:'20',exp:'Arrays start at index 0. a[0]=10, a[1]=20, a[2]=30.'},
+  {text:'What does push() do?',code:'let a = ["a","b"];\na.push("c");\nconsole.log(a);',opts:['["c","a","b"]','["a","b","c"]','["a","c","b"]','error'],ans:'["a","b","c"]',exp:'push() adds to the END of the array.'},
+  {text:'What does pop() return?',code:'let a = [1,2,3,4];\nlet x = a.pop();\nconsole.log(x);',opts:['1','4','3','[1,2,3]'],ans:'4',exp:'pop() removes AND returns the LAST item. The last item is 4.'},
+  {text:'What is the output?',code:'let a = [1,2,3,4,5];\nlet b = a.filter(n => n > 3);\nconsole.log(b);',opts:['[1,2,3]','[4,5]','[3,4,5]','[1,2]'],ans:'[4,5]',exp:'filter keeps items where the condition is true. Only 4 and 5 are > 3.'},
+  {text:'What does map() return?',code:'let a = [1,2,3];\nlet b = a.map(n => n * 10);\nconsole.log(b);',opts:['[1,2,3]','[10,20,30]','30','undefined'],ans:'[10,20,30]',exp:'map transforms every item. 1×10=10, 2×10=20, 3×10=30.'},
+  {text:'What does indexOf return when item is NOT found?',code:'let a = ["a","b","c"];\nconsole.log(a.indexOf("z"));',opts:['0','null','undefined','-1'],ans:'-1',exp:'indexOf returns -1 when the item is not in the array.'},
+  {text:'What is the output?',code:'let a = [5,3,1,4,2];\na.sort((x,y) => x - y);\nconsole.log(a[0]);',opts:['5','3','1','2'],ans:'1',exp:'sort((x,y)=>x-y) sorts numbers smallest to largest. So a[0] is 1.'},
+  {text:'What does shift() do?',code:'let a = ["x","y","z"];\na.shift();\nconsole.log(a);',opts:['["x","y","z"]','["y","z"]','["x","y"]','["z"]'],ans:'["y","z"]',exp:'shift() removes the FIRST item. "x" is removed, leaving ["y","z"].'},
+  {text:'What is the result?',code:'let a = [10,20,30,40];\nlet total = a.reduce((sum,n) => sum+n, 0);\nconsole.log(total);',opts:['10','40','100','undefined'],ans:'100',exp:'reduce starts at 0 and adds each: 0+10+20+30+40 = 100.'},
+  {text:'What does join() do?',code:'let a = ["Hello","World"];\nconsole.log(a.join(" "));',opts:['["Hello World"]','"HelloWorld"','"Hello World"','error'],ans:'"Hello World"',exp:'join() combines array items into a string with the given separator (" ").'},
+];
+
+let qi=0,sc=0,tot=0,answered=false;
+function renderQ(){
+  const q=qs[qi]; answered=false;
+  document.getElementById('q-num').textContent='Q '+(qi+1)+' of '+qs.length;
+  let html='<div class="q-card"><div style="font-size:13px;font-weight:500;margin-bottom:.4rem;color:var(--color-text-primary)">'+q.text+'</div>'
+    +(q.code?'<div class="q-code">'+q.code.replace(/\n/g,'<br>').replace(/ /g,'&nbsp;')+'</div>':'')
+    +'<div class="opts" id="opts">';
+  q.opts.forEach(o=>html+='<div class="opt" onclick="pick(this,\''+o.replace(/'/g,"\\'")+'\')">'+ o+'</div>');
+  html+='</div><div class="fb" id="fb"></div><div class="explain" id="ex"></div>'
+    +'<button style="width:100%;margin-top:.4rem;display:none" id="nb" onclick="nextQ()">Next question →</button></div>';
+  document.getElementById('q-area').innerHTML=html;
+}
+function pick(el,chosen){
+  if(answered)return; answered=true; tot++;
+  const q=qs[qi]; const ok=chosen===q.ans;
+  if(ok){sc++;el.classList.add('correct');}
+  else{el.classList.add('wrong');document.querySelectorAll('.opt').forEach(o=>{if(o.textContent.trim()===q.ans)o.classList.add('show-c');});}
+  const fb=document.getElementById('fb');
+  fb.style.display='block';fb.className='fb '+(ok?'fb-ok':'fb-no');
+  fb.textContent=ok?'Correct! Well done! ':'Wrong — answer is: '+q.ans;
+  document.getElementById('ex').style.display='block';
+  document.getElementById('ex').textContent='Why: '+q.exp;
+  document.getElementById('nb').style.display='block';
+  document.getElementById('sc-v').textContent=sc+' / '+tot;
+  document.getElementById('prog-f').style.width=Math.round(sc/tot*100)+'%';
+}
+function nextQ(){qi=(qi+1)%qs.length;renderQ();}
+renderQ();
+</script>

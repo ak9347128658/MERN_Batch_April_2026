@@ -1,0 +1,109 @@
+
+<style>
+  @keyframes slideIn{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes slideInL{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes fadeOut{from{opacity:1}to{opacity:0;transform:translateY(16px)}}
+  h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .arr-shelf{display:flex;gap:4px;min-height:68px;align-items:center;flex-wrap:wrap;padding:.6rem .75rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);margin:.5rem 0}
+  .acell{border-radius:var(--border-radius-md);overflow:hidden;border:0.5px solid var(--color-border-secondary);text-align:center;min-width:68px;background:var(--color-background-primary)}
+  .acell-i{font-size:10px;padding:2px 4px;color:var(--color-text-tertiary);font-family:var(--font-mono);background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+  .acell-v{font-size:13px;font-weight:500;padding:8px 6px;font-family:var(--font-mono);color:#185FA5}
+  .acell.new-end{animation:slideIn .35s ease}
+  .acell.new-start{animation:slideInL .35s ease}
+  .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:.6rem 0}
+  .m-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:.65rem .9rem}
+  .m-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:.25rem}
+  .m-sub{font-size:11px;color:var(--color-text-secondary);margin-bottom:.4rem;font-family:var(--font-mono)}
+  .badge-end{display:inline-block;background:#E1F5EE;color:#085041;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:500;margin-bottom:.4rem}
+  .badge-start{display:inline-block;background:#E6F1FB;color:#0C447C;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:500;margin-bottom:.4rem}
+  .out{background:#111;border-radius:var(--border-radius-md);padding:.4rem .75rem;font-family:var(--font-mono);font-size:12px;min-height:28px;color:#86efac;margin-top:.4rem}
+  @media(max-width:500px){.method-grid{grid-template-columns:1fr}}
+</style>
+
+<h2 class="sr-only">Animated push pop shift unshift array methods</h2>
+
+<div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:.25rem">Your array right now:</div>
+<div class="arr-shelf" id="arr-display"></div>
+<div style="font-family:var(--font-mono);font-size:12px;color:var(--color-text-tertiary)" id="len-show"></div>
+
+<div class="method-grid">
+
+  <div class="m-card">
+    <div class="m-title">push( ) — add to END</div>
+    <span class="badge-end">adds at end →</span>
+    <div class="m-sub">arr.push("grape") → new length</div>
+    <div style="display:flex;gap:6px">
+      <input type="text" id="push-v" value="grape" style="font-family:var(--font-mono);font-size:12px;flex:1"/>
+      <button onclick="doPush()" style="font-size:12px">push( )</button>
+    </div>
+    <div class="out" id="push-out">—</div>
+  </div>
+
+  <div class="m-card">
+    <div class="m-title">pop( ) — remove from END</div>
+    <span class="badge-end">removes at end →</span>
+    <div class="m-sub">let removed = arr.pop()</div>
+    <button onclick="doPop()" style="font-size:12px;width:100%">pop( )</button>
+    <div class="out" id="pop-out">—</div>
+  </div>
+
+  <div class="m-card">
+    <div class="m-title">unshift( ) — add to START</div>
+    <span class="badge-start">← adds at start</span>
+    <div class="m-sub">arr.unshift("kiwi") → new length</div>
+    <div style="display:flex;gap:6px">
+      <input type="text" id="unshift-v" value="kiwi" style="font-family:var(--font-mono);font-size:12px;flex:1"/>
+      <button onclick="doUnshift()" style="font-size:12px">unshift( )</button>
+    </div>
+    <div class="out" id="unshift-out">—</div>
+  </div>
+
+  <div class="m-card">
+    <div class="m-title">shift( ) — remove from START</div>
+    <span class="badge-start">← removes at start</span>
+    <div class="m-sub">let removed = arr.shift()</div>
+    <button onclick="doShift()" style="font-size:12px;width:100%">shift( )</button>
+    <div class="out" id="shift-out">—</div>
+  </div>
+
+</div>
+
+<button onclick="resetArr()" style="font-size:12px;margin-top:.25rem">Reset array</button>
+
+<script>
+let arr=["mango","apple","banana","cherry"];
+function render(newIdx=-1,fromLeft=false){
+  const c=document.getElementById('arr-display');c.innerHTML='';
+  arr.forEach((v,i)=>{
+    const d=document.createElement('div');
+    let cls='acell';
+    if(i===newIdx) cls+=fromLeft?' new-start':' new-end';
+    d.className=cls;
+    d.innerHTML='<div class="acell-i">['+i+']</div><div class="acell-v">'+v+'</div>';
+    c.appendChild(d);
+  });
+  document.getElementById('len-show').textContent='length: '+arr.length+(arr.length===0?' (empty!)':'');
+}
+function doPush(){
+  const v=document.getElementById('push-v').value.trim()||'item';
+  arr.push(v);render(arr.length-1);
+  document.getElementById('push-out').textContent='push("'+v+'") → new length: '+arr.length;
+}
+function doPop(){
+  if(!arr.length){document.getElementById('pop-out').textContent='Array is empty!';return;}
+  const v=arr.pop();render();
+  document.getElementById('pop-out').textContent='pop() removed: "'+v+'" → length: '+arr.length;
+}
+function doUnshift(){
+  const v=document.getElementById('unshift-v').value.trim()||'item';
+  arr.unshift(v);render(0,true);
+  document.getElementById('unshift-out').textContent='unshift("'+v+'") → new length: '+arr.length;
+}
+function doShift(){
+  if(!arr.length){document.getElementById('shift-out').textContent='Array is empty!';return;}
+  const v=arr.shift();render();
+  document.getElementById('shift-out').textContent='shift() removed: "'+v+'" → length: '+arr.length;
+}
+function resetArr(){arr=["mango","apple","banana","cherry"];render();}
+render();
+</script>
