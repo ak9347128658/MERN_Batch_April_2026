@@ -1,972 +1,771 @@
-## What is Full Stack?
+# 📅 Day 1: RAG Basics + Embeddings + PostgreSQL Vector Setup
 
-**Full stack** means building *both* the parts of a web application — what users see (frontend) and the logic that runs behind the scenes (backend + database). A "full stack developer" works across all these layers.
-
-Your diagram shows three main layers:
-
----
-
-### 1. 🖥️ Frontend — "What users see"
-This runs **in the browser**. In your diagram, this is the **React** box (with TypeScript). It's responsible for displaying buttons, forms, pages, and everything a user interacts with. React breaks the UI into reusable components.
+**Duration:** 1 to 1.5 hours  
+**Prerequisites:** Basic SQL, Node.js fundamentals  
 
 ---
 
-### 2. ⚙️ Backend — "The brain"
-This runs **on a server**, invisible to the user. Your diagram shows **Node.js** (the runtime environment) with **Express** (a framework for handling HTTP requests). When a user clicks a button, the frontend sends an HTTP request → the backend receives it, runs logic, and sends back a response.
+## 1. Introduction
+
+Hello students 👋
+
+Welcome to Day 1 of our RAG (Retrieval-Augmented Generation) module!
+
+Today we're going to learn something that every modern AI application uses behind the scenes — from ChatGPT's browsing feature, to customer support bots, to smart document search engines.
+
+### What we will learn today:
+
+- What is RAG and why it exists
+- What are embeddings (the secret sauce of AI search)
+- How to set up PostgreSQL with pgvector for storing AI data
+- How to generate and store embeddings using Node.js
+- How to perform similarity search (finding "related" content)
+
+### Why does this matter?
+
+Imagine you're building a **customer support bot** for a company. The company has 500 FAQ documents. You can't feed all 500 documents to ChatGPT every time someone asks a question — that's expensive and slow.
+
+**RAG solves this.** It finds only the 3-5 most relevant documents first, then sends those to the AI. Smart, fast, and cheap.
+
+> 💡 Companies like Notion, Slack, and GitHub Copilot all use RAG-style pipelines.
 
 ---
 
-### 3. 🗄️ Database — "Memory"
-This is where data is permanently stored. Your diagram shows two types:
-- **MongoDB** — a NoSQL database that stores flexible, JSON-like documents
-- **SQL Database** (MySQL/PostgreSQL) — stores structured data in tables with rows and columns
+## 2. Concept Explanation
 
----
+### What is RAG?
 
-### 🔁 How they connect (as shown by the arrows in your diagram):
+**RAG = Retrieval-Augmented Generation**
+
+Let's break this down:
+
+| Word | Meaning |
+|------|---------|
+| **Retrieval** | Find relevant information from your database |
+| **Augmented** | Add that information to the AI's prompt |
+| **Generation** | Let the AI generate an answer using that context |
+
+### Real-World Analogy: The Open-Book Exam 📖
+
+Think about two types of exams:
+
+1. **Closed-book exam** — You answer from memory only. Sometimes you remember wrong things. *(This is like using an LLM directly — it can hallucinate)*
+
+2. **Open-book exam** — You can look up your notes, find the right page, and then write your answer. *(This is RAG — the AI looks up relevant documents first, then answers)*
+
+**Question for you:** When a doctor checks a patient, do they rely only on memory, or do they also look at test reports? That's RAG in real life!
+
+### Why not just use an LLM directly?
+
+Great question. Here's why:
+
+| Problem | Without RAG | With RAG |
+|---------|------------|----------|
+| **Outdated info** | LLM only knows training data (cutoff date) | Retrieves latest documents |
+| **Hallucination** | LLM may make up facts | LLM answers based on real data |
+| **Cost** | Sending all docs = expensive | Sending only relevant docs = cheap |
+| **Privacy** | Your data isn't in the LLM | Your data stays in YOUR database |
+| **Accuracy** | General answers | Specific, sourced answers |
+
+### What are Embeddings?
+
+An **embedding** is a way to convert text into numbers (a list of numbers called a "vector") so that a computer can understand meaning.
+
+**Analogy: GPS Coordinates 🗺️**
+
+- "Mumbai" and "Pune" are just words. A computer doesn't know they're close.
+- But if you convert them to GPS coordinates: Mumbai (19.07, 72.87) and Pune (18.52, 73.85) — now the computer can calculate they're close!
+
+**Embeddings do the same thing for text:**
+
 ```
-Browser (React) ←── HTTP ──→ Node.js + Express ←──→ MongoDB / SQL
-```
-
-The frontend talks to the backend via HTTP requests (like fetching your profile data), and the backend reads/writes to the database.
-
----
-
-### 🔷 TypeScript's Role
-TypeScript (shown in blue in your legend) is a layer that adds **type safety** across both frontend and backend code — it helps catch bugs before the app even runs.
-
----
-
-In short: **Frontend = what you see, Backend = what it does, Database = what it remembers.** Full stack = all three together.
-
-![alt](../images/day1/mern_stack_overview.svg)
-
------------------------------
-
-
-
-# JavaScript Data Types — Complete Guide
-
-> JavaScript has **two main categories** of data types:
-> - **Primitive** (7 types) — stored by **value**
-> - **Non-Primitive / Reference** (3 types) — stored by **reference**
-![alt](../images/day1/js_datatypes_overview.svg)
----
-
-## PART 1: Primitive Data Types
-
-Primitive types store a single, simple value. When you copy them, you get a **new independent copy**.
-
----
-
-### 1. String
-
-A string is a sequence of characters used to represent text. Always wrapped in quotes (`'`, `"`, or backticks).
-
-```javascript
-let name = "Rahul";
-let greeting = 'Hello, World!';
-let message = `My name is ${name}`; // Template literal
-
-console.log(typeof name);    // "string"
-console.log(name.length);    // 5
-console.log(name.toUpperCase()); // "RAHUL"
-```
-
-**Key Points:**
-- Strings are **immutable** (you can't change a character directly)
-- Use backticks (`` ` ``) for **template literals** to embed variables using `${}`
-
----
-
-### 2. Number
-
-JavaScript uses a single `Number` type for both integers and decimals (floating point).
-
-```javascript
-let age = 25;          // integer
-let price = 99.99;     // decimal
-let negative = -10;
-let result = 10 / 3;   // 3.3333...
-
-console.log(typeof age);     // "number"
-console.log(Number.isInteger(age));  // true
-console.log(isNaN("hello")); // true (Not a Number)
+"How to reset my password" → [0.12, -0.45, 0.78, ..., 0.33]  (1536 numbers)
+"I forgot my password"     → [0.11, -0.44, 0.77, ..., 0.34]  (1536 numbers)
+"What's the weather today" → [0.89, 0.23, -0.56, ..., -0.12] (1536 numbers)
 ```
 
-**Special Number values:**
-```javascript
-console.log(Infinity);   // Infinity
-console.log(-Infinity);  // -Infinity
-console.log(NaN);        // NaN (Not a Number)
-```
+Notice how the first two are very similar numbers? That's because they have similar **meaning**!
+
+### How Similarity Search Works
+
+Once text is converted to vectors (embeddings), we can measure how "close" two pieces of text are.
+
+**Think of it like WhatsApp search** — when you search "meeting tomorrow", WhatsApp doesn't just look for exact words. Smart search understands that "let's meet tmrw" is also relevant. That's similarity search.
+
+The most common method is **cosine similarity** — it measures the angle between two vectors:
+
+- **1.0** = Exactly the same meaning
+- **0.0** = Completely unrelated
+- Values between 0.5-1.0 usually indicate relevance
 
 ---
 
-### 3. Boolean
+## 3. Architecture Flow
 
-A boolean holds only one of two values: `true` or `false`. Used heavily in conditions and logic.
+### The RAG Pipeline (Big Picture)
 
-```javascript
-let isLoggedIn = true;
-let hasPermission = false;
-
-console.log(typeof isLoggedIn);  // "boolean"
-
-if (isLoggedIn) {
-  console.log("Welcome back!");
-} else {
-  console.log("Please log in.");
-}
+```mermaid id="ragflow1"
+flowchart LR
+    A[User asks a Question] --> B[Convert Question to Embedding]
+    B --> C[Search Vector Database]
+    C --> D[Get Top K Relevant Documents]
+    D --> E[Build Prompt with Context]
+    E --> F[Send to LLM]
+    F --> G[AI Response with Sources]
 ```
 
-**Truthy vs Falsy values:**
-```javascript
-// Falsy values in JavaScript:
-false, 0, "", null, undefined, NaN
+### Today's Focus: The Left Half (Storage + Retrieval)
 
-// Everything else is truthy
-Boolean(0);       // false
-Boolean("hello"); // true
-Boolean([]);      // true (empty array is truthy!)
+```mermaid id="day1focus"
+flowchart TD
+    subgraph Storage Phase
+        A[Raw Documents] --> B[Generate Embeddings via OpenAI]
+        B --> C[Store in PostgreSQL + pgvector]
+    end
+
+    subgraph Retrieval Phase
+        D[User Query] --> E[Convert Query to Embedding]
+        E --> F[Similarity Search in pgvector]
+        F --> G[Return Top K Documents]
+    end
 ```
 
----
+### How Embedding + Storage Works
 
-### 4. Undefined
+```mermaid id="embeddingflow"
+flowchart LR
+    subgraph Input
+        A["How do I reset my password?"]
+    end
 
-A variable that has been **declared but not assigned** a value automatically gets `undefined`.
+    subgraph OpenAI API
+        B[Embedding Model]
+    end
 
-```javascript
-let x;
-console.log(x);          // undefined
-console.log(typeof x);   // "undefined"
+    subgraph Output
+        C["[0.12, -0.45, 0.78, ..., 0.33]"]
+    end
 
-function greet(name) {
-  console.log(name);     // undefined if no argument passed
-}
-greet(); // undefined
-```
+    subgraph PostgreSQL
+        D[(documents table with vector column)]
+    end
 
----
-
-### 5. Null
-
-`null` is an **intentional absence of value**. You explicitly assign it to indicate "no value here".
-
-```javascript
-let user = null;   // user exists but has no value yet
-console.log(user);         // null
-console.log(typeof null);  // "object" ← famous JavaScript bug!
-
-// Difference between null and undefined
-console.log(null == undefined);   // true  (loose equality)
-console.log(null === undefined);  // false (strict equality)
-```
-
-> **Tip:** Use `null` when YOU want to empty a variable intentionally. `undefined` is assigned automatically by JavaScript.
-
----
-
-### 6. BigInt
-
-Used for very large integers that exceed the safe limit of the `Number` type. Created by adding `n` at the end.
-
-```javascript
-let bigNumber = 9007199254740991n;
-let anotherBig = BigInt(12345678901234567890);
-
-console.log(typeof bigNumber);     // "bigint"
-console.log(bigNumber + 1n);       // 9007199254740992n
-
-// Cannot mix BigInt with regular Number
-// console.log(bigNumber + 1);     // ❌ TypeError
-console.log(bigNumber + 1n);       // ✅ Correct
+    A --> B --> C --> D
 ```
 
 ---
 
-### 7. Symbol
+## 4. Hands-on Code
 
-A `Symbol` creates a **unique and immutable identifier**. Often used as object property keys to avoid name collisions.
+### Step 1: Install PostgreSQL + Enable pgvector
 
-```javascript
-let id1 = Symbol("id");
-let id2 = Symbol("id");
+#### Option A: Local Installation
 
-console.log(id1 === id2);     // false (always unique!)
-console.log(typeof id1);      // "symbol"
+1. **Install PostgreSQL** (version 15+ recommended)
+   - Download from: https://www.postgresql.org/download/
+   - During installation, note your password and port (default: 5432)
 
-let user = {
-  [id1]: 101,
-  name: "Priya"
-};
-console.log(user[id1]);  // 101
+2. **Install pgvector extension**
+
+On Windows (using pgAdmin or psql):
+
+```sql id="installpgvector"
+-- First, you may need to install pgvector
+-- For Windows: Download from https://github.com/pgvector/pgvector
+-- For Ubuntu: 
+-- sudo apt install postgresql-15-pgvector
+
+-- Then in your database:
+CREATE EXTENSION IF NOT EXISTS vector;
 ```
 
----
+#### Option B: Using Docker (Recommended for quick setup)
 
-## PART 2: Non-Primitive (Reference) Data Types
+```bash id="dockersetup"
+# Pull PostgreSQL with pgvector pre-installed
+docker run --name pgvector-db \
+  -e POSTGRES_PASSWORD=mysecretpassword \
+  -e POSTGRES_DB=ragdb \
+  -p 5432:5432 \
+  -d pgvector/pgvector:pg16
+```
 
-Non-primitive types store a **reference (address)** to the data in memory. When you copy them, both variables point to the **same object**.
+### Step 2: Create the Database Schema
 
----
+Connect to your PostgreSQL and run:
 
-### 1. Object
+```sql id="sqlvec1"
+-- Enable the vector extension
+CREATE EXTENSION IF NOT EXISTS vector;
 
-An object stores data as **key-value pairs**. It's one of the most powerful types in JavaScript.
+-- Create our documents table
+CREATE TABLE documents (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  content TEXT NOT NULL,
+  source TEXT,
+  embedding VECTOR(1536),
+  created_at TIMESTAMP DEFAULT NOW()
+);
 
-```javascript
-let student = {
-  name: "Ananya",
-  age: 20,
-  isEnrolled: true,
-  greet: function() {
-    return `Hi, I am ${this.name}`;
+-- Create an index for faster similarity search
+CREATE INDEX ON documents USING ivfflat (embedding vector_cosine_ops)
+WITH (lists = 100);
+```
+
+**Quick question:** Why do we use `VECTOR(1536)`? Because OpenAI's `text-embedding-ada-002` model produces vectors with 1536 dimensions!
+
+### Step 3: Set Up Node.js Project
+
+```bash id="projectsetup"
+# Create project directory
+mkdir rag-pgvector-app
+cd rag-pgvector-app
+
+# Initialize Node.js project
+npm init -y
+
+# Install dependencies
+npm install openai pg dotenv
+```
+
+### Step 4: Environment Configuration
+
+Create a `.env` file:
+
+```env id="envfile"
+OPENAI_API_KEY=sk-your-api-key-here
+DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/ragdb
+```
+
+### Step 5: Database Connection Setup
+
+Create `db.js`:
+
+```js id="dbsetup"
+// db.js - PostgreSQL connection setup
+const { Pool } = require("pg");
+require("dotenv").config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+// Test connection
+pool.query("SELECT NOW()", (err, res) => {
+  if (err) {
+    console.error("❌ Database connection failed:", err.message);
+  } else {
+    console.log("✅ Connected to PostgreSQL at:", res.rows[0].now);
   }
-};
+});
 
-console.log(student.name);       // "Ananya"
-console.log(student["age"]);     // 20
-console.log(student.greet());    // "Hi, I am Ananya"
-
-// Adding / updating properties
-student.city = "Hyderabad";
-student.age = 21;
-
-console.log(typeof student);     // "object"
+module.exports = pool;
 ```
 
-**Reference behavior:**
-```javascript
-let obj1 = { x: 10 };
-let obj2 = obj1;       // both point to the same object!
-obj2.x = 99;
-console.log(obj1.x);   // 99 ← obj1 also changed!
-```
+### Step 6: Generate Embeddings using OpenAI
 
----
+Create `embedding.js`:
 
-### 2. Array
+```js id="embeddings"
+// embedding.js - Generate embeddings using OpenAI
+const OpenAI = require("openai");
+require("dotenv").config();
 
-An array is an **ordered list** of values. Index starts from `0`.
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-```javascript
-let fruits = ["Apple", "Banana", "Mango"];
-let numbers = [1, 2, 3, 4, 5];
-let mixed = [42, "hello", true, null]; // can hold any type
+/**
+ * Convert text into a vector embedding
+ * Think of this as converting words into GPS coordinates
+ * 
+ * @param {string} text - The text to convert
+ * @returns {number[]} - Array of 1536 numbers representing meaning
+ */
+async function generateEmbedding(text) {
+  const response = await openai.embeddings.create({
+    model: "text-embedding-ada-002",
+    input: text,
+  });
 
-console.log(fruits[0]);         // "Apple"
-console.log(fruits.length);     // 3
-
-fruits.push("Grapes");          // add to end
-fruits.pop();                   // remove from end
-fruits.unshift("Orange");       // add to beginning
-
-console.log(typeof fruits);     // "object" (arrays are objects!)
-console.log(Array.isArray(fruits)); // true
-```
-
----
-
-### 3. Function
-
-Functions are **first-class citizens** in JavaScript — they are objects that can be stored, passed, and returned.
-
-```javascript
-// Function Declaration
-function add(a, b) {
-  return a + b;
+  return response.data[0].embedding;
 }
 
-// Function Expression
-const multiply = function(a, b) {
-  return a * b;
-};
-
-// Arrow Function
-const square = (n) => n * n;
-
-console.log(add(3, 4));        // 7
-console.log(multiply(3, 4));   // 12
-console.log(square(5));        // 25
-console.log(typeof add);       // "function"
+module.exports = { generateEmbedding };
 ```
 
----
+**What's happening here?**
+- We send text to OpenAI's embedding model
+- It returns an array of 1536 numbers
+- These numbers capture the *meaning* of the text
 
-## Quick Reference Table
+### Step 7: Store Documents with Embeddings
 
-| Type | Category | Example | typeof |
-|------|----------|---------|--------|
-| String | Primitive | `"Hello"` | `"string"` |
-| Number | Primitive | `42`, `3.14` | `"number"` |
-| Boolean | Primitive | `true`, `false` | `"boolean"` |
-| Undefined | Primitive | `let x;` | `"undefined"` |
-| Null | Primitive | `null` | `"object"` ⚠️ |
-| BigInt | Primitive | `100n` | `"bigint"` |
-| Symbol | Primitive | `Symbol("id")` | `"symbol"` |
-| Object | Non-Primitive | `{ key: value }` | `"object"` |
-| Array | Non-Primitive | `[1, 2, 3]` | `"object"` |
-| Function | Non-Primitive | `function() {}` | `"function"` |
+Create `store.js`:
 
----
+```js id="storeDocuments"
+// store.js - Store documents with their embeddings in PostgreSQL
+const pool = require("./db");
+const { generateEmbedding } = require("./embedding");
 
-## PART 3: Practice Questions for Students
+/**
+ * Store a single document with its embedding
+ */
+async function storeDocument(title, content, source) {
+  // Step 1: Generate embedding for the content
+  const embedding = await generateEmbedding(content);
 
-### 🟢 Level 1 — Beginner
+  // Step 2: Convert array to pgvector format: '[0.1, 0.2, ...]'
+  const embeddingStr = `[${embedding.join(",")}]`;
 
-**Q1.** What will the following code output? Explain why.
-```javascript
-let x;
-console.log(x);
-console.log(typeof x);
-```
+  // Step 3: Insert into PostgreSQL
+  const query = `
+    INSERT INTO documents (title, content, source, embedding)
+    VALUES ($1, $2, $3, $4)
+    RETURNING id, title
+  `;
 
-**Q2.** What is the difference between `null` and `undefined`? Write one example of each.
-
-**Q3.** What does `typeof` return for each of the following?
-```javascript
-typeof 42
-typeof "JavaScript"
-typeof true
-typeof null
-typeof undefined
-typeof [1, 2, 3]
-```
-
-**Q4.** Create an object called `car` with properties: `brand`, `model`, `year`, and a method `describe()` that prints a sentence about the car.
-
-**Q5.** Create an array of 5 student names. Then:
-- Print the first and last name
-- Add a new name to the end
-- Print the total number of names
-
----
-
-### 🟡 Level 2 — Intermediate
-
-**Q6.** What is the output of the code below? Why?
-```javascript
-let a = { score: 100 };
-let b = a;
-b.score = 50;
-console.log(a.score);
-```
-
-**Q7.** Write a function `checkType(value)` that accepts any value and returns a string like `"The type is: number"`.
-
-**Q8.** What is the difference between `==` and `===` when comparing `null` and `undefined`? Demonstrate with code.
-
-**Q9.** Convert the following values to Boolean using `Boolean()` and predict the output:
-```javascript
-Boolean(0)
-Boolean("")
-Boolean("0")
-Boolean([])
-Boolean(null)
-Boolean(-1)
-```
-
-**Q10.** Write an arrow function `isEven(n)` that returns `true` if a number is even, `false` otherwise.
-
----
-
-### 🔴 Level 3 — Advanced
-
-**Q11.** Explain this output:
-```javascript
-console.log(typeof null);    // "object"
-console.log(typeof NaN);     // "number"
-```
-Why does JavaScript behave this way?
-
-**Q12.** What is the output?
-```javascript
-let x = 5;
-let y = x;
-y = 10;
-console.log(x); // ?
-
-let obj1 = { value: 5 };
-let obj2 = obj1;
-obj2.value = 10;
-console.log(obj1.value); // ?
-```
-Explain the difference between how primitives and objects are copied.
-
-**Q13.** Create a function `deepCopy(obj)` that makes a true copy of an object (not a reference copy).
-
-**Q14.** What will this code print? Explain each line.
-```javascript
-let sym1 = Symbol("name");
-let sym2 = Symbol("name");
-
-console.log(sym1 == sym2);
-console.log(sym1.toString());
-console.log(typeof sym1);
-```
-
-**Q15.** Write a function `describeValue(val)` that:
-- Returns `"null value"` if val is null
-- Returns `"array with N items"` if val is an array
-- Returns `"object"` if val is a non-null object
-- Otherwise returns `"primitive: <type>"`
-
----
-
-## Answer Hints
-
-| Question | Hint |
-|----------|------|
-| Q1 | Unassigned variables are `undefined` |
-| Q3 | `typeof null` returns `"object"` — a known JS quirk |
-| Q6 | Objects are copied by **reference**, not by value |
-| Q9 | `"0"` is truthy (non-empty string), `[]` is also truthy |
-| Q13 | Use `JSON.parse(JSON.stringify(obj))` for simple deep copy |
-| Q15 | Use `Array.isArray()` before checking `typeof` |
-
----
-
-==================
-# JavaScript: `var`, `let`, and `const` — Complete Guide
-
-![alt](../images/day1/var_let_const_comparison.webp)
-> **Simple Rule:** Always use `const` by default. Switch to `let` only if you need to change the value. **Never use `var`.**
-
-
-
----
-
-## Overview
-
-JavaScript has three ways to declare variables:
-
-| Keyword | Era | Scope | Re-declare | Re-assign | Hoisted |
-|---------|-----|-------|------------|-----------|---------|
-| `var` | Old (pre-2015) | Function | ✅ Yes | ✅ Yes | ✅ Yes (as `undefined`) |
-| `let` | Modern (ES6) | Block | ❌ No | ✅ Yes | ❌ No |
-| `const` | Modern (ES6) | Block | ❌ No | ❌ No | ❌ No |
-
----
-
-## PART 1: `var` — The Old Way (Avoid It)
-
-`var` is the original way to declare variables in JavaScript (before 2015). It still works, but causes confusing bugs. Avoid it as a beginner.
-
-### Problems with `var`
-
-**Problem 1: Can re-declare the same variable (no error!)**
-```javascript
-var x = 5;
-var x = 10;  // No error! Silently overwrites
-console.log(x); // 10
-```
-
-**Problem 2: Function-scoped (not block-scoped)**
-```javascript
-function testVar() {
-  if (true) {
-    var message = "Hello";  // declared inside if-block
-  }
-  console.log(message);     // "Hello" — leaks out of the block!
+  const result = await pool.query(query, [title, content, source, embeddingStr]);
+  console.log(`✅ Stored: "${result.rows[0].title}" (ID: ${result.rows[0].id})`);
+  return result.rows[0];
 }
-testVar();
-```
 
-**Problem 3: Hoisting causes bugs**
+/**
+ * Store multiple documents at once
+ */
+async function storeMultipleDocuments(documents) {
+  console.log(`📦 Storing ${documents.length} documents...\n`);
 
-`var` declarations are "hoisted" to the top of the function, but their value is not. This leads to confusing `undefined` errors.
-
-```javascript
-console.log(name); // undefined (no error, but confusing!)
-var name = "Rahul";
-console.log(name); // "Rahul"
-
-// JavaScript internally treats it as:
-// var name;           ← hoisted to top
-// console.log(name);  ← undefined
-// name = "Rahul";
-```
-
-**Problem 4: Leaks into global scope**
-```javascript
-for (var i = 0; i < 3; i++) {
-  // i leaks outside the loop
-}
-console.log(i); // 3 — still accessible! (bug-prone)
-```
-
-### When to use `var`?
-> **Never.** Always prefer `let` or `const` in modern JavaScript.
-
----
-
-## PART 2: `let` — The Modern Way ✅
-
-`let` is the modern (ES6) replacement for `var`. Use `let` when the value **will change** later (like a counter, score, or user input).
-
-### Features of `let`
-
-**✅ Can change (re-assign) the value**
-```javascript
-let score = 0;
-score = 10;   // works!
-score = 25;   // works!
-console.log(score); // 25
-```
-
-**✅ Block-scoped (safe)**
-```javascript
-if (true) {
-  let message = "Hello";
-  console.log(message); // "Hello"
-}
-console.log(message); // ❌ ReferenceError: message is not defined
-```
-
-**✅ No hoisting surprises**
-```javascript
-console.log(city); // ❌ ReferenceError (not undefined like var)
-let city = "Hyderabad";
-```
-
-**❌ Cannot re-declare in the same scope**
-```javascript
-let age = 20;
-let age = 25; // ❌ SyntaxError: Identifier 'age' has already been declared
-```
-
-### Real-world `let` examples
-
-```javascript
-// Counter
-let count = 0;
-count++;
-count++;
-console.log(count); // 2
-
-// Loop variable
-for (let i = 0; i < 5; i++) {
-  console.log(i); // 0, 1, 2, 3, 4
-}
-console.log(i); // ❌ ReferenceError — i stays inside the loop (safe!)
-
-// User score in a game
-let playerScore = 0;
-playerScore += 100;
-playerScore += 50;
-console.log(playerScore); // 150
-```
-
----
-
-## PART 3: `const` — Use by Default ✅
-
-`const` is for values that should **never change** — like a name, a config value, a mathematical constant, or an object/array reference.
-
-### Features of `const`
-
-**❌ Cannot re-assign the value**
-```javascript
-const PI = 3.14;
-PI = 5; // ❌ TypeError: Assignment to constant variable
-```
-
-**✅ Block-scoped (safe)**
-```javascript
-if (true) {
-  const greeting = "Namaste";
-  console.log(greeting); // "Namaste"
-}
-console.log(greeting); // ❌ ReferenceError
-```
-
-**✅ Makes your intent clear**
-
-When you (or a teammate) sees `const`, you immediately know: *this value won't change.*
-
-**❌ Must be initialized at declaration**
-```javascript
-const name;        // ❌ SyntaxError: Missing initializer
-const name = "Raj"; // ✅ Correct
-```
-
-### `const` with Objects and Arrays
-
-> ⚠️ `const` prevents **re-assignment**, NOT mutation of the contents.
-
-```javascript
-const student = { name: "Ananya", age: 20 };
-student.age = 21;         // ✅ Works — mutating a property
-student.city = "Mumbai";  // ✅ Works — adding a property
-console.log(student);     // { name: "Ananya", age: 21, city: "Mumbai" }
-
-student = {};             // ❌ TypeError — cannot re-assign the variable
-```
-
-```javascript
-const fruits = ["Apple", "Banana"];
-fruits.push("Mango");    // ✅ Works — mutating the array
-console.log(fruits);     // ["Apple", "Banana", "Mango"]
-
-fruits = ["Grapes"];     // ❌ TypeError — cannot re-assign
-```
-
-### Real-world `const` examples
-
-```javascript
-// Mathematical constants
-const PI = 3.14159;
-const GRAVITY = 9.8;
-
-// App configuration
-const MAX_USERS = 100;
-const API_URL = "https://api.example.com";
-
-// DOM element (reference doesn't change)
-const button = document.getElementById("submit");
-
-// Arrow functions (the function reference doesn't change)
-const greet = (name) => `Hello, ${name}!`;
-console.log(greet("Priya")); // "Hello, Priya!"
-```
-
----
-
-## PART 4: Side-by-Side Comparison
-
-```javascript
-// ─── var (old, avoid) ───────────────────────────────
-var x = 5;
-var x = 10;       // ✅ re-declare — no error
-x = 20;           // ✅ re-assign — no error
-console.log(x);   // 20
-
-// ─── let (modern, for changing values) ──────────────
-let score = 0;
-// let score = 5; // ❌ SyntaxError — cannot re-declare
-score = 100;      // ✅ re-assign — allowed
-console.log(score); // 100
-
-// ─── const (modern, for fixed values) ───────────────
-const name = "Rahul";
-// const name = "Raj"; // ❌ SyntaxError — cannot re-declare
-// name = "Raj";       // ❌ TypeError — cannot re-assign
-console.log(name); // "Rahul"
-```
-
----
-
-## PART 5: Scope Explained Simply
-
-**Scope** = where in your code a variable is accessible.
-
-```javascript
-// Global scope
-const appName = "MyApp"; // accessible everywhere
-
-function showInfo() {
-  // Function scope
-  let info = "Some info";
-
-  if (true) {
-    // Block scope
-    let blockVar = "I'm block-scoped";
-    const blockConst = "Me too";
-    var funcVar = "I leak to function scope!";
-
-    console.log(blockVar);   // ✅ accessible here
-    console.log(blockConst); // ✅ accessible here
+  for (const doc of documents) {
+    await storeDocument(doc.title, doc.content, doc.source);
   }
 
-  console.log(funcVar);   // ✅ var leaks out of block
-  // console.log(blockVar);  // ❌ ReferenceError
-  // console.log(blockConst); // ❌ ReferenceError
+  console.log(`\n✅ All ${documents.length} documents stored successfully!`);
 }
 
-showInfo();
-console.log(appName); // ✅ "MyApp"
+module.exports = { storeDocument, storeMultipleDocuments };
 ```
 
----
+### Step 8: Seed Sample Data
 
-## PART 6: Hoisting Deep Dive
+Create `seed.js`:
 
-Hoisting is JavaScript's behavior of moving declarations to the top of their scope before code runs.
+```js id="seedData"
+// seed.js - Load sample FAQ documents into the database
+const { storeMultipleDocuments } = require("./store");
+const pool = require("./db");
 
-```javascript
-// var — hoisted with value undefined
-console.log(a); // undefined (no error!)
-var a = 10;
-console.log(a); // 10
+const faqDocuments = [
+  {
+    title: "Password Reset",
+    content:
+      "To reset your password, go to the login page and click 'Forgot Password'. Enter your registered email address. You will receive a password reset link within 5 minutes. Click the link and set a new password. The password must be at least 8 characters with one uppercase letter and one number.",
+    source: "help-center/account",
+  },
+  {
+    title: "Refund Policy",
+    content:
+      "We offer a full refund within 30 days of purchase. To request a refund, go to your Order History, select the order, and click 'Request Refund'. Refunds are processed within 5-7 business days. Digital products are non-refundable once downloaded. Subscription refunds are prorated based on remaining days.",
+    source: "help-center/billing",
+  },
+  {
+    title: "Account Deletion",
+    content:
+      "To delete your account, go to Settings > Privacy > Delete Account. You will need to enter your password for confirmation. Once deleted, all your data will be permanently removed within 30 days. You can download your data before deletion from Settings > Privacy > Download My Data.",
+    source: "help-center/account",
+  },
+  {
+    title: "Shipping Information",
+    content:
+      "Standard shipping takes 5-7 business days. Express shipping takes 2-3 business days. International shipping takes 10-15 business days. Free shipping is available on orders above $50. You can track your order using the tracking number sent to your email after dispatch.",
+    source: "help-center/orders",
+  },
+  {
+    title: "Two-Factor Authentication",
+    content:
+      "To enable two-factor authentication (2FA), go to Settings > Security > Enable 2FA. You can use an authenticator app like Google Authenticator or receive SMS codes. We recommend using an authenticator app for better security. Backup codes are provided during setup — store them safely.",
+    source: "help-center/security",
+  },
+];
 
-// let — hoisted but NOT initialized (Temporal Dead Zone)
-console.log(b); // ❌ ReferenceError: Cannot access 'b' before initialization
-let b = 10;
+async function seed() {
+  try {
+    // Clear existing data
+    await pool.query("DELETE FROM documents");
+    console.log("🗑️  Cleared existing documents\n");
 
-// const — same as let, in Temporal Dead Zone
-console.log(c); // ❌ ReferenceError
-const c = 10;
-```
+    // Store all FAQ documents
+    await storeMultipleDocuments(faqDocuments);
 
-> The period between the start of a block and a `let`/`const` declaration is called the **Temporal Dead Zone (TDZ)**. Accessing the variable here throws a ReferenceError.
-
----
-
-## Quick Decision Guide
-
-```
-Do you need to change this value later?
-         |
-        YES → Use let
-         |
-        NO  → Use const
-         |
-Should I use var?
-         |
-        NEVER → Always use let or const
-```
-
----
-
-## PART 7: Practice Questions for Students
-
-### 🟢 Level 1 — Beginner
-
-**Q1.** What is the output of the following? Explain why.
-```javascript
-var x = 5;
-var x = 10;
-console.log(x);
-```
-
-**Q2.** Which keyword should you use for each situation? `var`, `let`, or `const`?
-- A variable storing the value of PI (3.14159)
-- A counter in a loop that increases each iteration
-- A player's name that never changes
-- A score that increases as the player wins
-
-**Q3.** Find the bug and fix it:
-```javascript
-const age = 18;
-age = 21;
-console.log(age);
-```
-
-**Q4.** Will this code throw an error? What will it print?
-```javascript
-let name = "Rahul";
-let name = "Priya";
-console.log(name);
-```
-
-**Q5.** Declare three variables using `const`: your name, your city, and your favourite programming language. Print them all in one sentence using a template literal.
-
----
-
-### 🟡 Level 2 — Intermediate
-
-**Q6.** What is the output? Explain the scope behavior.
-```javascript
-let x = "global";
-
-function test() {
-  let x = "local";
-  console.log(x);
+    console.log("\n🎉 Seeding complete!");
+  } catch (error) {
+    console.error("❌ Seeding failed:", error.message);
+  } finally {
+    await pool.end();
+  }
 }
 
-test();
-console.log(x);
+seed();
 ```
 
-**Q7.** What is the output of this code? Why?
-```javascript
-console.log(a);
-var a = 5;
-console.log(a);
+Run it:
+
+```bash id="runseed"
+node seed.js
 ```
 
-**Q8.** What is the output of this code? Why is it different from Q7?
-```javascript
-console.log(b);
-let b = 5;
-console.log(b);
+Expected output:
+
+```
+🗑️  Cleared existing documents
+
+📦 Storing 5 documents...
+
+✅ Stored: "Password Reset" (ID: 1)
+✅ Stored: "Refund Policy" (ID: 2)
+✅ Stored: "Account Deletion" (ID: 3)
+✅ Stored: "Shipping Information" (ID: 4)
+✅ Stored: "Two-Factor Authentication" (ID: 5)
+
+✅ All 5 documents stored successfully!
+
+🎉 Seeding complete!
 ```
 
-**Q9.** Is this code valid? Why or why not?
-```javascript
-const person = { name: "Ananya", age: 20 };
-person.age = 25;
-person.city = "Hyderabad";
-console.log(person);
-```
+### Step 9: Similarity Search (The Magic Part!)
 
-**Q10.** Fix the loop so `i` is not accessible outside it:
-```javascript
-for (var i = 0; i < 3; i++) {
-  console.log(i);
-}
-console.log(i); // should throw ReferenceError
-```
+Create `search.js`:
 
----
+```js id="searchDocs"
+// search.js - Find similar documents using vector similarity search
+const pool = require("./db");
+const { generateEmbedding } = require("./embedding");
 
-### 🔴 Level 3 — Advanced
+/**
+ * Search for documents similar to the given query
+ * 
+ * @param {string} query - User's question
+ * @param {number} topK - Number of results to return (default: 3)
+ * @returns {Array} - Most similar documents with their similarity scores
+ */
+async function searchSimilarDocuments(query, topK = 3) {
+  // Step 1: Convert the user's query into an embedding
+  console.log(`🔍 Searching for: "${query}"\n`);
+  const queryEmbedding = await generateEmbedding(query);
+  const embeddingStr = `[${queryEmbedding.join(",")}]`;
 
-**Q11.** What is the output? Explain the Temporal Dead Zone.
-```javascript
-function testTDZ() {
-  console.log(x);
-  let x = 10;
-  console.log(x);
-}
-testTDZ();
-```
+  // Step 2: Use cosine distance to find similar documents
+  // The <=> operator computes cosine distance (lower = more similar)
+  const result = await pool.query(
+    `
+    SELECT 
+      id,
+      title,
+      content,
+      source,
+      1 - (embedding <=> $1::vector) AS similarity
+    FROM documents
+    ORDER BY embedding <=> $1::vector
+    LIMIT $2
+    `,
+    [embeddingStr, topK]
+  );
 
-**Q12.** Predict the output and explain why each line behaves differently:
-```javascript
-var a = 1;
-let b = 2;
-const c = 3;
-
-function check() {
-  console.log(a); // ?
-  console.log(b); // ?
-  console.log(c); // ?
-}
-
-check();
-```
-
-**Q13.** What is the output? Why does `const` not prevent the array from changing?
-```javascript
-const colors = ["red", "green"];
-colors.push("blue");
-colors[0] = "yellow";
-console.log(colors);
-
-colors = ["pink"]; // What happens here?
-```
-
-**Q14.** Rewrite this code replacing `var` with `let` or `const` appropriately:
-```javascript
-var PI = 3.14;
-var radius = 5;
-var area = PI * radius * radius;
-var message = "Area is: " + area;
-console.log(message);
-```
-
-**Q15.** What is the difference between these two code blocks? What does each print?
-```javascript
-// Block A
-for (var i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i), 100);
+  return result.rows;
 }
 
-// Block B
-for (let i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i), 100);
+// Run a test search
+async function main() {
+  try {
+    // Test Query 1
+    const results1 = await searchSimilarDocuments("I forgot my password, help!");
+    console.log("📄 Results:");
+    results1.forEach((doc, i) => {
+      console.log(`\n  ${i + 1}. ${doc.title} (similarity: ${(doc.similarity * 100).toFixed(1)}%)`);
+      console.log(`     Source: ${doc.source}`);
+      console.log(`     Content: ${doc.content.substring(0, 100)}...`);
+    });
+
+    console.log("\n" + "=".repeat(60) + "\n");
+
+    // Test Query 2
+    const results2 = await searchSimilarDocuments("Can I get my money back?");
+    console.log("📄 Results:");
+    results2.forEach((doc, i) => {
+      console.log(`\n  ${i + 1}. ${doc.title} (similarity: ${(doc.similarity * 100).toFixed(1)}%)`);
+      console.log(`     Source: ${doc.source}`);
+    });
+  } catch (error) {
+    console.error("❌ Search failed:", error.message);
+  } finally {
+    await pool.end();
+  }
+}
+
+main();
+```
+
+Run it:
+
+```bash id="runsearch"
+node search.js
+```
+
+Expected output:
+
+```
+🔍 Searching for: "I forgot my password, help!"
+
+📄 Results:
+
+  1. Password Reset (similarity: 91.2%)
+     Source: help-center/account
+     Content: To reset your password, go to the login page and click 'Forgot Password'. Enter your registered ...
+
+  2. Two-Factor Authentication (similarity: 78.5%)
+     Source: help-center/security
+
+  3. Account Deletion (similarity: 72.1%)
+     Source: help-center/account
+```
+
+**Notice something amazing?** The user said "I forgot my password" — those exact words don't appear in our FAQ document. But embeddings understand the *meaning*, not just the words!
+
+---
+
+## 5. Understanding the SQL: Vector Operations
+
+Let's understand the pgvector operators:
+
+```sql id="sqlvec2"
+-- Cosine distance (most common for text similarity)
+-- Lower value = more similar
+SELECT * FROM documents
+ORDER BY embedding <=> '[0.1, 0.2, ...]'::vector
+LIMIT 5;
+
+-- L2 (Euclidean) distance
+SELECT * FROM documents
+ORDER BY embedding <-> '[0.1, 0.2, ...]'::vector
+LIMIT 5;
+
+-- Inner product (negative, for max inner product search)
+SELECT * FROM documents
+ORDER BY embedding <#> '[0.1, 0.2, ...]'::vector
+LIMIT 5;
+```
+
+**Which one to use?**
+
+| Operator | Name | Best For |
+|----------|------|----------|
+| `<=>` | Cosine distance | Text similarity (normalized) |
+| `<->` | L2 distance | When magnitude matters |
+| `<#>` | Inner product | Recommendation systems |
+
+> 💡 **For RAG, always use cosine distance (`<=>`)** — it focuses on meaning direction, not vector length.
+
+### Useful SQL Queries for Debugging
+
+```sql id="debugsql"
+-- Check how many documents you have
+SELECT COUNT(*) FROM documents;
+
+-- Check the vector dimensions
+SELECT id, title, vector_dims(embedding) AS dimensions 
+FROM documents 
+LIMIT 5;
+
+-- Find documents from a specific source
+SELECT id, title, source FROM documents
+WHERE source LIKE '%account%';
+
+-- Check similarity between two specific documents
+SELECT 
+  a.title AS doc1,
+  b.title AS doc2,
+  1 - (a.embedding <=> b.embedding) AS similarity
+FROM documents a, documents b
+WHERE a.id = 1 AND b.id = 3;
+```
+
+---
+
+## 6. JSON Response Preview
+
+While we'll fully implement JSON responses tomorrow, here's a preview of what our search function will eventually return:
+
+```json id="airesponse1"
+{
+  "query": "I forgot my password",
+  "results": [
+    {
+      "id": 1,
+      "title": "Password Reset",
+      "content": "To reset your password, go to the login page...",
+      "source": "help-center/account",
+      "similarity": 0.912
+    },
+    {
+      "id": 5,
+      "title": "Two-Factor Authentication",
+      "content": "To enable two-factor authentication...",
+      "source": "help-center/security",
+      "similarity": 0.785
+    }
+  ],
+  "metadata": {
+    "total_documents_searched": 5,
+    "results_returned": 2,
+    "similarity_threshold": 0.7,
+    "search_time_ms": 45
+  }
 }
 ```
-> Hint: This is a classic JavaScript interview question about closures and scope.
 
 ---
 
-## Answer Hints
+## 7. 🧪 Practice Tasks
 
-| Question | Hint |
-|----------|------|
-| Q1 | `var` allows re-declaration — the second `var x = 10` silently overwrites |
-| Q2 | PI → `const`, counter → `let`, name → `const`, score → `let` |
-| Q3 | `const` cannot be re-assigned; change `const` to `let` |
-| Q4 | `let` cannot be re-declared — SyntaxError |
-| Q6 | Each scope has its own `x`; inner `x` shadows outer `x` |
-| Q7 | `var` is hoisted as `undefined`, then assigned `5` |
-| Q8 | `let` is in the Temporal Dead Zone — ReferenceError |
-| Q9 | Valid! `const` prevents re-assignment, not mutation of contents |
-| Q10 | Replace `var` with `let` in the for loop |
-| Q11 | ReferenceError — TDZ prevents access before the `let` declaration |
-| Q13 | `push` and index assignment mutate the array (allowed). Re-assigning with `=` throws TypeError |
-| Q14 | PI → `const`, others → `const` (none change after assignment) |
-| Q15 | Block A prints `3 3 3` (var shares one `i`). Block B prints `0 1 2` (let creates a new `i` per iteration) |
+### Task 1: Add More Documents
+Add 5 more FAQ documents to `seed.js` about topics like:
+- Login issues
+- Subscription plans
+- Contact support
+- App installation
+- Payment methods
+
+Re-run `seed.js` and test search with related queries.
+
+### Task 2: Similarity Threshold
+Modify `search.js` to only return documents with similarity > 0.75 (75%). Hint: Add a `WHERE` clause to your SQL query.
+
+```sql
+WHERE 1 - (embedding <=> $1::vector) > 0.75
+```
+
+### Task 3: Search with Category Filter
+Modify the search function to accept an optional `source` filter. For example, search only within "help-center/account" documents.
+
+### Task 4: Embedding Explorer
+Write a small script that:
+1. Takes two sentences as input
+2. Generates embeddings for both
+3. Calculates their cosine similarity
+4. Prints whether they are related or not
+
+```js id="task4hint"
+// Hint: Cosine similarity formula
+function cosineSimilarity(vecA, vecB) {
+  let dotProduct = 0;
+  let normA = 0;
+  let normB = 0;
+  
+  for (let i = 0; i < vecA.length; i++) {
+    dotProduct += vecA[i] * vecB[i];
+    normA += vecA[i] * vecA[i];
+    normB += vecB[i] * vecB[i];
+  }
+  
+  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+}
+```
+
+### Task 5: Batch Embedding Performance
+Modify the `storeDocument` function to batch multiple texts in a single OpenAI API call instead of one at a time. The OpenAI embedding API supports arrays of strings as input.
 
 ---
 
-Great question! These are the **absolute building blocks** of all code. Let's break them down one by one, starting from zero.
+## 8. ⚠️ Common Mistakes
 
-First, the big picture of how all three connect:Click any coloured piece above to ask about it. Now let's go deep on each part.
+### Mistake 1: Wrong Vector Dimensions
+```
+❌ ERROR: expected 1536 dimensions, not 768
+```
+**Why:** You used a different embedding model. `text-embedding-ada-002` outputs 1536 dimensions. If you use `text-embedding-3-small`, it outputs 1536 by default but can be customized. Always match your `VECTOR(n)` column size with your model's output dimensions.
 
----
-
-## What is a Variable?
-
-Think of your computer's memory as a **huge shelf with thousands of empty boxes**. A variable is just one of those boxes — it holds a value so you can use it later.Every time your program runs, it reserves space in memory. Each variable gets its own little box. The name is the label. The value is what's inside.
-
-![alt](../images/day1/variable_memory_analogy.svg)
----
-
-## What is `let`?
-
-`let` is a **keyword** — a special word that JavaScript already knows. It means *"hey JavaScript, create a new variable box for me."*
-
-JavaScript has **3 ways** to create variables, and this is where beginners get confused. Here's the honest comparison:---
-
-![alt](../images/day1/var_let_const_comparison.webp)
-
-## What is `=`?
-![alt](../images/day1/assignment_vs_equality.svg)
-
-In JavaScript (and most programming languages), `=` does **not** mean "is equal to" like in maths. It means **"put this value into that box"** — it's called the **assignment operator**.This is one of the most important things to memorise: **one `=` stores, three `===` compares**.
-
----
-
----
-
-## Naming Rules for Variables
-
-You can't name a variable anything you want. Here are the rules:---
-![alt](../images/day1/variable_naming_rules.svg)
-
-## The complete picture — everything in one place
-
-Here is the full summary of everything you just learned:
-
+### Mistake 2: Not Normalizing Text Before Embedding
 ```js
-// 1. VARIABLE — a named box in memory
-//    keyword   name    =   value   ;
-      let       age   =    22     ;
+// ❌ Bad - inconsistent text
+await generateEmbedding("  HOW DO I RESET MY PASSWORD???  ");
 
-// 2. let — value CAN change later
-let score = 0;
-score = 100;        // ✓ this is fine
-
-// 3. const — value CANNOT change
-const name = 'Alice';
-name = 'Bob';       // ✗ ERROR!
-
-// 4. = means ASSIGN (store a value)
-let x = 10;         // put 10 into x
-
-// 5. === means COMPARE (ask a question)
-x === 10            // → true
-x === 99            // → false
-
-// 6. var — OLD, avoid it
-var old = 'avoid';  // works but don't use
+// ✅ Good - clean, normalized text  
+const cleanText = text.trim().toLowerCase().replace(/\s+/g, " ");
+await generateEmbedding(cleanText);
 ```
 
-**The golden rule for beginners:**
-- Use `const` for everything first
-- Switch to `let` only if you need to change the value
-- Never use `var`
+### Mistake 3: Forgetting the pgvector Extension
+```sql
+-- ❌ This will fail if extension is not enabled
+CREATE TABLE documents (embedding VECTOR(1536));
+
+-- ✅ Always enable extension first
+CREATE EXTENSION IF NOT EXISTS vector;
+```
+
+### Mistake 4: No Index on Vector Column
+Without an index, similarity search scans ALL rows (slow on large datasets):
+```sql
+-- ✅ Add an IVFFlat index for faster search
+CREATE INDEX ON documents 
+USING ivfflat (embedding vector_cosine_ops)
+WITH (lists = 100);
+```
+
+**Rule of thumb:** `lists` should be roughly `sqrt(total_rows)`. For 10,000 documents, use `lists = 100`.
+
+### Mistake 5: Storing Empty or Null Embeddings
+Always validate before inserting:
+```js
+const embedding = await generateEmbedding(content);
+if (!embedding || embedding.length !== 1536) {
+  throw new Error("Invalid embedding generated");
+}
+```
 
 ---
 
-**Homework — type all of this in your browser console (F12):**
+## 9. 🔁 Recap
 
-1. `let myName = 'your name here'; console.log(myName);`
-2. `let score = 0; score = score + 10; console.log(score);`
-3. `const city = 'Hyderabad'; city = 'Mumbai';` — see the error!
-4. `console.log(typeof myName);` — what type is it?
+Let's review what we learned today:
+
+| Concept | What You Learned |
+|---------|-----------------|
+| **RAG** | Retrieve → Augment → Generate. Find relevant docs first, then ask AI. |
+| **Embeddings** | Text converted to numbers (vectors) that capture meaning |
+| **pgvector** | PostgreSQL extension that stores and searches vectors |
+| **Similarity Search** | Finding documents with similar meaning using cosine distance |
+| **OpenAI Embeddings API** | Converts any text to a 1536-dimension vector |
+| **Cosine Distance (`<=>`)** | Measures how similar two vectors are |
+
+### Files we created today:
+
+```
+rag-pgvector-app/
+├── .env                 # API keys and database URL
+├── db.js                # PostgreSQL connection
+├── embedding.js         # OpenAI embedding generation
+├── store.js             # Store documents with embeddings
+├── seed.js              # Load sample data
+└── search.js            # Similarity search
+```
+
+### Key Takeaway:
+
+> RAG is like giving an AI a **relevant cheat sheet** before asking it a question, instead of hoping it remembers everything from training.
+
+---
+
+### 🔮 Tomorrow's Preview (Day 2):
+
+- Build the complete RAG pipeline
+- Connect retrieval → prompt → LLM
+- Return structured JSON responses
+- Build a working FAQ chatbot!
+
+**Homework:** Make sure your PostgreSQL + pgvector setup is working and `seed.js` runs successfully. Tomorrow we build on top of this!
+
+---
+
+*Happy coding! See you tomorrow! 🚀*

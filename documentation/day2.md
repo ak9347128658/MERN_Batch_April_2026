@@ -1,1174 +1,1093 @@
-# Day 2 — Operators & Operator Precedence in JavaScript
+# 📅 Day 2: Full RAG Pipeline + AI Response Structuring
+
+**Duration:** 1 to 1.5 hours  
+**Prerequisites:** Day 1 completed (PostgreSQL + pgvector setup, documents seeded)  
 
 ---
 
-## What are Operators?
+## 1. Introduction
 
-An **operator** is a special symbol (or keyword) that tells JavaScript to perform a specific action on one or more values. Think of operators as **verbs** — they *do* something. The values they act on are called **operands**.
+Hello students 👋
 
-```js
-// Example:
-5 + 3
-// ↑   ↑   ← these are operands (the values)
-//   ↑     ← this is the operator (the action — addition)
-```
+Welcome back to Day 2! Yesterday we learned the **foundation** — embeddings, vector storage, and similarity search.
 
-JavaScript has **six categories** of operators. Here is the complete map:
+Today we're going to **put it all together** and build a complete, working RAG pipeline. By the end of this session, you'll have a fully functional AI-powered FAQ bot that:
 
-![Operators Overview Map](../images/day2/operators_overview_map.svg)
+1. Takes a user question
+2. Finds relevant documents from your database
+3. Sends them as context to an LLM
+4. Returns a beautifully structured JSON response
 
----
+### What we will learn today:
 
-## Category 1 — Arithmetic Operators
+- How to build a complete RAG pipeline end-to-end
+- How to write effective prompts for RAG (prompt engineering basics)
+- How to structure AI responses in JSON format
+- How to handle edge cases (no results, low confidence, errors)
+- How to build a clean, production-ready architecture
 
-### Definition
+### Why does this matter?
 
-Arithmetic operators perform **mathematical calculations** on numbers — addition, subtraction, multiplication, division, and more. These are the same operations you learned in school, plus two extras: **modulus** (`%`) and **exponentiation** (`**`).
+Every AI product you use — from Notion AI to customer support chatbots — follows this exact pattern. After today, you'll know how to build any of them.
 
-| Operator | Name           | Example    | Result |
-|----------|----------------|------------|--------|
-| `+`      | Addition       | `10 + 3`   | `13`   |
-| `-`      | Subtraction    | `10 - 3`   | `7`    |
-| `*`      | Multiplication | `10 * 3`   | `30`   |
-| `/`      | Division       | `10 / 3`   | `3.33` |
-| `%`      | Modulus         | `10 % 3`   | `1`    |
-| `**`     | Exponentiation | `2 ** 8`   | `256`  |
-| `++`     | Increment      | `n++`      | `n + 1`|
-| `--`     | Decrement      | `n--`      | `n - 1`|
-
-> **Modulus (`%`)** gives the *remainder* after division. For example, `10 % 3` means "divide 10 by 3, keep only the remainder" — which is `1`.
->
-> **Exponentiation (`**`)** raises a number to a power. `2 ** 10` means "2 multiplied by itself 10 times" — which is `1024`.
-
-### Interactive Simulation
-
-[Click here to open the Arithmetic Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/arithmetic_operators_interactive.html)
-
-Click every operator card — especially `%` (modulus) and `**` (exponent) which are new. Change the numbers and press `=` to see live results. Try `**` with `2` and `10` — you get 1024!
-
-### Practice Questions — Arithmetic Operators
-
-Try solving these in your head first, then verify in the console (`F12`).
-
-**Q1.** What is the output?
-```js
-let a = 25;
-let b = 7;
-console.log(a + b);
-console.log(a - b);
-console.log(a * b);
-console.log(a / b);
-console.log(a % b);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(a + b);   // 32
-console.log(a - b);   // 18
-console.log(a * b);   // 175
-console.log(a / b);   // 3.5714285714285716
-console.log(a % b);   // 4  (25 ÷ 7 = 3 remainder 4)
-```
-</details>
+> 💡 Think about it: ChatGPT's "Browse with Bing" feature? That's RAG. Google's AI Overview? That's RAG. Copilot reading your codebase? That's RAG.
 
 ---
 
-**Q2.** Use modulus to check if a number is even or odd.
-```js
-let num = 15;
-// Write an expression that gives 0 if even, 1 if odd
-console.log(/* your code here */);
-```
+## 2. Concept Explanation
 
-<details>
-<summary>Click to see solution</summary>
+### The Full RAG Pipeline
 
-```js
-let num = 15;
-console.log(num % 2);  // 1 → odd
-// If num were 20 → 20 % 2 = 0 → even
-```
-**Explanation:** Any number `% 2` gives `0` for even and `1` for odd. This is one of the most common uses of modulus in real programming.
-</details>
+Yesterday we did Steps 1-3. Today we complete the pipeline:
 
----
+| Step | What Happens | We Built This |
+|------|-------------|---------------|
+| 1 | User asks a question | Today |
+| 2 | Convert question to embedding | ✅ Day 1 |
+| 3 | Find similar documents in pgvector | ✅ Day 1 |
+| 4 | Build a prompt with context | Today |
+| 5 | Send to LLM (GPT-4) | Today |
+| 6 | Parse and return structured JSON | Today |
 
-**Q3.** What is the output of each line?
-```js
-console.log(2 ** 5);
-console.log(10 ** 0);
-console.log(9 ** 0.5);
-```
+### Real-World Analogy: The Research Assistant 🧑‍💼
 
-<details>
-<summary>Click to see solution</summary>
+Imagine you hired a brilliant research assistant:
 
-```js
-console.log(2 ** 5);    // 32  (2×2×2×2×2)
-console.log(10 ** 0);   // 1   (any number to the power 0 is 1)
-console.log(9 ** 0.5);  // 3   (0.5 power = square root, √9 = 3)
-```
-</details>
+1. **You ask:** "What's our refund policy for digital products?"
+2. **Assistant goes to the filing cabinet** (vector search) and pulls out the 3 most relevant documents
+3. **Assistant reads them** and highlights the important parts (context building)
+4. **Assistant writes you a clear answer** based on those documents (LLM generation)
+5. **Assistant cites the sources** so you can verify (structured response)
 
----
+That's exactly what our code will do!
 
-**Q4.** What is the value of `x` after each line?
-```js
-let x = 10;
-x++;
-x++;
-x--;
-console.log(x);
-```
+### What is Prompt Engineering?
 
-<details>
-<summary>Click to see solution</summary>
+Prompt engineering is the art of **telling the AI exactly what you want** in a way it understands best.
 
-```js
-let x = 10;
-x++;        // x = 11
-x++;        // x = 12
-x--;        // x = 11
-console.log(x);  // 11
-```
-</details>
+**Bad prompt:** "Answer this question"  
+**Good prompt:** "You are a helpful customer support agent. Using ONLY the provided context documents, answer the user's question. If the answer is not in the context, say 'I don't have information about that.'"
+
+**Question for you:** Why do we say "using ONLY the provided context"? What happens if we don't? *(Answer: The AI might hallucinate — make up facts that sound correct but aren't!)*
 
 ---
 
-**Q5.** Calculate the area and perimeter of a rectangle with `length = 12` and `width = 5`.
-```js
-let length = 12;
-let width = 5;
-// Calculate area (length × width)
-// Calculate perimeter (2 × (length + width))
+## 3. Architecture Flow
+
+### Complete RAG Pipeline
+
+```mermaid id="ragflow2"
+flowchart LR
+    A[User Query] --> B[Generate Embedding]
+    B --> C[pgvector Similarity Search]
+    C --> D[Top K Documents]
+    D --> E[Build Prompt with Context]
+    E --> F[Send to GPT-4]
+    F --> G[Structured JSON Response]
 ```
 
-<details>
-<summary>Click to see solution</summary>
+### Detailed Architecture
 
-```js
-let length = 12;
-let width = 5;
-let area = length * width;
-let perimeter = 2 * (length + width);
-console.log("Area:", area);           // Area: 60
-console.log("Perimeter:", perimeter); // Perimeter: 34
-```
-</details>
+```mermaid id="ragdetailed"
+flowchart TD
+    subgraph "1. User Input"
+        A["User: How do I get a refund?"]
+    end
 
----
+    subgraph "2. Embedding"
+        B[OpenAI Embedding API]
+        C["[0.23, -0.11, 0.87, ...]"]
+    end
 
-## Category 2 — Assignment Operators
+    subgraph "3. Retrieval"
+        D[(PostgreSQL + pgvector)]
+        E["Top 3 matching documents"]
+    end
 
-### Definition
+    subgraph "4. Augmentation"
+        F["System Prompt + Context Docs + User Question"]
+    end
 
-Assignment operators **store (assign) a value into a variable**. The basic one is `=`, but JavaScript provides **shorthand versions** that combine an arithmetic operation with assignment in a single step.
+    subgraph "5. Generation"
+        G[OpenAI GPT-4 API]
+    end
 
-| Operator | Name                  | Longhand      | Shorthand   | If x = 10 |
-|----------|-----------------------|---------------|-------------|-----------|
-| `=`      | Assign                | `x = 10`      | `x = 10`    | `10`      |
-| `+=`     | Add and assign        | `x = x + 5`  | `x += 5`    | `15`      |
-| `-=`     | Subtract and assign   | `x = x - 3`  | `x -= 3`    | `7`       |
-| `*=`     | Multiply and assign   | `x = x * 2`  | `x *= 2`    | `20`      |
-| `/=`     | Divide and assign     | `x = x / 4`  | `x /= 4`    | `2.5`     |
-| `%=`     | Modulus and assign    | `x = x % 4`  | `x %= 4`    | `2`       |
+    subgraph "6. Response"
+        H["Structured JSON with answer, sources, confidence"]
+    end
 
-> These shortcuts exist because updating a variable based on its current value is extremely common in programming. Writing `score += 10` is cleaner and less error-prone than `score = score + 10`.
-
-### Interactive Simulation
-
-[Click here to open the Assignment Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/assignment_operators_demo.html)
-
-Click each operator, change the operand, and press **Apply** — watch x update each time. Try doing `+=` five times with 10 — x grows from 10 → 20 → 30 → 40 → 50!
-
-### Practice Questions — Assignment Operators
-
-**Q1.** What is the final value of `x`?
-```js
-let x = 50;
-x += 20;
-x -= 10;
-x *= 2;
-console.log(x);
+    A --> B --> C --> D --> E --> F --> G --> H
 ```
 
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let x = 50;
-x += 20;   // x = 50 + 20 = 70
-x -= 10;   // x = 70 - 10 = 60
-x *= 2;    // x = 60 * 2  = 120
-console.log(x);  // 120
-```
-</details>
-
----
-
-**Q2.** What is the final value of `price`?
-```js
-let price = 200;
-price /= 4;
-price += 15;
-price %= 7;
-console.log(price);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let price = 200;
-price /= 4;    // price = 200 / 4 = 50
-price += 15;   // price = 50 + 15  = 65
-price %= 7;    // price = 65 % 7   = 2  (65 ÷ 7 = 9 remainder 2)
-console.log(price);  // 2
-```
-</details>
-
----
-
-**Q3.** Rewrite each line using assignment shorthand operators.
-```js
-let a = 10;
-a = a + 5;
-a = a * 3;
-a = a - 10;
-a = a / 5;
-a = a % 3;
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let a = 10;
-a += 5;    // a = 15
-a *= 3;    // a = 45
-a -= 10;   // a = 35
-a /= 5;    // a = 7
-a %= 3;    // a = 1
-console.log(a);  // 1
-```
-</details>
-
----
-
-**Q4.** A player starts with 100 health points. They take 30 damage, then heal 15, then take 25 damage. What is their final health?
-```js
-let health = 100;
-// Use -= and += to update health
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let health = 100;
-health -= 30;   // took damage → 70
-health += 15;   // healed     → 85
-health -= 25;   // took damage → 60
-console.log(health);  // 60
-```
-</details>
-
----
-
-## Category 3 — Comparison Operators
-
-### Definition
-
-Comparison operators **compare two values** and always return a **boolean** — either `true` or `false`. These are the foundation of every `if` statement and conditional logic in JavaScript.
-
-| Operator | Name                     | Example       | Result  |
-|----------|--------------------------|---------------|---------|
-| `===`    | Strict equal (value + type) | `5 === 5`   | `true`  |
-| `===`    | Strict equal (type mismatch)| `5 === "5"` | `false` |
-| `!==`    | Strict not equal         | `5 !== 10`    | `true`  |
-| `>`      | Greater than             | `10 > 5`      | `true`  |
-| `<`      | Less than                | `10 < 5`      | `false` |
-| `>=`     | Greater than or equal    | `10 >= 10`    | `true`  |
-| `<=`     | Less than or equal       | `5 <= 10`     | `true`  |
-
-> **Why `===` instead of `==`?**
-> - `===` (strict equality) checks **both value AND type**. `5 === "5"` is `false` because one is a number and the other is a string.
-> - `==` (loose equality) only checks value and performs type coercion. `5 == "5"` is `true` — which often leads to bugs.
-> - **Always use `===` and `!==`** in your code. This is a best practice followed by professional developers.
-
-### Interactive Simulation
-
-[Click here to open the Comparison Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/comparison_operators_interactive.html)
-
-Click the tricky tests at the bottom — especially `5 === "5"` and `0 === false`. These are where beginners make mistakes every day!
-
-### Practice Questions — Comparison Operators
-
-**Q1.** Predict `true` or `false` for each line.
-```js
-console.log(10 === 10);
-console.log(10 === "10");
-console.log(10 !== "10");
-console.log(5 > 5);
-console.log(5 >= 5);
-console.log(3 < 8);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(10 === 10);    // true  — same value, same type (number)
-console.log(10 === "10");  // false — same value, different type (number vs string)
-console.log(10 !== "10");  // true  — they ARE different (type mismatch)
-console.log(5 > 5);        // false — 5 is NOT greater than 5
-console.log(5 >= 5);       // true  — 5 IS greater than or equal to 5
-console.log(3 < 8);        // true  — 3 IS less than 8
-```
-</details>
-
----
-
-**Q2.** A student scored 72 marks. Write comparison expressions to check:
-```js
-let marks = 72;
-// a) Did they score above 50?
-// b) Did they score exactly 100?
-// c) Did they score 72 or below?
-// d) Did they fail (below 35)?
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let marks = 72;
-console.log(marks > 50);    // true  — scored above 50
-console.log(marks === 100); // false — did not score exactly 100
-console.log(marks <= 72);   // true  — scored 72 or below
-console.log(marks < 35);    // false — did not fail
-```
-</details>
-
----
-
-**Q3.** What is the difference between `==` and `===`? Predict the output.
-```js
-console.log(0 == false);
-console.log(0 === false);
-console.log("" == false);
-console.log("" === false);
-console.log(null == undefined);
-console.log(null === undefined);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(0 == false);          // true  — == converts false to 0, then 0 == 0
-console.log(0 === false);         // false — number vs boolean, different types
-console.log("" == false);         // true  — == converts both to 0
-console.log("" === false);        // false — string vs boolean, different types
-console.log(null == undefined);   // true  — special rule: null and undefined are == to each other
-console.log(null === undefined);  // false — null is type "object", undefined is type "undefined"
-```
-**Takeaway:** `==` does sneaky type conversions that cause bugs. Always use `===`.
-</details>
-
----
-
-**Q4.** Write an expression to check if a person's age is between 18 and 65 (inclusive).
-```js
-let age = 30;
-// How would you check: 18 <= age <= 65 ?
-// Hint: you can't write it like maths — you need a logical operator (next topic!)
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let age = 30;
-console.log(age >= 18 && age <= 65);  // true
-// You need && (AND) to combine two comparisons
-// age >= 18 → true  AND  age <= 65 → true  → true
-```
-</details>
-
----
-
-## Category 4 — Logical Operators
-
-### Definition
-
-Logical operators **combine multiple conditions** together. Think of them as the words **"AND"**, **"OR"**, and **"NOT"** in English. They are essential for building complex decision-making logic.
-
-| Operator | Name | What it does                              | Example            | Result  |
-|----------|------|-------------------------------------------|--------------------|---------|
-| `&&`     | AND  | `true` only if **both** sides are true    | `true && true`     | `true`  |
-| `&&`     | AND  |                                           | `true && false`    | `false` |
-| `\|\|`   | OR   | `true` if **at least one** side is true   | `true \|\| false`  | `true`  |
-| `\|\|`   | OR   |                                           | `false \|\| false` | `false` |
-| `!`      | NOT  | **Flips** the value to its opposite       | `!true`            | `false` |
-| `!`      | NOT  |                                           | `!false`           | `true`  |
-
-> **Real-world analogy:**
-> - `&&` (AND) — A door opens only if you have the key **AND** the passcode. Both conditions must be true.
-> - `||` (OR) — You can pay with cash **OR** card. Either one works.
-> - `!` (NOT) — If `isLoggedIn` is `true`, then `!isLoggedIn` is `false` — the user is NOT logged in.
-
-### Interactive Simulation
-
-[Click here to open the Logical Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/logical_operators_interactive.html)
-
-Toggle the two switches — watch all three results update instantly. Try switching one off and see how `&&` breaks but `||` still works. This is exactly what login and permission checks look like in a real app!
-
-### Practice Questions — Logical Operators
-
-**Q1.** Predict `true` or `false` for each line.
-```js
-console.log(true && true);
-console.log(true && false);
-console.log(false || true);
-console.log(false || false);
-console.log(!true);
-console.log(!false);
-console.log(!(5 > 3));
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(true && true);    // true  — both true
-console.log(true && false);   // false — one is false, AND fails
-console.log(false || true);   // true  — one is true, OR passes
-console.log(false || false);  // false — neither is true
-console.log(!true);           // false — flip true
-console.log(!false);          // true  — flip false
-console.log(!(5 > 3));        // false — 5 > 3 is true, !true = false
-```
-</details>
-
----
-
-**Q2.** A website allows login only if the user has entered both a valid email AND a correct password. Write the logic.
-```js
-let hasValidEmail = true;
-let hasCorrectPassword = false;
-// Can the user log in?
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let hasValidEmail = true;
-let hasCorrectPassword = false;
-let canLogin = hasValidEmail && hasCorrectPassword;
-console.log(canLogin);  // false — password is wrong, AND fails
-// Both must be true for login to succeed
-```
-</details>
-
----
-
-**Q3.** A movie ticket is free if the person is under 5 OR over 65. Write the check.
-```js
-let age = 70;
-// Is the ticket free?
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let age = 70;
-let isFree = age < 5 || age > 65;
-console.log(isFree);  // true — age 70 is over 65
-// Try with age = 3 → true (under 5)
-// Try with age = 30 → false (neither condition met)
-```
-</details>
-
----
-
-**Q4.** A user can access admin panel only if they are logged in AND are an admin AND are NOT banned. What is the result?
-```js
-let isLoggedIn = true;
-let isAdmin = true;
-let isBanned = true;
-// Can they access the admin panel?
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let isLoggedIn = true;
-let isAdmin = true;
-let isBanned = true;
-let canAccess = isLoggedIn && isAdmin && !isBanned;
-console.log(canAccess);  // false
-// isLoggedIn = true ✓
-// isAdmin = true ✓
-// !isBanned = !true = false ✗  ← blocked because they are banned
-// true && true && false = false
-```
-</details>
-
----
-
-**Q5.** What is the output? Think carefully!
-```js
-console.log(true || false && false);
-console.log((true || false) && false);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(true || false && false);
-// && runs first: false && false = false
-// then: true || false = true
-// Answer: true
-
-console.log((true || false) && false);
-// Brackets first: true || false = true
-// then: true && false = false
-// Answer: false
-
-// Same operators, different result — brackets change everything!
-```
-</details>
-
----
-
-## Category 5 — String & Ternary Operators
-
-### Definition
-
-**String operators** let you **join (concatenate) text** together. The `+` operator, when used with strings, glues them side by side. Template literals (backticks) offer a modern, cleaner way to embed variables inside strings.
-
-**The ternary operator** (`? :`) is a **one-line shortcut for if/else**. It takes three parts: a condition, a value if true, and a value if false.
-
-| Operator | Name              | Example                               | Result             |
-|----------|-------------------|---------------------------------------|--------------------|
-| `+`      | String concatenation | `"Hello" + " " + "World"`         | `"Hello World"`    |
-| `` ` ` ``| Template literal   | `` `My name is ${"Alice"}` ``        | `"My name is Alice"`|
-| `? :`    | Ternary            | `age >= 18 ? "Adult" : "Minor"`      | `"Adult"` (if age=20)|
-
-```js
-// String concatenation
-let firstName = "John";
-let lastName = "Doe";
-let fullName = firstName + " " + lastName;  // "John Doe"
-
-// Template literal (modern way — use backticks)
-let greeting = `Hello, ${firstName} ${lastName}!`;  // "Hello, John Doe!"
-
-// Ternary operator (one-line if/else)
-let age = 20;
-let status = age >= 18 ? "Adult" : "Minor";  // "Adult"
-```
-
-> **When to use the ternary operator:** Use it for simple, short conditions where you need to pick between two values. If the logic is complex, stick with a regular `if/else` block for readability.
-
-![String & Ternary Operators](../images/day2/logical_operators_interactive.webp)
-
-### Interactive Simulation
-
-[Click here to open the String & Ternary Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/string_ternary_operators.html)
-
-On the left — type your own words and see how `+` joins them. On the right — change `age` and `min` to see the ternary flip between Adult and Minor. Try all 4 real-world examples at the bottom!
-
-### Practice Questions — String & Ternary Operators
-
-**Q1.** Join these variables into a single sentence using `+` concatenation.
-```js
-let city = "Mumbai";
-let country = "India";
-// Output: "I live in Mumbai, India."
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let city = "Mumbai";
-let country = "India";
-let sentence = "I live in " + city + ", " + country + ".";
-console.log(sentence);  // "I live in Mumbai, India."
-```
-</details>
-
----
-
-**Q2.** Rewrite Q1 using template literals (backticks).
-```js
-let city = "Mumbai";
-let country = "India";
-// Use backticks `` and ${} to build the same sentence
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let city = "Mumbai";
-let country = "India";
-let sentence = `I live in ${city}, ${country}.`;
-console.log(sentence);  // "I live in Mumbai, India."
-// Template literals are cleaner — no need for + and extra quotes
-```
-</details>
-
----
-
-**Q3.** Use the ternary operator to set `result` to "Pass" if `marks >= 35`, otherwise "Fail".
-```js
-let marks = 28;
-// Write one line using ternary
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let marks = 28;
-let result = marks >= 35 ? "Pass" : "Fail";
-console.log(result);  // "Fail" — 28 is less than 35
-```
-</details>
-
----
-
-**Q4.** Use the ternary operator to check if a number is even or odd.
-```js
-let num = 7;
-// Output: "odd" or "even"
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let num = 7;
-let type = num % 2 === 0 ? "even" : "odd";
-console.log(type);  // "odd" — 7 % 2 = 1, which is not 0
-```
-</details>
-
----
-
-**Q5.** Build a greeting message using template literals and ternary together.
-```js
-let name = "Rahul";
-let hour = 14;  // 24-hour format
-// Output: "Good afternoon, Rahul!" (if hour >= 12)
-// Output: "Good morning, Rahul!"   (if hour < 12)
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let name = "Rahul";
-let hour = 14;
-let greeting = `Good ${hour >= 12 ? "afternoon" : "morning"}, ${name}!`;
-console.log(greeting);  // "Good afternoon, Rahul!"
-// This combines template literals + ternary — very common in real apps!
-```
-</details>
-
----
-
-**Q6.** Nested ternary — assign a shipping label based on weight.
-```js
-let weight = 12;  // kg
-// "Light" if weight < 5
-// "Medium" if weight >= 5 and < 20
-// "Heavy" if weight >= 20
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let weight = 12;
-let label = weight < 5 ? "Light" : weight < 20 ? "Medium" : "Heavy";
-console.log(label);  // "Medium" — 12 is >= 5 but < 20
-
-// How it works step by step:
-// weight < 5?  → 12 < 5 = false → go to else
-// weight < 20? → 12 < 20 = true → "Medium"
-```
-</details>
-
----
-
-## Complete Cheat Sheet — All Operators
-
-```js
-// ── ARITHMETIC ──────────────────────────────────
-10 + 3    // 13   addition
-10 - 3    // 7    subtraction
-10 * 3    // 30   multiplication
-10 / 3    // 3.33 division
-10 % 3    // 1    remainder (modulus)
-2  ** 8   // 256  power (2 to the 8th)
-let n=5; n++;  // n is now 6   (increment)
-let m=5; m--;  // m is now 4   (decrement)
-
-// ── ASSIGNMENT ──────────────────────────────────
-let x = 10;   // store 10
-x += 5;       // x = x + 5  → 15
-x -= 3;       // x = x - 3  → 12
-x *= 2;       // x = x * 2  → 24
-x /= 4;       // x = x / 4  → 6
-x %= 4;       // x = x % 4  → 2
-
-// ── COMPARISON (always returns true/false) ──────
-5 === 5       // true   (same value, same type)
-5 === "5"     // false  (different type!)
-5 !== 10      // true   (they ARE different)
-10 > 5        // true
-10 < 5        // false
-10 >= 10      // true   (equal counts!)
-5  <= 10      // true
-
-// ── LOGICAL ─────────────────────────────────────
-true && true  // true   (AND — both must be true)
-true && false // false
-true || false // true   (OR  — one is enough)
-false|| false // false
-!true         // false  (NOT — flip it)
-!false        // true
-
-// ── STRING ──────────────────────────────────────
-"Hello" + " " + "World"     // "Hello World"
-`My name is ${"Alice"}`     // "My name is Alice"
-
-// ── TERNARY (one-line if/else) ───────────────────
-let age = 20;
-let label = age >= 18 ? "Adult" : "Minor"; // "Adult"
+### How the Prompt is Built
+
+```mermaid id="promptflow"
+flowchart TD
+    A[System Prompt: You are a support agent...] --> D[Final Prompt]
+    B[Context: Document 1, Document 2, Document 3] --> D
+    C[User Question: How do I get a refund?] --> D
+    D --> E[Send to GPT-4]
 ```
 
 ---
 
-## Homework — Operators Practice
+## 4. Hands-on Code
 
-Paste this in your browser console (`F12` → Console tab):
+### Project Structure (Final)
 
-```js
-let score = 85;
+```
+rag-pgvector-app/
+├── .env                   # API keys and database URL
+├── db.js                  # PostgreSQL connection (from Day 1)
+├── embedding.js           # OpenAI embedding generation (from Day 1)
+├── store.js               # Store documents (from Day 1)
+├── seed.js                # Load sample data (from Day 1)
+├── search.js              # Similarity search (from Day 1)
+├── rag.js                 # 🆕 Complete RAG pipeline
+├── prompt-builder.js      # 🆕 Prompt construction
+├── response-formatter.js  # 🆕 JSON response formatting
+└── server.js              # 🆕 Express API endpoint
+```
 
-// 1. Arithmetic
-console.log(score + 10);  // add bonus → 95
-console.log(score % 10);  // last digit → 5
+### Step 1: Prompt Builder
 
-// 2. Assignment shortcut
-score += 5;
-console.log(score);       // → 90
+Create `prompt-builder.js`:
 
-// 3. Comparison
-console.log(score >= 90); // → true
-console.log(score === 90);// → true
+```js id="promptBuilder"
+// prompt-builder.js - Constructs the prompt sent to the LLM
 
-// 4. Logical
-let passed  = score >= 50;
-let topMark = score >= 90;
-console.log(passed && topMark);  // both true? → true
-console.log(passed || topMark);  // either true? → true
+/**
+ * Build a system prompt that tells the AI how to behave
+ */
+function buildSystemPrompt() {
+  return `You are a helpful and friendly customer support assistant.
 
-// 5. Ternary
-let grade = score >= 90 ? "A" : score >= 75 ? "B" : "C";
-console.log(grade);  // → "A"
+RULES:
+1. Answer the user's question using ONLY the information provided in the CONTEXT section below.
+2. If the context does not contain enough information to answer, say "I don't have specific information about that in our documentation."
+3. Be concise and direct. Keep answers under 3 sentences when possible.
+4. Always mention which document(s) you used to form your answer.
+5. If the user asks something completely unrelated to the context, politely redirect them.
+6. NEVER make up information that is not in the context.
+
+RESPONSE FORMAT:
+You must respond in valid JSON format with this structure:
+{
+  "answer": "Your helpful answer here",
+  "sources_used": ["title of source 1", "title of source 2"],
+  "confidence": 0.0 to 1.0 (how confident you are based on context relevance),
+  "follow_up_suggestion": "A helpful follow-up question the user might want to ask"
+}`;
+}
+
+/**
+ * Build the context section from retrieved documents
+ * 
+ * @param {Array} documents - Retrieved documents from pgvector
+ * @returns {string} - Formatted context string
+ */
+function buildContext(documents) {
+  if (documents.length === 0) {
+    return "CONTEXT: No relevant documents found.";
+  }
+
+  let context = "CONTEXT:\n";
+  context += "Use the following documents to answer the user's question:\n\n";
+
+  documents.forEach((doc, index) => {
+    context += `--- Document ${index + 1} ---\n`;
+    context += `Title: ${doc.title}\n`;
+    context += `Source: ${doc.source}\n`;
+    context += `Content: ${doc.content}\n`;
+    context += `Relevance Score: ${(doc.similarity * 100).toFixed(1)}%\n\n`;
+  });
+
+  return context;
+}
+
+/**
+ * Build the complete prompt combining system, context, and user query
+ */
+function buildFullPrompt(userQuery, documents) {
+  const systemPrompt = buildSystemPrompt();
+  const context = buildContext(documents);
+
+  return {
+    systemPrompt,
+    userMessage: `${context}\n\nUSER QUESTION: ${userQuery}`,
+  };
+}
+
+module.exports = { buildSystemPrompt, buildContext, buildFullPrompt };
+```
+
+**Key lesson:** Notice how we separate the system prompt, context, and user query. This is a best practice in prompt engineering — each part has a clear role.
+
+### Step 2: Response Formatter
+
+Create `response-formatter.js`:
+
+```js id="responseFormatter"
+// response-formatter.js - Parse and structure the AI response
+
+/**
+ * Parse the LLM's JSON response and add metadata
+ * 
+ * @param {string} llmResponse - Raw response from the LLM
+ * @param {object} metadata - Additional metadata to include
+ * @returns {object} - Structured JSON response
+ */
+function formatResponse(llmResponse, metadata = {}) {
+  let parsed;
+
+  try {
+    // Try to parse the LLM's response as JSON
+    // Sometimes the LLM wraps JSON in markdown code blocks
+    const cleanedResponse = llmResponse
+      .replace(/```json\n?/g, "")
+      .replace(/```\n?/g, "")
+      .trim();
+
+    parsed = JSON.parse(cleanedResponse);
+  } catch {
+    // If parsing fails, create a fallback response
+    parsed = {
+      answer: llmResponse,
+      sources_used: [],
+      confidence: 0.5,
+      follow_up_suggestion: null,
+    };
+  }
+
+  // Build the final structured response
+  return {
+    success: true,
+    data: {
+      answer: parsed.answer,
+      sources: parsed.sources_used || [],
+      confidence: parsed.confidence || 0,
+      follow_up_suggestion: parsed.follow_up_suggestion || null,
+    },
+    metadata: {
+      model: metadata.model || "gpt-4",
+      tokens_used: metadata.tokens_used || null,
+      documents_retrieved: metadata.documents_retrieved || 0,
+      search_time_ms: metadata.search_time_ms || null,
+      response_time_ms: metadata.response_time_ms || null,
+      timestamp: new Date().toISOString(),
+    },
+  };
+}
+
+/**
+ * Create an error response in the same JSON structure
+ */
+function formatErrorResponse(error, query) {
+  return {
+    success: false,
+    data: {
+      answer: "I'm sorry, I encountered an error processing your question. Please try again.",
+      sources: [],
+      confidence: 0,
+      follow_up_suggestion: "Could you try rephrasing your question?",
+    },
+    error: {
+      message: error.message,
+      code: error.code || "UNKNOWN_ERROR",
+    },
+    metadata: {
+      query,
+      timestamp: new Date().toISOString(),
+    },
+  };
+}
+
+module.exports = { formatResponse, formatErrorResponse };
+```
+
+### Step 3: The RAG Pipeline (The Main Event!)
+
+Create `rag.js`:
+
+```js id="ragPipeline"
+// rag.js - The complete RAG pipeline
+const OpenAI = require("openai");
+const pool = require("./db");
+const { generateEmbedding } = require("./embedding");
+const { buildFullPrompt } = require("./prompt-builder");
+const { formatResponse, formatErrorResponse } = require("./response-formatter");
+require("dotenv").config();
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+/**
+ * Step 1: Retrieve relevant documents from pgvector
+ */
+async function retrieveDocuments(query, topK = 3, similarityThreshold = 0.7) {
+  const startTime = Date.now();
+
+  // Generate embedding for the query
+  const queryEmbedding = await generateEmbedding(query);
+  const embeddingStr = `[${queryEmbedding.join(",")}]`;
+
+  // Search for similar documents
+  const result = await pool.query(
+    `
+    SELECT 
+      id, title, content, source,
+      1 - (embedding <=> $1::vector) AS similarity
+    FROM documents
+    WHERE 1 - (embedding <=> $1::vector) > $3
+    ORDER BY embedding <=> $1::vector
+    LIMIT $2
+    `,
+    [embeddingStr, topK, similarityThreshold]
+  );
+
+  const searchTimeMs = Date.now() - startTime;
+
+  return {
+    documents: result.rows,
+    searchTimeMs,
+  };
+}
+
+/**
+ * Step 2: Generate AI response using retrieved context
+ */
+async function generateResponse(query, documents) {
+  const { systemPrompt, userMessage } = buildFullPrompt(query, documents);
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-4",
+    messages: [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: userMessage },
+    ],
+    temperature: 0.3,       // Low temperature = more factual, less creative
+    max_tokens: 500,
+    response_format: { type: "json_object" },  // Force JSON output
+  });
+
+  return {
+    content: response.choices[0].message.content,
+    tokensUsed:
+      response.usage.prompt_tokens + response.usage.completion_tokens,
+    model: response.model,
+  };
+}
+
+/**
+ * The main RAG function — ties everything together
+ * 
+ * This is the function you call from your API endpoint
+ */
+async function askQuestion(query) {
+  const startTime = Date.now();
+
+  try {
+    console.log(`\n${"=".repeat(60)}`);
+    console.log(`📝 Question: "${query}"`);
+    console.log(`${"=".repeat(60)}\n`);
+
+    // Step 1: Retrieve relevant documents
+    console.log("🔍 Step 1: Retrieving relevant documents...");
+    const { documents, searchTimeMs } = await retrieveDocuments(query);
+    console.log(`   Found ${documents.length} relevant documents (${searchTimeMs}ms)`);
+
+    documents.forEach((doc, i) => {
+      console.log(`   ${i + 1}. ${doc.title} (${(doc.similarity * 100).toFixed(1)}%)`);
+    });
+
+    // Step 2: Generate AI response
+    console.log("\n🤖 Step 2: Generating AI response...");
+    const llmResult = await generateResponse(query, documents);
+    console.log(`   Response generated (${llmResult.tokensUsed} tokens used)`);
+
+    // Step 3: Format the response
+    const totalTimeMs = Date.now() - startTime;
+    const formattedResponse = formatResponse(llmResult.content, {
+      model: llmResult.model,
+      tokens_used: llmResult.tokensUsed,
+      documents_retrieved: documents.length,
+      search_time_ms: searchTimeMs,
+      response_time_ms: totalTimeMs,
+    });
+
+    console.log("\n✅ Final Response:");
+    console.log(JSON.stringify(formattedResponse, null, 2));
+
+    return formattedResponse;
+  } catch (error) {
+    console.error("\n❌ RAG pipeline error:", error.message);
+    return formatErrorResponse(error, query);
+  }
+}
+
+module.exports = { askQuestion, retrieveDocuments, generateResponse };
+```
+
+### Step 4: Test the Pipeline
+
+Create `test-rag.js`:
+
+```js id="testRag"
+// test-rag.js - Test the complete RAG pipeline
+const { askQuestion } = require("./rag");
+const pool = require("./db");
+
+async function runTests() {
+  console.log("🧪 Testing RAG Pipeline\n");
+
+  // Test 1: Direct match question
+  console.log("\n📋 Test 1: Password question");
+  await askQuestion("How can I reset my password?");
+
+  // Test 2: Indirect/semantic match
+  console.log("\n📋 Test 2: Refund question (indirect phrasing)");
+  await askQuestion("I want my money back for a digital purchase");
+
+  // Test 3: Multi-topic question
+  console.log("\n📋 Test 3: Security question");
+  await askQuestion("How do I make my account more secure?");
+
+  // Test 4: Question with no relevant context
+  console.log("\n📋 Test 4: Unrelated question");
+  await askQuestion("What is the meaning of life?");
+
+  // Test 5: Specific detail question
+  console.log("\n📋 Test 5: Specific detail");
+  await askQuestion("How long does international shipping take?");
+
+  await pool.end();
+  console.log("\n\n🎉 All tests completed!");
+}
+
+runTests();
+```
+
+Run it:
+
+```bash id="runtests"
+node test-rag.js
+```
+
+### Step 5: Build an Express API
+
+Create `server.js`:
+
+```js id="expressServer"
+// server.js - REST API for the RAG pipeline
+const express = require("express");
+const { askQuestion } = require("./rag");
+const { storeDocument } = require("./store");
+const pool = require("./db");
+require("dotenv").config();
+
+const app = express();
+app.use(express.json());
+
+/**
+ * POST /api/ask
+ * Ask a question and get a RAG-powered response
+ * 
+ * Body: { "question": "How do I reset my password?" }
+ */
+app.post("/api/ask", async (req, res) => {
+  const { question } = req.body;
+
+  if (!question || question.trim().length === 0) {
+    return res.status(400).json({
+      success: false,
+      error: { message: "Question is required", code: "MISSING_QUESTION" },
+    });
+  }
+
+  const response = await askQuestion(question);
+  res.json(response);
+});
+
+/**
+ * POST /api/documents
+ * Add a new document to the knowledge base
+ * 
+ * Body: { "title": "...", "content": "...", "source": "..." }
+ */
+app.post("/api/documents", async (req, res) => {
+  const { title, content, source } = req.body;
+
+  if (!title || !content) {
+    return res.status(400).json({
+      success: false,
+      error: { message: "Title and content are required", code: "MISSING_FIELDS" },
+    });
+  }
+
+  try {
+    const doc = await storeDocument(title, content, source || "manual-upload");
+    res.status(201).json({
+      success: true,
+      data: doc,
+      message: "Document stored with embedding successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: { message: error.message, code: "STORE_ERROR" },
+    });
+  }
+});
+
+/**
+ * GET /api/documents
+ * List all documents in the knowledge base
+ */
+app.get("/api/documents", async (req, res) => {
+  const result = await pool.query(
+    "SELECT id, title, source, created_at FROM documents ORDER BY created_at DESC"
+  );
+
+  res.json({
+    success: true,
+    data: result.rows,
+    total: result.rows.length,
+  });
+});
+
+/**
+ * GET /api/health
+ * Health check endpoint
+ */
+app.get("/api/health", async (req, res) => {
+  try {
+    await pool.query("SELECT 1");
+    res.json({ status: "healthy", database: "connected" });
+  } catch {
+    res.status(500).json({ status: "unhealthy", database: "disconnected" });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`\n🚀 RAG API Server running on http://localhost:${PORT}`);
+  console.log(`\n📖 Endpoints:`);
+  console.log(`   POST /api/ask          - Ask a question`);
+  console.log(`   POST /api/documents    - Add a document`);
+  console.log(`   GET  /api/documents    - List all documents`);
+  console.log(`   GET  /api/health       - Health check\n`);
+});
+```
+
+Install Express and start the server:
+
+```bash id="startserver"
+npm install express
+
+node server.js
+```
+
+### Step 6: Test with cURL
+
+```bash id="curltest"
+# Health check
+curl http://localhost:3000/api/health
+
+# Ask a question
+curl -X POST http://localhost:3000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "How do I reset my password?"}'
+
+# Add a new document
+curl -X POST http://localhost:3000/api/documents \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Business Hours",
+    "content": "Our customer support is available Monday to Friday, 9 AM to 6 PM EST. Weekend support is available via email only with a 24-hour response time.",
+    "source": "help-center/general"
+  }'
+
+# Ask about the new document
+curl -X POST http://localhost:3000/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"question": "When can I reach customer support?"}'
+
+# List all documents
+curl http://localhost:3000/api/documents
 ```
 
 ---
 
-# Operator Precedence (BODMAS / BIDMAS)
+## 5. JSON Response Design (Deep Dive)
 
-## What is Operator Precedence?
+### The Response Structure
 
-**Operator precedence** determines the **order in which operators are evaluated** when multiple operators appear in a single expression. It is the same concept as **BODMAS / BIDMAS** from school maths.
+Here is the complete JSON response our API returns:
 
-When JavaScript sees `2 + 3 * 4`, it doesn't just read left to right. It follows a strict priority system — **multiplication runs before addition**, so the answer is `14`, not `20`.
-
-> **Simple rule:** Higher precedence = executes first. When two operators have the **same** precedence, they are evaluated **left to right** (except exponentiation `**` which goes right to left).
-
-Here is the full precedence tower — **higher = runs first**:
-
-![Operator Precedence Tower](../images/day2/operator_precedence_tower.svg)
-
----
-
-## Part 1 — BODMAS in Action: Step-by-Step Solver
-
-### The BODMAS Rule
-
-| Letter | Stands For      | Operators        | Priority |
-|--------|-----------------|------------------|----------|
-| **B**  | Brackets        | `( )`            | 1st (highest) |
-| **O**  | Orders / Power  | `**`             | 2nd      |
-| **D**  | Division        | `/`              | 3rd      |
-| **M**  | Multiplication  | `*`, `%`         | 3rd (same as D) |
-| **A**  | Addition        | `+`              | 4th      |
-| **S**  | Subtraction     | `-`              | 4th (same as A) |
-
-Then in JavaScript, after maths:
-
-| Priority | Category       | Operators           |
-|----------|----------------|---------------------|
-| 5th      | Comparison     | `>`, `<`, `>=`, `<=`|
-| 6th      | Equality       | `===`, `!==`        |
-| 7th      | Logical AND    | `&&`                |
-| 8th      | Logical OR     | `\|\|`              |
-| Last     | Assignment     | `=`, `+=`, `-=` etc.|
-
-### Interactive Simulation
-
-[Click here to open the BODMAS Step-by-Step Solver](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/bodmas_step_solver.html)
-
-Press **Play all** on each expression — watch the steps reveal one by one. Try `2 + 3 * 4` first — most beginners get this wrong thinking the answer is 20!
-
-### Practice Questions — BODMAS
-
-**Q1.** Solve step by step — what is the output?
-```js
-console.log(4 + 6 * 2 - 3);
+```json id="fullresponse"
+{
+  "success": true,
+  "data": {
+    "answer": "To reset your password, go to the login page and click 'Forgot Password'. Enter your registered email address and you'll receive a reset link within 5 minutes. Your new password must be at least 8 characters with one uppercase letter and one number.",
+    "sources": ["Password Reset"],
+    "confidence": 0.95,
+    "follow_up_suggestion": "Would you like to know how to enable two-factor authentication for extra security?"
+  },
+  "metadata": {
+    "model": "gpt-4",
+    "tokens_used": 245,
+    "documents_retrieved": 3,
+    "search_time_ms": 42,
+    "response_time_ms": 1830,
+    "timestamp": "2026-04-14T10:30:00.000Z"
+  }
+}
 ```
 
-<details>
-<summary>Click to see solution</summary>
+### Why Each Field Matters
 
-```js
-// Step 1: 6 * 2 = 12  (multiplication first)
-// Step 2: 4 + 12 = 16  (addition)
-// Step 3: 16 - 3 = 13  (subtraction)
-console.log(4 + 6 * 2 - 3);  // 13
-```
-</details>
+| Field | Purpose | Real-World Use |
+|-------|---------|----------------|
+| `success` | Quick check if the request worked | Frontend error handling |
+| `answer` | The actual AI response | Display to user |
+| `sources` | Which documents were used | Trust & verification |
+| `confidence` | How sure the AI is (0-1) | Show warning if low |
+| `follow_up_suggestion` | Next logical question | Better UX, keep user engaged |
+| `model` | Which AI model was used | Debugging & cost tracking |
+| `tokens_used` | How many tokens consumed | Cost monitoring |
+| `documents_retrieved` | How many docs were found | Retrieval quality monitoring |
+| `search_time_ms` | Vector search duration | Performance monitoring |
+| `response_time_ms` | Total request duration | SLA monitoring |
 
----
+### Handling Low Confidence
 
-**Q2.** What is the output?
-```js
-console.log((4 + 6) * (2 - 3));
-```
+```js id="lowConfidence"
+// In your frontend or API middleware
+function handleResponse(response) {
+  if (!response.success) {
+    return showError(response.error.message);
+  }
 
-<details>
-<summary>Click to see solution</summary>
+  const { confidence, answer } = response.data;
 
-```js
-// Step 1: (4 + 6) = 10  (brackets first)
-// Step 2: (2 - 3) = -1  (brackets first)
-// Step 3: 10 * -1 = -10
-console.log((4 + 6) * (2 - 3));  // -10
-```
-</details>
-
----
-
-**Q3.** What is the output?
-```js
-console.log(100 / 5 / 2);
-console.log(100 / (5 / 2));
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(100 / 5 / 2);
-// Left to right: 100 / 5 = 20, then 20 / 2 = 10
-// Answer: 10
-
-console.log(100 / (5 / 2));
-// Brackets first: 5 / 2 = 2.5, then 100 / 2.5 = 40
-// Answer: 40
-
-// Same numbers, different grouping — completely different answers!
-```
-</details>
-
----
-
-**Q4.** Add brackets to make this expression equal `36`.
-```js
-// Original: 2 + 4 * 8 - 2
-// Currently: 2 + 32 - 2 = 32  (not 36!)
-// Add brackets so it equals 36
+  if (confidence >= 0.8) {
+    // High confidence — show answer directly
+    showAnswer(answer);
+  } else if (confidence >= 0.5) {
+    // Medium confidence — show with a disclaimer
+    showAnswer(answer, {
+      disclaimer: "This answer may not be fully accurate. Please verify with our support team."
+    });
+  } else {
+    // Low confidence — suggest contacting support
+    showFallback("I'm not confident enough to answer this. Let me connect you with a human agent.");
+  }
+}
 ```
 
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log((2 + 4) * (8 - 2));  // 6 * 6 = 36
-```
-</details>
-
----
-
-## Part 2 — Common Precedence Mistakes (Animated)
-
-These are the **exact mistakes** every beginner makes in their first week. Knowing them now saves you hours of debugging later!
-
-| Mistake | What beginners think | What actually happens | Why |
-|---------|---------------------|----------------------|-----|
-| `2 + 3 * 4 = 20` | Left to right | `3 * 4` first → `14` | `*` has higher precedence than `+` |
-| `true \|\| false && false = false` | Left to right | `&&` first → `true` | `&&` has higher precedence than `\|\|` |
-| `10 > 5 + 4 = true then > 4` | `10 > 5` first | `5 + 4` first → `10 > 9` → `true` | `+` has higher precedence than `>` |
-
-### Interactive Simulation
-
-[Click here to open the Common Mistakes Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/precedence_common_mistakes.html)
-
-Open every card — these are the traps you need to know!
-
-### Practice Questions — Precedence Traps
-
-**Q1.** What is the output? Most beginners get this wrong.
-```js
-console.log(5 + 3 > 7);
-console.log(5 > 3 + 2);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(5 + 3 > 7);
-// Step 1: 5 + 3 = 8  (+ before >)
-// Step 2: 8 > 7 = true
-// Answer: true
-
-console.log(5 > 3 + 2);
-// Step 1: 3 + 2 = 5  (+ before >)
-// Step 2: 5 > 5 = false  (not greater, just equal!)
-// Answer: false
-```
-</details>
-
----
-
-**Q2.** What is the output?
-```js
-console.log(true || false && false);
-console.log(false || true && true);
-console.log(false && true || true);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(true || false && false);
-// && first: false && false = false
-// then: true || false = true
-// Answer: true
-
-console.log(false || true && true);
-// && first: true && true = true
-// then: false || true = true
-// Answer: true
-
-console.log(false && true || true);
-// && first: false && true = false
-// then: false || true = true
-// Answer: true
-```
-**Rule:** `&&` always runs before `||`, no matter the position.
-</details>
-
----
-
-**Q3.** What is the value of `x`?
-```js
-let x = 2 + 3 * 4 > 10 + 2;
-console.log(x);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let x = 2 + 3 * 4 > 10 + 2;
-// Step 1: 3 * 4 = 12          (multiplication)
-// Step 2: 2 + 12 = 14         (addition left side)
-// Step 3: 10 + 2 = 12         (addition right side)
-// Step 4: 14 > 12 = true      (comparison)
-// Step 5: x = true            (assignment — always last)
-console.log(x);  // true
-```
-</details>
-
----
-
-## Part 3 — Precedence Quiz
-
-**Guess before you click!** This quiz has 8 questions covering all the tricky cases. The explanation below each answer tells you exactly *why* the answer is what it is.
-
-### Interactive Simulation
-
-[Click here to open the Precedence Quiz](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/precedence_quiz_tester.html)
-
----
-
-## Part 4 — The BODMAS / Precedence Cheat Card
-
-![Precedence Cheat Card](../images/day2/precedence_cheat_card.webp)
-
----
-
-## Complete Precedence Summary
-
-```js
-// ── BODMAS RULE — same as school maths ─────────────────
-// B  → Brackets      ( )          runs 1st
-// O  → Orders/Power  **           runs 2nd
-// D  → Division      /            runs 3rd (with M)
-// M  → Multiplication *  %        runs 3rd
-// A  → Addition      +            runs 4th (with S)
-// S  → Subtraction   -            runs 4th
-
-// ── THEN in JavaScript: ────────────────────────────────
-// Comparison   > < >= <=          runs 5th
-// Equality     === !==            runs 6th
-// Logical AND  &&                 runs 7th
-// Logical OR   ||                 runs 8th
-// Assignment   = += -= etc.       runs LAST
-
-// ── EXAMPLES ───────────────────────────────────────────
-2 + 3 * 4          // 14  (not 20 — * before +)
-(2 + 3) * 4        // 20  (brackets first)
-10 - 2 ** 3        // 2   (** before -)
-20 / 4 + 3 * 2     // 11  (/ and * before +)
-5 + 3 > 2 * 4      // false  (8 > 8 → false)
-true || false && false  // true  (&& before ||)
-let x = 2 + 3 * 4  // x = 14  (right side first, then =)
-
-// ── GOLDEN RULE ────────────────────────────────────────
-// When in doubt — use BRACKETS!
-// (2 + 3) * 4   is better than hoping JS does what you think
-```
-
-### Practice Questions — Complete Precedence
-
-**Q1.** What is the output of each?
-```js
-console.log(2 ** 3 ** 2);
-console.log((2 ** 3) ** 2);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(2 ** 3 ** 2);
-// ** is right-to-left! So: 3 ** 2 = 9 first, then 2 ** 9 = 512
-// Answer: 512
-
-console.log((2 ** 3) ** 2);
-// Brackets first: 2 ** 3 = 8, then 8 ** 2 = 64
-// Answer: 64
-
-// Exponentiation is the ONLY operator that goes right to left!
-```
-</details>
-
----
-
-**Q2.** What is the value of `result`?
-```js
-let a = 10, b = 5, c = 3;
-let result = a - b + c * 2 > b * c && a % c === 1;
-console.log(result);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let a = 10, b = 5, c = 3;
-let result = a - b + c * 2 > b * c && a % c === 1;
-
-// Step 1 — Multiplication & Modulus (same level, left to right):
-//   c * 2 = 6
-//   b * c = 15
-//   a % c = 1
-
-// Step 2 — Addition & Subtraction (left to right):
-//   a - b + 6 = 10 - 5 + 6 = 11
-
-// Step 3 — Comparison:
-//   11 > 15 = false
-
-// Step 4 — Equality:
-//   1 === 1 = true
-
-// Step 5 — Logical AND:
-//   false && true = false
-
-console.log(result);  // false
-```
-</details>
-
----
-
-**Q3.** Fix this expression using brackets so it works correctly.
-```js
-// A store gives 20% discount if customer is a member OR spent over 1000
-// Currently broken:
-let isMember = false;
-let totalSpent = 1500;
-let discount = 20;
-
-let finalPrice = totalSpent - totalSpent * discount / 100;
-// This always applies discount! We need it only when condition is true.
-// Fix it using ternary + proper brackets.
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let isMember = false;
-let totalSpent = 1500;
-let discount = 20;
-
-let finalPrice = (isMember || totalSpent > 1000)
-  ? totalSpent - (totalSpent * discount / 100)
-  : totalSpent;
-
-console.log(finalPrice);  // 1200
-// isMember = false, but totalSpent > 1000 = true
-// false || true = true → discount applied
-// 1500 - (1500 * 20 / 100) = 1500 - 300 = 1200
-```
-</details>
-
----
-
-## Homework — Predict Before You Run
-
-Predict each answer **before** running it in your console (`F12`):
-
-```js
-console.log( 2 + 5 * 3 );              // ? → 17  (* first)
-console.log( (2 + 5) * 3 );            // ? → 21  (brackets first)
-console.log( 10 - 3 + 2 );             // ? → 9   (left to right)
-console.log( 2 ** 2 ** 3 );            // ? → 256 (right to left!)
-console.log( 6 / 2 * 3 );              // ? → 9   (left to right)
-console.log( 10 > 5 + 4 );             // ? → true (5+4=9, 10>9)
-console.log( true || false && false );  // ? → true (&& first)
-console.log( !false && true );          // ? → true (! first)
+### Error Response Format
+
+```json id="errorresponse"
+{
+  "success": false,
+  "data": {
+    "answer": "I'm sorry, I encountered an error processing your question. Please try again.",
+    "sources": [],
+    "confidence": 0,
+    "follow_up_suggestion": "Could you try rephrasing your question?"
+  },
+  "error": {
+    "message": "OpenAI API rate limit exceeded",
+    "code": "RATE_LIMIT_ERROR"
+  },
+  "metadata": {
+    "query": "How do I reset my password?",
+    "timestamp": "2026-04-14T10:30:00.000Z"
+  }
+}
 ```
 
 ---
+
+## 6. Advanced: Improving Your RAG Pipeline
+
+### Technique 1: Chunk Large Documents
+
+Large documents should be split into smaller chunks for better retrieval:
+
+```js id="chunking"
+// chunk.js - Split large documents into smaller pieces
+
+/**
+ * Split text into chunks of roughly equal size
+ * 
+ * @param {string} text - The document text
+ * @param {number} chunkSize - Max characters per chunk (default: 500)
+ * @param {number} overlap - Character overlap between chunks (default: 50)
+ * @returns {string[]} - Array of text chunks
+ */
+function chunkText(text, chunkSize = 500, overlap = 50) {
+  const chunks = [];
+  let start = 0;
+
+  while (start < text.length) {
+    let end = start + chunkSize;
+
+    // Try to break at a sentence boundary
+    if (end < text.length) {
+      const lastPeriod = text.lastIndexOf(".", end);
+      if (lastPeriod > start + chunkSize / 2) {
+        end = lastPeriod + 1;
+      }
+    }
+
+    chunks.push(text.substring(start, end).trim());
+    start = end - overlap;
+  }
+
+  return chunks;
+}
+
+// Example usage
+const longDocument = `
+PostgreSQL is a powerful, open source object-relational database system. 
+It has more than 35 years of active development. It has earned a strong 
+reputation for reliability, feature robustness, and performance. 
+PostgreSQL runs on all major operating systems. It is fully ACID compliant 
+and has full support for foreign keys, joins, views, triggers, and stored 
+procedures. PostgreSQL supports various data types including JSON, XML, 
+and arrays. The pgvector extension adds support for vector operations, 
+making it suitable for AI applications that require similarity search.
+`;
+
+const chunks = chunkText(longDocument, 200, 30);
+chunks.forEach((chunk, i) => {
+  console.log(`\nChunk ${i + 1} (${chunk.length} chars):`);
+  console.log(chunk);
+});
+```
+
+### Technique 2: Re-Ranking Results
+
+Sometimes the top similarity result isn't the best answer. Re-ranking helps:
+
+```js id="reranking"
+// rerank.js - Re-rank retrieved documents for better relevance
+
+/**
+ * Re-rank documents using keyword matching as a secondary signal
+ * Combines semantic similarity with keyword relevance
+ */
+function rerankDocuments(documents, query) {
+  const queryWords = query.toLowerCase().split(/\s+/);
+
+  return documents
+    .map((doc) => {
+      // Count how many query words appear in the document
+      const contentLower = doc.content.toLowerCase();
+      const keywordHits = queryWords.filter(
+        (word) => word.length > 3 && contentLower.includes(word)
+      ).length;
+
+      // Combine semantic similarity (70%) with keyword matching (30%)
+      const keywordScore = keywordHits / queryWords.length;
+      const combinedScore = doc.similarity * 0.7 + keywordScore * 0.3;
+
+      return { ...doc, combinedScore, keywordHits };
+    })
+    .sort((a, b) => b.combinedScore - a.combinedScore);
+}
+```
+
+### Technique 3: Conversation Memory
+
+Make your RAG chatbot remember previous questions in the same session:
+
+```js id="conversationMemory"
+// conversation.js - Multi-turn RAG with conversation memory
+
+class RAGConversation {
+  constructor() {
+    this.history = [];
+  }
+
+  /**
+   * Ask a question with conversation context
+   */
+  async ask(question) {
+    // Add previous Q&A pairs to give the LLM context
+    const messages = [
+      { role: "system", content: buildSystemPrompt() },
+    ];
+
+    // Add conversation history (last 5 turns)
+    const recentHistory = this.history.slice(-5);
+    for (const turn of recentHistory) {
+      messages.push({ role: "user", content: turn.question });
+      messages.push({ role: "assistant", content: turn.answer });
+    }
+
+    // Retrieve documents for the current question
+    const { documents } = await retrieveDocuments(question);
+    const context = buildContext(documents);
+
+    // Add the current question with context
+    messages.push({
+      role: "user",
+      content: `${context}\n\nUSER QUESTION: ${question}`,
+    });
+
+    // Get the response
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages,
+      temperature: 0.3,
+      response_format: { type: "json_object" },
+    });
+
+    const answer = response.choices[0].message.content;
+
+    // Save to history
+    this.history.push({ question, answer });
+
+    return answer;
+  }
+}
+
+// Usage:
+// const chat = new RAGConversation();
+// await chat.ask("What's your refund policy?");
+// await chat.ask("Does that apply to digital products too?");  
+// ^ The AI remembers the context from the first question!
+```
+
+---
+
+## 7. 🧪 Practice Tasks
+
+### Task 1: Build a Document Search API
+Add a `GET /api/search?q=password&limit=5` endpoint that returns matching documents with their similarity scores (without calling the LLM). This is useful for showing "Related Articles" in a UI.
+
+### Task 2: Add a Confidence Threshold
+Modify the `/api/ask` endpoint to accept an optional `minConfidence` parameter. If the AI's confidence is below this threshold, return a different response suggesting the user contact human support.
+
+### Task 3: Build a Document Upload Endpoint
+Create a `POST /api/documents/bulk` endpoint that accepts an array of documents and stores them all with embeddings. Return a summary of how many succeeded and failed.
+
+```json
+// Request body:
+{
+  "documents": [
+    { "title": "...", "content": "...", "source": "..." },
+    { "title": "...", "content": "...", "source": "..." }
+  ]
+}
+```
+
+### Task 4: Add Response Caching
+Implement a simple in-memory cache that stores question-answer pairs. If the same question (or a very similar one) is asked again within 5 minutes, return the cached response instead of calling the LLM.
+
+```js id="task4cache"
+// Hint: Simple cache structure
+const cache = new Map();
+
+function getCachedResponse(question) {
+  const key = question.toLowerCase().trim();
+  const cached = cache.get(key);
+
+  if (cached && Date.now() - cached.timestamp < 5 * 60 * 1000) {
+    return cached.response;
+  }
+
+  return null;
+}
+```
+
+### Task 5: Build a Simple Chat UI
+Create a basic HTML page with a text input and a submit button. When the user types a question and clicks submit, call your `/api/ask` endpoint and display the response beautifully. Show the answer, sources, and confidence score.
+
+---
+
+## 8. ⚠️ Common Mistakes
+
+### Mistake 1: Not Using `response_format: { type: "json_object" }`
+
+```js
+// ❌ Bad - LLM might return plain text or markdown
+const response = await openai.chat.completions.create({
+  model: "gpt-4",
+  messages: [...],
+});
+
+// ✅ Good - Forces JSON output
+const response = await openai.chat.completions.create({
+  model: "gpt-4",
+  messages: [...],
+  response_format: { type: "json_object" },
+});
+```
+
+Without this flag, the LLM might return: `"Here is your answer: ..."` instead of valid JSON.
+
+### Mistake 2: Sending Too Many Documents as Context
+
+```js
+// ❌ Bad - 20 documents = too much context, expensive, confusing for LLM
+const { documents } = await retrieveDocuments(query, 20);
+
+// ✅ Good - 3-5 documents is the sweet spot
+const { documents } = await retrieveDocuments(query, 3);
+```
+
+**Why?** More documents means more tokens (higher cost) and the AI might get confused by contradicting information. Quality over quantity.
+
+### Mistake 3: High Temperature for Factual RAG
+
+```js
+// ❌ Bad - High temperature = creative/random responses
+temperature: 0.9
+
+// ✅ Good - Low temperature = factual, consistent responses
+temperature: 0.2  // or 0.3
+```
+
+**Rule:** For RAG (factual answers), use temperature 0.1-0.3. For creative tasks (writing stories), use 0.7-0.9.
+
+### Mistake 4: Not Handling the "No Documents Found" Case
+
+```js
+// ❌ Bad - Sends empty context to LLM (will hallucinate)
+const { documents } = await retrieveDocuments(query);
+const response = await generateResponse(query, documents);
+
+// ✅ Good - Check if documents were found
+const { documents } = await retrieveDocuments(query);
+if (documents.length === 0) {
+  return formatResponse({
+    answer: "I don't have information about that topic in my knowledge base.",
+    sources_used: [],
+    confidence: 0,
+    follow_up_suggestion: "Try asking about our products, refunds, or account settings."
+  }, {});
+}
+```
+
+### Mistake 5: Ignoring the Similarity Threshold
+
+```js
+// ❌ Bad - Returns documents even if they're barely relevant (30% similarity)
+const result = await pool.query(`
+  SELECT * FROM documents
+  ORDER BY embedding <=> $1::vector
+  LIMIT 3
+`);
+
+// ✅ Good - Only return documents above a minimum relevance
+const result = await pool.query(`
+  SELECT *, 1 - (embedding <=> $1::vector) AS similarity
+  FROM documents
+  WHERE 1 - (embedding <=> $1::vector) > 0.7
+  ORDER BY embedding <=> $1::vector
+  LIMIT 3
+`);
+```
+
+### Mistake 6: Not Validating the LLM's JSON Response
+
+```js
+// ❌ Bad - Assumes LLM always returns valid JSON
+const data = JSON.parse(llmResponse);
+
+// ✅ Good - Handle parsing errors gracefully
+try {
+  const cleaned = llmResponse.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+  const data = JSON.parse(cleaned);
+} catch {
+  // Fallback: return the raw response as the answer
+}
+```
+
+---
+
+## 9. 🔁 Recap
+
+### What We Built Today
+
+```mermaid id="recapflow"
+flowchart TD
+    A[User asks question via API] --> B[Generate query embedding]
+    B --> C[Search pgvector for similar docs]
+    C --> D{Documents found?}
+    D -->|Yes| E[Build prompt with context]
+    D -->|No| F[Return no-information response]
+    E --> G[Send to GPT-4]
+    G --> H[Parse JSON response]
+    H --> I[Add metadata]
+    I --> J[Return structured JSON to user]
+```
+
+### Complete 2-Day Summary
+
+| Day | What We Learned | What We Built |
+|-----|----------------|---------------|
+| **Day 1** | RAG concepts, embeddings, pgvector setup, similarity search | Database schema, embedding generation, document storage, search function |
+| **Day 2** | Full RAG pipeline, prompt engineering, JSON response design | Prompt builder, response formatter, RAG pipeline, REST API |
+
+### Key Concepts Mastered
+
+| Concept | One-Line Summary |
+|---------|-----------------|
+| **RAG** | Find relevant docs first, then ask AI — like an open-book exam |
+| **Embeddings** | Text → numbers that capture meaning (like GPS for words) |
+| **pgvector** | PostgreSQL extension for storing/searching vectors |
+| **Cosine Distance** | Measures how similar two pieces of text are |
+| **Prompt Engineering** | Structuring instructions for the AI to get better answers |
+| **JSON Response** | Standardized output format with answer, sources, confidence |
+| **Chunking** | Splitting large documents for better retrieval |
+| **Temperature** | Controls AI creativity — low for facts, high for creativity |
+
+### Your Final Project Structure
+
+```
+rag-pgvector-app/
+├── .env                     # Secrets (API key, DB URL)
+├── package.json             # Dependencies
+├── db.js                    # PostgreSQL connection
+├── embedding.js             # OpenAI embedding generation
+├── store.js                 # Document storage
+├── seed.js                  # Sample data loader
+├── search.js                # Vector similarity search
+├── prompt-builder.js        # Prompt construction
+├── response-formatter.js    # JSON response formatting
+├── rag.js                   # Complete RAG pipeline
+├── test-rag.js              # Pipeline tests
+├── chunk.js                 # Document chunking (advanced)
+└── server.js                # Express REST API
+```
+
+### What You Can Build Now
+
+With what you've learned in these 2 days, you can build:
+
+- **Customer Support Bot** — Answer questions from your FAQ/docs
+- **Internal Knowledge Base** — Search company documents with AI
+- **Legal Document Assistant** — Find relevant clauses and explain them
+- **Medical FAQ System** — Answer health questions from verified sources
+- **E-commerce Product Finder** — "Find me a laptop under $1000 for gaming"
+- **Code Documentation Search** — Ask questions about your codebase
+
+---
+
+### 🚀 Next Steps
+
+1. **Add authentication** to your API (JWT or API keys)
+2. **Deploy** to a cloud provider (Railway, Render, or AWS)
+3. **Use a managed vector database** for scale (Pinecone, Weaviate, or Supabase with pgvector)
+4. **Add file upload** — parse PDFs and store them as chunks
+5. **Build a frontend** — React or Next.js chat interface
+6. **Add streaming** — Stream the LLM response token by token for better UX
+
+---
+
+*Congratulations on completing the RAG module! You now have the skills to build production-grade AI-powered backend systems. Go build something amazing! 🎉*
