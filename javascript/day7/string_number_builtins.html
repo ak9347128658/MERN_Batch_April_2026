@@ -1,0 +1,488 @@
+
+<style>
+  * { box-sizing: border-box; }
+  .wrap { font-family: var(--font-sans); padding: 1rem 0; }
+  .section-tabs { display: flex; gap: 0; margin-bottom: 20px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); overflow: hidden; }
+  .sec-btn { flex: 1; padding: 10px 0; font-size: 14px; font-weight: 500; border: none; cursor: pointer; background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .sec-btn.active { background: var(--color-background-info); color: var(--color-text-info); }
+  .fn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; margin-bottom: 20px; }
+  .fn-card { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 12px; cursor: pointer; transition: border-color .15s; }
+  .fn-card:hover { border-color: var(--color-border-primary); }
+  .fn-card.active { border: 1.5px solid var(--color-border-info); background: var(--color-background-info); }
+  .fn-name { font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--color-text-info); margin-bottom: 3px; }
+  .fn-card.active .fn-name { color: var(--color-text-info); }
+  .fn-hint { font-size: 11px; color: var(--color-text-secondary); }
+  .detail-box { border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-lg); overflow: hidden; margin-bottom: 16px; }
+  .detail-header { background: var(--color-background-secondary); padding: 12px 16px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .detail-sig { font-family: var(--font-mono); font-size: 14px; color: var(--color-text-primary); font-weight: 500; }
+  .detail-desc { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+  .detail-body { padding: 14px 16px; }
+  .code-block { background: #1e1e2e; border-radius: var(--border-radius-md); padding: 12px 14px; font-family: var(--font-mono); font-size: 13px; line-height: 1.8; margin-bottom: 12px; }
+  .kw { color: #cba6f7; }
+  .str { color: #a6e3a1; }
+  .num { color: #fab387; }
+  .cm { color: #6c7086; font-style: italic; }
+  .fn { color: #89b4fa; }
+  .plain { color: #cdd6f4; }
+  .out { color: #a6e3a1; }
+  .input-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .input-label { font-size: 13px; color: var(--color-text-secondary); min-width: 50px; }
+  .result-row { margin-top: 10px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; font-family: var(--font-mono); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .result-label { color: var(--color-text-tertiary); font-size: 11px; }
+  .result-val { color: var(--color-text-success); font-weight: 500; }
+  input[type=text], input[type=number] { font-family: var(--font-mono); font-size: 13px; }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only">Interactive JavaScript String and Number built-in functions reference</h2>
+
+  <div class="section-tabs">
+    <button class="sec-btn active" onclick="switchSection('string')">String methods</button>
+    <button class="sec-btn" onclick="switchSection('number')">Number methods</button>
+    <button class="sec-btn" onclick="switchSection('math')">Math object</button>
+  </div>
+
+  <div id="fn-grid-area" class="fn-grid"></div>
+  <div id="detail-area"></div>
+</div>
+
+<script>
+const data = {
+  string: [
+    {
+      name: 'toUpperCase()',
+      hint: 'All caps',
+      sig: 'str.toUpperCase()',
+      desc: 'Converts every character in the string to UPPERCASE. Does not change the original.',
+      code: `<span class="kw">let</span> <span class="plain">name =</span> <span class="str">"hello student"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(name.</span><span class="fn">toUpperCase</span><span class="plain">());</span>
+<span class="cm">// Output: "HELLO STUDENT"</span>`,
+      live: (s) => s.toUpperCase(),
+      inputs: [{ id:'s1', label:'String', default:'hello student', type:'text' }],
+      run: (vals) => vals[0].toUpperCase()
+    },
+    {
+      name: 'toLowerCase()',
+      hint: 'All lowercase',
+      sig: 'str.toLowerCase()',
+      desc: 'Converts every character to lowercase. Useful for comparing strings without case sensitivity.',
+      code: `<span class="kw">let</span> <span class="plain">email =</span> <span class="str">"ASIF@Gmail.com"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(email.</span><span class="fn">toLowerCase</span><span class="plain">());</span>
+<span class="cm">// Output: "asif@gmail.com"</span>`,
+      inputs: [{ id:'s2', label:'String', default:'ASIF@Gmail.com', type:'text' }],
+      run: (vals) => vals[0].toLowerCase()
+    },
+    {
+      name: 'length',
+      hint: 'Count characters',
+      sig: 'str.length',
+      desc: 'Returns the number of characters in the string. Note: this is a property, not a function — no parentheses needed.',
+      code: `<span class="kw">let</span> <span class="plain">word =</span> <span class="str">"JavaScript"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(word.</span><span class="fn">length</span><span class="plain">);</span>
+<span class="cm">// Output: 10</span>`,
+      inputs: [{ id:'s3', label:'String', default:'JavaScript', type:'text' }],
+      run: (vals) => vals[0].length
+    },
+    {
+      name: 'trim()',
+      hint: 'Remove spaces',
+      sig: 'str.trim()',
+      desc: 'Removes whitespace from both ends of a string. Very useful when handling user input from forms.',
+      code: `<span class="kw">let</span> <span class="plain">input =</span> <span class="str">"  Asif  "</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(input.</span><span class="fn">trim</span><span class="plain">());</span>
+<span class="cm">// Output: "Asif"</span>`,
+      inputs: [{ id:'s4', label:'String', default:'  Asif  ', type:'text' }],
+      run: (vals) => `"${vals[0].trim()}"`
+    },
+    {
+      name: 'includes()',
+      hint: 'Check if exists',
+      sig: 'str.includes(search)',
+      desc: 'Returns true if the string contains the search text, false otherwise. Case-sensitive.',
+      code: `<span class="kw">let</span> <span class="plain">msg =</span> <span class="str">"Hello from India"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(msg.</span><span class="fn">includes</span><span class="plain">(</span><span class="str">"India"</span><span class="plain">));</span>  <span class="cm">// true</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(msg.</span><span class="fn">includes</span><span class="plain">(</span><span class="str">"Japan"</span><span class="plain">));</span>  <span class="cm">// false</span>`,
+      inputs: [
+        { id:'s5a', label:'String', default:'Hello from India', type:'text' },
+        { id:'s5b', label:'Search', default:'India', type:'text' }
+      ],
+      run: (vals) => String(vals[0].includes(vals[1]))
+    },
+    {
+      name: 'indexOf()',
+      hint: 'Find position',
+      sig: 'str.indexOf(search)',
+      desc: 'Returns the position (index) of the first match. Returns -1 if not found. Indexes start at 0.',
+      code: `<span class="kw">let</span> <span class="plain">str =</span> <span class="str">"hello world"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(str.</span><span class="fn">indexOf</span><span class="plain">(</span><span class="str">"world"</span><span class="plain">));</span>  <span class="cm">// 6</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(str.</span><span class="fn">indexOf</span><span class="plain">(</span><span class="str">"xyz"</span><span class="plain">));</span>    <span class="cm">// -1</span>`,
+      inputs: [
+        { id:'s6a', label:'String', default:'hello world', type:'text' },
+        { id:'s6b', label:'Search', default:'world', type:'text' }
+      ],
+      run: (vals) => String(vals[0].indexOf(vals[1]))
+    },
+    {
+      name: 'slice()',
+      hint: 'Cut a portion',
+      sig: 'str.slice(start, end)',
+      desc: 'Extracts part of a string from start index up to (but not including) end index.',
+      code: `<span class="kw">let</span> <span class="plain">str =</span> <span class="str">"Hello World"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(str.</span><span class="fn">slice</span><span class="plain">(</span><span class="num">0</span><span class="plain">,</span> <span class="num">5</span><span class="plain">));</span>   <span class="cm">// "Hello"</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(str.</span><span class="fn">slice</span><span class="plain">(</span><span class="num">6</span><span class="plain">));</span>      <span class="cm">// "World"</span>`,
+      inputs: [
+        { id:'s7a', label:'String', default:'Hello World', type:'text' },
+        { id:'s7b', label:'Start', default:'0', type:'number' },
+        { id:'s7c', label:'End', default:'5', type:'number' }
+      ],
+      run: (vals) => `"${vals[0].slice(Number(vals[1]), Number(vals[2]))}"`
+    },
+    {
+      name: 'replace()',
+      hint: 'Find and replace',
+      sig: 'str.replace(old, new)',
+      desc: 'Replaces the first occurrence of a value with a new value. Use replaceAll() to replace every match.',
+      code: `<span class="kw">let</span> <span class="plain">str =</span> <span class="str">"I love cats"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(str.</span><span class="fn">replace</span><span class="plain">(</span><span class="str">"cats"</span><span class="plain">,</span> <span class="str">"dogs"</span><span class="plain">));</span>
+<span class="cm">// Output: "I love dogs"</span>`,
+      inputs: [
+        { id:'s8a', label:'String', default:'I love cats', type:'text' },
+        { id:'s8b', label:'Find', default:'cats', type:'text' },
+        { id:'s8c', label:'Replace', default:'dogs', type:'text' }
+      ],
+      run: (vals) => `"${vals[0].replace(vals[1], vals[2])}"`
+    },
+    {
+      name: 'split()',
+      hint: 'String to array',
+      sig: 'str.split(separator)',
+      desc: 'Splits a string into an array using a separator. Opposite of join().',
+      code: `<span class="kw">let</span> <span class="plain">csv =</span> <span class="str">"apple,banana,mango"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(csv.</span><span class="fn">split</span><span class="plain">(</span><span class="str">","</span><span class="plain">));</span>
+<span class="cm">// ["apple", "banana", "mango"]</span>`,
+      inputs: [
+        { id:'s9a', label:'String', default:'apple,banana,mango', type:'text' },
+        { id:'s9b', label:'Separator', default:',', type:'text' }
+      ],
+      run: (vals) => JSON.stringify(vals[0].split(vals[1]))
+    },
+    {
+      name: 'startsWith()',
+      hint: 'Check beginning',
+      sig: 'str.startsWith(prefix)',
+      desc: 'Returns true if the string starts with the given prefix. Used to validate URLs, file names, etc.',
+      code: `<span class="kw">let</span> <span class="plain">url =</span> <span class="str">"https://google.com"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(url.</span><span class="fn">startsWith</span><span class="plain">(</span><span class="str">"https"</span><span class="plain">));</span>
+<span class="cm">// true</span>`,
+      inputs: [
+        { id:'s10a', label:'String', default:'https://google.com', type:'text' },
+        { id:'s10b', label:'Prefix', default:'https', type:'text' }
+      ],
+      run: (vals) => String(vals[0].startsWith(vals[1]))
+    },
+    {
+      name: 'repeat()',
+      hint: 'Repeat string',
+      sig: 'str.repeat(count)',
+      desc: 'Returns the string repeated a given number of times.',
+      code: `<span class="kw">let</span> <span class="plain">str =</span> <span class="str">"ha"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(str.</span><span class="fn">repeat</span><span class="plain">(</span><span class="num">3</span><span class="plain">));</span>
+<span class="cm">// "hahaha"</span>`,
+      inputs: [
+        { id:'s11a', label:'String', default:'ha', type:'text' },
+        { id:'s11b', label:'Count', default:'3', type:'number' }
+      ],
+      run: (vals) => `"${vals[0].repeat(Math.min(Number(vals[1]),20))}"`
+    },
+    {
+      name: 'padStart()',
+      hint: 'Pad left side',
+      sig: 'str.padStart(len, char)',
+      desc: 'Pads the start of a string until it reaches the target length. Used to format numbers like "007".',
+      code: `<span class="kw">let</span> <span class="plain">id =</span> <span class="str">"5"</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(id.</span><span class="fn">padStart</span><span class="plain">(</span><span class="num">4</span><span class="plain">,</span> <span class="str">"0"</span><span class="plain">));</span>
+<span class="cm">// "0005"</span>`,
+      inputs: [
+        { id:'s12a', label:'String', default:'5', type:'text' },
+        { id:'s12b', label:'Length', default:'4', type:'number' },
+        { id:'s12c', label:'Pad char', default:'0', type:'text' }
+      ],
+      run: (vals) => `"${vals[0].padStart(Number(vals[1]), vals[2] || ' ')}"`
+    },
+  ],
+  number: [
+    {
+      name: 'toFixed()',
+      hint: 'Decimal places',
+      sig: 'num.toFixed(digits)',
+      desc: 'Rounds a number to a fixed number of decimal places and returns it as a string. Essential for money.',
+      code: `<span class="kw">let</span> <span class="plain">price =</span> <span class="num">99.5678</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(price.</span><span class="fn">toFixed</span><span class="plain">(</span><span class="num">2</span><span class="plain">));</span>
+<span class="cm">// "99.57"</span>`,
+      inputs: [
+        { id:'n1a', label:'Number', default:'99.5678', type:'number' },
+        { id:'n1b', label:'Digits', default:'2', type:'number' }
+      ],
+      run: (vals) => `"${Number(vals[0]).toFixed(Number(vals[1]))}"`
+    },
+    {
+      name: 'parseInt()',
+      hint: 'String to int',
+      sig: 'parseInt(string)',
+      desc: 'Converts a string to a whole number (integer). Stops at the first non-numeric character.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">parseInt</span><span class="plain">(</span><span class="str">"42px"</span><span class="plain">));</span>   <span class="cm">// 42</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">parseInt</span><span class="plain">(</span><span class="str">"3.9"</span><span class="plain">));</span>    <span class="cm">// 3</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">parseInt</span><span class="plain">(</span><span class="str">"abc"</span><span class="plain">));</span>    <span class="cm">// NaN</span>`,
+      inputs: [{ id:'n2', label:'String', default:'42px', type:'text' }],
+      run: (vals) => String(parseInt(vals[0]))
+    },
+    {
+      name: 'parseFloat()',
+      hint: 'String to decimal',
+      sig: 'parseFloat(string)',
+      desc: 'Converts a string to a decimal number. Unlike parseInt, it keeps the decimal part.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">parseFloat</span><span class="plain">(</span><span class="str">"3.14abc"</span><span class="plain">));</span>
+<span class="cm">// 3.14</span>`,
+      inputs: [{ id:'n3', label:'String', default:'3.14abc', type:'text' }],
+      run: (vals) => String(parseFloat(vals[0]))
+    },
+    {
+      name: 'Number()',
+      hint: 'Convert to number',
+      sig: 'Number(value)',
+      desc: 'Converts any value to a number. Returns NaN if it cannot be converted. Stricter than parseInt.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">Number</span><span class="plain">(</span><span class="str">"42"</span><span class="plain">));</span>      <span class="cm">// 42</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">Number</span><span class="plain">(</span><span class="kw">true</span><span class="plain">));</span>     <span class="cm">// 1</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">Number</span><span class="plain">(</span><span class="str">"hello"</span><span class="plain">));</span>  <span class="cm">// NaN</span>`,
+      inputs: [{ id:'n4', label:'Value', default:'"42"', type:'text' }],
+      run: (vals) => { try { return String(Number(eval(vals[0]))); } catch(e) { return 'NaN'; } }
+    },
+    {
+      name: 'isNaN()',
+      hint: 'Check Not a Number',
+      sig: 'isNaN(value)',
+      desc: 'Returns true if the value is NaN (Not a Number). Use this to validate number inputs from users.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">isNaN</span><span class="plain">(</span><span class="str">"hello"</span><span class="plain">));</span>  <span class="cm">// true</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">isNaN</span><span class="plain">(</span><span class="num">42</span><span class="plain">));</span>      <span class="cm">// false</span>`,
+      inputs: [{ id:'n5', label:'Value', default:'hello', type:'text' }],
+      run: (vals) => { try { return String(isNaN(eval(vals[0]))); } catch(e) { return String(isNaN(vals[0])); } }
+    },
+    {
+      name: 'isFinite()',
+      hint: 'Check finite number',
+      sig: 'isFinite(value)',
+      desc: 'Returns true if the value is a finite number (not Infinity or NaN).',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">isFinite</span><span class="plain">(</span><span class="num">100</span><span class="plain">));</span>       <span class="cm">// true</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(</span><span class="fn">isFinite</span><span class="plain">(</span><span class="num">Infinity</span><span class="plain">));</span> <span class="cm">// false</span>`,
+      inputs: [{ id:'n6', label:'Value', default:'100', type:'text' }],
+      run: (vals) => { try { return String(isFinite(eval(vals[0]))); } catch(e) { return String(isFinite(vals[0])); } }
+    },
+    {
+      name: 'toString()',
+      hint: 'Number to string',
+      sig: 'num.toString(base?)',
+      desc: 'Converts a number to a string. Pass a base (2, 8, 16) to convert to binary, octal, or hex.',
+      code: `<span class="kw">let</span> <span class="plain">n =</span> <span class="num">255</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(n.</span><span class="fn">toString</span><span class="plain">());</span>     <span class="cm">// "255"</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(n.</span><span class="fn">toString</span><span class="plain">(</span><span class="num">16</span><span class="plain">));</span>   <span class="cm">// "ff" (hex)</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(n.</span><span class="fn">toString</span><span class="plain">(</span><span class="num">2</span><span class="plain">));</span>    <span class="cm">// "11111111" (binary)</span>`,
+      inputs: [
+        { id:'n7a', label:'Number', default:'255', type:'number' },
+        { id:'n7b', label:'Base', default:'16', type:'number' }
+      ],
+      run: (vals) => `"${Number(vals[0]).toString(Number(vals[1]) || 10)}"`
+    },
+    {
+      name: 'toPrecision()',
+      hint: 'Significant digits',
+      sig: 'num.toPrecision(digits)',
+      desc: 'Formats a number to a specified number of significant digits total.',
+      code: `<span class="kw">let</span> <span class="plain">n =</span> <span class="num">123.456</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(n.</span><span class="fn">toPrecision</span><span class="plain">(</span><span class="num">4</span><span class="plain">));</span>
+<span class="cm">// "123.5"</span>`,
+      inputs: [
+        { id:'n8a', label:'Number', default:'123.456', type:'number' },
+        { id:'n8b', label:'Digits', default:'4', type:'number' }
+      ],
+      run: (vals) => `"${Number(vals[0]).toPrecision(Number(vals[1]))}"`
+    },
+  ],
+  math: [
+    {
+      name: 'Math.round()',
+      hint: 'Round to nearest',
+      sig: 'Math.round(x)',
+      desc: 'Rounds a number to the nearest whole number. .5 rounds up.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">round</span><span class="plain">(</span><span class="num">4.6</span><span class="plain">));</span>  <span class="cm">// 5</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">round</span><span class="plain">(</span><span class="num">4.4</span><span class="plain">));</span>  <span class="cm">// 4</span>`,
+      inputs: [{ id:'m1', label:'Number', default:'4.6', type:'number' }],
+      run: (vals) => String(Math.round(Number(vals[0])))
+    },
+    {
+      name: 'Math.floor()',
+      hint: 'Always round down',
+      sig: 'Math.floor(x)',
+      desc: 'Always rounds DOWN to the nearest integer. "Floor" = the bottom.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">floor</span><span class="plain">(</span><span class="num">4.9</span><span class="plain">));</span>  <span class="cm">// 4</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">floor</span><span class="plain">(</span><span class="num">-1.2</span><span class="plain">));</span> <span class="cm">// -2</span>`,
+      inputs: [{ id:'m2', label:'Number', default:'4.9', type:'number' }],
+      run: (vals) => String(Math.floor(Number(vals[0])))
+    },
+    {
+      name: 'Math.ceil()',
+      hint: 'Always round up',
+      sig: 'Math.ceil(x)',
+      desc: 'Always rounds UP to the nearest integer. "Ceiling" = the top.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">ceil</span><span class="plain">(</span><span class="num">4.1</span><span class="plain">));</span>  <span class="cm">// 5</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">ceil</span><span class="plain">(</span><span class="num">-1.9</span><span class="plain">));</span> <span class="cm">// -1</span>`,
+      inputs: [{ id:'m3', label:'Number', default:'4.1', type:'number' }],
+      run: (vals) => String(Math.ceil(Number(vals[0])))
+    },
+    {
+      name: 'Math.random()',
+      hint: 'Random 0 to 1',
+      sig: 'Math.random()',
+      desc: 'Returns a random decimal number between 0 (inclusive) and 1 (exclusive). Combine with floor/ceil to get a random integer in a range.',
+      code: `<span class="cm">// Random between 1 and 10</span>
+<span class="kw">let</span> <span class="plain">rand =</span> <span class="fn">Math</span><span class="plain">.</span><span class="fn">floor</span><span class="plain">(Math.</span><span class="fn">random</span><span class="plain">() *</span> <span class="num">10</span><span class="plain">) +</span> <span class="num">1</span><span class="plain">;</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(rand);</span>`,
+      inputs: [],
+      run: () => String(Math.random().toFixed(6))
+    },
+    {
+      name: 'Math.max()',
+      hint: 'Largest value',
+      sig: 'Math.max(a, b, ...)',
+      desc: 'Returns the largest value from a list of numbers.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">max</span><span class="plain">(</span><span class="num">3</span><span class="plain">,</span> <span class="num">9</span><span class="plain">,</span> <span class="num">1</span><span class="plain">,</span> <span class="num">7</span><span class="plain">));</span>
+<span class="cm">// 9</span>`,
+      inputs: [{ id:'m5', label:'Values (comma sep)', default:'3, 9, 1, 7', type:'text' }],
+      run: (vals) => String(Math.max(...vals[0].split(',').map(Number)))
+    },
+    {
+      name: 'Math.min()',
+      hint: 'Smallest value',
+      sig: 'Math.min(a, b, ...)',
+      desc: 'Returns the smallest value from a list of numbers.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">min</span><span class="plain">(</span><span class="num">3</span><span class="plain">,</span> <span class="num">9</span><span class="plain">,</span> <span class="num">1</span><span class="plain">,</span> <span class="num">7</span><span class="plain">));</span>
+<span class="cm">// 1</span>`,
+      inputs: [{ id:'m6', label:'Values (comma sep)', default:'3, 9, 1, 7', type:'text' }],
+      run: (vals) => String(Math.min(...vals[0].split(',').map(Number)))
+    },
+    {
+      name: 'Math.abs()',
+      hint: 'Absolute value',
+      sig: 'Math.abs(x)',
+      desc: 'Returns the absolute (positive) value of a number. -5 becomes 5.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">abs</span><span class="plain">(</span><span class="num">-42</span><span class="plain">));</span>  <span class="cm">// 42</span>
+<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">abs</span><span class="plain">(</span><span class="num">42</span><span class="plain">));</span>   <span class="cm">// 42</span>`,
+      inputs: [{ id:'m7', label:'Number', default:'-42', type:'number' }],
+      run: (vals) => String(Math.abs(Number(vals[0])))
+    },
+    {
+      name: 'Math.pow()',
+      hint: 'Power / exponent',
+      sig: 'Math.pow(base, exp)',
+      desc: 'Raises base to the power of exponent. Same as writing base ** exponent.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">pow</span><span class="plain">(</span><span class="num">2</span><span class="plain">,</span> <span class="num">10</span><span class="plain">));</span>
+<span class="cm">// 1024</span>`,
+      inputs: [
+        { id:'m8a', label:'Base', default:'2', type:'number' },
+        { id:'m8b', label:'Exponent', default:'10', type:'number' }
+      ],
+      run: (vals) => String(Math.pow(Number(vals[0]), Number(vals[1])))
+    },
+    {
+      name: 'Math.sqrt()',
+      hint: 'Square root',
+      sig: 'Math.sqrt(x)',
+      desc: 'Returns the square root of a number.',
+      code: `<span class="fn">console</span><span class="plain">.</span><span class="fn">log</span><span class="plain">(Math.</span><span class="fn">sqrt</span><span class="plain">(</span><span class="num">144</span><span class="plain">));</span>
+<span class="cm">// 12</span>`,
+      inputs: [{ id:'m9', label:'Number', default:'144', type:'number' }],
+      run: (vals) => String(Math.sqrt(Number(vals[0])))
+    },
+  ]
+};
+
+let currentSection = 'string';
+let currentFn = 0;
+
+function switchSection(sec) {
+  currentSection = sec;
+  currentFn = 0;
+  document.querySelectorAll('.sec-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['string','number','math'][i] === sec);
+  });
+  renderGrid();
+  renderDetail();
+}
+
+function renderGrid() {
+  const items = data[currentSection];
+  document.getElementById('fn-grid-area').innerHTML = items.map((fn, i) =>
+    `<div class="fn-card${i===currentFn?' active':''}" onclick="selectFn(${i})">
+      <div class="fn-name">${fn.name}</div>
+      <div class="fn-hint">${fn.hint}</div>
+    </div>`
+  ).join('');
+}
+
+function selectFn(i) {
+  currentFn = i;
+  renderGrid();
+  renderDetail();
+}
+
+function renderDetail() {
+  const fn = data[currentSection][currentFn];
+  const inputsHtml = fn.inputs.length ? `
+    <div class="input-row" style="margin-bottom:10px;gap:10px;">
+      ${fn.inputs.map(inp => `
+        <span class="input-label">${inp.label}:</span>
+        <input id="${inp.id}" type="${inp.type}" value="${inp.default}" style="width:${inp.type==='number'?'80px':'140px'};font-size:13px;" oninput="liveRun()"/>
+      `).join('')}
+    </div>
+  ` : `<div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:8px;">No inputs — click Run to execute</div>`;
+
+  document.getElementById('detail-area').innerHTML = `
+    <div class="detail-box">
+      <div class="detail-header">
+        <div class="detail-sig">${fn.sig}</div>
+        <div class="detail-desc">${fn.desc}</div>
+      </div>
+      <div class="detail-body">
+        <div class="code-block">${fn.code}</div>
+        ${inputsHtml}
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button onclick="liveRun()">Try it live &#9654;</button>
+          <button onclick="sendPrompt('Give me 3 real-world MERN stack examples of ${fn.name}')">MERN examples &#8599;</button>
+        </div>
+        <div class="result-row" id="live-result" style="display:none;">
+          <span class="result-label">OUTPUT</span>
+          <span class="result-val" id="live-val"></span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function liveRun() {
+  const fn = data[currentSection][currentFn];
+  const vals = fn.inputs.map(inp => {
+    const el = document.getElementById(inp.id);
+    return el ? el.value : '';
+  });
+  try {
+    const result = fn.run(vals);
+    document.getElementById('live-result').style.display = 'flex';
+    document.getElementById('live-val').textContent = String(result);
+  } catch(e) {
+    document.getElementById('live-result').style.display = 'flex';
+    document.getElementById('live-val').textContent = 'Error: ' + e.message;
+  }
+}
+
+renderGrid();
+renderDetail();
+</script>
