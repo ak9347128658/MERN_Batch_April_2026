@@ -1,665 +1,414 @@
-# Day 4 — JavaScript Functions
+# 📅 Day 4 — Build RAG in JavaScript / TypeScript (Production-Style)
 
-> **A function is a reusable set of instructions with a name.**
+Hello students 👋
 
-That's it. Nothing more. Let me show you what I mean:
-
-![alt](../images/day4/function_real_world_analogy.svg)
-
-See that? A tea machine is the perfect analogy. You put things IN — you get something OUT. The machine does the work in between. That's a function.
-
-### Definition
-
-A **function** is a block of organized, reusable code that performs a single action. Instead of writing the same code again and again, you wrap it inside a function and call it whenever you need it. Functions make your code **shorter**, **cleaner**, and **easier to debug**.
-
-Now let's learn the 5 parts of every function:
+Welcome to **Day 4**! Yesterday we understood RAG with an in-memory demo. Today we **build the real thing**: load PDFs, chunk properly, create embeddings, store them in a **real vector database**, retrieve top-k, inject context, and return a clean JSON answer. This is the **exact architecture used by most AI startups**. 🏗️
 
 ---
 
-## Lesson 1 — The 5 Parts of a Function
+## 1. Introduction
 
-**5 parts. Learn them by heart:**
+### 🎯 What we learn today?
+- Load **PDF** and text documents in Node.js
+- Smart chunking strategies (fixed, sentence-based, paragraph-based)
+- Create embeddings in **batches**
+- Store in a vector DB — we'll use **Supabase + pgvector** (free tier) and also show a **local file** fallback
+- Retrieve **top-k** relevant chunks
+- Inject context into the prompt safely
+- Return a **production-grade JSON** with sources
+- 💻 Mini project: **Company Policy Assistant**
 
-![alt](../images/day4/function_5_parts_labeled.svg)
-
-### Explanation
-
-Every function in JavaScript is built from exactly 5 parts:
-
-| # | Part | What it does |
-|---|------|-------------|
-| 1 | `function` | The keyword that tells JavaScript "I'm creating a function" |
-| 2 | `name` | The name you give your function (e.g. `add`, `greet`, `calculateTax`) |
-| 3 | `(parameters)` | The inputs your function accepts — placeholders for values you'll pass later |
-| 4 | `{ body }` | The curly braces that hold your actual code — the instructions the function runs |
-| 5 | `return` | Sends the final answer back to whoever called the function |
-
-### Example
-
-```js
-function add(a, b) {
-    return a + b;
-}
-
-console.log(add(3, 7)); // 10
-```
-
-Here:
-- `function` — keyword
-- `add` — name
-- `(a, b)` — parameters
-- `{ return a + b; }` — body
-- `return` — sends the result back
-
-### Practice Questions
-
-**Q1.** Identify the 5 parts of this function:
-
-```js
-function multiply(x, y) {
-    return x * y;
-}
-```
-
-**Solution:**
-1. `function` — keyword
-2. `multiply` — name
-3. `(x, y)` — parameters
-4. `{ return x * y; }` — body
-5. `return` — sends the product back
+### 🌍 Why it matters
+Every serious "Chat with your docs" product (Notion AI, Glean, Mendable, private ChatGPTs) uses exactly the pipeline we build today. After this, you can sell RAG services. 💼
 
 ---
 
-**Q2.** Write a function called `subtract` that takes two numbers and returns their difference.
+## 2. Concept Explanation
 
-**Solution:**
+### 📂 Loading documents
+Sources: PDFs, `.txt`, `.md`, Word docs, web pages, SQL tables. For Node.js we'll use `pdf-parse` for PDFs.
 
-```js
-function subtract(a, b) {
-    return a - b;
-}
+### 🔪 Chunking strategies
 
-console.log(subtract(10, 4)); // 6
-```
+| Strategy | When to use | Pros | Cons |
+|----------|-------------|------|------|
+| Fixed-size (tokens/words) | Uniform text | Simple, predictable | May cut sentences |
+| Sentence-based | Articles, books | Natural boundaries | Variable sizes |
+| Paragraph-based | Policies, docs | Semantic units | Long paragraphs hurt |
+| Recursive (split on `\n\n` → `\n` → `.`) | General purpose | Best of both | More code |
+
+**Rule of thumb:** 300–800 tokens per chunk, 10–15% overlap.
+
+### ⚡ Batching embeddings
+OpenAI lets you embed **many texts in one call**. This is 10x cheaper and faster than one-by-one calls.
+
+### 🗄️ Real vector database
+We'll use **Supabase pgvector** (free Postgres with vector support).
+Alternative you can swap in: **Pinecone**, **Qdrant**, **Chroma**, **Weaviate**.
+
+### 🎯 Top-k retrieval + re-ranking
+Fetch more candidates than you need (e.g., `k=10`), then **re-rank** or filter to the final 3–5 before sending to LLM.
+
+### 💉 Prompt injection of context
+Give the LLM:
+- Clear system instructions
+- The retrieved chunks labeled `[1]`, `[2]`, `[3]`…
+- The user's question
+- A rule to cite `[1]`, `[2]` in the answer
 
 ---
 
-## Lesson 2 — WHY Do We Need Functions?
+## 3. 💡 Visual Learning
 
-### Definition
+### Full production RAG architecture
 
-Without functions, you would **copy-paste** the same code every time you need it. This leads to:
-- **Longer code** — harder to read
-- **More bugs** — fix one place, forget another
-- **No reusability** — every change must be made everywhere
-
-Functions solve all three problems. **Write once, use everywhere.**
-
-### The Problem Without Functions
-
-![alt](../images/day4/functino_why_functions.webp)
-
-### Example — Without Functions (Bad)
-
-```js
-// Calculating area of rectangles WITHOUT a function
-let area1 = 10 * 5;
-console.log("Area 1:", area1);
-
-let area2 = 7 * 3;
-console.log("Area 2:", area2);
-
-let area3 = 12 * 8;
-console.log("Area 3:", area3);
+```mermaid id="day4arch"
+flowchart TB
+    subgraph Offline[Offline Indexing]
+      PDF[PDF / TXT files] --> Load[Loader]
+      Load --> Clean[Clean text]
+      Clean --> Chunk[Chunker]
+      Chunk --> Batch[Batch embed]
+      Batch --> DB[(pgvector / Pinecone)]
+    end
+    subgraph Online[Online Query]
+      U[User Question] --> QEmbed[Embed question]
+      QEmbed --> DB
+      DB --> K[Top-k chunks]
+      K --> Prompt[Build prompt]
+      Prompt --> LLM[GPT-4o-mini]
+      LLM --> JSON[JSON Response + sources]
+    end
 ```
 
-### Example — With Functions (Good)
+### Chunking visualized
 
-```js
-// Calculating area of rectangles WITH a function
-function area(length, width) {
-    return length * width;
-}
-
-console.log("Area 1:", area(10, 5));  // 50
-console.log("Area 2:", area(7, 3));   // 21
-console.log("Area 3:", area(12, 8));  // 96
-```
-
-One function. Three calls. Zero repetition.
-
-### Practice Questions
-
-**Q1.** You need to print "Welcome to MERN Batch!" 5 times in your program. Write a function to do it instead of repeating `console.log` 5 times.
-
-**Solution:**
-
-```js
-function welcome() {
-    console.log("Welcome to MERN Batch!");
-}
-
-welcome(); // call it as many times as needed
-welcome();
-welcome();
-welcome();
-welcome();
+```mermaid id="day4chunking"
+flowchart LR
+    Doc["Long Document"] --> S1["Chunk 1 (500 words)"]
+    Doc --> S2["Chunk 2 (500 words, 80 overlap)"]
+    Doc --> S3["Chunk 3 (500 words, 80 overlap)"]
 ```
 
 ---
 
-**Q2.** Write a function `double` that takes a number and returns it multiplied by 2. Use it 3 times with different values.
+## 4. 🛠️ Setup
 
-**Solution:**
+```bash id="day4install"
+npm install openai dotenv pdf-parse @supabase/supabase-js
+npm install -D typescript ts-node @types/node
+```
 
-```js
-function double(n) {
-    return n * 2;
-}
+`.env`:
 
-console.log(double(5));   // 10
-console.log(double(12));  // 24
-console.log(double(100)); // 200
+```env id="day4env"
+OPENAI_API_KEY=sk-your-key
+SUPABASE_URL=https://xxxx.supabase.co
+SUPABASE_KEY=your-service-key
+```
+
+### Supabase schema (run once in SQL editor)
+
+```sql id="day4sql"
+create extension if not exists vector;
+
+create table documents (
+  id bigserial primary key,
+  content text not null,
+  source text,
+  embedding vector(1536)
+);
+
+create index on documents using ivfflat (embedding vector_cosine_ops) with (lists = 100);
+
+create or replace function match_documents(
+  query_embedding vector(1536),
+  match_count int
+) returns table(id bigint, content text, source text, similarity float)
+language sql stable as $$
+  select id, content, source,
+         1 - (embedding <=> query_embedding) as similarity
+  from documents
+  order by embedding <=> query_embedding
+  limit match_count;
+$$;
 ```
 
 ---
 
-## Lesson 3 — The 4 Ways to Write Functions
+## 5. Code Examples
 
-### Definition
+### ✅ Folder structure
 
-JavaScript gives you **4 different syntaxes** to create a function. All of them do the same thing — create reusable code — but they look different and have subtle behavior differences.
-
-| # | Type | Syntax | When to use |
-|---|------|--------|-------------|
-| 1 | **Function Declaration** | `function name() {}` | The default, most common way |
-| 2 | **Function Expression** | `const name = function() {}` | When you want to store a function in a variable |
-| 3 | **Arrow Function** | `const name = () => {}` | Modern, shorter syntax — used heavily in React & Node |
-| 4 | **Default Parameters** | `function name(x = 10) {}` | When you want fallback values for missing arguments |
-
-### Examples of All 4 Types
-
-**Type 1 — Function Declaration:**
-
-```js
-function greet(name) {
-    return "Hello, " + name + "!";
-}
-console.log(greet("Alice")); // "Hello, Alice!"
+```text id="day4folder"
+ai-day4/
+├── data/
+│   └── company_policy.pdf
+├── src/
+│   ├── loader.ts
+│   ├── chunker.ts
+│   ├── embedder.ts
+│   ├── store.ts
+│   ├── indexer.ts
+│   └── ask.ts
+└── .env
 ```
 
-**Type 2 — Function Expression:**
+### ✅ Loader — PDF + TXT
 
-```js
-const multiply = function(a, b) {
-    return a * b;
-};
-console.log(multiply(4, 5)); // 20
-```
+```ts id="day4loader"
+// src/loader.ts
+import fs from "fs";
+import pdf from "pdf-parse";
 
-**Type 3 — Arrow Function:**
-
-```js
-const square = (n) => n * n;
-console.log(square(6)); // 36
-
-// Multi-line arrow function:
-const add = (a, b) => {
-    let sum = a + b;
-    return sum;
-};
-console.log(add(3, 7)); // 10
-```
-
-**Type 4 — Default Parameters:**
-
-```js
-function welcome(name = "Student", course = "MERN") {
-    return `Hi ${name}, welcome to ${course}!`;
-}
-console.log(welcome());                // Hi Student, welcome to MERN!
-console.log(welcome("Ali"));           // Hi Ali, welcome to MERN!
-console.log(welcome("Ali", "React"));  // Hi Ali, welcome to React!
-```
-
-### Interactive Simulation
-
-Click Run on every card. On card 4 — leave the boxes empty and press Run. Then type just your name. Watch the defaults kick in!
-
-[Click link to open Simulation for why functions](https://ak9347128658.github.io/MERN_Batch_April_2026/day4/four_function_types_classroom.html)
-
-### Practice Questions
-
-**Q1.** Convert this function declaration into an arrow function:
-
-```js
-function cube(n) {
-    return n * n * n;
+export async function loadFile(path: string): Promise<string> {
+  if (path.endsWith(".pdf")) {
+    const buf = fs.readFileSync(path);
+    const data = await pdf(buf);
+    return data.text;
+  }
+  return fs.readFileSync(path, "utf-8");
 }
 ```
 
-**Solution:**
+### ✅ Smart chunker (recursive)
 
-```js
-const cube = (n) => n * n * n;
-console.log(cube(3)); // 27
-```
+```ts id="day4chunker"
+// src/chunker.ts
+export function smartChunk(text: string, target = 500, overlap = 80): string[] {
+  const paragraphs = text.split(/\n\s*\n/);
+  const chunks: string[] = [];
+  let buf = "";
 
----
-
-**Q2.** Write a function expression that takes a string and returns it in UPPERCASE.
-
-**Solution:**
-
-```js
-const toUpper = function(str) {
-    return str.toUpperCase();
-};
-console.log(toUpper("hello")); // "HELLO"
-```
-
----
-
-**Q3.** Write a function with default parameters that calculates the price after tax. Default tax rate should be 18%.
-
-**Solution:**
-
-```js
-function priceAfterTax(price, taxRate = 18) {
-    return price + (price * taxRate) / 100;
-}
-
-console.log(priceAfterTax(1000));      // 1180  (uses default 18%)
-console.log(priceAfterTax(1000, 5));   // 1050  (uses custom 5%)
-```
-
----
-
-## Lesson 4 — What Does `return` Actually Do?
-
-### Definition
-
-`return` is a statement that **sends a value back** from inside the function to wherever the function was called. Think of it as the function's answer.
-
-**Key rules:**
-- `return` immediately **stops** the function — no code after it will run
-- A function **without** `return` gives back `undefined`
-- You can `return` any value: a number, string, boolean, array, object, or even another function
-
-### Example — With and Without Return
-
-```js
-// WITH return — works correctly
-function addGood(a, b) {
-    return a + b;
-}
-console.log(addGood(3, 5)); // 8
-
-// WITHOUT return — gives undefined
-function addBad(a, b) {
-    a + b;  // calculated but never sent back!
-}
-console.log(addBad(3, 5)); // undefined
-```
-
-### Example — Return Stops the Function
-
-```js
-function check(age) {
-    if (age < 18) {
-        return "Not allowed";  // function stops here
+  for (const p of paragraphs) {
+    if ((buf + p).split(/\s+/).length > target) {
+      if (buf) chunks.push(buf.trim());
+      const words = buf.split(/\s+/);
+      buf = words.slice(-overlap).join(" ") + " " + p;
+    } else {
+      buf += "\n\n" + p;
     }
-    return "Welcome!";         // only runs if age >= 18
+  }
+  if (buf.trim()) chunks.push(buf.trim());
+  return chunks.filter((c) => c.length > 50);
 }
-
-console.log(check(15)); // "Not allowed"
-console.log(check(21)); // "Welcome!"
 ```
 
-### Interactive Simulation
+### ✅ Batch embedder
 
-Press **Play animation** — watch the steps light up one by one. Change the numbers and play again. The warning at the bottom shows what happens without `return` — the #1 beginner mistake!
+```ts id="day4embedder"
+// src/embedder.ts
+import "dotenv/config";
+import OpenAI from "openai";
 
-[Click link to open Simulation for function return](https://ak9347128658.github.io/MERN_Batch_April_2026/day4/return_statement_classroom.html)
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-### Practice Questions
-
-**Q1.** What will this code print? Explain why.
-
-```js
-function mystery(x) {
-    x * 2;
-}
-console.log(mystery(5));
-```
-
-**Solution:**
-It prints `undefined`. The function calculates `x * 2` but never uses `return` to send it back. Fix: `return x * 2;`
-
----
-
-**Q2.** What will this code print?
-
-```js
-function test() {
-    return "Hello";
-    console.log("World");
-}
-console.log(test());
-```
-
-**Solution:**
-It prints `"Hello"` only. The `console.log("World")` never runs because `return` immediately exits the function.
-
----
-
-**Q3.** Write a function `isAdult` that takes an age and returns `true` if 18 or above, `false` otherwise.
-
-**Solution:**
-
-```js
-function isAdult(age) {
-    return age >= 18;
+export async function embedBatch(texts: string[]): Promise<number[][]> {
+  const res = await client.embeddings.create({
+    model: "text-embedding-3-small",
+    input: texts
+  });
+  return res.data.map((d) => d.embedding);
 }
 
-console.log(isAdult(20)); // true
-console.log(isAdult(15)); // false
+export async function embedOne(text: string): Promise<number[]> {
+  const [v] = await embedBatch([text]);
+  return v;
+}
 ```
 
----
+### ✅ Supabase vector store
 
-## Lesson 5 — Real World Examples (Live Lab)
+```ts id="day4store"
+// src/store.ts
+import "dotenv/config";
+import { createClient } from "@supabase/supabase-js";
 
-### Definition
+export const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_KEY!
+);
 
-The best way to understand functions is to **use them in real scenarios**. Functions are used everywhere in real projects — calculating totals in a shopping cart, validating form inputs, formatting dates, making API calls, and much more.
-
-### Interactive Simulation
-
-Work through all 5 tabs — especially **"Write your own"** where you type a function yourself from scratch. That's how you really learn.
-
-[Click link to open Simulation for Real world examples](https://ak9347128658.github.io/MERN_Batch_April_2026/day4/functions_real_world_lab.html)
-
-### Practice Questions
-
-**Q1.** Write a function `celsiusToFahrenheit` that converts temperature from Celsius to Fahrenheit. Formula: `F = (C * 9/5) + 32`
-
-**Solution:**
-
-```js
-function celsiusToFahrenheit(celsius) {
-    return (celsius * 9 / 5) + 32;
+export async function insertChunks(
+  rows: { content: string; source: string; embedding: number[] }[]
+) {
+  const { error } = await supabase.from("documents").insert(rows);
+  if (error) throw error;
 }
 
-console.log(celsiusToFahrenheit(0));    // 32
-console.log(celsiusToFahrenheit(100));  // 212
-console.log(celsiusToFahrenheit(37));   // 98.6
+export async function searchSimilar(queryVec: number[], k = 5) {
+  const { data, error } = await supabase.rpc("match_documents", {
+    query_embedding: queryVec,
+    match_count: k
+  });
+  if (error) throw error;
+  return data as { id: number; content: string; source: string; similarity: number }[];
+}
 ```
 
----
+### ✅ Indexer — run once per doc
 
-**Q2.** Write an arrow function `getFullName` that takes `firstName` and `lastName` and returns the full name.
+```ts id="day4indexer"
+// src/indexer.ts
+import { loadFile } from "./loader";
+import { smartChunk } from "./chunker";
+import { embedBatch } from "./embedder";
+import { insertChunks } from "./store";
 
-**Solution:**
+export async function indexDocument(path: string) {
+  const raw = await loadFile(path);
+  const chunks = smartChunk(raw);
+  console.log(`📄 ${path} → ${chunks.length} chunks`);
 
-```js
-const getFullName = (firstName, lastName) => firstName + " " + lastName;
-
-console.log(getFullName("Amit", "Kumar")); // "Amit Kumar"
-```
-
----
-
-**Q3.** Write a function `calculateBMI` that takes weight (kg) and height (meters) and returns the BMI. Formula: `BMI = weight / (height * height)`
-
-**Solution:**
-
-```js
-function calculateBMI(weight, height) {
-    return weight / (height * height);
+  const BATCH = 50;
+  for (let i = 0; i < chunks.length; i += BATCH) {
+    const slice = chunks.slice(i, i + BATCH);
+    const vectors = await embedBatch(slice);
+    await insertChunks(
+      slice.map((content, j) => ({ content, source: path, embedding: vectors[j] }))
+    );
+    console.log(`  indexed ${i + slice.length}/${chunks.length}`);
+  }
 }
 
-console.log(calculateBMI(70, 1.75));  // 22.86 (approx)
-console.log(calculateBMI(90, 1.80));  // 27.78 (approx)
+indexDocument("data/company_policy.pdf").then(() => console.log("✅ done"));
 ```
 
----
+### ✅ Ask — the query path
 
-## Lesson 6 — Parameters vs Arguments
+```ts id="day4ask"
+// src/ask.ts
+import "dotenv/config";
+import OpenAI from "openai";
+import { embedOne } from "./embedder";
+import { searchSimilar } from "./store";
 
-### Definition
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-These two words confuse almost everyone. Here's the simple rule:
+export async function ask(question: string) {
+  const start = Date.now();
+  const qv = await embedOne(question);
+  const hits = await searchSimilar(qv, 5);
 
-- **Parameter** = the **placeholder name** in the function definition (like a blank form field)
-- **Argument** = the **actual value** you pass when calling the function (like filling in that field)
+  const strong = hits.filter((h) => h.similarity > 0.4);
+  if (strong.length === 0) {
+    return {
+      success: true,
+      question,
+      answer: "I could not find this in the knowledge base.",
+      sources: [],
+      confidence: 0,
+      meta: { tokensUsed: 0, latencyMs: Date.now() - start }
+    };
+  }
 
-### Example
+  const context = strong
+    .map((h, i) => `[${i + 1}] (source: ${h.source})\n${h.content}`)
+    .join("\n\n");
 
-```js
-//              parameters ↓
-function add(a, b) {
-    return a + b;
+  const res = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "system",
+        content:
+          "Answer using ONLY the provided context. Cite sources as [1], [2]. " +
+          "If not in context, say you don't know."
+      },
+      { role: "user", content: `Context:\n${context}\n\nQuestion: ${question}` }
+    ]
+  });
+
+  return {
+    success: true,
+    question,
+    answer: res.choices[0].message.content,
+    sources: strong.map((h, i) => ({
+      ref: `[${i + 1}]`,
+      source: h.source,
+      similarity: h.similarity.toFixed(3)
+    })),
+    confidence: Number(strong[0].similarity.toFixed(3)),
+    meta: {
+      tokensUsed: res.usage?.total_tokens ?? 0,
+      latencyMs: Date.now() - start
+    }
+  };
 }
 
-//         arguments ↓
-add(3, 5);
-```
-
-- `a` and `b` are **parameters** — they don't have values yet
-- `3` and `5` are **arguments** — the real values passed in
-
-### Practice Questions
-
-**Q1.** In the following code, identify the parameters and arguments:
-
-```js
-function greet(name, greeting) {
-    return greeting + ", " + name + "!";
-}
-
-greet("Sara", "Good morning");
-```
-
-**Solution:**
-- **Parameters:** `name`, `greeting` (in the function definition)
-- **Arguments:** `"Sara"`, `"Good morning"` (in the function call)
-
----
-
-## Lesson 7 — Scope
-
-### Definition
-
-**Scope** determines **where a variable is visible** (accessible) in your code. JavaScript has two main types of scope:
-
-| Scope | Where declared | Where accessible |
-|-------|---------------|-----------------|
-| **Global** | Outside any function | Everywhere in your code |
-| **Local** | Inside a function | Only inside that function |
-
-### Example
-
-```js
-let x = 10;              // global — visible everywhere
-
-function test() {
-    let y = 20;          // local — only inside test()
-    console.log(x);      // 10 — can see global x
-    console.log(y);      // 20 — can see local y
-}
-
-test();
-console.log(x);          // 10 — works fine
-console.log(y);          // ReferenceError! y is not defined
-```
-
-### Why Does Scope Matter?
-
-- It **protects** variables from being accidentally changed by other parts of your code
-- It **prevents naming conflicts** — two functions can each have their own variable called `i`
-- It keeps your code **organized and predictable**
-
-### Practice Questions
-
-**Q1.** What will this code print?
-
-```js
-let color = "red";
-
-function paint() {
-    let color = "blue";
-    console.log(color);
-}
-
-paint();
-console.log(color);
-```
-
-**Solution:**
-```
-blue
-red
-```
-Inside `paint()`, the local `color` is `"blue"`. Outside, the global `color` is still `"red"`. The local variable does not change the global one.
-
----
-
-**Q2.** Will this code work? Why or why not?
-
-```js
-function setAge() {
-    let age = 25;
-}
-
-setAge();
-console.log(age);
-```
-
-**Solution:**
-No, it will throw a `ReferenceError`. The variable `age` is declared inside `setAge()` — it is **local** to that function and cannot be accessed outside.
-
----
-
-## The Complete Notes — Everything in One Place
-
-```js
-// ════════════════════════════════════════════
-//  WHAT IS A FUNCTION?
-//  A reusable block of code with a name.
-//  Write once → use a thousand times.
-// ════════════════════════════════════════════
-
-
-// ─── WAY 1: Function Declaration ────────────
-function greet(name) {
-    return "Hello, " + name + "!";
-}
-greet("Alice");   // "Hello, Alice!"
-greet("Bob");     // "Hello, Bob!"
-
-
-// ─── WAY 2: Function Expression ─────────────
-const multiply = function(a, b) {
-    return a * b;
-};
-multiply(4, 5);   // 20
-
-
-// ─── WAY 3: Arrow Function ──────────────────
-const square = (n) => n * n;   // one line!
-square(6);        // 36
-
-// Multi-line arrow function:
-const add = (a, b) => {
-    let sum = a + b;
-    return sum;
-};
-
-
-// ─── WAY 4: Default Parameters ──────────────
-function welcome(name = "Student", course = "MERN") {
-    return `Hi ${name}, welcome to ${course}!`;
-}
-welcome();           // Hi Student, welcome to MERN!
-welcome("Ali");      // Hi Ali, welcome to MERN!
-welcome("Ali","React"); // Hi Ali, welcome to React!
-
-
-// ─── PARAMETERS vs ARGUMENTS ────────────────
-//  parameter = placeholder in the definition
-//  argument  = real value when you call it
-function add(a, b) { ... }  // a, b → parameters
-add(3, 5);                  // 3, 5 → arguments
-
-
-// ─── RETURN ──────────────────────────────────
-// return sends a value back to the caller
-// without return → function gives undefined
-function addGood(a, b) { return a + b; }  // ✓
-function addBad(a, b)  { a + b; }         // ✗ gives undefined
-
-
-// ─── SCOPE ───────────────────────────────────
-let x = 10;              // global — visible everywhere
-
-function test() {
-    let y = 20;          // local — only inside test()
-    console.log(x);      // ✓ can see global x
-    console.log(y);      // ✓ can see local y
-}
-
-console.log(x);          // ✓
-console.log(y);          // ✗ ReferenceError!
+ask("What is our parental leave policy?").then((r) =>
+  console.log(JSON.stringify(r, null, 2))
+);
 ```
 
 ---
 
-## Class Summary — What You Learned Today
+## 6. 🧾 JSON Response Design
 
-| Concept | One-line summary |
-|---|---|
-| Function | Reusable code with a name |
-| Declaration | `function name() {}` — most common |
-| Expression | `const fn = function() {}` |
-| Arrow | `const fn = () => {}` — used in React/Node |
-| Parameter | Input placeholder in definition |
-| Argument | Real value passed when calling |
-| Return | Sends a value back out |
-| Scope | Where a variable is visible |
-| Default params | `function f(x = 10)` — fallback value |
+```json id="day4jsonout"
+{
+  "success": true,
+  "question": "What is our parental leave policy?",
+  "answer": "Employees receive 26 weeks of paid parental leave [1]. Extensions up to 8 additional weeks may be approved by HR [2].",
+  "sources": [
+    { "ref": "[1]", "source": "data/company_policy.pdf", "similarity": "0.891" },
+    { "ref": "[2]", "source": "data/company_policy.pdf", "similarity": "0.732" }
+  ],
+  "confidence": 0.891,
+  "meta": { "tokensUsed": 412, "latencyMs": 1180 }
+}
+```
 
 ---
 
-## Homework — Write These 5 Functions Yourself
+## 7. 💻 Hands-on Practice
 
-Open your browser console and type each one. **Don't copy-paste — type it manually.** That's how your brain remembers.
+1. Replace the PDF with **your own** (e.g., a research paper, product manual, cookbook).
+2. Change chunk size to 200 vs 1000 — compare answers.
+3. Add a **`title`** column to `documents` and include it in sources.
+4. Support **multiple files** in one index run (loop through a folder).
+5. Add a `k` query parameter so the caller decides retrieval count.
+6. Print the retrieved chunks **before** calling the LLM (for debugging).
+7. Implement an **in-memory cache**: if the same question was asked in the last 5 minutes, return the cached answer.
 
-```js
-// 1. Greet someone
-function greet(name) {
-    return "Hello, " + name + "!";
-}
-console.log(greet("Your Name"));
+---
 
-// 2. Check if a number is even
-const isEven = (n) => n % 2 === 0;
-console.log(isEven(4));   // true
-console.log(isEven(7));   // false
+## 8. ⚠️ Common Mistakes
 
-// 3. Find the bigger number
-function max(a, b) {
-    return a > b ? a : b;
-}
-console.log(max(10, 25));  // 25
+- ❌ **Re-indexing on every request** → waste of money. Indexing is offline.
+- ❌ **Not batching embeddings** → 100 one-by-one calls vs 1 batch call = huge cost.
+- ❌ **No similarity threshold** → garbage-in, garbage-out.
+- ❌ **Passing 20 chunks to the LLM** → token bloat, slower, more expensive.
+- ❌ **Forgetting `pgvector` index** → queries become slow on thousands of rows.
+- ❌ **Mixing embedding model versions** → old vectors are incompatible.
+- ❌ **Committing `.env`** → Supabase key leak.
+- ❌ **Prompt too open** → LLM still hallucinates. Be strict: "Use ONLY the context."
 
-// 4. Calculate simple interest
-function simpleInterest(p, r, t) {
-    return (p * r * t) / 100;
-}
-console.log(simpleInterest(1000, 5, 2));  // 100
+---
 
-// 5. Arrow — convert kg to grams
-const toGrams = (kg) => kg * 1000;
-console.log(toGrams(2.5));  // 2500
-```
+## 9. 📝 Mini Assignment — Company Policy Assistant
+
+Build a full CLI that:
+1. Indexes **2 PDFs** (e.g., `leave_policy.pdf`, `expense_policy.pdf`).
+2. Accepts questions from the user in a loop.
+3. Returns the **structured JSON** above.
+4. Gracefully handles:
+   - Empty question
+   - No relevant chunks found
+   - OpenAI or Supabase errors (return `{ success: false, error: {...} }`)
+
+**Bonus:**
+- Add a `/reindex` command in the CLI to re-index files.
+- Save questions + answers to a log file `qa_log.jsonl` for auditing.
+
+---
+
+## 10. 🔁 Recap
+
+- Real RAG has **offline indexing** and **online querying** as two separate phases.
+- Use a **real vector DB** (Supabase/Pinecone) for persistence and scale.
+- **Batch embeddings**, **threshold filtering**, and **top-k re-ranking** save money.
+- The LLM prompt must be **strict**: "answer ONLY from context, cite sources".
+- Return a clean JSON: `{ answer, sources, confidence, meta }`.
+
+Tomorrow on **Day 5** we step into the world of **Agents**. Instead of one-shot Q&A, the AI will **think, plan, and use tools**. See you! 🤖

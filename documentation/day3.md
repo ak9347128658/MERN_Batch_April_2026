@@ -1,668 +1,364 @@
-## Control Statements
+# 📅 Day 3 — RAG Fundamentals
 
-![alt](../images/day3/control_statements_revision_map.svg)
+Hello students 👋
 
-Control statements determine the **order in which instructions execute** in a program. Instead of running every line top-to-bottom, control statements let you **make decisions**, **repeat actions**, and **jump** to different parts of your code.
-
-They fall into three categories:
-
-| Category | Purpose | Statements |
-|---|---|---|
-| **Conditional** | Choose which block runs | `if/else`, `switch`, ternary (`? :`) |
-| **Loop** | Repeat a block | `for`, `while`, `do...while`, `for...of`, `forEach` |
-| **Jump** | Alter loop/function flow | `break`, `continue`, `return` |
+Welcome to **Day 3**! Today is a **BIG** day. You are going to learn the secret behind ChatGPT-style "ask your documents" bots, company knowledge assistants, and customer support tools that quote from a real policy PDF. This is called **RAG — Retrieval-Augmented Generation**. 🧠📚
 
 ---
 
-## Part 1 — Conditional Statements
+## 1. Introduction
 
-### What are Conditional Statements?
+### 🎯 What we learn today?
+- What is **RAG** and why it was invented
+- Why an LLM's memory is **limited and frozen**
+- What are **embeddings** and **vectors**
+- What are **chunks** and why we split text
+- **Vector database** basics
+- The full **retrieval → generation** flow
+- 💻 Mini project: **FAQ document search bot**
 
-Conditional statements let your program **make decisions**. They evaluate a condition (an expression that is either `true` or `false`) and execute different blocks of code depending on the result.
-
-> **Real-world analogy:** "If it's raining, take an umbrella; otherwise, wear sunglasses." — your brain runs conditional logic every day.
+### 🌍 Why it matters
+Plain ChatGPT only knows what it learned during training. It **does not know** your company's refund policy, internal HR rules, or yesterday's sales report. RAG **connects the LLM to your private data** safely, cheaply, and in real-time. Every serious AI startup uses RAG somewhere.
 
 ---
 
-### 1.1 `if / else if / else`
+## 2. Concept Explanation
 
-The most flexible conditional. It checks conditions **in order** — the first one that is `true` runs, and the rest are skipped.
+### 🧠 What is RAG?
+**RAG = Retrieval-Augmented Generation.**
 
-**Syntax:**
+Three words, three steps:
+1. **Retrieval** → Find the relevant text from your documents.
+2. **Augmented** → Add that text into the prompt.
+3. **Generation** → Let the LLM answer using that text.
 
-```js
-if (condition1) {
-  // runs when condition1 is true
-} else if (condition2) {
-  // runs when condition1 is false AND condition2 is true
-} else {
-  // runs when ALL conditions above are false
+> RAG is like an **open-book exam**. The LLM is smart, but it can now "open the book" (your documents) before answering.
+
+### ⛔ Why LLM memory is limited
+- LLMs are **frozen** after training — no new knowledge after their cutoff.
+- They have a **context window** limit (e.g., 128k tokens) — you can't paste a 500-page PDF.
+- They **hallucinate** (make up facts) when they don't know something.
+- You can't retrain them daily — too expensive.
+
+**Solution:** don't retrain. Instead, **fetch the right paragraph at the right time**.
+
+### 🔢 What are embeddings?
+An **embedding** is a list of numbers (a vector, e.g., 1536 dimensions) that represents the **meaning** of a piece of text.
+
+- Sentences with **similar meaning** → vectors **close to each other** in space.
+- Sentences with **different meaning** → vectors **far apart**.
+
+Example:
+- `"How do I get a refund?"` → `[0.12, -0.03, 0.88, ...]`
+- `"What is the return policy?"` → `[0.11, -0.04, 0.90, ...]` ← very close!
+- `"What is the weather today?"` → `[-0.77, 0.55, 0.01, ...]` ← far away
+
+### ✂️ What are chunks?
+A long document is split into small **chunks** (e.g., 300–800 tokens each) because:
+- You can't embed 100 pages at once (too big).
+- Smaller chunks = **more precise** retrieval.
+- Overlap between chunks avoids cutting a sentence in half.
+
+### 🗄️ What is a vector database?
+A **vector database** stores chunks + their embeddings and lets you ask: *"Give me the top 5 chunks most similar to this query."*
+
+Popular options:
+- **Pinecone** (managed cloud)
+- **Supabase + pgvector** (Postgres-based)
+- **Qdrant, Weaviate, Chroma** (open source)
+- **In-memory** (for learning — we'll use this today)
+
+### 🔁 Full RAG flow
+
+1. User asks: *"What is the refund period?"*
+2. Convert question → embedding vector.
+3. Search vector DB for top-k similar chunks.
+4. Inject those chunks into the prompt.
+5. LLM answers using those chunks.
+6. Return answer + sources.
+
+---
+
+## 3. 💡 Visual Learning
+
+### The RAG pipeline
+
+```mermaid id="day3flow"
+flowchart LR
+    Q[User Question] --> E1[Embed question]
+    E1 --> S[Search Vector DB]
+    D[(Document Chunks + Embeddings)] --> S
+    S --> TopK[Top-k relevant chunks]
+    TopK --> P[Build prompt with context]
+    P --> LLM[GPT]
+    LLM --> A[Answer + Sources]
+```
+
+### Indexing (offline) vs Querying (online)
+
+```mermaid id="day3twophase"
+flowchart TD
+    subgraph Indexing[Indexing - one time]
+      Docs[Your Documents] --> Split[Chunking]
+      Split --> Embed1[Embedding model]
+      Embed1 --> VDB[(Vector DB)]
+    end
+    subgraph Query[Querying - every request]
+      UQ[User Question] --> Embed2[Embedding model]
+      Embed2 --> VDB
+      VDB --> TopK[Top-k chunks]
+      TopK --> LLM --> Ans[Answer]
+    end
+```
+
+### Plain LLM vs RAG
+
+```mermaid id="day3compare"
+flowchart LR
+    A[Plain LLM] --> A1["Guesses from training data"]
+    A1 --> A2["May hallucinate"]
+    B[RAG LLM] --> B1["Reads YOUR docs first"]
+    B1 --> B2["Grounded and cite-able"]
+```
+
+---
+
+## 4. 🛠️ Setup
+
+```bash id="day3install"
+npm install openai dotenv
+npm install -D typescript ts-node @types/node
+```
+
+`.env`:
+
+```env id="day3env"
+OPENAI_API_KEY=sk-your-key
+```
+
+Folder structure:
+
+```text id="day3folder"
+ai-day3/
+├── src/
+│   ├── embeddings.ts
+│   ├── chunk.ts
+│   ├── store.ts
+│   └── ragBot.ts
+├── data/
+│   └── faq.txt
+└── .env
+```
+
+---
+
+## 5. Code Examples
+
+### ✅ Step 1: Create embeddings
+
+```ts id="day3embed"
+// src/embeddings.ts
+import "dotenv/config";
+import OpenAI from "openai";
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+export async function embed(text: string): Promise<number[]> {
+  const res = await client.embeddings.create({
+    model: "text-embedding-3-small",
+    input: text
+  });
+  return res.data[0].embedding;
 }
 ```
 
-**Key Rules:**
-
-- `if` is **required**; `else if` and `else` are optional.
-- Only **one** block executes — the first match wins.
-- The condition must evaluate to a **truthy** or **falsy** value.
-
-**Example:**
-
-```js
-let score = 82;
-
-if (score >= 90)      { console.log("Grade: A"); }
-else if (score >= 75) { console.log("Grade: B"); }
-else if (score >= 60) { console.log("Grade: C"); }
-else                  { console.log("Grade: F"); }
-
-// Output: Grade: B
-```
-
----
-
-### 1.2 `switch`
-
-Best for matching a **single variable** against **multiple exact values**. Cleaner than many `if/else if` chains when comparing one value.
-
-**Syntax:**
-
-```js
-switch (expression) {
-  case value1:
-    // code
-    break;
-  case value2:
-    // code
-    break;
-  default:
-    // code if no case matches
-}
-```
-
-**Key Rules:**
-
-- Uses **strict equality** (`===`) — no type coercion.
-- `break` is required to stop fall-through (without it, execution continues into the next case).
-- `default` is optional but recommended.
-
-**Example:**
-
-```js
-let day = "Saturday";
-
-switch (day) {
-  case "Monday":  console.log("Start of work week"); break;
-  case "Friday":  console.log("TGIF!");              break;
-  case "Saturday":
-  case "Sunday":  console.log("Weekend!");            break;  // shared case
-  default:        console.log("Midweek day");
-}
-
-// Output: Weekend!
-```
-
----
-
-### 1.3 Ternary Operator (`? :`)
-
-A **one-line shorthand** for a simple `if/else`. It is an **expression** (returns a value), not a statement.
-
-**Syntax:**
-
-```js
-let result = condition ? valueIfTrue : valueIfFalse;
-```
-
-**Key Rules:**
-
-- Use for **simple** assignments or returns only.
-- Avoid nesting ternaries — it hurts readability.
-
-**Example:**
-
-```js
-let age = 20;
-let label = age >= 18 ? "Adult" : "Minor";
-console.log(label);  // "Adult"
-```
-
----
-
-### Example Questions — Conditional Statements
-
-**Q1.** What will the following code print?
-
-```js
-let x = 10;
-if (x > 15) {
-  console.log("A");
-} else if (x > 5) {
-  console.log("B");
-} else {
-  console.log("C");
-}
-```
-
-**Solution:** Output is `B`. The first condition `x > 15` is false (10 is not > 15). The second condition `x > 5` is true (10 > 5), so `"B"` prints. The `else` is skipped.
-
----
-
-**Q2.** What happens if you forget `break` in a switch?
-
-```js
-let fruit = "apple";
-switch (fruit) {
-  case "apple":  console.log("Apple");
-  case "banana": console.log("Banana");
-  case "cherry": console.log("Cherry");
-  default:       console.log("Unknown");
-}
-```
-
-**Solution:** Output is:
-
-```
-Apple
-Banana
-Cherry
-Unknown
-```
-
-Without `break`, execution **falls through** every case after the match. This is a common bug.
-
----
-
-**Q3.** Convert this `if/else` to a ternary:
-
-```js
-let temp = 35;
-let weather;
-if (temp > 30) {
-  weather = "Hot";
-} else {
-  weather = "Cool";
-}
-```
-
-**Solution:**
-
-```js
-let temp = 35;
-let weather = temp > 30 ? "Hot" : "Cool";
-console.log(weather);  // "Hot"
-```
-
----
-
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/conditional_mega_lab.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(102,126,234,0.4);">🚀 Click to Open Simulation — Conditional Statements</a>
-
----
-
----
-
-## Part 2 — Loops
-
-### What are Loops?
-
-Loops let you **repeat a block of code** multiple times without writing it over and over. They keep running as long as a specified condition remains `true`.
-
-> **Real-world analogy:** "Keep stirring the soup until it boils." — you repeat the action (stirring) until a condition (boiling) is met.
-
----
-
-### 2.1 `for` Loop
-
-Use when you **know how many times** to repeat.
-
-**Syntax:**
-
-```js
-for (initialization; condition; update) {
-  // code to repeat
-}
-```
-
-**Three parts:**
-
-1. **Initialization** — runs once before the loop starts (`let i = 0`)
-2. **Condition** — checked before each iteration; loop stops when `false`
-3. **Update** — runs after each iteration (`i++`)
-
-**Example:**
-
-```js
-for (let i = 0; i < 5; i++) {
-  console.log(i);
-}
-// Output: 0 1 2 3 4
-```
-
----
-
-### 2.2 `while` Loop
-
-Use when you **don't know** the exact number of iterations — you only have a condition.
-
-**Syntax:**
-
-```js
-while (condition) {
-  // code to repeat
-}
-```
-
-**Key Rule:** If the condition is `false` from the start, the body **never runs**.
-
-**Example:**
-
-```js
-let n = 10;
-while (n > 0) {
-  console.log(n);
-  n -= 3;
-}
-// Output: 10 7 4 1
-```
-
----
-
-### 2.3 `do...while` Loop
-
-Same as `while`, but the body runs **at least once** because the condition is checked **after** the first execution.
-
-**Syntax:**
-
-```js
-do {
-  // code to repeat
-} while (condition);
-```
-
-**Key Difference from `while`:**
-
-| | `while` | `do...while` |
-|---|---|---|
-| **Checks condition** | Before the body | After the body |
-| **Minimum runs** | 0 | 1 |
-
-**Example:**
-
-```js
-let count = 0;
-do {
-  console.log("Runs!");  // prints once even though condition is false
-} while (count > 10);
-
-// Output: Runs!
-```
-
----
-
-### 2.4 `forEach` — Array Loop
-
-A method on arrays that calls a function **once for each element**.
-
-**Syntax:**
-
-```js
-array.forEach((element, index) => {
-  // code
-});
-```
-
-**Key Rules:**
-
-- Cannot use `break` or `continue` inside `forEach`.
-- Does not return a new array (use `map` for that).
-
-**Example:**
-
-```js
-["Alice", "Bob", "Charlie"].forEach((name, i) => {
-  console.log(i + ": " + name);
-});
-// Output:
-// 0: Alice
-// 1: Bob
-// 2: Charlie
-```
-
----
-
-### 2.5 `for...of` — Cleaner Array Loop
-
-A modern loop that iterates over **iterable values** (arrays, strings, etc.).
-
-**Syntax:**
-
-```js
-for (let element of iterable) {
-  // code
-}
-```
-
-**Advantage over `forEach`:** You **can** use `break` and `continue`.
-
-**Example:**
-
-```js
-for (let name of ["Alice", "Bob"]) {
-  console.log(name);
-}
-// Output:
-// Alice
-// Bob
-```
-
----
-
-### Example Questions — Loops
-
-**Q1.** What will this `for` loop output?
-
-```js
-for (let i = 1; i <= 5; i++) {
-  console.log(i * 2);
-}
-```
-
-**Solution:** Output is `2 4 6 8 10`. The loop runs with `i` values 1 through 5, and prints `i * 2` each time.
-
----
-
-**Q2.** What is the difference between these two?
-
-```js
-// Version A
-let x = 100;
-while (x < 5) {
-  console.log(x);
-}
-
-// Version B
-let y = 100;
-do {
-  console.log(y);
-} while (y < 5);
-```
-
-**Solution:**
-- **Version A** prints **nothing** — the condition `100 < 5` is false, so the body never runs.
-- **Version B** prints `100` **once** — the body runs first, then the condition is checked and found false.
-
-This is the fundamental difference: `do...while` always executes at least once.
-
----
-
-**Q3.** Write a `while` loop that prints all even numbers from 2 to 20.
-
-**Solution:**
-
-```js
-let num = 2;
-while (num <= 20) {
-  console.log(num);
-  num += 2;
-}
-// Output: 2 4 6 8 10 12 14 16 18 20
-```
-
----
-
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/all_loops_animated_comparison.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(245,87,108,0.4);">🔄 Click to Open Simulation — All Loop Types</a>
-
----
-
-## Part 3 — Jump Statements (`break`, `continue`, `return`)
-
-### What are Jump Statements?
-
-Jump statements **alter the normal flow** of loops and functions. They let you exit early, skip iterations, or return values from functions.
-
----
-
-### 3.1 `break`
-
-**Stops the loop immediately** and moves to the code after the loop.
-
-**Use case:** You found what you were looking for — no need to keep looping.
-
-**Example:**
-
-```js
-for (let i = 0; i < 10; i++) {
-  if (i === 5) break;  // stops the loop at 5
-  console.log(i);
-}
-// Output: 0 1 2 3 4
-```
-
----
-
-### 3.2 `continue`
-
-**Skips the current iteration** and moves to the next one. The loop itself keeps running.
-
-**Use case:** You want to ignore certain values but process the rest.
-
-**Example:**
-
-```js
-for (let i = 0; i < 6; i++) {
-  if (i % 2 === 0) continue;  // skip even numbers
-  console.log(i);
-}
-// Output: 1 3 5
-```
-
----
-
-### 3.3 `return`
-
-**Exits the entire function** and optionally sends a value back to the caller. Only works inside functions.
-
-**Use case:** You have your answer — no need to run the remaining function code.
-
-**Example:**
-
-```js
-function findFirst(arr, target) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === target) return i;  // exits the function
+### ✅ Step 2: Chunk the text
+
+```ts id="day3chunk"
+// src/chunk.ts
+export function chunkText(text: string, size = 500, overlap = 80): string[] {
+  const words = text.split(/\s+/);
+  const chunks: string[] = [];
+  for (let i = 0; i < words.length; i += size - overlap) {
+    chunks.push(words.slice(i, i + size).join(" "));
   }
-  return -1;  // not found
-}
-
-console.log(findFirst([10, 20, 30], 20));  // 1
-console.log(findFirst([10, 20, 30], 99));  // -1
-```
-
----
-
-### Quick Comparison
-
-| Statement | Scope | Effect |
-|---|---|---|
-| `break` | Loop / switch | Exits the loop entirely |
-| `continue` | Loop | Skips to the next iteration |
-| `return` | Function | Exits the function, returns a value |
-
----
-
-### Example Questions — Jump Statements
-
-**Q1.** What does this code print?
-
-```js
-for (let i = 1; i <= 10; i++) {
-  if (i === 3) continue;
-  if (i === 7) break;
-  console.log(i);
+  return chunks;
 }
 ```
 
-**Solution:** Output is `1 2 4 5 6`.
-- When `i === 3`, `continue` skips it (so 3 is not printed).
-- When `i === 7`, `break` stops the loop (7 and beyond are not printed).
+### ✅ Step 3: In-memory vector store (for learning)
 
----
+```ts id="day3store"
+// src/store.ts
+interface Row { id: string; text: string; vector: number[]; }
+const db: Row[] = [];
 
-**Q2.** What does this function return?
-
-```js
-function check(n) {
-  if (n > 100) return "big";
-  if (n > 50)  return "medium";
-  return "small";
-}
-
-console.log(check(75));
-```
-
-**Solution:** Output is `"medium"`. The first condition `75 > 100` is false. The second condition `75 > 50` is true, so `"medium"` is returned and the function exits. The last `return "small"` never runs.
-
----
-
-**Q3.** Use `break` to find the first number divisible by both 3 and 5 between 1 and 100.
-
-**Solution:**
-
-```js
-for (let i = 1; i <= 100; i++) {
-  if (i % 3 === 0 && i % 5 === 0) {
-    console.log("Found:", i);
-    break;
+function cosine(a: number[], b: number[]): number {
+  let dot = 0, na = 0, nb = 0;
+  for (let i = 0; i < a.length; i++) {
+    dot += a[i] * b[i];
+    na += a[i] * a[i];
+    nb += b[i] * b[i];
   }
+  return dot / (Math.sqrt(na) * Math.sqrt(nb));
 }
-// Output: Found: 15
+
+export function addChunk(id: string, text: string, vector: number[]) {
+  db.push({ id, text, vector });
+}
+
+export function search(queryVec: number[], k = 3) {
+  return db
+    .map((r) => ({ ...r, score: cosine(queryVec, r.vector) }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, k);
+}
+```
+
+### ✅ Step 4: The RAG bot
+
+```ts id="day3ragbot"
+// src/ragBot.ts
+import "dotenv/config";
+import OpenAI from "openai";
+import fs from "fs";
+import { embed } from "./embeddings";
+import { chunkText } from "./chunk";
+import { addChunk, search } from "./store";
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+async function indexDocs() {
+  const raw = fs.readFileSync("data/faq.txt", "utf-8");
+  const chunks = chunkText(raw);
+  for (let i = 0; i < chunks.length; i++) {
+    const v = await embed(chunks[i]);
+    addChunk(`chunk-${i}`, chunks[i], v);
+  }
+  console.log(`✅ Indexed ${chunks.length} chunks`);
+}
+
+async function ask(question: string) {
+  const qv = await embed(question);
+  const hits = search(qv, 3);
+  const context = hits.map((h, i) => `[${i + 1}] ${h.text}`).join("\n\n");
+
+  const res = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a support bot. Answer ONLY using the provided context. " +
+          "If the answer is not in the context, say 'I don't know from the docs.'"
+      },
+      { role: "user", content: `Context:\n${context}\n\nQuestion: ${question}` }
+    ]
+  });
+
+  return {
+    success: true,
+    question,
+    answer: res.choices[0].message.content,
+    sources: hits.map((h) => ({ id: h.id, score: h.score.toFixed(3) })),
+    tokensUsed: res.usage?.total_tokens ?? 0
+  };
+}
+
+(async () => {
+  await indexDocs();
+  const out = await ask("How many days do I have to return a product?");
+  console.log(JSON.stringify(out, null, 2));
+})();
+```
+
+### ✅ Sample `data/faq.txt`
+
+```text id="day3faq"
+Our refund policy allows returns within 7 days of delivery.
+To return a product, email support@shop.com with your order ID.
+Shipping is free for orders above $50.
+We deliver across India within 3-5 business days.
+Customer support is available Monday to Friday, 9am to 6pm IST.
 ```
 
 ---
 
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/break_continue_return_animated.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(79,172,254,0.4);">⚡ Click to Open Simulation — break, continue, return</a>
+## 6. 🧾 JSON Response Design
+
+```json id="day3jsonout"
+{
+  "success": true,
+  "question": "How many days do I have to return a product?",
+  "answer": "You can return a product within 7 days of delivery.",
+  "sources": [
+    { "id": "chunk-0", "score": "0.892" },
+    { "id": "chunk-1", "score": "0.641" }
+  ],
+  "confidence": 0.89,
+  "tokensUsed": 198
+}
+```
+
+Always include:
+- The `answer`
+- The `sources` with **similarity scores** (builds trust)
+- A `confidence` number (you can use the top score)
 
 ---
 
-## Part 4 — Revision Quiz
+## 7. 💻 Hands-on Practice
 
-Test your understanding of all control statements. Read the explanation after each answer — they reveal the tricky details!
-
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/control_statements_quiz.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(67,233,123,0.4);">📝 Click to Open Simulation — Revision Quiz</a>
+1. Replace `faq.txt` with your **own** knowledge file (e.g., about your favorite movie, game, or product).
+2. Change `k=3` to `k=5` — compare answers. More context ≠ always better.
+3. Change `size` in `chunkText` to 200 vs 1000 — observe retrieval quality.
+4. Ask an **out-of-scope** question (e.g., "Who is the PM of France?") — bot should say *"I don't know from the docs."*
+5. Add a new rule: if the top score is below `0.5`, don't send to the LLM at all — return "No relevant info found."
+6. Print every retrieved chunk to console so you can debug the retrieval.
+7. Try `text-embedding-3-large` — bigger, more accurate, more expensive.
 
 ---
 
-## Complete Revision Cheat Sheet
+## 8. ⚠️ Common Mistakes
 
-```js
-// ═══════════════════════════════════════════
-//  CONDITIONAL STATEMENTS
-// ═══════════════════════════════════════════
+- ❌ **Huge chunks** (2000+ words) → retrieval becomes inaccurate.
+- ❌ **Tiny chunks** (30 words) → no context, answers become vague.
+- ❌ **No overlap** → sentences get cut in half, meaning lost.
+- ❌ **Not filtering low-score results** → LLM sees irrelevant junk and hallucinates.
+- ❌ **Forgetting to tell the LLM** to answer *only* from context → it will still make things up.
+- ❌ **Mixing embedding models** → embeddings from model A and B are **incompatible**.
+- ❌ **Not storing sources** → users can't verify answers.
 
-// 1. if / else if / else
-if (score >= 90)      { console.log("A"); }
-else if (score >= 75) { console.log("B"); }
-else if (score >= 60) { console.log("C"); }
-else                  { console.log("F"); }
+---
 
-// 2. switch — best for exact value matching
-switch (day) {
-  case "Monday":  console.log("Start!"); break;
-  case "Friday":  console.log("TGIF!");  break;
-  case "Saturday":
-  case "Sunday":  console.log("Weekend!"); break;   // shared case
-  default:        console.log("Weekday");
-}
+## 9. 📝 Mini Assignment — FAQ Document Search Bot
 
-// 3. ternary — one-line if/else
-let label = age >= 18 ? "Adult" : "Minor";
+Build an **FAQ bot** over a real text file (company policy, game rules, recipe book — your choice).
 
+**Requirements:**
+- At least **20 chunks** indexed
+- Use `text-embedding-3-small`
+- Return structured JSON: `{ success, question, answer, sources[], confidence }`
+- If top similarity `< 0.4`, return answer = *"I don't know from the docs."*
+- CLI interface — user keeps asking until `exit`
 
-// ═══════════════════════════════════════════
-//  LOOPS
-// ═══════════════════════════════════════════
+**Bonus:** Save embeddings to a JSON file so you don't re-embed every time.
 
-// 4. for — known count
-for (let i = 0; i < 5; i++) {
-  console.log(i);  // 0 1 2 3 4
-}
-
-// 5. while — unknown count
-let n = 10;
-while (n > 0) {
-  console.log(n);
-  n -= 3;          // 10 7 4 1
-}
-
-// 6. do...while — run at LEAST once
-do {
-  console.log("Hello!");  // runs once even if false
-} while (false);
-
-// 7. forEach — loop over arrays
-["Alice","Bob","Charlie"].forEach((name, i) => {
-  console.log(i + ": " + name);
-});
-
-// 8. for...of — cleaner array loop
-for (let name of ["Alice","Bob"]) {
-  console.log(name);
-}
-
-
-// ═══════════════════════════════════════════
-//  JUMP STATEMENTS
-// ═══════════════════════════════════════════
-
-// 9. break — stop the loop immediately
-for (let i = 0; i < 10; i++) {
-  if (i === 5) break;      // stops at 5
-  console.log(i);          // prints 0 1 2 3 4
-}
-
-// 10. continue — skip this iteration
-for (let i = 0; i < 6; i++) {
-  if (i % 2 === 0) continue;  // skip even
-  console.log(i);              // prints 1 3 5
-}
-
-// 11. return — exit function with a value
-function isAdult(age) {
-  if (age >= 18) return true;   // exits here
-  return false;                  // or here
-}
+```ts id="day3savecache"
+import fs from "fs";
+fs.writeFileSync("cache.json", JSON.stringify(db));
 ```
 
 ---
 
-## Homework
+## 10. 🔁 Recap
 
-Write ALL of the following from scratch in your console:
+- **RAG = Retrieval + Augmented + Generation.**
+- LLMs are **frozen** and **context-limited** → RAG fixes both.
+- **Embeddings** = numbers representing meaning of text.
+- **Chunking** = split docs into small retrievable pieces (with overlap).
+- **Vector DB** = specialized store for fast similarity search.
+- Always return **answer + sources + confidence**.
+- Never let the LLM answer from outside the provided context.
 
-```js
-// 1. if/else — check a number
-let num = 42;
-if (num > 0) console.log("positive");
-else if (num < 0) console.log("negative");
-else console.log("zero");
-
-// 2. for loop — sum 1 to 10
-let sum = 0;
-for (let i = 1; i <= 10; i++) { sum += i; }
-console.log("Sum:", sum);  // 55
-
-// 3. while — count down
-let count = 5;
-while (count > 0) { console.log(count); count--; }
-
-// 4. break — find first number divisible by 7
-for (let i = 1; i <= 100; i++) {
-  if (i % 7 === 0) { console.log("First:", i); break; }
-}
-
-// 5. continue — print only even numbers 1-10
-for (let i = 1; i <= 10; i++) {
-  if (i % 2 !== 0) continue;
-  console.log(i);
-}
-```
+Tomorrow on **Day 4**, we turn this into a **real production RAG pipeline** with PDFs, a real vector database, and proper architecture. See you! 🚀
