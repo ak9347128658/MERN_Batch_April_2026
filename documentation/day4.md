@@ -1,665 +1,413 @@
-# Day 4 — JavaScript Functions
+# 📘 Day 4: Backgrounds, Display & Position
 
-> **A function is a reusable set of instructions with a name.**
+Hello students 👋
 
-That's it. Nothing more. Let me show you what I mean:
+Welcome to **Day 4**! By now you know how to write CSS, style text, and control boxes. Today we'll learn how to:
 
-![alt](../images/day4/function_real_world_analogy.svg)
+- Add **beautiful backgrounds** (colors + images).
+- Control how elements appear using **display**.
+- **Position** elements anywhere on the screen using **position**.
 
-See that? A tea machine is the perfect analogy. You put things IN — you get something OUT. The machine does the work in between. That's a function.
-
-### Definition
-
-A **function** is a block of organized, reusable code that performs a single action. Instead of writing the same code again and again, you wrap it inside a function and call it whenever you need it. Functions make your code **shorter**, **cleaner**, and **easier to debug**.
-
-Now let's learn the 5 parts of every function:
+These are the tools that transform a plain layout into a **stunning webpage**. 🔥
 
 ---
 
-## Lesson 1 — The 5 Parts of a Function
+## 1. Introduction
 
-**5 parts. Learn them by heart:**
+### What will we learn today?
 
-![alt](../images/day4/function_5_parts_labeled.svg)
+- `background-color`, `background-image`
+- `background-size`: `cover` vs `contain`
+- `background-position`, `background-repeat`
+- `display`: `block`, `inline`, `inline-block`, `none`
+- `position`: `static`, `relative`, `absolute`, `fixed`, `sticky`
+- `z-index`
 
-### Explanation
+### Why is this important?
 
-Every function in JavaScript is built from exactly 5 parts:
-
-| # | Part | What it does |
-|---|------|-------------|
-| 1 | `function` | The keyword that tells JavaScript "I'm creating a function" |
-| 2 | `name` | The name you give your function (e.g. `add`, `greet`, `calculateTax`) |
-| 3 | `(parameters)` | The inputs your function accepts — placeholders for values you'll pass later |
-| 4 | `{ body }` | The curly braces that hold your actual code — the instructions the function runs |
-| 5 | `return` | Sends the final answer back to whoever called the function |
-
-### Example
-
-```js
-function add(a, b) {
-    return a + b;
-}
-
-console.log(add(3, 7)); // 10
-```
-
-Here:
-- `function` — keyword
-- `add` — name
-- `(a, b)` — parameters
-- `{ return a + b; }` — body
-- `return` — sends the result back
-
-### Practice Questions
-
-**Q1.** Identify the 5 parts of this function:
-
-```js
-function multiply(x, y) {
-    return x * y;
-}
-```
-
-**Solution:**
-1. `function` — keyword
-2. `multiply` — name
-3. `(x, y)` — parameters
-4. `{ return x * y; }` — body
-5. `return` — sends the product back
+- **Backgrounds** give your page personality (think hero banners).
+- **Display** controls how elements flow on the page.
+- **Position** lets you place things anywhere (headers, modals, floating buttons).
 
 ---
 
-**Q2.** Write a function called `subtract` that takes two numbers and returns their difference.
+## 2. Concept Explanation
 
-**Solution:**
+### Display
 
-```js
-function subtract(a, b) {
-    return a - b;
-}
+Every HTML element has a default display behavior:
 
-console.log(subtract(10, 4)); // 6
-```
+- `<div>`, `<p>`, `<h1>` → **block** (takes full width, new line).
+- `<span>`, `<a>`, `<strong>` → **inline** (flows with text).
+
+We can **change** this using `display`.
+
+### Position
+
+By default, elements sit where they naturally appear. But sometimes you want to **move** an element somewhere specific — like a "New!" badge on a card, or a sticky navbar.
+
+That's where **position** comes in.
 
 ---
 
-## Lesson 2 — WHY Do We Need Functions?
+## 3. 💡 Visual Learning
 
-### Definition
+### Display Types
 
-Without functions, you would **copy-paste** the same code every time you need it. This leads to:
-- **Longer code** — harder to read
-- **More bugs** — fix one place, forget another
-- **No reusability** — every change must be made everywhere
-
-Functions solve all three problems. **Write once, use everywhere.**
-
-### The Problem Without Functions
-
-![alt](../images/day4/functino_why_functions.webp)
-
-### Example — Without Functions (Bad)
-
-```js
-// Calculating area of rectangles WITHOUT a function
-let area1 = 10 * 5;
-console.log("Area 1:", area1);
-
-let area2 = 7 * 3;
-console.log("Area 2:", area2);
-
-let area3 = 12 * 8;
-console.log("Area 3:", area3);
+```mermaid
+flowchart TD
+    Display[display property] --> Block[block - full width, new line]
+    Display --> Inline[inline - flows with text, no width/height]
+    Display --> InlineBlock[inline-block - flows inline but takes width/height]
+    Display --> None[none - hides the element completely]
 ```
 
-### Example — With Functions (Good)
+### Position Types
 
-```js
-// Calculating area of rectangles WITH a function
-function area(length, width) {
-    return length * width;
-}
-
-console.log("Area 1:", area(10, 5));  // 50
-console.log("Area 2:", area(7, 3));   // 21
-console.log("Area 3:", area(12, 8));  // 96
+```mermaid
+flowchart TD
+    Position[position property] --> Static[static - default, normal flow]
+    Position --> Relative[relative - offset from its normal spot]
+    Position --> Absolute[absolute - placed relative to nearest positioned parent]
+    Position --> Fixed[fixed - stays fixed to viewport while scrolling]
+    Position --> Sticky[sticky - sticks when scrolled to threshold]
 ```
 
-One function. Three calls. Zero repetition.
+### Background Image Flow
 
-### Practice Questions
-
-**Q1.** You need to print "Welcome to MERN Batch!" 5 times in your program. Write a function to do it instead of repeating `console.log` 5 times.
-
-**Solution:**
-
-```js
-function welcome() {
-    console.log("Welcome to MERN Batch!");
-}
-
-welcome(); // call it as many times as needed
-welcome();
-welcome();
-welcome();
-welcome();
+```mermaid
+flowchart LR
+    BG[background-image] --> Size[background-size cover/contain]
+    BG --> Pos[background-position center/top]
+    BG --> Repeat[background-repeat no-repeat]
 ```
 
 ---
 
-**Q2.** Write a function `double` that takes a number and returns it multiplied by 2. Use it 3 times with different values.
+## 4. Syntax + Code Examples
 
-**Solution:**
+### Backgrounds
 
-```js
-function double(n) {
-    return n * 2;
+```css
+.hero {
+  background-color: #333;
+  background-image: url('hero.jpg');
+  background-size: cover;         /* fills the entire box */
+  background-position: center;    /* centers the image */
+  background-repeat: no-repeat;   /* don't tile it */
+  height: 400px;
+  color: white;
 }
+```
 
-console.log(double(5));   // 10
-console.log(double(12));  // 24
-console.log(double(100)); // 200
+Shorthand:
+```css
+.hero {
+  background: #333 url('hero.jpg') center/cover no-repeat;
+}
+```
+
+**`cover` vs `contain`:**
+- `cover` → image fills the box entirely (may crop edges).
+- `contain` → image fits fully inside (may leave empty space).
+
+---
+
+### Display
+
+```css
+.block-el   { display: block; }
+.inline-el  { display: inline; }
+.ib-el      { display: inline-block; }
+.hidden     { display: none; }
+```
+
+#### block
+Takes full width, starts on a new line.
+```css
+div { display: block; }   /* default */
+```
+
+#### inline
+Flows with text. **Cannot** set width/height.
+```css
+span { display: inline; }
+```
+
+#### inline-block
+Flows inline BUT you **can** set width/height.
+```css
+.btn {
+  display: inline-block;
+  width: 120px;
+  height: 40px;
+}
+```
+
+#### none
+Completely removes the element (doesn't take space).
+```css
+.modal.hidden { display: none; }
 ```
 
 ---
 
-## Lesson 3 — The 4 Ways to Write Functions
+### Position
 
-### Definition
+#### static (default)
+Normal flow. Can't use `top`, `left`, etc.
 
-JavaScript gives you **4 different syntaxes** to create a function. All of them do the same thing — create reusable code — but they look different and have subtle behavior differences.
-
-| # | Type | Syntax | When to use |
-|---|------|--------|-------------|
-| 1 | **Function Declaration** | `function name() {}` | The default, most common way |
-| 2 | **Function Expression** | `const name = function() {}` | When you want to store a function in a variable |
-| 3 | **Arrow Function** | `const name = () => {}` | Modern, shorter syntax — used heavily in React & Node |
-| 4 | **Default Parameters** | `function name(x = 10) {}` | When you want fallback values for missing arguments |
-
-### Examples of All 4 Types
-
-**Type 1 — Function Declaration:**
-
-```js
-function greet(name) {
-    return "Hello, " + name + "!";
-}
-console.log(greet("Alice")); // "Hello, Alice!"
-```
-
-**Type 2 — Function Expression:**
-
-```js
-const multiply = function(a, b) {
-    return a * b;
-};
-console.log(multiply(4, 5)); // 20
-```
-
-**Type 3 — Arrow Function:**
-
-```js
-const square = (n) => n * n;
-console.log(square(6)); // 36
-
-// Multi-line arrow function:
-const add = (a, b) => {
-    let sum = a + b;
-    return sum;
-};
-console.log(add(3, 7)); // 10
-```
-
-**Type 4 — Default Parameters:**
-
-```js
-function welcome(name = "Student", course = "MERN") {
-    return `Hi ${name}, welcome to ${course}!`;
-}
-console.log(welcome());                // Hi Student, welcome to MERN!
-console.log(welcome("Ali"));           // Hi Ali, welcome to MERN!
-console.log(welcome("Ali", "React"));  // Hi Ali, welcome to React!
-```
-
-### Interactive Simulation
-
-Click Run on every card. On card 4 — leave the boxes empty and press Run. Then type just your name. Watch the defaults kick in!
-
-[Click link to open Simulation for why functions](https://ak9347128658.github.io/MERN_Batch_April_2026/day4/four_function_types_classroom.html)
-
-### Practice Questions
-
-**Q1.** Convert this function declaration into an arrow function:
-
-```js
-function cube(n) {
-    return n * n * n;
+#### relative
+Moves element from its **original position**. Still takes its original space.
+```css
+.box {
+  position: relative;
+  top: 20px;
+  left: 30px;
 }
 ```
 
-**Solution:**
+#### absolute
+Taken out of normal flow. Positioned relative to the **nearest positioned ancestor** (or the page if none).
+```css
+.parent { position: relative; }
 
-```js
-const cube = (n) => n * n * n;
-console.log(cube(3)); // 27
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+```
+
+#### fixed
+Stays fixed to the **viewport** while scrolling.
+```css
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+```
+
+#### sticky
+Scrolls normally until it hits a threshold, then sticks.
+```css
+.header {
+  position: sticky;
+  top: 0;
+}
+```
+
+### z-index
+Controls which element appears on top (only works on positioned elements).
+
+```css
+.modal { position: fixed; z-index: 999; }
+.overlay { position: fixed; z-index: 998; }
+```
+
+Higher number = on top.
+
+---
+
+### Full Working Example (Hero Banner)
+
+**File: `index.html`**
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Day 4 - Hero Banner</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <span class="logo">🚀 MySite</span>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Welcome to the Future</h1>
+        <p>Build amazing websites with CSS.</p>
+        <button>Get Started</button>
+      </div>
+      <span class="badge">NEW</span>
+    </section>
+  </body>
+</html>
+```
+
+**File: `style.css`**
+```css
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #222;
+  color: white;
+  padding: 15px 30px;
+  z-index: 100;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.hero {
+  position: relative;        /* so badge can be absolute inside */
+  height: 100vh;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url('https://picsum.photos/1600/900') center/cover no-repeat;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-content button {
+  padding: 12px 30px;
+  background: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.badge {
+  position: absolute;
+  top: 80px;
+  right: 30px;
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+}
 ```
 
 ---
 
-**Q2.** Write a function expression that takes a string and returns it in UPPERCASE.
+### Wrong vs Correct
 
-**Solution:**
+❌ **Wrong:**
+```css
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+/* Parent has no position — badge floats to the whole page! */
+```
 
-```js
-const toUpper = function(str) {
-    return str.toUpperCase();
-};
-console.log(toUpper("hello")); // "HELLO"
+✅ **Correct:**
+```css
+.parent { position: relative; }
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
 ```
 
 ---
 
-**Q3.** Write a function with default parameters that calculates the price after tax. Default tax rate should be 18%.
+## 5. Live Output Explanation
 
-**Solution:**
+When you open the hero example:
 
-```js
-function priceAfterTax(price, taxRate = 18) {
-    return price + (price * taxRate) / 100;
-}
+- The **navbar** stays fixed at the top even when you scroll.
+- The **hero section** fills the entire screen (`100vh`) with a dark-tinted background image.
+- The **"NEW" badge** is placed in the top-right corner of the hero — not the page.
+- A heading, description, and call-to-action button are **centered** in the hero.
 
-console.log(priceAfterTax(1000));      // 1180  (uses default 18%)
-console.log(priceAfterTax(1000, 5));   // 1050  (uses custom 5%)
-```
+💡 **DevTools Tip:** Toggle `display: none` on an element in DevTools to see how the layout changes.
 
 ---
 
-## Lesson 4 — What Does `return` Actually Do?
+## 6. 🧪 Hands-on Practice
 
-### Definition
-
-`return` is a statement that **sends a value back** from inside the function to wherever the function was called. Think of it as the function's answer.
-
-**Key rules:**
-- `return` immediately **stops** the function — no code after it will run
-- A function **without** `return` gives back `undefined`
-- You can `return` any value: a number, string, boolean, array, object, or even another function
-
-### Example — With and Without Return
-
-```js
-// WITH return — works correctly
-function addGood(a, b) {
-    return a + b;
-}
-console.log(addGood(3, 5)); // 8
-
-// WITHOUT return — gives undefined
-function addBad(a, b) {
-    a + b;  // calculated but never sent back!
-}
-console.log(addBad(3, 5)); // undefined
-```
-
-### Example — Return Stops the Function
-
-```js
-function check(age) {
-    if (age < 18) {
-        return "Not allowed";  // function stops here
-    }
-    return "Welcome!";         // only runs if age >= 18
-}
-
-console.log(check(15)); // "Not allowed"
-console.log(check(21)); // "Welcome!"
-```
-
-### Interactive Simulation
-
-Press **Play animation** — watch the steps light up one by one. Change the numbers and play again. The warning at the bottom shows what happens without `return` — the #1 beginner mistake!
-
-[Click link to open Simulation for function return](https://ak9347128658.github.io/MERN_Batch_April_2026/day4/return_statement_classroom.html)
-
-### Practice Questions
-
-**Q1.** What will this code print? Explain why.
-
-```js
-function mystery(x) {
-    x * 2;
-}
-console.log(mystery(5));
-```
-
-**Solution:**
-It prints `undefined`. The function calculates `x * 2` but never uses `return` to send it back. Fix: `return x * 2;`
+1. **Task 1:** Create a box with `background-image` and `background-size: cover`.
+2. **Task 2:** Convert a `<div>` from `display: block` to `inline-block` and place 3 side-by-side.
+3. **Task 3:** Make a **sticky** header that stays on top when you scroll.
+4. **Task 4:** Place a **"Sale"** badge in the top-right corner of a card using `position: absolute`.
+5. **Task 5:** Use `z-index` to make a modal overlay appear above everything else.
 
 ---
 
-**Q2.** What will this code print?
+## 7. ⚠️ Common Mistakes
 
-```js
-function test() {
-    return "Hello";
-    console.log("World");
-}
-console.log(test());
-```
-
-**Solution:**
-It prints `"Hello"` only. The `console.log("World")` never runs because `return` immediately exits the function.
+| Mistake | Fix |
+|---------|-----|
+| `position: absolute` on a child without `position: relative` on parent | Always set the parent's position |
+| Using `display: none` when you want `visibility: hidden` | `none` removes from layout, `visibility: hidden` keeps the space |
+| Setting width/height on `display: inline` | Use `inline-block` or `block` |
+| Forgetting `background-repeat: no-repeat` | Image will tile across the box |
+| `z-index` not working | Element must have `position` set (not static) |
+| Fixed navbar hides content | Add `padding-top` equal to navbar height to body |
 
 ---
 
-**Q3.** Write a function `isAdult` that takes an age and returns `true` if 18 or above, `false` otherwise.
+## 8. 📝 Mini Assignment
 
-**Solution:**
+**Build a Hero Banner Section** 🎬
 
-```js
-function isAdult(age) {
-    return age >= 18;
-}
+Create a landing page hero with:
 
-console.log(isAdult(20)); // true
-console.log(isAdult(15)); // false
-```
+- A **fixed navbar** (logo + 3 links).
+- A **full-screen hero** (`100vh`) with a background image + dark overlay.
+- Centered **heading**, **subtitle**, and **CTA button**.
+- A **floating badge** ("NEW") in the top-right corner of the hero.
 
----
-
-## Lesson 5 — Real World Examples (Live Lab)
-
-### Definition
-
-The best way to understand functions is to **use them in real scenarios**. Functions are used everywhere in real projects — calculating totals in a shopping cart, validating form inputs, formatting dates, making API calls, and much more.
-
-### Interactive Simulation
-
-Work through all 5 tabs — especially **"Write your own"** where you type a function yourself from scratch. That's how you really learn.
-
-[Click link to open Simulation for Real world examples](https://ak9347128658.github.io/MERN_Batch_April_2026/day4/functions_real_world_lab.html)
-
-### Practice Questions
-
-**Q1.** Write a function `celsiusToFahrenheit` that converts temperature from Celsius to Fahrenheit. Formula: `F = (C * 9/5) + 32`
-
-**Solution:**
-
-```js
-function celsiusToFahrenheit(celsius) {
-    return (celsius * 9 / 5) + 32;
-}
-
-console.log(celsiusToFahrenheit(0));    // 32
-console.log(celsiusToFahrenheit(100));  // 212
-console.log(celsiusToFahrenheit(37));   // 98.6
-```
+✅ Requirements:
+- Use `position: fixed` for navbar.
+- Use `background-size: cover`.
+- Use `position: absolute` for the badge.
+- Use `z-index` so the navbar stays on top.
 
 ---
 
-**Q2.** Write an arrow function `getFullName` that takes `firstName` and `lastName` and returns the full name.
+## 9. 🔁 Recap
 
-**Solution:**
+Today we learned:
 
-```js
-const getFullName = (firstName, lastName) => firstName + " " + lastName;
+- ✅ **Backgrounds:** color, image, size (`cover`, `contain`), position, repeat.
+- ✅ **Display:** `block`, `inline`, `inline-block`, `none`.
+- ✅ **Position:** `static`, `relative`, `absolute`, `fixed`, `sticky`.
+- ✅ `absolute` is relative to the **nearest positioned ancestor**.
+- ✅ `z-index` controls stacking order (only works on positioned elements).
 
-console.log(getFullName("Amit", "Kumar")); // "Amit Kumar"
-```
+💡 **VS Code Tip:** Press `Ctrl + /` to comment/uncomment CSS lines quickly.
+💡 **DevTools Tip:** Use the "Computed" tab to see the final values of all CSS properties after cascading.
 
----
+Next up: **Day 5 — Flexbox** — the **most important layout tool in modern CSS**! Don't miss it. 💪
 
-**Q3.** Write a function `calculateBMI` that takes weight (kg) and height (meters) and returns the BMI. Formula: `BMI = weight / (height * height)`
-
-**Solution:**
-
-```js
-function calculateBMI(weight, height) {
-    return weight / (height * height);
-}
-
-console.log(calculateBMI(70, 1.75));  // 22.86 (approx)
-console.log(calculateBMI(90, 1.80));  // 27.78 (approx)
-```
-
----
-
-## Lesson 6 — Parameters vs Arguments
-
-### Definition
-
-These two words confuse almost everyone. Here's the simple rule:
-
-- **Parameter** = the **placeholder name** in the function definition (like a blank form field)
-- **Argument** = the **actual value** you pass when calling the function (like filling in that field)
-
-### Example
-
-```js
-//              parameters ↓
-function add(a, b) {
-    return a + b;
-}
-
-//         arguments ↓
-add(3, 5);
-```
-
-- `a` and `b` are **parameters** — they don't have values yet
-- `3` and `5` are **arguments** — the real values passed in
-
-### Practice Questions
-
-**Q1.** In the following code, identify the parameters and arguments:
-
-```js
-function greet(name, greeting) {
-    return greeting + ", " + name + "!";
-}
-
-greet("Sara", "Good morning");
-```
-
-**Solution:**
-- **Parameters:** `name`, `greeting` (in the function definition)
-- **Arguments:** `"Sara"`, `"Good morning"` (in the function call)
-
----
-
-## Lesson 7 — Scope
-
-### Definition
-
-**Scope** determines **where a variable is visible** (accessible) in your code. JavaScript has two main types of scope:
-
-| Scope | Where declared | Where accessible |
-|-------|---------------|-----------------|
-| **Global** | Outside any function | Everywhere in your code |
-| **Local** | Inside a function | Only inside that function |
-
-### Example
-
-```js
-let x = 10;              // global — visible everywhere
-
-function test() {
-    let y = 20;          // local — only inside test()
-    console.log(x);      // 10 — can see global x
-    console.log(y);      // 20 — can see local y
-}
-
-test();
-console.log(x);          // 10 — works fine
-console.log(y);          // ReferenceError! y is not defined
-```
-
-### Why Does Scope Matter?
-
-- It **protects** variables from being accidentally changed by other parts of your code
-- It **prevents naming conflicts** — two functions can each have their own variable called `i`
-- It keeps your code **organized and predictable**
-
-### Practice Questions
-
-**Q1.** What will this code print?
-
-```js
-let color = "red";
-
-function paint() {
-    let color = "blue";
-    console.log(color);
-}
-
-paint();
-console.log(color);
-```
-
-**Solution:**
-```
-blue
-red
-```
-Inside `paint()`, the local `color` is `"blue"`. Outside, the global `color` is still `"red"`. The local variable does not change the global one.
-
----
-
-**Q2.** Will this code work? Why or why not?
-
-```js
-function setAge() {
-    let age = 25;
-}
-
-setAge();
-console.log(age);
-```
-
-**Solution:**
-No, it will throw a `ReferenceError`. The variable `age` is declared inside `setAge()` — it is **local** to that function and cannot be accessed outside.
-
----
-
-## The Complete Notes — Everything in One Place
-
-```js
-// ════════════════════════════════════════════
-//  WHAT IS A FUNCTION?
-//  A reusable block of code with a name.
-//  Write once → use a thousand times.
-// ════════════════════════════════════════════
-
-
-// ─── WAY 1: Function Declaration ────────────
-function greet(name) {
-    return "Hello, " + name + "!";
-}
-greet("Alice");   // "Hello, Alice!"
-greet("Bob");     // "Hello, Bob!"
-
-
-// ─── WAY 2: Function Expression ─────────────
-const multiply = function(a, b) {
-    return a * b;
-};
-multiply(4, 5);   // 20
-
-
-// ─── WAY 3: Arrow Function ──────────────────
-const square = (n) => n * n;   // one line!
-square(6);        // 36
-
-// Multi-line arrow function:
-const add = (a, b) => {
-    let sum = a + b;
-    return sum;
-};
-
-
-// ─── WAY 4: Default Parameters ──────────────
-function welcome(name = "Student", course = "MERN") {
-    return `Hi ${name}, welcome to ${course}!`;
-}
-welcome();           // Hi Student, welcome to MERN!
-welcome("Ali");      // Hi Ali, welcome to MERN!
-welcome("Ali","React"); // Hi Ali, welcome to React!
-
-
-// ─── PARAMETERS vs ARGUMENTS ────────────────
-//  parameter = placeholder in the definition
-//  argument  = real value when you call it
-function add(a, b) { ... }  // a, b → parameters
-add(3, 5);                  // 3, 5 → arguments
-
-
-// ─── RETURN ──────────────────────────────────
-// return sends a value back to the caller
-// without return → function gives undefined
-function addGood(a, b) { return a + b; }  // ✓
-function addBad(a, b)  { a + b; }         // ✗ gives undefined
-
-
-// ─── SCOPE ───────────────────────────────────
-let x = 10;              // global — visible everywhere
-
-function test() {
-    let y = 20;          // local — only inside test()
-    console.log(x);      // ✓ can see global x
-    console.log(y);      // ✓ can see local y
-}
-
-console.log(x);          // ✓
-console.log(y);          // ✗ ReferenceError!
-```
-
----
-
-## Class Summary — What You Learned Today
-
-| Concept | One-line summary |
-|---|---|
-| Function | Reusable code with a name |
-| Declaration | `function name() {}` — most common |
-| Expression | `const fn = function() {}` |
-| Arrow | `const fn = () => {}` — used in React/Node |
-| Parameter | Input placeholder in definition |
-| Argument | Real value passed when calling |
-| Return | Sends a value back out |
-| Scope | Where a variable is visible |
-| Default params | `function f(x = 10)` — fallback value |
-
----
-
-## Homework — Write These 5 Functions Yourself
-
-Open your browser console and type each one. **Don't copy-paste — type it manually.** That's how your brain remembers.
-
-```js
-// 1. Greet someone
-function greet(name) {
-    return "Hello, " + name + "!";
-}
-console.log(greet("Your Name"));
-
-// 2. Check if a number is even
-const isEven = (n) => n % 2 === 0;
-console.log(isEven(4));   // true
-console.log(isEven(7));   // false
-
-// 3. Find the bigger number
-function max(a, b) {
-    return a > b ? a : b;
-}
-console.log(max(10, 25));  // 25
-
-// 4. Calculate simple interest
-function simpleInterest(p, r, t) {
-    return (p * r * t) / 100;
-}
-console.log(simpleInterest(1000, 5, 2));  // 100
-
-// 5. Arrow — convert kg to grams
-const toGrams = (kg) => kg * 1000;
-console.log(toGrams(2.5));  // 2500
-```
+See you tomorrow! 🚀
