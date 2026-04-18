@@ -1,279 +1,279 @@
-JavaScript has tons of built-in functions for strings and numbers that you'll use every single day. Let me build you a full interactive reference playground:
+## Day 7 — Built-in Methods & Exception Handling
+
+Hello students! Today we are going to learn something very exciting. JavaScript gives us **ready-made tools** that we can use for strings, numbers, and math. Think of them like tools in a toolbox — you don't need to make a hammer, you just pick it up and use it.
+
+At the end, we will also learn **exception handling** — how to catch errors so our program doesn't crash.
+
+---
 
 ### Interactive Simulation
 
-[Click here to open the Arithmetic Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day7/string_number_builtins.html)
+[Click here to open the Built-in Methods Playground](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day7/string_number_builtins.html)
 
-This is your complete reference — 3 tabs, 29 functions total. For each one:
-- Read the description
-- Change the input values
-- Click "Try it live" to see the result instantly
-- Click "MERN examples" to see how it's used in real projects
-
----
-
-Here's a quick cheat sheet to remember the most important ones:
-
-**String — daily use:**
-
-| Method | What it does | Real use case |
-|---|---|---|
-| `trim()` | Remove spaces | Clean form input |
-| `toUpperCase()` | ALL CAPS | Normalize usernames |
-| `includes()` | Search inside | Search feature |
-| `split()` | String → array | Parse CSV data |
-| `replace()` | Find and swap | Fix typos, format text |
-| `slice()` | Cut a portion | Show preview text |
-
-**Number — daily use:**
-
-| Method | What it does | Real use case |
-|---|---|---|
-| `toFixed(2)` | Round to 2 decimals | Show prices like ₹99.50 |
-| `parseInt()` | "42px" → 42 | Read CSS/HTML values |
-| `parseFloat()` | "3.14" → 3.14 | Read decimal inputs |
-| `isNaN()` | Check if invalid | Validate user input |
-
-**Math — daily use:**
-
-| Method | What it does | Real use case |
-|---|---|---|
-| `Math.random()` | Random 0–1 | Generate OTPs, shuffle |
-| `Math.floor()` | Round down | Page numbers, indexes |
-| `Math.max/min()` | Biggest/smallest | Find highest score |
-| `Math.abs()` | Remove minus sign | Distance, difference |
-
-A real pattern you'll write in your MERN app very soon — combining several of these together:
-
-```js
-// Clean and validate a user's age input from a form
-let rawInput = "  25  ";
-
-let cleaned = rawInput.trim();           // "25"
-let age     = parseInt(cleaned);         // 25
-
-if (isNaN(age) || age < 0 || age > 120) {
-  throw new Error("Invalid age!");        // exception handling!
-}
-
-console.log("Valid age:", age.toFixed(0)); // "25"
-```
-
-See how `trim()`, `parseInt()`, `isNaN()`, and `toFixed()` all work together — plus exception handling from our last lesson!
+Open this link. You will see 3 tabs with 29 functions. For each one:
+1. Read what it does
+2. Change the input
+3. Click **"Try it live"**
+4. Click **"MERN examples"** to see real-world use
 
 ---
 
-## Deep Dive — Definitions & Examples
+## Part 1 — Quick Cheat Sheet
 
-Think of built-in methods as **ready-made tools**. You don't build a hammer from scratch — you just pick it up and use it. Same here: JavaScript gives you these tools for free.
+Before the deep dive, here's a small table to remember the most important ones.
 
-### 1. String Methods Explained
+### Strings (text)
 
-A **string** is any text wrapped in quotes: `"hello"`, `'MERN'`, `` `stack` ``. Strings are **immutable** — methods never change the original, they return a NEW string. Always save the result!
+| Method | What it does | Real example |
+|---|---|---|
+| `trim()` | Removes extra spaces | Clean form input |
+| `toUpperCase()` | Makes ALL CAPS | Normalize usernames |
+| `includes()` | Checks if word is inside | Search bar |
+| `split()` | Breaks string into array | Read CSV file |
+| `replace()` | Finds and swaps text | Fix typos |
+| `slice()` | Cuts a portion | Blog preview |
 
-#### `trim()` — Remove whitespace from both ends
+### Numbers
 
-**Definition:** Deletes spaces, tabs, and newlines from the start and end of a string (not the middle).
+| Method | What it does | Real example |
+|---|---|---|
+| `toFixed(2)` | Keeps only 2 decimals | Show ₹99.50 |
+| `parseInt()` | Converts "42px" → 42 | Read CSS value |
+| `parseFloat()` | Converts "3.14" → 3.14 | Read price input |
+| `isNaN()` | Checks if NOT a number | Validate form |
+
+### Math
+
+| Method | What it does | Real example |
+|---|---|---|
+| `Math.random()` | Random number 0 to 1 | Generate OTP |
+| `Math.floor()` | Rounds DOWN | Page number |
+| `Math.max/min()` | Biggest / smallest | Highest marks |
+| `Math.abs()` | Removes the minus sign | Distance |
+
+---
+
+## Part 2 — String Methods (Deep Dive)
+
+A **string** is any text inside quotes. Example: `"hello"`, `'MERN'`, `` `stack` ``.
+
+Very important rule: **strings never change themselves.** Every method gives you a NEW string. So you must save it in a variable.
+
+### 2.1 — `trim()` : Remove extra spaces
+
+Imagine a student writes their email as `"   hasan@gmail.com   "` with spaces. We want to clean it.
 
 ```js
 let email = "   hasan@gmail.com   ";
 console.log(email.trim());        // "hasan@gmail.com"
-console.log(email.length);        // 21 (original unchanged!)
-console.log(email.trim().length); // 15
-
-// Real MERN use — cleaning form data before saving to MongoDB
-let username = "  ak2311  ".trim(); // "ak2311"
+console.log(email.length);        // 21 → original is unchanged
+console.log(email.trim().length); // 15 → after cleaning
 ```
 
-#### `toUpperCase()` / `toLowerCase()` — Change letter case
+**Why it matters:** Users often type extra spaces by accident. Always clean before saving to the database.
 
-**Definition:** Converts every letter to CAPITAL or small letters. Numbers and symbols are ignored.
+### 2.2 — `toUpperCase()` and `toLowerCase()` : Change the case
 
 ```js
 let name = "Hasan Khan";
 console.log(name.toUpperCase()); // "HASAN KHAN"
 console.log(name.toLowerCase()); // "hasan khan"
+```
 
-// Case-insensitive comparison (a classic login check)
+**Classic use — login check (ignore case):**
+
+```js
 let input = "HASAN@gmail.com";
 let saved = "hasan@gmail.com";
+
 if (input.toLowerCase() === saved.toLowerCase()) {
   console.log("Emails match!");
 }
 ```
 
-#### `includes()` — Check if text exists inside
+### 2.3 — `includes()` : Is this word inside?
 
-**Definition:** Returns `true` if the substring is found, `false` if not. Case-sensitive.
+Returns `true` or `false`. **Remember: it is case-sensitive.**
 
 ```js
 let sentence = "I love MERN stack";
 console.log(sentence.includes("MERN"));   // true
-console.log(sentence.includes("mern"));   // false  (case matters!)
+console.log(sentence.includes("mern"));   // false  — capital M matters
 console.log(sentence.includes("Python")); // false
+```
 
-// Real use — filter a search
+**Real use — a search bar:**
+
+```js
 let products = ["iPhone 15", "Samsung S24", "iPad Pro"];
-let search = "iphone";
-let results = products.filter(p => p.toLowerCase().includes(search));
+let search   = "iphone";
+
+let results = products.filter(
+  p => p.toLowerCase().includes(search)
+);
 console.log(results); // ["iPhone 15"]
 ```
 
-#### `split()` — Break string into array
-
-**Definition:** Cuts a string at every separator you give it, returning an array of pieces.
+### 2.4 — `split()` : Break a string into an array
 
 ```js
 let csv = "apple,banana,mango";
-console.log(csv.split(","));    // ["apple", "banana", "mango"]
+console.log(csv.split(","));  // ["apple", "banana", "mango"]
 
 let sentence = "I love coding";
 console.log(sentence.split(" ")); // ["I", "love", "coding"]
 
 let word = "MERN";
-console.log(word.split(""));    // ["M", "E", "R", "N"]  (every character)
+console.log(word.split(""));  // ["M", "E", "R", "N"]
+```
 
-// Real use — count words in a tweet
+**Real use — count words in a tweet:**
+
+```js
 let tweet = "Learning JavaScript is fun today";
 let wordCount = tweet.split(" ").length; // 5
 ```
 
-#### `replace()` / `replaceAll()` — Swap text
+### 2.5 — `replace()` and `replaceAll()` : Swap text
 
-**Definition:** `replace()` changes the FIRST match. `replaceAll()` changes EVERY match.
+- `replace()` changes **only the first** match
+- `replaceAll()` changes **every** match
 
 ```js
 let msg = "I love cats. Cats are cute.";
+
 console.log(msg.replace("cats", "dogs"));
-// "I love dogs. Cats are cute."  (only first one!)
+// "I love dogs. Cats are cute."   → only first one changed
 
 console.log(msg.replaceAll("cats", "dogs"));
-// Error! Case-sensitive — "Cats" with capital C not replaced
+// "I love dogs. Cats are cute."   → still "Cats" (capital C) stays!
+```
 
-// Real use — censor bad words or format phone numbers
+**Real use — format a phone number:**
+
+```js
 let phone = "98765-43210";
 let clean = phone.replaceAll("-", ""); // "9876543210"
 ```
 
-#### `slice()` — Extract a portion
+### 2.6 — `slice()` : Cut a portion
 
-**Definition:** `slice(start, end)` cuts a piece from index `start` up to (but not including) `end`. Supports negative numbers to count from the end.
+`slice(start, end)` — starts at `start`, stops **before** `end`.
 
 ```js
 let text = "JavaScript";
 //          0123456789
-console.log(text.slice(0, 4));  // "Java"
-console.log(text.slice(4));     // "Script"  (till the end)
-console.log(text.slice(-6));    // "Script"  (last 6 chars)
-
-// Real use — blog post preview
-let post = "This is a very long blog post about React hooks and state management...";
-let preview = post.slice(0, 30) + "..."; // "This is a very long blog post..."
+console.log(text.slice(0, 4)); // "Java"
+console.log(text.slice(4));    // "Script"
+console.log(text.slice(-6));   // "Script"  (last 6 characters)
 ```
 
-#### Bonus: `concat()` and template literals
+**Real use — blog post preview:**
+
+```js
+let post    = "This is a very long blog post about React hooks...";
+let preview = post.slice(0, 30) + "...";
+```
+
+### 2.7 — Joining strings : `concat()` vs template literals
 
 ```js
 let first = "Hasan";
-let last = "Khan";
+let last  = "Khan";
 
 // Old way
 console.log(first.concat(" ", last)); // "Hasan Khan"
 
-// Modern way (template literal) — preferred in MERN!
+// Modern way (preferred in MERN!) — uses backticks
 console.log(`${first} ${last}`);      // "Hasan Khan"
 ```
 
 ---
 
-### 2. Number Methods Explained
+## Part 3 — Number Methods (Deep Dive)
 
-A **number** in JS is any numeric value: `42`, `3.14`, `-7`, `0`. Unlike many languages, JS has only ONE number type — no separate "int" or "float".
+In JavaScript, numbers are just numbers — there is no separate int or float. `42`, `3.14`, `-7` are all the same type.
 
-#### `toFixed(n)` — Round to n decimal places
+### 3.1 — `toFixed(n)` : Keep n decimal places
 
-**Definition:** Returns a **string** rounded to `n` decimal places. Note: it's a string, not a number!
+**Warning:** `toFixed()` returns a **string**, not a number!
 
 ```js
 let price = 99.4567;
-console.log(price.toFixed(2)); // "99.46"  (string!)
+console.log(price.toFixed(2)); // "99.46"   ← string
 console.log(price.toFixed(0)); // "99"
 console.log(price.toFixed(4)); // "99.4567"
+```
 
-// Real use — showing prices with ₹ symbol
+**Real use — displaying prices:**
+
+```js
 let total = 1234.5;
 console.log(`Total: ₹${total.toFixed(2)}`); // "Total: ₹1234.50"
 ```
 
-#### `parseInt()` — Extract whole number from string
+### 3.2 — `parseInt()` : Get the whole number out of a string
 
-**Definition:** Reads the string from the start and grabs digits until it hits a non-digit. Ignores decimals.
+It reads digits from the start and **stops** at the first non-digit.
 
 ```js
-console.log(parseInt("42"));        // 42
-console.log(parseInt("42px"));      // 42     (stops at 'p')
-console.log(parseInt("3.9"));       // 3      (no rounding — just cuts!)
-console.log(parseInt("abc42"));     // NaN    (didn't start with digit)
-console.log(parseInt("  20  "));    // 20     (ignores leading space)
-
-// Real use — read CSS pixel values
-let width = "1920px";
-let pixels = parseInt(width); // 1920
+console.log(parseInt("42"));     // 42
+console.log(parseInt("42px"));   // 42   → stopped at 'p'
+console.log(parseInt("3.9"));    // 3    → cut the decimal (no rounding)
+console.log(parseInt("abc42"));  // NaN  → didn't start with a digit
+console.log(parseInt("  20  ")); // 20
 ```
 
-#### `parseFloat()` — Extract decimal number from string
-
-**Definition:** Same as `parseInt()` but keeps decimals.
+### 3.3 — `parseFloat()` : Same but keeps decimals
 
 ```js
-console.log(parseFloat("3.14"));     // 3.14
-console.log(parseFloat("3.14abc"));  // 3.14
-console.log(parseFloat("₹99.50"));   // NaN  (doesn't start with digit)
-
-// Real use — read price from a form input
-let input = "499.99";
-let amount = parseFloat(input); // 499.99
+console.log(parseFloat("3.14"));    // 3.14
+console.log(parseFloat("3.14abc")); // 3.14
+console.log(parseFloat("₹99.50"));  // NaN — doesn't start with a digit
 ```
 
-#### `isNaN()` — Check if value is "Not a Number"
+### 3.4 — `isNaN()` : Is this NOT a number?
 
-**Definition:** Returns `true` if the value is NOT a valid number. Very useful for validation.
+Returns `true` if the value is **not** a valid number.
 
 ```js
-console.log(isNaN(42));       // false  (it IS a number)
-console.log(isNaN("hello"));  // true   (not a number)
-console.log(isNaN("42"));     // false  (can be converted!)
-console.log(isNaN(parseInt("abc"))); // true
+console.log(isNaN(42));      // false
+console.log(isNaN("hello")); // true
+console.log(isNaN("42"));    // false — it CAN be converted
+```
 
-// Real use — form validation
+**Real use — validate age:**
+
+```js
 function validateAge(input) {
   let age = parseInt(input);
-  if (isNaN(age)) return "Please enter a valid number";
-  if (age < 0) return "Age cannot be negative";
+  if (isNaN(age))  return "Please enter a valid number";
+  if (age < 0)     return "Age cannot be negative";
   return "Valid!";
 }
-console.log(validateAge("twenty"));  // "Please enter a valid number"
-console.log(validateAge("25"));      // "Valid!"
+
+console.log(validateAge("twenty")); // "Please enter a valid number"
+console.log(validateAge("25"));     // "Valid!"
 ```
 
-#### `toString()` — Convert number to string
+### 3.5 — `toString()` : Number to string
 
 ```js
 let num = 255;
-console.log(num.toString());    // "255"
-console.log(num.toString(2));   // "11111111"  (binary!)
-console.log(num.toString(16));  // "ff"        (hexadecimal!)
+console.log(num.toString());   // "255"
+console.log(num.toString(2));  // "11111111"  → binary
+console.log(num.toString(16)); // "ff"        → hex
 ```
 
 ---
 
-### 3. Math Object Explained
+## Part 4 — Math Object (Deep Dive)
 
-`Math` is a **built-in object** with helpful math utilities. You don't create it — just use it directly: `Math.something()`.
+`Math` is a built-in object. You **don't create** it — just use it directly.
 
-#### `Math.random()` — Random decimal between 0 and 1
+### 4.1 — `Math.random()` : Random decimal 0 to 1
 
-**Definition:** Returns a random number like `0.7834...`. Always less than 1, never exactly 1.
+Always gives something like `0.7834...`. Never exactly 1.
 
 ```js
 console.log(Math.random()); // e.g., 0.4821...
@@ -281,47 +281,46 @@ console.log(Math.random()); // e.g., 0.4821...
 // Random number between 1 and 10
 let dice = Math.floor(Math.random() * 10) + 1;
 
-// Generate a 6-digit OTP
+// 6-digit OTP
 let otp = Math.floor(100000 + Math.random() * 900000);
-console.log(otp); // e.g., 482913
 ```
 
-#### `Math.floor()` / `Math.ceil()` / `Math.round()` — Rounding
+### 4.2 — Rounding : `floor()`, `ceil()`, `round()`
 
-**Definitions:**
-- `floor()` — always rounds DOWN  (3.9 → 3)
-- `ceil()`  — always rounds UP    (3.1 → 4)
-- `round()` — rounds to NEAREST   (3.5 → 4, 3.4 → 3)
+- `Math.floor()` — always goes **DOWN**
+- `Math.ceil()`  — always goes **UP**
+- `Math.round()` — goes to the **NEAREST**
 
 ```js
-console.log(Math.floor(4.9));  // 4
-console.log(Math.ceil(4.1));   // 5
-console.log(Math.round(4.5));  // 5
-console.log(Math.round(4.4));  // 4
-
-// Real use — pagination
-let totalItems = 53;
-let perPage = 10;
-let pages = Math.ceil(totalItems / perPage); // 6 pages (can't have 5.3!)
+console.log(Math.floor(4.9)); // 4
+console.log(Math.ceil(4.1));  // 5
+console.log(Math.round(4.5)); // 5
+console.log(Math.round(4.4)); // 4
 ```
 
-#### `Math.max()` / `Math.min()` — Biggest and smallest
+**Real use — pagination:**
+
+```js
+let totalItems = 53;
+let perPage    = 10;
+let pages      = Math.ceil(totalItems / perPage); // 6 pages
+```
+
+### 4.3 — `Math.max()` and `Math.min()`
 
 ```js
 console.log(Math.max(10, 25, 7, 99, 3)); // 99
 console.log(Math.min(10, 25, 7, 99, 3)); // 3
 
-// With an array — use spread operator
+// With an array — use the spread operator (...)
 let scores = [78, 92, 65, 88, 100];
 console.log(Math.max(...scores)); // 100
-console.log(Math.min(...scores)); // 65
 ```
 
-#### `Math.abs()` — Absolute value (remove minus)
+### 4.4 — `Math.abs()` : Remove the minus sign
 
 ```js
 console.log(Math.abs(-42));  // 42
-console.log(Math.abs(42));   // 42
 console.log(Math.abs(-3.7)); // 3.7
 
 // Real use — distance between two points
@@ -329,72 +328,256 @@ let a = 10, b = 25;
 let distance = Math.abs(a - b); // 15
 ```
 
-#### `Math.pow()` and `Math.sqrt()` — Power and square root
+### 4.5 — `Math.pow()` and `Math.sqrt()`
 
 ```js
-console.log(Math.pow(2, 10));  // 1024  (2 to the power 10)
-console.log(Math.sqrt(144));   // 12
-console.log(Math.sqrt(2));     // 1.414...
+console.log(Math.pow(2, 10)); // 1024
+console.log(Math.sqrt(144));  // 12
 
-// Modern way for power — exponent operator
-console.log(2 ** 10); // 1024
+// Modern way
+console.log(2 ** 10);         // 1024
 ```
 
 ---
 
-### 4. Putting It All Together — A Realistic MERN Example
+## Part 5 — Exception Handling
 
-Here's a function you might actually write in your e-commerce app:
+Now listen carefully class — this is very important.
+
+When you write code, sometimes things go wrong:
+- The user types letters instead of a number
+- The internet is down
+- A file is missing
+- You try to divide by zero
+
+If we don't handle these, our **entire app will crash**. Exception handling is how we catch these problems gracefully.
+
+### 5.1 — What is an "exception"?
+
+An **exception** (or "error") is JavaScript's way of saying "something went wrong, I can't continue."
+
+Example of a crash:
+
+```js
+let data = null;
+console.log(data.name);
+// TypeError: Cannot read properties of null
+// → The whole program stops here!
+```
+
+### 5.2 — The `try...catch` block
+
+This is the main tool for handling errors. Think of it like this:
+
+> "TRY to do this. If something breaks, CATCH the error and handle it."
+
+**Syntax:**
+
+```js
+try {
+  // risky code here
+} catch (error) {
+  // runs only if something goes wrong
+}
+```
+
+**Simple example:**
+
+```js
+try {
+  let data = null;
+  console.log(data.name);       // this will fail
+  console.log("This never runs");
+} catch (error) {
+  console.log("Oops! Something went wrong.");
+  console.log("Reason:", error.message);
+}
+
+console.log("Program continues normally ✓");
+```
+
+**Output:**
+```
+Oops! Something went wrong.
+Reason: Cannot read properties of null (reading 'name')
+Program continues normally ✓
+```
+
+See? The program did NOT crash. It kept running.
+
+### 5.3 — The `throw` statement : Create your own error
+
+You can make your own errors on purpose. This is useful for validation.
+
+```js
+function divide(a, b) {
+  if (b === 0) {
+    throw new Error("Cannot divide by zero!");
+  }
+  return a / b;
+}
+
+try {
+  console.log(divide(10, 2)); // 5
+  console.log(divide(10, 0)); // throws an error
+} catch (error) {
+  console.log("Error caught:", error.message);
+}
+```
+
+### 5.4 — The `finally` block
+
+`finally` runs **no matter what** — whether there was an error or not. Good for cleanup.
+
+```js
+try {
+  console.log("Trying...");
+  throw new Error("Something broke");
+} catch (error) {
+  console.log("Caught:", error.message);
+} finally {
+  console.log("This always runs — cleanup!");
+}
+```
+
+**Output:**
+```
+Trying...
+Caught: Something broke
+This always runs — cleanup!
+```
+
+### 5.5 — Real MERN example : validate user input
+
+Here we combine **everything we learned today**:
+
+```js
+function registerUser(rawName, rawAge) {
+  try {
+    // Clean the input
+    let name = rawName.trim();
+    let age  = parseInt(rawAge.trim());
+
+    // Validate
+    if (name === "") {
+      throw new Error("Name cannot be empty");
+    }
+    if (isNaN(age)) {
+      throw new Error("Age must be a number");
+    }
+    if (age < 18) {
+      throw new Error("You must be at least 18");
+    }
+
+    // All good!
+    return `✓ Registered: ${name.toUpperCase()}, age ${age}`;
+
+  } catch (error) {
+    return `✗ Failed: ${error.message}`;
+  }
+}
+
+console.log(registerUser("  Hasan  ", "25"));     // ✓ Registered: HASAN, age 25
+console.log(registerUser("", "25"));              // ✗ Failed: Name cannot be empty
+console.log(registerUser("Ali", "abc"));          // ✗ Failed: Age must be a number
+console.log(registerUser("Ali", "15"));           // ✗ Failed: You must be at least 18
+```
+
+### 5.6 — Common error types
+
+JavaScript has several built-in error types. You will see these a lot:
+
+| Error | When it happens |
+|---|---|
+| `ReferenceError` | Variable is not defined |
+| `TypeError` | Calling something that is not a function, or reading from `null` |
+| `SyntaxError` | You wrote invalid JavaScript |
+| `RangeError` | Number is out of allowed range |
+
+```js
+try {
+  console.log(xyz); // xyz was never defined
+} catch (error) {
+  console.log(error.name);    // "ReferenceError"
+  console.log(error.message); // "xyz is not defined"
+}
+```
+
+---
+
+## Part 6 — Final Big Example
+
+Here is a real e-commerce function that uses **everything** we learned today: strings, numbers, math, and exception handling.
 
 ```js
 function processOrder(rawPrice, rawQuantity, discountCode) {
-  // 1. Clean up string inputs
-  let price    = parseFloat(rawPrice.trim());
-  let quantity = parseInt(rawQuantity.trim());
-  let code     = discountCode.trim().toUpperCase();
+  try {
+    // 1. Clean string inputs
+    let price    = parseFloat(rawPrice.trim());
+    let quantity = parseInt(rawQuantity.trim());
+    let code     = discountCode.trim().toUpperCase();
 
-  // 2. Validate
-  if (isNaN(price) || isNaN(quantity)) {
-    throw new Error("Invalid price or quantity");
+    // 2. Validate
+    if (isNaN(price) || isNaN(quantity)) {
+      throw new Error("Invalid price or quantity");
+    }
+    if (quantity < 1) {
+      throw new Error("Quantity must be at least 1");
+    }
+
+    // 3. Calculate subtotal
+    let subtotal = price * quantity;
+
+    // 4. Apply discount
+    let discount = 0;
+    if (code.includes("SAVE")) {
+      discount = subtotal * 0.10;
+    }
+
+    // 5. Round the final amount
+    let total = (subtotal - discount).toFixed(2);
+
+    // 6. Random order ID
+    let orderId = "ORD" + Math.floor(Math.random() * 100000);
+
+    return {
+      orderId: orderId,
+      total:   `₹${total}`,
+      saved:   `₹${discount.toFixed(2)}`
+    };
+
+  } catch (error) {
+    return { error: error.message };
   }
-  if (quantity < 1) {
-    throw new Error("Quantity must be at least 1");
-  }
-
-  // 3. Calculate subtotal
-  let subtotal = price * quantity;
-
-  // 4. Apply discount
-  let discount = 0;
-  if (code.includes("SAVE")) {
-    discount = subtotal * 0.10; // 10% off
-  }
-
-  // 5. Final amount — round to 2 decimals
-  let total = (subtotal - discount).toFixed(2);
-
-  // 6. Generate order ID
-  let orderId = "ORD" + Math.floor(Math.random() * 100000);
-
-  return {
-    orderId: orderId,
-    total: `₹${total}`,
-    saved: `₹${discount.toFixed(2)}`
-  };
 }
 
 console.log(processOrder("  499.50  ", "3", "save20"));
 // { orderId: "ORD48213", total: "₹1348.65", saved: "₹149.85" }
+
+console.log(processOrder("abc", "3", "save20"));
+// { error: "Invalid price or quantity" }
 ```
 
-Notice how **10+ built-in methods** come together: `trim()`, `parseFloat()`, `parseInt()`, `toUpperCase()`, `isNaN()`, `includes()`, `toFixed()`, `Math.floor()`, `Math.random()`, plus template literals. This is real MERN-style code!
+Look carefully — we used **10+ built-in methods** together: `trim()`, `parseFloat()`, `parseInt()`, `toUpperCase()`, `isNaN()`, `includes()`, `toFixed()`, `Math.floor()`, `Math.random()`, `throw`, and `try...catch`. This is exactly how real MERN code looks.
 
 ---
 
-### Quick Rules to Remember
+## Part 7 — Rules to Remember (Write these in your notebook!)
 
-1. **Strings are immutable** — methods return NEW strings, save the result.
-2. **`toFixed()` returns a string**, not a number — convert back with `parseFloat()` if needed.
-3. **`Math` has no parentheses after it** — it's an object: `Math.random()`, not `Math().random()`.
-4. **`parseInt("3.9")` gives `3`**, not `4` — it doesn't round, it truncates.
-5. **Always validate with `isNaN()`** before using user input as a number.
+1. **Strings never change themselves** — always save the result: `name = name.trim();`
+2. **`toFixed()` returns a STRING**, not a number.
+3. **`Math` has no parentheses** — write `Math.random()`, never `Math().random()`.
+4. **`parseInt("3.9")` gives `3`**, not `4` — it cuts, it does not round.
+5. **Always use `isNaN()`** before trusting user input as a number.
+6. **Always wrap risky code in `try...catch`** — especially form input, API calls, JSON parsing.
+7. **Use `throw new Error("message")`** to create your own clear error messages.
+8. **`finally` always runs** — even if an error happens. Use it for cleanup.
+
+---
+
+**Homework:**
+- Open the simulation link and try all 29 functions.
+- Write your own `registerUser()` function and test it with good and bad inputs.
+- Try to break your code on purpose and catch the error with `try...catch`.
+
+See you tomorrow!
