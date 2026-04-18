@@ -1,668 +1,523 @@
-## Control Statements
+# 📅 Day 3: Relationships in TypeORM
 
-![alt](../images/day3/control_statements_revision_map.svg)
+Hello students 👋
 
-Control statements determine the **order in which instructions execute** in a program. Instead of running every line top-to-bottom, control statements let you **make decisions**, **repeat actions**, and **jump** to different parts of your code.
+Welcome to **Day 3** — today we unlock the **real power of relational databases**.
 
-They fall into three categories:
+So far, each of our tables was lonely — just a single `User` table, or a single `Product` table. But in real apps, tables are **connected**. A user has orders, an order has products, a product has categories. These connections are called **Relationships**.
 
-| Category | Purpose | Statements |
-|---|---|---|
-| **Conditional** | Choose which block runs | `if/else`, `switch`, ternary (`? :`) |
-| **Loop** | Repeat a block | `for`, `while`, `do...while`, `for...of`, `forEach` |
-| **Jump** | Alter loop/function flow | `break`, `continue`, `return` |
+By the end of today you'll know how to design **real-world database schemas** with TypeORM. Ready? Let's go! 🚀
 
 ---
 
-## Part 1 — Conditional Statements
+## 1. 🎯 Introduction — What Will We Learn Today?
 
-### What are Conditional Statements?
+Today's agenda:
 
-Conditional statements let your program **make decisions**. They evaluate a condition (an expression that is either `true` or `false`) and execute different blocks of code depending on the result.
+1. What are relationships?
+2. Four types of relationships:
+   - **One-to-One** (1:1)
+   - **One-to-Many** (1:N)
+   - **Many-to-One** (N:1)
+   - **Many-to-Many** (N:N)
+3. `@JoinColumn` vs `@JoinTable`
+4. Loading related data (eager vs lazy)
+5. Cascades
+6. Real-world mini schema: **Users + Orders + Products + Categories**
 
-> **Real-world analogy:** "If it's raining, take an umbrella; otherwise, wear sunglasses." — your brain runs conditional logic every day.
+Small question 🤔:
+> Can a **User** have many **Orders**? Can an **Order** belong to many **Users**? Think about it.
 
 ---
 
-### 1.1 `if / else if / else`
+## 2. 🧠 Concept Explanation
 
-The most flexible conditional. It checks conditions **in order** — the first one that is `true` runs, and the rest are skipped.
+### 2.1 Why Do We Need Relationships?
 
-**Syntax:**
+Imagine an **e-commerce site** 🛒. If we store everything in one table, we'd have:
 
-```js
-if (condition1) {
-  // runs when condition1 is true
-} else if (condition2) {
-  // runs when condition1 is false AND condition2 is true
-} else {
-  // runs when ALL conditions above are false
+| id | userName | email | orderId | product | price |
+|----|----------|-------|---------|---------|-------|
+| 1  | Ali      | ali@x | 101     | Phone   | 500   |
+| 2  | Ali      | ali@x | 102     | Laptop  | 1200  |
+| 3  | Sara     | sar@x | 103     | Book    | 20    |
+
+Problems 🔴:
+- `Ali` repeated → wasted storage
+- Change Ali's email → update many rows
+- Can't delete users without losing orders
+
+Solution ✅: Split into multiple tables and **link them via IDs**.
+
+### 2.2 Relationship Types — Simple Explanation
+
+| Relationship | Example | Meaning |
+|--------------|---------|---------|
+| **One-to-One** | `User` ↔ `Profile` | Each user has exactly one profile |
+| **One-to-Many** | `User` → `Orders` | One user can place many orders |
+| **Many-to-One** | `Order` → `User` | Each order belongs to one user |
+| **Many-to-Many** | `Student` ↔ `Course` | Students take many courses; courses have many students |
+
+💡 **One-to-Many** and **Many-to-One** are two sides of the **same** relationship.
+
+---
+
+## 3. 💡 Visual Learning
+
+### Overview of All Relationship Types
+
+```mermaid id="relationshipoverview"
+flowchart TB
+    subgraph OneToOne[1:1 - One-to-One]
+        U1[User] --- P1[Profile]
+    end
+    subgraph OneToMany[1:N - One-to-Many]
+        U2[User] --> O1[Order 1]
+        U2 --> O2[Order 2]
+        U2 --> O3[Order 3]
+    end
+    subgraph ManyToMany[N:N - Many-to-Many]
+        S1[Student A] --- C1[Course Math]
+        S1 --- C2[Course Science]
+        S2[Student B] --- C1
+        S2 --- C2
+    end
+```
+
+### E-Commerce Mini Schema
+
+```mermaid id="ecommerceschema"
+erDiagram
+    USER ||--o| PROFILE : has
+    USER ||--o{ ORDER : places
+    ORDER }o--|| USER : belongs_to
+    ORDER }o--o{ PRODUCT : contains
+    PRODUCT }o--|| CATEGORY : belongs_to
+```
+
+Memorize this diagram — we'll code every line of it today.
+
+---
+
+## 4. 🛠️ One-to-One (1:1)
+
+**Example:** Each `User` has one `Profile` (bio, avatar, phone).
+
+### 4.1 The Entities
+
+```ts id="profileentity"
+// src/entity/Profile.ts
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+
+@Entity()
+export class Profile {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  bio: string;
+
+  @Column({ nullable: true })
+  avatarUrl: string;
 }
 ```
 
-**Key Rules:**
+```ts id="userone2one"
+// src/entity/User.ts
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
+} from "typeorm";
+import { Profile } from "./Profile";
 
-- `if` is **required**; `else if` and `else` are optional.
-- Only **one** block executes — the first match wins.
-- The condition must evaluate to a **truthy** or **falsy** value.
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-**Example:**
+  @Column()
+  name: string;
 
-```js
-let score = 82;
-
-if (score >= 90)      { console.log("Grade: A"); }
-else if (score >= 75) { console.log("Grade: B"); }
-else if (score >= 60) { console.log("Grade: C"); }
-else                  { console.log("Grade: F"); }
-
-// Output: Grade: B
-```
-
----
-
-### 1.2 `switch`
-
-Best for matching a **single variable** against **multiple exact values**. Cleaner than many `if/else if` chains when comparing one value.
-
-**Syntax:**
-
-```js
-switch (expression) {
-  case value1:
-    // code
-    break;
-  case value2:
-    // code
-    break;
-  default:
-    // code if no case matches
+  @OneToOne(() => Profile, { cascade: true })
+  @JoinColumn()
+  profile: Profile;
 }
 ```
 
-**Key Rules:**
+> 📌 `@JoinColumn()` tells TypeORM **which side owns the foreign key**. In a 1:1, only one side should have it.
 
-- Uses **strict equality** (`===`) — no type coercion.
-- `break` is required to stop fall-through (without it, execution continues into the next case).
-- `default` is optional but recommended.
+### 4.2 SQL Equivalent
 
-**Example:**
+```sql id="one2onesql"
+CREATE TABLE profile (
+  id SERIAL PRIMARY KEY,
+  bio VARCHAR,
+  "avatarUrl" VARCHAR
+);
 
-```js
-let day = "Saturday";
+CREATE TABLE "user" (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR,
+  "profileId" INT UNIQUE REFERENCES profile(id)
+);
+```
 
-switch (day) {
-  case "Monday":  console.log("Start of work week"); break;
-  case "Friday":  console.log("TGIF!");              break;
-  case "Saturday":
-  case "Sunday":  console.log("Weekend!");            break;  // shared case
-  default:        console.log("Midweek day");
-}
+### 4.3 Using It
 
-// Output: Weekend!
+```ts id="one2oneuse"
+const profile = new Profile();
+profile.bio = "Full-stack dev from Karachi";
+
+const user = new User();
+user.name = "Ali";
+user.profile = profile;
+
+await userRepo.save(user);  // cascade saves profile too
+```
+
+To load the profile along with the user:
+
+```ts id="one2oneload"
+const users = await userRepo.find({ relations: ["profile"] });
 ```
 
 ---
 
-### 1.3 Ternary Operator (`? :`)
+## 5. 🛠️ One-to-Many & Many-to-One (1:N / N:1)
 
-A **one-line shorthand** for a simple `if/else`. It is an **expression** (returns a value), not a statement.
+**Example:** One `User` can have many `Orders`. Each `Order` belongs to one `User`.
 
-**Syntax:**
+### 5.1 The Entities
 
-```js
-let result = condition ? valueIfTrue : valueIfFalse;
-```
+```ts id="orderentity"
+// src/entity/Order.ts
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from "typeorm";
+import { User } from "./User";
 
-**Key Rules:**
+@Entity()
+export class Order {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-- Use for **simple** assignments or returns only.
-- Avoid nesting ternaries — it hurts readability.
+  @Column("decimal", { precision: 10, scale: 2 })
+  total: number;
 
-**Example:**
+  @CreateDateColumn()
+  createdAt: Date;
 
-```js
-let age = 20;
-let label = age >= 18 ? "Adult" : "Minor";
-console.log(label);  // "Adult"
-```
-
----
-
-### Example Questions — Conditional Statements
-
-**Q1.** What will the following code print?
-
-```js
-let x = 10;
-if (x > 15) {
-  console.log("A");
-} else if (x > 5) {
-  console.log("B");
-} else {
-  console.log("C");
-}
-```
-
-**Solution:** Output is `B`. The first condition `x > 15` is false (10 is not > 15). The second condition `x > 5` is true (10 > 5), so `"B"` prints. The `else` is skipped.
-
----
-
-**Q2.** What happens if you forget `break` in a switch?
-
-```js
-let fruit = "apple";
-switch (fruit) {
-  case "apple":  console.log("Apple");
-  case "banana": console.log("Banana");
-  case "cherry": console.log("Cherry");
-  default:       console.log("Unknown");
+  @ManyToOne(() => User, (user) => user.orders, { onDelete: "CASCADE" })
+  user: User;
 }
 ```
 
-**Solution:** Output is:
+```ts id="useronetomany"
+// src/entity/User.ts
+import { OneToMany } from "typeorm";
+import { Order } from "./Order";
 
-```
-Apple
-Banana
-Cherry
-Unknown
-```
+@Entity()
+export class User {
+  // ... id, name, email
 
-Without `break`, execution **falls through** every case after the match. This is a common bug.
-
----
-
-**Q3.** Convert this `if/else` to a ternary:
-
-```js
-let temp = 35;
-let weather;
-if (temp > 30) {
-  weather = "Hot";
-} else {
-  weather = "Cool";
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }
 ```
 
-**Solution:**
+### 5.2 Rules
 
-```js
-let temp = 35;
-let weather = temp > 30 ? "Hot" : "Cool";
-console.log(weather);  // "Hot"
+- The **Many** side (`Order`) owns the foreign key → uses `@ManyToOne`.
+- The **One** side (`User`) does not own the FK → uses `@OneToMany`.
+- **NEVER** add `@JoinColumn` to the `@OneToMany` side.
+
+### 5.3 SQL Equivalent
+
+```sql id="onemanysql"
+CREATE TABLE "order" (
+  id SERIAL PRIMARY KEY,
+  total DECIMAL(10,2),
+  "userId" INT REFERENCES "user"(id) ON DELETE CASCADE
+);
 ```
 
----
+### 5.4 Using It
 
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/conditional_mega_lab.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(102,126,234,0.4);">🚀 Click to Open Simulation — Conditional Statements</a>
+```ts id="onemanyuse"
+// Create orders for a user
+const user = await userRepo.findOneBy({ id: 1 });
 
----
-
----
-
-## Part 2 — Loops
-
-### What are Loops?
-
-Loops let you **repeat a block of code** multiple times without writing it over and over. They keep running as long as a specified condition remains `true`.
-
-> **Real-world analogy:** "Keep stirring the soup until it boils." — you repeat the action (stirring) until a condition (boiling) is met.
-
----
-
-### 2.1 `for` Loop
-
-Use when you **know how many times** to repeat.
-
-**Syntax:**
-
-```js
-for (initialization; condition; update) {
-  // code to repeat
-}
-```
-
-**Three parts:**
-
-1. **Initialization** — runs once before the loop starts (`let i = 0`)
-2. **Condition** — checked before each iteration; loop stops when `false`
-3. **Update** — runs after each iteration (`i++`)
-
-**Example:**
-
-```js
-for (let i = 0; i < 5; i++) {
-  console.log(i);
-}
-// Output: 0 1 2 3 4
-```
-
----
-
-### 2.2 `while` Loop
-
-Use when you **don't know** the exact number of iterations — you only have a condition.
-
-**Syntax:**
-
-```js
-while (condition) {
-  // code to repeat
-}
-```
-
-**Key Rule:** If the condition is `false` from the start, the body **never runs**.
-
-**Example:**
-
-```js
-let n = 10;
-while (n > 0) {
-  console.log(n);
-  n -= 3;
-}
-// Output: 10 7 4 1
-```
-
----
-
-### 2.3 `do...while` Loop
-
-Same as `while`, but the body runs **at least once** because the condition is checked **after** the first execution.
-
-**Syntax:**
-
-```js
-do {
-  // code to repeat
-} while (condition);
-```
-
-**Key Difference from `while`:**
-
-| | `while` | `do...while` |
-|---|---|---|
-| **Checks condition** | Before the body | After the body |
-| **Minimum runs** | 0 | 1 |
-
-**Example:**
-
-```js
-let count = 0;
-do {
-  console.log("Runs!");  // prints once even though condition is false
-} while (count > 10);
-
-// Output: Runs!
-```
-
----
-
-### 2.4 `forEach` — Array Loop
-
-A method on arrays that calls a function **once for each element**.
-
-**Syntax:**
-
-```js
-array.forEach((element, index) => {
-  // code
+const order = orderRepo.create({
+  total: 499.99,
+  user: user!,
 });
-```
+await orderRepo.save(order);
 
-**Key Rules:**
-
-- Cannot use `break` or `continue` inside `forEach`.
-- Does not return a new array (use `map` for that).
-
-**Example:**
-
-```js
-["Alice", "Bob", "Charlie"].forEach((name, i) => {
-  console.log(i + ": " + name);
+// Get a user with their orders
+const withOrders = await userRepo.findOne({
+  where: { id: 1 },
+  relations: ["orders"],
 });
-// Output:
-// 0: Alice
-// 1: Bob
-// 2: Charlie
+console.log(withOrders?.orders.length, "orders");
 ```
 
----
+### 5.5 Raw SQL vs TypeORM
 
-### 2.5 `for...of` — Cleaner Array Loop
-
-A modern loop that iterates over **iterable values** (arrays, strings, etc.).
-
-**Syntax:**
-
-```js
-for (let element of iterable) {
-  // code
-}
+**Raw SQL:**
+```sql id="rawjoinsql"
+SELECT u.id, u.name, o.id AS order_id, o.total
+FROM "user" u
+LEFT JOIN "order" o ON o."userId" = u.id
+WHERE u.id = 1;
 ```
 
-**Advantage over `forEach`:** You **can** use `break` and `continue`.
-
-**Example:**
-
-```js
-for (let name of ["Alice", "Bob"]) {
-  console.log(name);
-}
-// Output:
-// Alice
-// Bob
+**TypeORM:**
+```ts id="ormjoin"
+await userRepo.findOne({ where: { id: 1 }, relations: ["orders"] });
 ```
 
----
-
-### Example Questions — Loops
-
-**Q1.** What will this `for` loop output?
-
-```js
-for (let i = 1; i <= 5; i++) {
-  console.log(i * 2);
-}
-```
-
-**Solution:** Output is `2 4 6 8 10`. The loop runs with `i` values 1 through 5, and prints `i * 2` each time.
+Clean. Short. Type-safe. ❤️
 
 ---
 
-**Q2.** What is the difference between these two?
+## 6. 🛠️ Many-to-Many (N:N)
 
-```js
-// Version A
-let x = 100;
-while (x < 5) {
-  console.log(x);
-}
+**Example:** A `Product` can belong to multiple `Categories`, and each `Category` has many `Products`.
 
-// Version B
-let y = 100;
-do {
-  console.log(y);
-} while (y < 5);
-```
+### 6.1 The Entities
 
-**Solution:**
-- **Version A** prints **nothing** — the condition `100 < 5` is false, so the body never runs.
-- **Version B** prints `100` **once** — the body runs first, then the condition is checked and found false.
+```ts id="categoryentity"
+// src/entity/Category.ts
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
+import { Product } from "./Product";
 
-This is the fundamental difference: `do...while` always executes at least once.
+@Entity()
+export class Category {
+  @PrimaryGeneratedColumn()
+  id: number;
 
----
+  @Column()
+  name: string;
 
-**Q3.** Write a `while` loop that prints all even numbers from 2 to 20.
-
-**Solution:**
-
-```js
-let num = 2;
-while (num <= 20) {
-  console.log(num);
-  num += 2;
-}
-// Output: 2 4 6 8 10 12 14 16 18 20
-```
-
----
-
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/all_loops_animated_comparison.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(245,87,108,0.4);">🔄 Click to Open Simulation — All Loop Types</a>
-
----
-
-## Part 3 — Jump Statements (`break`, `continue`, `return`)
-
-### What are Jump Statements?
-
-Jump statements **alter the normal flow** of loops and functions. They let you exit early, skip iterations, or return values from functions.
-
----
-
-### 3.1 `break`
-
-**Stops the loop immediately** and moves to the code after the loop.
-
-**Use case:** You found what you were looking for — no need to keep looping.
-
-**Example:**
-
-```js
-for (let i = 0; i < 10; i++) {
-  if (i === 5) break;  // stops the loop at 5
-  console.log(i);
-}
-// Output: 0 1 2 3 4
-```
-
----
-
-### 3.2 `continue`
-
-**Skips the current iteration** and moves to the next one. The loop itself keeps running.
-
-**Use case:** You want to ignore certain values but process the rest.
-
-**Example:**
-
-```js
-for (let i = 0; i < 6; i++) {
-  if (i % 2 === 0) continue;  // skip even numbers
-  console.log(i);
-}
-// Output: 1 3 5
-```
-
----
-
-### 3.3 `return`
-
-**Exits the entire function** and optionally sends a value back to the caller. Only works inside functions.
-
-**Use case:** You have your answer — no need to run the remaining function code.
-
-**Example:**
-
-```js
-function findFirst(arr, target) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === target) return i;  // exits the function
-  }
-  return -1;  // not found
-}
-
-console.log(findFirst([10, 20, 30], 20));  // 1
-console.log(findFirst([10, 20, 30], 99));  // -1
-```
-
----
-
-### Quick Comparison
-
-| Statement | Scope | Effect |
-|---|---|---|
-| `break` | Loop / switch | Exits the loop entirely |
-| `continue` | Loop | Skips to the next iteration |
-| `return` | Function | Exits the function, returns a value |
-
----
-
-### Example Questions — Jump Statements
-
-**Q1.** What does this code print?
-
-```js
-for (let i = 1; i <= 10; i++) {
-  if (i === 3) continue;
-  if (i === 7) break;
-  console.log(i);
+  @ManyToMany(() => Product, (product) => product.categories)
+  products: Product[];
 }
 ```
 
-**Solution:** Output is `1 2 4 5 6`.
-- When `i === 3`, `continue` skips it (so 3 is not printed).
-- When `i === 7`, `break` stops the loop (7 and beyond are not printed).
+```ts id="productentity"
+// src/entity/Product.ts
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from "typeorm";
+import { Category } from "./Category";
 
----
+@Entity()
+export class Product {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-**Q2.** What does this function return?
+  @Column()
+  title: string;
 
-```js
-function check(n) {
-  if (n > 100) return "big";
-  if (n > 50)  return "medium";
-  return "small";
+  @Column("decimal", { precision: 10, scale: 2 })
+  price: number;
+
+  @ManyToMany(() => Category, (category) => category.products, {
+    cascade: true,
+  })
+  @JoinTable()
+  categories: Category[];
 }
-
-console.log(check(75));
 ```
 
-**Solution:** Output is `"medium"`. The first condition `75 > 100` is false. The second condition `75 > 50` is true, so `"medium"` is returned and the function exits. The last `return "small"` never runs.
+### 6.2 Rules
 
----
+- Only **one** side has `@JoinTable()` — it creates the junction table.
+- TypeORM auto-creates a table named `product_categories_category` with two foreign keys.
 
-**Q3.** Use `break` to find the first number divisible by both 3 and 5 between 1 and 100.
+### 6.3 SQL Equivalent
 
-**Solution:**
+```sql id="manymanysql"
+CREATE TABLE product (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR,
+  price DECIMAL(10,2)
+);
 
-```js
-for (let i = 1; i <= 100; i++) {
-  if (i % 3 === 0 && i % 5 === 0) {
-    console.log("Found:", i);
-    break;
-  }
-}
-// Output: Found: 15
+CREATE TABLE category (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR
+);
+
+CREATE TABLE product_categories_category (
+  "productId" INT REFERENCES product(id) ON DELETE CASCADE,
+  "categoryId" INT REFERENCES category(id) ON DELETE CASCADE,
+  PRIMARY KEY ("productId", "categoryId")
+);
 ```
 
----
+### 6.4 Using It
 
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/break_continue_return_animated.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(79,172,254,0.4);">⚡ Click to Open Simulation — break, continue, return</a>
+```ts id="manymanyuse"
+const electronics = categoryRepo.create({ name: "Electronics" });
+const sale = categoryRepo.create({ name: "On Sale" });
 
----
-
-## Part 4 — Revision Quiz
-
-Test your understanding of all control statements. Read the explanation after each answer — they reveal the tricky details!
-
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/control_statements_quiz.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(67,233,123,0.4);">📝 Click to Open Simulation — Revision Quiz</a>
-
----
-
-## Complete Revision Cheat Sheet
-
-```js
-// ═══════════════════════════════════════════
-//  CONDITIONAL STATEMENTS
-// ═══════════════════════════════════════════
-
-// 1. if / else if / else
-if (score >= 90)      { console.log("A"); }
-else if (score >= 75) { console.log("B"); }
-else if (score >= 60) { console.log("C"); }
-else                  { console.log("F"); }
-
-// 2. switch — best for exact value matching
-switch (day) {
-  case "Monday":  console.log("Start!"); break;
-  case "Friday":  console.log("TGIF!");  break;
-  case "Saturday":
-  case "Sunday":  console.log("Weekend!"); break;   // shared case
-  default:        console.log("Weekday");
-}
-
-// 3. ternary — one-line if/else
-let label = age >= 18 ? "Adult" : "Minor";
-
-
-// ═══════════════════════════════════════════
-//  LOOPS
-// ═══════════════════════════════════════════
-
-// 4. for — known count
-for (let i = 0; i < 5; i++) {
-  console.log(i);  // 0 1 2 3 4
-}
-
-// 5. while — unknown count
-let n = 10;
-while (n > 0) {
-  console.log(n);
-  n -= 3;          // 10 7 4 1
-}
-
-// 6. do...while — run at LEAST once
-do {
-  console.log("Hello!");  // runs once even if false
-} while (false);
-
-// 7. forEach — loop over arrays
-["Alice","Bob","Charlie"].forEach((name, i) => {
-  console.log(i + ": " + name);
+const phone = productRepo.create({
+  title: "iPhone 15",
+  price: 999,
+  categories: [electronics, sale],
 });
 
-// 8. for...of — cleaner array loop
-for (let name of ["Alice","Bob"]) {
-  console.log(name);
-}
+await productRepo.save(phone); // cascade saves categories too
 
-
-// ═══════════════════════════════════════════
-//  JUMP STATEMENTS
-// ═══════════════════════════════════════════
-
-// 9. break — stop the loop immediately
-for (let i = 0; i < 10; i++) {
-  if (i === 5) break;      // stops at 5
-  console.log(i);          // prints 0 1 2 3 4
-}
-
-// 10. continue — skip this iteration
-for (let i = 0; i < 6; i++) {
-  if (i % 2 === 0) continue;  // skip even
-  console.log(i);              // prints 1 3 5
-}
-
-// 11. return — exit function with a value
-function isAdult(age) {
-  if (age >= 18) return true;   // exits here
-  return false;                  // or here
-}
+// Fetch products with their categories
+const products = await productRepo.find({ relations: ["categories"] });
 ```
 
 ---
 
-## Homework
+## 7. ⚡ Eager vs Lazy Loading
 
-Write ALL of the following from scratch in your console:
+By default, relations are **NOT** loaded unless you ask for them. This prevents slow queries.
 
-```js
-// 1. if/else — check a number
-let num = 42;
-if (num > 0) console.log("positive");
-else if (num < 0) console.log("negative");
-else console.log("zero");
+### Three Ways to Load Relations
 
-// 2. for loop — sum 1 to 10
-let sum = 0;
-for (let i = 1; i <= 10; i++) { sum += i; }
-console.log("Sum:", sum);  // 55
+1. **Explicit** — using `relations` option (recommended):
+   ```ts id="loadexplicit"
+   await userRepo.find({ relations: ["orders", "profile"] });
+   ```
 
-// 3. while — count down
-let count = 5;
-while (count > 0) { console.log(count); count--; }
+2. **Eager** — always loaded (use sparingly):
+   ```ts id="loadeager"
+   @OneToMany(() => Order, (o) => o.user, { eager: true })
+   orders: Order[];
+   ```
 
-// 4. break — find first number divisible by 7
-for (let i = 1; i <= 100; i++) {
-  if (i % 7 === 0) { console.log("First:", i); break; }
-}
+3. **Lazy** — loaded on access (returns a Promise):
+   ```ts id="loadlazy"
+   @OneToMany(() => Order, (o) => o.user, { lazy: true })
+   orders: Promise<Order[]>;
 
-// 5. continue — print only even numbers 1-10
-for (let i = 1; i <= 10; i++) {
-  if (i % 2 !== 0) continue;
-  console.log(i);
-}
+   // usage
+   const orders = await user.orders;
+   ```
+
+> 💡 **Best practice:** Prefer **explicit** loading. You stay in control of performance.
+
+---
+
+## 8. 🔄 Cascades — Saving Together
+
+**Cascade** means: when you save/delete the parent, children are saved/deleted automatically.
+
+```ts id="cascadeexample"
+@OneToMany(() => Order, (o) => o.user, { cascade: true })
+orders: Order[];
 ```
+
+Now this works:
+
+```ts id="cascadeuse"
+const user = userRepo.create({
+  name: "Sana",
+  orders: [
+    { total: 100 },
+    { total: 250 },
+  ],
+});
+
+await userRepo.save(user); // orders saved too!
+```
+
+**Cascade options:** `true`, `["insert"]`, `["update"]`, `["remove"]`, `["soft-remove"]`, `["recover"]`.
+
+> ⚠️ Cascade delete is **powerful and dangerous**. Use `onDelete: "CASCADE"` only when you're 100% sure children should die with the parent.
+
+---
+
+## 9. 🧪 Hands-on Practice
+
+Build a mini e-commerce schema and try these 5 tasks:
+
+1. **Exercise 1:** Create a `User` with a `Profile` in one call (1:1 cascade).
+2. **Exercise 2:** Insert 5 orders for one user. Fetch user with all orders sorted by `createdAt DESC`.
+3. **Exercise 3:** Create 3 products and assign them to 2 categories (Many-to-Many).
+4. **Exercise 4:** Delete a user and verify that cascading deletes their orders.
+5. **Exercise 5:** Count how many products are in the "Electronics" category.
+
+---
+
+## 10. ⚠️ Common Mistakes
+
+1. **Adding `@JoinColumn` on both sides of a 1:1**
+   - Causes duplicate foreign keys.
+   - ✅ Fix: Only one side owns the FK.
+
+2. **Forgetting `@JoinTable()` in Many-to-Many**
+   - Without it, TypeORM throws: *"Using @ManyToMany is not possible..."*
+   - ✅ Fix: Add it on exactly **one** side.
+
+3. **N+1 query problem**
+   - Looping users and fetching orders one by one = slow!
+   - ✅ Fix: Use `relations` or `QueryBuilder` with `leftJoin`.
+
+4. **Using `eager: true` everywhere**
+   - Loads way too much data on simple queries.
+   - ✅ Fix: Use explicit `relations: [...]`.
+
+5. **Relation defined but missing inverse side**
+   - If `User.orders` exists, `Order.user` must exist too.
+   - ✅ Fix: Always define both sides for bidirectional navigation.
+
+---
+
+## 11. 📝 Mini Assignment
+
+Design and implement a **Library Management System**.
+
+Entities:
+
+- `Author` — id, name, country
+- `Book` — id, title, publishedYear, `author: Author` (Many-to-One)
+- `Member` — id, name, email, `profile: MemberProfile` (One-to-One)
+- `MemberProfile` — id, address, phone
+- `Borrow` — junction-like entity linking `Member` and `Book` (Many-to-Many using a custom join with `borrowDate` as extra column)
+
+Tasks:
+1. Create 3 authors, each with at least 2 books.
+2. Register 2 members with profiles.
+3. Simulate 3 borrow events.
+4. Fetch a member's borrowed books with author details.
+5. Fetch all books by a specific author.
+
+💡 **Hint for the Borrow table:** When your N:N has extra columns (like `borrowDate`), use a **real entity** instead of `@JoinTable()`.
+
+---
+
+## 12. 🔁 Recap
+
+Today you learned:
+
+- ✅ Relationships save storage, prevent duplication, and model real-world structure
+- ✅ **1:1** → `@OneToOne` + `@JoinColumn`
+- ✅ **1:N / N:1** → `@OneToMany` + `@ManyToOne` (FK on Many side)
+- ✅ **N:N** → `@ManyToMany` + `@JoinTable` on one side
+- ✅ Use `relations: [...]` to load related data
+- ✅ `cascade: true` saves children with the parent
+- ✅ Avoid N+1: always plan your joins
+
+**Tomorrow (Day 4):** We'll combine everything with **QueryBuilder, Migrations, Transactions**, and build a **real mini project**. Get ready to ship! 🚢
+
+See you tomorrow, students! 👋
