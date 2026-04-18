@@ -1,668 +1,686 @@
-## Control Statements
+# 📘 Day 3: Forms + Semantic HTML + Mini Project
 
-![alt](../images/day3/control_statements_revision_map.svg)
-
-Control statements determine the **order in which instructions execute** in a program. Instead of running every line top-to-bottom, control statements let you **make decisions**, **repeat actions**, and **jump** to different parts of your code.
-
-They fall into three categories:
-
-| Category | Purpose | Statements |
-|---|---|---|
-| **Conditional** | Choose which block runs | `if/else`, `switch`, ternary (`? :`) |
-| **Loop** | Repeat a block | `for`, `while`, `do...while`, `for...of`, `forEach` |
-| **Jump** | Alter loop/function flow | `break`, `continue`, `return` |
+> **Duration:** 1 to 1.5 hours
+> **Level:** Beginner (after Day 1 & Day 2)
+> **Goal:** Build **real, interactive webpages** — forms, semantic layout, and a complete mini project! 🚀
 
 ---
 
-## Part 1 — Conditional Statements
+## 👋 Hello students!
 
-### What are Conditional Statements?
+Hello students 👋
+Welcome to the **final day** of our HTML journey! Today is a **celebration day** because by the end of this class, you will have built a **complete, real-world webpage** from scratch — something you can proudly show to your family, friends, and even future employers!
 
-Conditional statements let your program **make decisions**. They evaluate a condition (an expression that is either `true` or `false`) and execute different blocks of code depending on the result.
+In the last two days we learned:
 
-> **Real-world analogy:** "If it's raining, take an umbrella; otherwise, wear sunglasses." — your brain runs conditional logic every day.
+- **Day 1:** Structure, headings, paragraphs.
+- **Day 2:** Links, images, lists, tables.
+- **Day 3 (today):** Forms + Semantic HTML + **Mini Project** 🎉
 
----
-
-### 1.1 `if / else if / else`
-
-The most flexible conditional. It checks conditions **in order** — the first one that is `true` runs, and the rest are skipped.
-
-**Syntax:**
-
-```js
-if (condition1) {
-  // runs when condition1 is true
-} else if (condition2) {
-  // runs when condition1 is false AND condition2 is true
-} else {
-  // runs when ALL conditions above are false
-}
-```
-
-**Key Rules:**
-
-- `if` is **required**; `else if` and `else` are optional.
-- Only **one** block executes — the first match wins.
-- The condition must evaluate to a **truthy** or **falsy** value.
-
-**Example:**
-
-```js
-let score = 82;
-
-if (score >= 90)      { console.log("Grade: A"); }
-else if (score >= 75) { console.log("Grade: B"); }
-else if (score >= 60) { console.log("Grade: C"); }
-else                  { console.log("Grade: F"); }
-
-// Output: Grade: B
-```
+Let's finish strong! 💪
 
 ---
 
-### 1.2 `switch`
+## 1. 🎯 Introduction — What Will We Learn Today?
 
-Best for matching a **single variable** against **multiple exact values**. Cleaner than many `if/else if` chains when comparing one value.
+Today's agenda:
 
-**Syntax:**
+- What is a **Form** and why do we need it
+- **Input types**: text, email, password, number, date, file…
+- **`<label>`** — why it's important
+- **`<textarea>`** — multi-line input
+- **`<select>`** and **`<option>`** — dropdowns
+- **Checkbox** and **Radio button** — when to use which
+- **`<button>`** — the action trigger
+- Common **form attributes** (`action`, `method`, `name`, `required`, `placeholder`)
+- **Semantic HTML** — `<header>`, `<nav>`, `<section>`, `<article>`, `<aside>`, `<footer>`
+- 🏆 **Mini Project** — a complete **Personal Portfolio Page**
 
-```js
-switch (expression) {
-  case value1:
-    // code
-    break;
-  case value2:
-    // code
-    break;
-  default:
-    // code if no case matches
-}
-```
+### ❓ Why are forms important?
 
-**Key Rules:**
+Every time you **login to Facebook**, **search on Google**, **sign up on Amazon**, or **order on Swiggy** — you are filling a **form**. Forms are how the web **collects information from users**. No website without forms. 🙌
 
-- Uses **strict equality** (`===`) — no type coercion.
-- `break` is required to stop fall-through (without it, execution continues into the next case).
-- `default` is optional but recommended.
+### ❓ Why semantic HTML?
 
-**Example:**
-
-```js
-let day = "Saturday";
-
-switch (day) {
-  case "Monday":  console.log("Start of work week"); break;
-  case "Friday":  console.log("TGIF!");              break;
-  case "Saturday":
-  case "Sunday":  console.log("Weekend!");            break;  // shared case
-  default:        console.log("Midweek day");
-}
-
-// Output: Weekend!
-```
+The word **"semantic"** simply means **"meaningful"**. Instead of throwing everything into `<div>` boxes (which say nothing), we use tags like `<header>`, `<nav>`, `<footer>` that **tell the browser, Google, and screen readers** what each section actually is.
 
 ---
 
-### 1.3 Ternary Operator (`? :`)
+## 2. 🧩 Concept Explanation
 
-A **one-line shorthand** for a simple `if/else`. It is an **expression** (returns a value), not a statement.
+### 📋 What is a Form?
 
-**Syntax:**
+A **form** is an area on a webpage where the user can **type information or make choices**, then **submit** it to the server (or another page).
 
-```js
-let result = condition ? valueIfTrue : valueIfFalse;
+> 🏦 **Analogy:** A form is like a **bank account opening form** — you fill name, address, phone number… and hand it to the clerk. In HTML, the "clerk" is the server.
+
+### 🧱 Semantic HTML — Why Bother?
+
+Imagine reading a newspaper where **every article** is on a plain white page with no headline, no section dividers, no page numbers. Chaos, right?
+
+That's what a webpage looks like **without semantic tags**.
+
+| Without Semantic (old way) | With Semantic (modern way) |
+|-----------------------------|-----------------------------|
+| `<div>` everywhere | `<header>`, `<nav>`, `<main>`, `<footer>` |
+| Browser has no clue what is what | Browser knows instantly |
+| Bad for accessibility / SEO | Excellent for Google & screen readers |
+
+---
+
+## 3. 💡 Visual Learning — Forms and Semantic Layout
+
+### 📝 How a Form Works
+
+```mermaid id="formflow"
+flowchart LR
+    A[User types<br/>in input] --> B[Clicks<br/>Submit button]
+    B --> C[Browser sends<br/>data to server]
+    C --> D[Server responds<br/>success / error]
 ```
 
-**Key Rules:**
+### 🏛️ Semantic Layout of a Webpage
 
-- Use for **simple** assignments or returns only.
-- Avoid nesting ternaries — it hurts readability.
+```mermaid id="semanticlayout"
+graph TD
+    Page[body]
+    Page --> Header[header<br/>Logo + Title]
+    Page --> Nav[nav<br/>Menu: Home / About / Contact]
+    Page --> Main[main]
+    Main --> Section1[section<br/>About Me]
+    Main --> Section2[section<br/>Projects]
+    Main --> Article[article<br/>Blog Post]
+    Page --> Aside[aside<br/>Sidebar / Ads]
+    Page --> Footer[footer<br/>Copyright + Links]
+```
 
-**Example:**
+### 🧭 Form Element Family
 
-```js
-let age = 20;
-let label = age >= 18 ? "Adult" : "Minor";
-console.log(label);  // "Adult"
+```mermaid id="forminputs"
+flowchart TD
+    Form[form] --> Label[label]
+    Form --> Input[input]
+    Form --> Textarea[textarea<br/>multi-line]
+    Form --> Select[select + option<br/>dropdown]
+    Form --> Button[button<br/>Submit / Reset]
+    Input --> T1[type: text]
+    Input --> T2[type: email]
+    Input --> T3[type: password]
+    Input --> T4[type: checkbox]
+    Input --> T5[type: radio]
+    Input --> T6[type: date, number, file...]
 ```
 
 ---
 
-### Example Questions — Conditional Statements
+## 4. 📝 Syntax + Code Examples
 
-**Q1.** What will the following code print?
+### 🎯 4.1 The `<form>` Tag
 
-```js
-let x = 10;
-if (x > 15) {
-  console.log("A");
-} else if (x > 5) {
-  console.log("B");
-} else {
-  console.log("C");
-}
+A form starts with the `<form>` tag. Everything inside belongs to that form.
+
+```html
+<form action="/submit" method="post">
+  <!-- Inputs go here -->
+</form>
 ```
 
-**Solution:** Output is `B`. The first condition `x > 15` is false (10 is not > 15). The second condition `x > 5` is true (10 > 5), so `"B"` prints. The `else` is skipped.
+| Attribute | Meaning |
+|-----------|---------|
+| `action` | URL where data is sent when form is submitted |
+| `method` | `get` (data in URL) or `post` (hidden in request) |
+
+> 💡 For today's practice, we won't connect to a server — we'll just focus on building the form visually.
 
 ---
 
-**Q2.** What happens if you forget `break` in a switch?
+### 🔤 4.2 Input Types — The Most Important List
 
-```js
-let fruit = "apple";
-switch (fruit) {
-  case "apple":  console.log("Apple");
-  case "banana": console.log("Banana");
-  case "cherry": console.log("Cherry");
-  default:       console.log("Unknown");
-}
+The `<input>` tag is **self-closing** and its behavior changes based on the `type` attribute.
+
+```html
+<!-- Single-line text -->
+<input type="text" name="username" placeholder="Enter your name">
+
+<!-- Email (browser validates @ sign) -->
+<input type="email" name="email" placeholder="you@example.com">
+
+<!-- Password (characters hidden) -->
+<input type="password" name="pwd" placeholder="Enter password">
+
+<!-- Number -->
+<input type="number" name="age" min="1" max="120">
+
+<!-- Date picker -->
+<input type="date" name="dob">
+
+<!-- File upload -->
+<input type="file" name="resume">
+
+<!-- Color picker -->
+<input type="color" name="favColor">
+
+<!-- Range slider -->
+<input type="range" name="volume" min="0" max="100">
+
+<!-- Checkbox (multi-select) -->
+<input type="checkbox" name="hobby" value="cricket"> Cricket
+
+<!-- Radio button (single-select) -->
+<input type="radio" name="gender" value="male"> Male
+<input type="radio" name="gender" value="female"> Female
+
+<!-- Submit button -->
+<input type="submit" value="Submit Form">
 ```
 
-**Solution:** Output is:
-
-```
-Apple
-Banana
-Cherry
-Unknown
-```
-
-Without `break`, execution **falls through** every case after the match. This is a common bug.
+> 📏 **Rule:** Inputs with the **same `name`** in a radio group = user picks **only one**.
 
 ---
 
-**Q3.** Convert this `if/else` to a ternary:
+### 🏷️ 4.3 `<label>` — Never Skip This
 
-```js
-let temp = 35;
-let weather;
-if (temp > 30) {
-  weather = "Hot";
-} else {
-  weather = "Cool";
-}
+A **label** is the text that describes an input. Always connect it with the `for` attribute, matching the input's `id`.
+
+```html
+<label for="username">Your Name:</label>
+<input type="text" id="username" name="username">
 ```
 
-**Solution:**
+### ❓ Why bother with labels?
 
-```js
-let temp = 35;
-let weather = temp > 30 ? "Hot" : "Cool";
-console.log(weather);  // "Hot"
-```
+1. Clicking the **label** focuses the input automatically (better UX!).
+2. **Screen readers** use labels to describe inputs to blind users.
+3. Looks more professional.
 
----
+### ❌ Wrong vs ✅ Correct
 
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/conditional_mega_lab.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(102,126,234,0.4);">🚀 Click to Open Simulation — Conditional Statements</a>
+```html
+<!-- ❌ Wrong: no label -->
+Name: <input type="text" name="name">
 
----
-
----
-
-## Part 2 — Loops
-
-### What are Loops?
-
-Loops let you **repeat a block of code** multiple times without writing it over and over. They keep running as long as a specified condition remains `true`.
-
-> **Real-world analogy:** "Keep stirring the soup until it boils." — you repeat the action (stirring) until a condition (boiling) is met.
-
----
-
-### 2.1 `for` Loop
-
-Use when you **know how many times** to repeat.
-
-**Syntax:**
-
-```js
-for (initialization; condition; update) {
-  // code to repeat
-}
-```
-
-**Three parts:**
-
-1. **Initialization** — runs once before the loop starts (`let i = 0`)
-2. **Condition** — checked before each iteration; loop stops when `false`
-3. **Update** — runs after each iteration (`i++`)
-
-**Example:**
-
-```js
-for (let i = 0; i < 5; i++) {
-  console.log(i);
-}
-// Output: 0 1 2 3 4
+<!-- ✅ Correct -->
+<label for="name">Name:</label>
+<input type="text" id="name" name="name">
 ```
 
 ---
 
-### 2.2 `while` Loop
+### 📝 4.4 `<textarea>` — Multi-Line Text
 
-Use when you **don't know** the exact number of iterations — you only have a condition.
+For long text (messages, comments, bios):
 
-**Syntax:**
-
-```js
-while (condition) {
-  // code to repeat
-}
+```html
+<label for="msg">Your Message:</label>
+<textarea id="msg" name="message" rows="5" cols="40" placeholder="Type here..."></textarea>
 ```
 
-**Key Rule:** If the condition is `false` from the start, the body **never runs**.
+- `rows` = height (in lines)
+- `cols` = width (in characters)
 
-**Example:**
-
-```js
-let n = 10;
-while (n > 0) {
-  console.log(n);
-  n -= 3;
-}
-// Output: 10 7 4 1
-```
+> ⚠️ `<textarea>` is **NOT** self-closing — it must have `</textarea>`.
 
 ---
 
-### 2.3 `do...while` Loop
+### 🔽 4.5 `<select>` — Dropdown
 
-Same as `while`, but the body runs **at least once** because the condition is checked **after** the first execution.
-
-**Syntax:**
-
-```js
-do {
-  // code to repeat
-} while (condition);
+```html
+<label for="country">Country:</label>
+<select id="country" name="country">
+  <option value="india">India</option>
+  <option value="usa">USA</option>
+  <option value="uk">UK</option>
+  <option value="japan">Japan</option>
+</select>
 ```
 
-**Key Difference from `while`:**
+### Pre-select an option
 
-| | `while` | `do...while` |
-|---|---|---|
-| **Checks condition** | Before the body | After the body |
-| **Minimum runs** | 0 | 1 |
-
-**Example:**
-
-```js
-let count = 0;
-do {
-  console.log("Runs!");  // prints once even though condition is false
-} while (count > 10);
-
-// Output: Runs!
+```html
+<option value="india" selected>India</option>
 ```
 
 ---
 
-### 2.4 `forEach` — Array Loop
+### ☑️ 4.6 Checkbox vs 🔘 Radio — When to Use Which?
 
-A method on arrays that calls a function **once for each element**.
+| Checkbox | Radio Button |
+|----------|--------------|
+| User can select **multiple** | User picks **only one** |
+| Example: hobbies | Example: gender, marital status |
 
-**Syntax:**
+```html
+<h4>Select your hobbies:</h4>
+<input type="checkbox" id="h1" name="hobby" value="reading">
+<label for="h1">Reading</label><br>
+<input type="checkbox" id="h2" name="hobby" value="gaming">
+<label for="h2">Gaming</label><br>
+<input type="checkbox" id="h3" name="hobby" value="music">
+<label for="h3">Music</label>
 
-```js
-array.forEach((element, index) => {
-  // code
-});
+<h4>Select your gender:</h4>
+<input type="radio" id="g1" name="gender" value="male">
+<label for="g1">Male</label>
+<input type="radio" id="g2" name="gender" value="female">
+<label for="g2">Female</label>
+<input type="radio" id="g3" name="gender" value="other">
+<label for="g3">Other</label>
 ```
 
-**Key Rules:**
-
-- Cannot use `break` or `continue` inside `forEach`.
-- Does not return a new array (use `map` for that).
-
-**Example:**
-
-```js
-["Alice", "Bob", "Charlie"].forEach((name, i) => {
-  console.log(i + ": " + name);
-});
-// Output:
-// 0: Alice
-// 1: Bob
-// 2: Charlie
-```
+> 📌 **Critical:** Radios in a group must share the **same `name`**, otherwise the user can select all of them!
 
 ---
 
-### 2.5 `for...of` — Cleaner Array Loop
+### 🔘 4.7 `<button>` — The Action Trigger
 
-A modern loop that iterates over **iterable values** (arrays, strings, etc.).
-
-**Syntax:**
-
-```js
-for (let element of iterable) {
-  // code
-}
+```html
+<button type="submit">Submit</button>
+<button type="reset">Reset</button>
+<button type="button">Just a button</button>
 ```
 
-**Advantage over `forEach`:** You **can** use `break` and `continue`.
-
-**Example:**
-
-```js
-for (let name of ["Alice", "Bob"]) {
-  console.log(name);
-}
-// Output:
-// Alice
-// Bob
-```
+- `type="submit"` — submits the form
+- `type="reset"` — clears all fields
+- `type="button"` — does nothing by default (used with JavaScript later)
 
 ---
 
-### Example Questions — Loops
+### 📋 4.8 Common Form Attributes
 
-**Q1.** What will this `for` loop output?
+| Attribute | Purpose |
+|-----------|---------|
+| `placeholder` | Grey hint text inside the input |
+| `required` | Field must be filled to submit |
+| `readonly` | User can see but can't edit |
+| `disabled` | Greyed out and inactive |
+| `maxlength` | Maximum characters allowed |
+| `min` / `max` | Range for numbers / dates |
+| `name` | Identifies the field when data is sent |
+| `value` | The pre-filled or default value |
 
-```js
-for (let i = 1; i <= 5; i++) {
-  console.log(i * 2);
-}
-```
+Example:
 
-**Solution:** Output is `2 4 6 8 10`. The loop runs with `i` values 1 through 5, and prints `i * 2` each time.
-
----
-
-**Q2.** What is the difference between these two?
-
-```js
-// Version A
-let x = 100;
-while (x < 5) {
-  console.log(x);
-}
-
-// Version B
-let y = 100;
-do {
-  console.log(y);
-} while (y < 5);
-```
-
-**Solution:**
-- **Version A** prints **nothing** — the condition `100 < 5` is false, so the body never runs.
-- **Version B** prints `100` **once** — the body runs first, then the condition is checked and found false.
-
-This is the fundamental difference: `do...while` always executes at least once.
-
----
-
-**Q3.** Write a `while` loop that prints all even numbers from 2 to 20.
-
-**Solution:**
-
-```js
-let num = 2;
-while (num <= 20) {
-  console.log(num);
-  num += 2;
-}
-// Output: 2 4 6 8 10 12 14 16 18 20
+```html
+<input type="text" name="username" placeholder="Enter username"
+       required minlength="3" maxlength="20">
 ```
 
 ---
 
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/all_loops_animated_comparison.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(245,87,108,0.4);">🔄 Click to Open Simulation — All Loop Types</a>
+### 🏛️ 4.9 Semantic HTML — The Modern Way
 
----
+Instead of using `<div>` for everything, use **meaningful tags**:
 
-## Part 3 — Jump Statements (`break`, `continue`, `return`)
+```html
+<body>
+  <header>
+    <h1>My Website</h1>
+  </header>
 
-### What are Jump Statements?
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
 
-Jump statements **alter the normal flow** of loops and functions. They let you exit early, skip iterations, or return values from functions.
+  <main>
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I love coding.</p>
+    </section>
 
----
+    <article>
+      <h2>My Latest Blog Post</h2>
+      <p>Today I learned about semantic HTML...</p>
+    </article>
 
-### 3.1 `break`
+    <aside>
+      <h3>Related Links</h3>
+      <p>Sidebar content.</p>
+    </aside>
+  </main>
 
-**Stops the loop immediately** and moves to the code after the loop.
-
-**Use case:** You found what you were looking for — no need to keep looping.
-
-**Example:**
-
-```js
-for (let i = 0; i < 10; i++) {
-  if (i === 5) break;  // stops the loop at 5
-  console.log(i);
-}
-// Output: 0 1 2 3 4
+  <footer>
+    <p>&copy; 2026 Ravi. All rights reserved.</p>
+  </footer>
+</body>
 ```
 
+### Quick Meaning Guide
+
+| Tag | Meaning |
+|-----|---------|
+| `<header>` | Top section (logo, main title) |
+| `<nav>` | Navigation menu |
+| `<main>` | Main unique content of the page |
+| `<section>` | A thematic group of content |
+| `<article>` | Standalone content (blog post, news) |
+| `<aside>` | Sidebar, ads, related links |
+| `<footer>` | Bottom section (copyright, contact) |
+
+> 📈 **SEO bonus:** Google **loves** semantic HTML. Using these tags can improve your search rankings!
+
 ---
 
-### 3.2 `continue`
+## 5. 🌐 Live Output Explanation — A Complete Form
 
-**Skips the current iteration** and moves to the next one. The loop itself keeps running.
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Registration Form</title>
+  </head>
+  <body>
+    <h1>Student Registration 📋</h1>
 
-**Use case:** You want to ignore certain values but process the rest.
+    <form action="/register" method="post">
 
-**Example:**
+      <label for="fullname">Full Name:</label><br>
+      <input type="text" id="fullname" name="fullname" placeholder="Ravi Kumar" required><br><br>
 
-```js
-for (let i = 0; i < 6; i++) {
-  if (i % 2 === 0) continue;  // skip even numbers
-  console.log(i);
-}
-// Output: 1 3 5
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required><br><br>
+
+      <label for="pwd">Password:</label><br>
+      <input type="password" id="pwd" name="pwd" minlength="6" required><br><br>
+
+      <label for="dob">Date of Birth:</label><br>
+      <input type="date" id="dob" name="dob"><br><br>
+
+      <label>Gender:</label><br>
+      <input type="radio" id="m" name="gender" value="male">
+      <label for="m">Male</label>
+      <input type="radio" id="f" name="gender" value="female">
+      <label for="f">Female</label><br><br>
+
+      <label>Hobbies:</label><br>
+      <input type="checkbox" id="h1" name="hobby" value="cricket">
+      <label for="h1">Cricket</label>
+      <input type="checkbox" id="h2" name="hobby" value="music">
+      <label for="h2">Music</label>
+      <input type="checkbox" id="h3" name="hobby" value="coding">
+      <label for="h3">Coding</label><br><br>
+
+      <label for="country">Country:</label><br>
+      <select id="country" name="country">
+        <option value="india">India</option>
+        <option value="usa">USA</option>
+        <option value="uk">UK</option>
+      </select><br><br>
+
+      <label for="bio">Short Bio:</label><br>
+      <textarea id="bio" name="bio" rows="4" cols="40" placeholder="Tell us about yourself"></textarea><br><br>
+
+      <button type="submit">Register</button>
+      <button type="reset">Clear</button>
+
+    </form>
+  </body>
+</html>
 ```
 
+### 👀 What You'll See
+
+A complete, working registration form with:
+
+- Text, email, password, date inputs
+- Radio buttons for gender
+- Checkboxes for hobbies
+- A country dropdown
+- A bio textarea
+- Submit and Reset buttons
+
+Try clicking **Submit** without filling the "Full Name" field — the browser will stop you because of `required`. Nice, right? ✨
+
 ---
 
-### 3.3 `return`
+## 6. 🧪 Hands-on Practice — 5 Tasks
 
-**Exits the entire function** and optionally sends a value back to the caller. Only works inside functions.
+### ✏️ Task 1 — Login Form
 
-**Use case:** You have your answer — no need to run the remaining function code.
+Create `login.html` with:
 
-**Example:**
+- Email field (required)
+- Password field (required, minlength 6)
+- A "Remember me" checkbox
+- A Login button
 
-```js
-function findFirst(arr, target) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === target) return i;  // exits the function
-  }
-  return -1;  // not found
-}
+### ✏️ Task 2 — Contact Us Form
 
-console.log(findFirst([10, 20, 30], 20));  // 1
-console.log(findFirst([10, 20, 30], 99));  // -1
+Create `contact.html` with:
+
+- Full name, email, phone (number), subject (dropdown with 4 options), message (textarea)
+- Submit button
+
+### ✏️ Task 3 — Survey Form
+
+Create `survey.html` asking:
+
+- Favorite color (color picker)
+- Age (number, min 5, max 120)
+- Favorite programming language (radio — HTML / CSS / JS)
+- Learning mediums (checkboxes — YouTube / Books / Courses / Practice)
+
+### ✏️ Task 4 — Semantic Layout
+
+Create `layout.html` using **only semantic tags** (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`). No `<div>` allowed! Fill with dummy content about your favorite movie.
+
+### ✏️ Task 5 — Job Application Form
+
+Create `job.html` for applying to a software job:
+
+- Personal info (name, email, phone)
+- Resume upload (`type="file"`)
+- Years of experience (number)
+- Skills (checkboxes)
+- Cover letter (textarea)
+- Submit button
+
+---
+
+## 7. ⚠️ Common Mistakes
+
+### Mistake 1 — Radio buttons with different `name`s
+
+```html
+<!-- ❌ Wrong: user can select BOTH -->
+<input type="radio" name="gender1" value="male"> Male
+<input type="radio" name="gender2" value="female"> Female
+
+<!-- ✅ Correct -->
+<input type="radio" name="gender" value="male"> Male
+<input type="radio" name="gender" value="female"> Female
 ```
 
----
+### Mistake 2 — Forgetting the closing `</textarea>`
 
-### Quick Comparison
+```html
+<!-- ❌ Wrong (self-closing — NOT allowed for textarea) -->
+<textarea rows="4" cols="40" />
 
-| Statement | Scope | Effect |
-|---|---|---|
-| `break` | Loop / switch | Exits the loop entirely |
-| `continue` | Loop | Skips to the next iteration |
-| `return` | Function | Exits the function, returns a value |
-
----
-
-### Example Questions — Jump Statements
-
-**Q1.** What does this code print?
-
-```js
-for (let i = 1; i <= 10; i++) {
-  if (i === 3) continue;
-  if (i === 7) break;
-  console.log(i);
-}
+<!-- ✅ Correct -->
+<textarea rows="4" cols="40"></textarea>
 ```
 
-**Solution:** Output is `1 2 4 5 6`.
-- When `i === 3`, `continue` skips it (so 3 is not printed).
-- When `i === 7`, `break` stops the loop (7 and beyond are not printed).
+### Mistake 3 — `<label>` not linked to input
 
----
+```html
+<!-- ❌ Wrong: label and input not connected -->
+<label>Name</label>
+<input type="text" name="name">
 
-**Q2.** What does this function return?
-
-```js
-function check(n) {
-  if (n > 100) return "big";
-  if (n > 50)  return "medium";
-  return "small";
-}
-
-console.log(check(75));
+<!-- ✅ Correct: label's 'for' matches input's 'id' -->
+<label for="name">Name</label>
+<input type="text" id="name" name="name">
 ```
 
-**Solution:** Output is `"medium"`. The first condition `75 > 100` is false. The second condition `75 > 50` is true, so `"medium"` is returned and the function exits. The last `return "small"` never runs.
+### Mistake 4 — Forgetting `name` attribute
 
----
+Without `name`, the form data **won't be sent** to the server:
 
-**Q3.** Use `break` to find the first number divisible by both 3 and 5 between 1 and 100.
+```html
+<!-- ❌ Wrong -->
+<input type="text" id="email">
 
-**Solution:**
-
-```js
-for (let i = 1; i <= 100; i++) {
-  if (i % 3 === 0 && i % 5 === 0) {
-    console.log("Found:", i);
-    break;
-  }
-}
-// Output: Found: 15
+<!-- ✅ Correct -->
+<input type="text" id="email" name="email">
 ```
 
----
+### Mistake 5 — Using `<div>` instead of semantic tags
 
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/break_continue_return_animated.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#4facfe,#00f2fe);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(79,172,254,0.4);">⚡ Click to Open Simulation — break, continue, return</a>
+```html
+<!-- ❌ Old-fashioned -->
+<div class="header">...</div>
+<div class="footer">...</div>
 
----
-
-## Part 4 — Revision Quiz
-
-Test your understanding of all control statements. Read the explanation after each answer — they reveal the tricky details!
-
-<a href="https://ak9347128658.github.io/MERN_Batch_April_2026/day3/control_statements_quiz.html" style="display:inline-block;padding:12px 24px;background:linear-gradient(135deg,#43e97b,#38f9d7);color:#fff;font-weight:bold;font-size:16px;border-radius:8px;text-decoration:none;box-shadow:0 4px 15px rgba(67,233,123,0.4);">📝 Click to Open Simulation — Revision Quiz</a>
-
----
-
-## Complete Revision Cheat Sheet
-
-```js
-// ═══════════════════════════════════════════
-//  CONDITIONAL STATEMENTS
-// ═══════════════════════════════════════════
-
-// 1. if / else if / else
-if (score >= 90)      { console.log("A"); }
-else if (score >= 75) { console.log("B"); }
-else if (score >= 60) { console.log("C"); }
-else                  { console.log("F"); }
-
-// 2. switch — best for exact value matching
-switch (day) {
-  case "Monday":  console.log("Start!"); break;
-  case "Friday":  console.log("TGIF!");  break;
-  case "Saturday":
-  case "Sunday":  console.log("Weekend!"); break;   // shared case
-  default:        console.log("Weekday");
-}
-
-// 3. ternary — one-line if/else
-let label = age >= 18 ? "Adult" : "Minor";
-
-
-// ═══════════════════════════════════════════
-//  LOOPS
-// ═══════════════════════════════════════════
-
-// 4. for — known count
-for (let i = 0; i < 5; i++) {
-  console.log(i);  // 0 1 2 3 4
-}
-
-// 5. while — unknown count
-let n = 10;
-while (n > 0) {
-  console.log(n);
-  n -= 3;          // 10 7 4 1
-}
-
-// 6. do...while — run at LEAST once
-do {
-  console.log("Hello!");  // runs once even if false
-} while (false);
-
-// 7. forEach — loop over arrays
-["Alice","Bob","Charlie"].forEach((name, i) => {
-  console.log(i + ": " + name);
-});
-
-// 8. for...of — cleaner array loop
-for (let name of ["Alice","Bob"]) {
-  console.log(name);
-}
-
-
-// ═══════════════════════════════════════════
-//  JUMP STATEMENTS
-// ═══════════════════════════════════════════
-
-// 9. break — stop the loop immediately
-for (let i = 0; i < 10; i++) {
-  if (i === 5) break;      // stops at 5
-  console.log(i);          // prints 0 1 2 3 4
-}
-
-// 10. continue — skip this iteration
-for (let i = 0; i < 6; i++) {
-  if (i % 2 === 0) continue;  // skip even
-  console.log(i);              // prints 1 3 5
-}
-
-// 11. return — exit function with a value
-function isAdult(age) {
-  if (age >= 18) return true;   // exits here
-  return false;                  // or here
-}
+<!-- ✅ Modern, semantic -->
+<header>...</header>
+<footer>...</footer>
 ```
 
+### Mistake 6 — Multiple `<main>` tags
+
+A page should have **only one** `<main>` tag.
+
 ---
 
-## Homework
+## 8. 📝 Mini Project — 🏆 Personal Portfolio Page
 
-Write ALL of the following from scratch in your console:
+This is your **graduation project** for HTML. Combine **everything** you've learned into one beautiful webpage called **`portfolio.html`**.
 
-```js
-// 1. if/else — check a number
-let num = 42;
-if (num > 0) console.log("positive");
-else if (num < 0) console.log("negative");
-else console.log("zero");
+### 📋 Requirements
 
-// 2. for loop — sum 1 to 10
-let sum = 0;
-for (let i = 1; i <= 10; i++) { sum += i; }
-console.log("Sum:", sum);  // 55
+Your portfolio must include:
 
-// 3. while — count down
-let count = 5;
-while (count > 0) { console.log(count); count--; }
+1. **`<header>`** with your name (`<h1>`) and a tagline (`<p>`).
+2. **`<nav>`** with links to the sections: Home, About, Skills, Projects, Contact. Use anchor links (`#about`, `#skills`, etc.).
+3. **`<main>`** containing **`<section>`** blocks:
+   - **About Me:** short bio + a profile image
+   - **Skills:** unordered list of at least 5 skills
+   - **Education:** a **table** with at least 2 rows
+   - **Projects:** a numbered (`<ol>`) list of at least 3 projects — each with a link
+4. **`<article>`** containing one short "latest blog" post.
+5. **`<aside>`** with fun facts about yourself (at least 3 bullet points).
+6. **`<section id="contact">`** containing a **contact form** with:
+   - Name (required)
+   - Email (required)
+   - Subject (dropdown of 4 options)
+   - Message (textarea)
+   - Send button
+7. **`<footer>`** with copyright text and social media links.
 
-// 4. break — find first number divisible by 7
-for (let i = 1; i <= 100; i++) {
-  if (i % 7 === 0) { console.log("First:", i); break; }
-}
+### 🌟 Bonus
 
-// 5. continue — print only even numbers 1-10
-for (let i = 1; i <= 10; i++) {
-  if (i % 2 !== 0) continue;
-  console.log(i);
-}
+- Use `colspan` or `rowspan` in your Education table.
+- Use an image inside your About Me section.
+- Add at least **5 comments** in your code explaining different sections.
+
+### 📐 Starter Skeleton
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ravi Kumar — Portfolio</title>
+</head>
+<body>
+
+  <header>
+    <h1>Ravi Kumar</h1>
+    <p>Aspiring Web Developer | HTML Learner | Coffee Lover ☕</p>
+  </header>
+
+  <nav>
+    <a href="#about">About</a> |
+    <a href="#skills">Skills</a> |
+    <a href="#projects">Projects</a> |
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main>
+    <section id="about">
+      <h2>About Me</h2>
+      <!-- Add image + paragraph here -->
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <!-- <ul> with <li> -->
+    </section>
+
+    <section id="education">
+      <h2>Education</h2>
+      <!-- <table> here -->
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <!-- <ol> with links -->
+    </section>
+
+    <article>
+      <h2>Latest from My Blog</h2>
+      <p>My HTML learning journey...</p>
+    </article>
+
+    <aside>
+      <h3>Fun Facts</h3>
+      <!-- <ul> with 3 items -->
+    </aside>
+
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <form>
+        <!-- form fields here -->
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Ravi Kumar. Built with pure HTML ❤️</p>
+  </footer>
+
+</body>
+</html>
 ```
+
+Fill in the blanks — and you have a **real portfolio page**! Upload it to **GitHub Pages** later to share with the world. 🌍
+
+---
+
+## 9. 🔁 Recap — What Did We Learn Today?
+
+- ✅ `<form>` wraps all form elements. Use `action` and `method` attributes.
+- ✅ `<input>` is the most versatile tag — its behavior depends on `type`.
+- ✅ Input types: `text`, `email`, `password`, `number`, `date`, `file`, `color`, `range`, `checkbox`, `radio`, `submit`.
+- ✅ **`<label>`** — always link with `for` and `id` for accessibility.
+- ✅ **`<textarea>`** — multi-line input, needs closing tag.
+- ✅ **`<select>` + `<option>`** — dropdown menus.
+- ✅ **Checkbox** — pick many; **Radio** — pick one (same `name`).
+- ✅ **`<button>`** — `submit`, `reset`, `button` types.
+- ✅ Key attributes: `placeholder`, `required`, `name`, `value`, `min/max`, `maxlength`.
+- ✅ **Semantic tags** give meaning: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>`.
+- ✅ Semantic HTML = better **accessibility + SEO + code readability**.
+
+### 🏁 What You've Achieved in 3 Days
+
+- Day 1: Wrote your first HTML page ✅
+- Day 2: Built multi-page sites with images, links, and tables ✅
+- Day 3: Mastered forms and semantic structure ✅
+
+You now know enough HTML to build **any basic webpage** on the planet! 🌍
+
+### 🚀 What's Next?
+
+- **CSS** — To make your pages **look beautiful** (colors, fonts, layouts).
+- **JavaScript** — To make your pages **interactive** (clicks, animations, real-time validation).
+- **React + Node.js + MongoDB** — to build **full-stack applications** (MERN).
+
+### 🎯 Final Mission
+
+1. Complete **all 5 hands-on tasks**.
+2. Finish your **Personal Portfolio Page** 🏆.
+3. Share it with a friend and get feedback.
+4. Celebrate — **you are officially an HTML developer**! 🎉
+
+> 💬 **Congratulations, students!** You walked in on Day 1 having never written a line of code, and today you can build real webpages with forms and semantic structure. That is **massive progress**. Be proud of yourself. See you in the **CSS series** next — we'll make your pages look **stunning**! 👋

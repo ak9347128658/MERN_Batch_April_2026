@@ -1,1174 +1,652 @@
-# Day 2 — Operators & Operator Precedence in JavaScript
+# 📘 Day 2: Links, Images, Lists & Tables
+
+> **Duration:** 1 to 1.5 hours
+> **Level:** Beginner (after Day 1)
+> **Goal:** Make your webpages interactive, rich with images, and organized with tables! 🎨
 
 ---
 
-## What are Operators?
+## 👋 Hello students!
 
-An **operator** is a special symbol (or keyword) that tells JavaScript to perform a specific action on one or more values. Think of operators as **verbs** — they *do* something. The values they act on are called **operands**.
+Hello students 👋
+Welcome back to **Day 2** of our HTML journey! Yesterday, you built your **very first webpage** with headings, paragraphs, and line breaks. 🎉 Give yourself a big round of applause!
 
-```js
-// Example:
-5 + 3
-// ↑   ↑   ← these are operands (the values)
-//   ↑     ← this is the operator (the action — addition)
-```
+Today we will take a huge step forward. By the end of this class, your webpage will have:
 
-JavaScript has **six categories** of operators. Here is the complete map:
+- **Clickable links** (like on every real website)
+- **Beautiful images**
+- **Organized lists** (bullets and numbers)
+- **Professional tables** (just like a school mark sheet)
 
-![Operators Overview Map](../images/day2/operators_overview_map.svg)
-
----
-
-## Category 1 — Arithmetic Operators
-
-### Definition
-
-Arithmetic operators perform **mathematical calculations** on numbers — addition, subtraction, multiplication, division, and more. These are the same operations you learned in school, plus two extras: **modulus** (`%`) and **exponentiation** (`**`).
-
-| Operator | Name           | Example    | Result |
-|----------|----------------|------------|--------|
-| `+`      | Addition       | `10 + 3`   | `13`   |
-| `-`      | Subtraction    | `10 - 3`   | `7`    |
-| `*`      | Multiplication | `10 * 3`   | `30`   |
-| `/`      | Division       | `10 / 3`   | `3.33` |
-| `%`      | Modulus         | `10 % 3`   | `1`    |
-| `**`     | Exponentiation | `2 ** 8`   | `256`  |
-| `++`     | Increment      | `n++`      | `n + 1`|
-| `--`     | Decrement      | `n--`      | `n - 1`|
-
-> **Modulus (`%`)** gives the *remainder* after division. For example, `10 % 3` means "divide 10 by 3, keep only the remainder" — which is `1`.
->
-> **Exponentiation (`**`)** raises a number to a power. `2 ** 10` means "2 multiplied by itself 10 times" — which is `1024`.
-
-### Interactive Simulation
-
-[Click here to open the Arithmetic Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/arithmetic_operators_interactive.html)
-
-Click every operator card — especially `%` (modulus) and `**` (exponent) which are new. Change the numbers and press `=` to see live results. Try `**` with `2` and `10` — you get 1024!
-
-### Practice Questions — Arithmetic Operators
-
-Try solving these in your head first, then verify in the console (`F12`).
-
-**Q1.** What is the output?
-```js
-let a = 25;
-let b = 7;
-console.log(a + b);
-console.log(a - b);
-console.log(a * b);
-console.log(a / b);
-console.log(a % b);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(a + b);   // 32
-console.log(a - b);   // 18
-console.log(a * b);   // 175
-console.log(a / b);   // 3.5714285714285716
-console.log(a % b);   // 4  (25 ÷ 7 = 3 remainder 4)
-```
-</details>
+This is the day your webpages start **looking like real websites**. Excited? Let's go! 🚀
 
 ---
 
-**Q2.** Use modulus to check if a number is even or odd.
-```js
-let num = 15;
-// Write an expression that gives 0 if even, 1 if odd
-console.log(/* your code here */);
-```
+## 1. 🎯 Introduction — What Will We Learn Today?
 
-<details>
-<summary>Click to see solution</summary>
+Today we will cover:
 
-```js
-let num = 15;
-console.log(num % 2);  // 1 → odd
-// If num were 20 → 20 % 2 = 0 → even
-```
-**Explanation:** Any number `% 2` gives `0` for even and `1` for odd. This is one of the most common uses of modulus in real programming.
-</details>
+- **Anchor tag** (`<a>`) — making clickable links
+- **Internal links** (within the same site) and **external links** (to other websites)
+- **Image tag** (`<img>`) — adding pictures
+- **Ordered lists** (`<ol>`) — numbered lists
+- **Unordered lists** (`<ul>`) — bullet lists
+- **Nested lists** — list inside a list
+- **Tables** (`<table>`, `<tr>`, `<td>`, `<th>`)
+- **`colspan`** and **`rowspan`** — merging cells
+- A real-world **Student Marks Table**
 
----
+### ❓ Why is today important?
 
-**Q3.** What is the output of each line?
-```js
-console.log(2 ** 5);
-console.log(10 ** 0);
-console.log(9 ** 0.5);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(2 ** 5);    // 32  (2×2×2×2×2)
-console.log(10 ** 0);   // 1   (any number to the power 0 is 1)
-console.log(9 ** 0.5);  // 3   (0.5 power = square root, √9 = 3)
-```
-</details>
+Because **90% of what you see on any real website** — YouTube, Amazon, Wikipedia — is built with these exact tags: links, images, lists, and tables. Master these four and you can build almost any basic layout. 💪
 
 ---
 
-**Q4.** What is the value of `x` after each line?
-```js
-let x = 10;
-x++;
-x++;
-x--;
-console.log(x);
-```
+## 2. 🧩 Concept Explanation
 
-<details>
-<summary>Click to see solution</summary>
+### 🔗 What is a Link?
 
-```js
-let x = 10;
-x++;        // x = 11
-x++;        // x = 12
-x--;        // x = 11
-console.log(x);  // 11
-```
-</details>
+A **link** (also called a **hyperlink**) is text or an image that the user can **click** to go to another page — another website, another part of the same page, or even an email app.
 
----
+> 🌐 **Analogy:** A link is like a **door**. You click it, and it takes you to another room (another page).
 
-**Q5.** Calculate the area and perimeter of a rectangle with `length = 12` and `width = 5`.
-```js
-let length = 12;
-let width = 5;
-// Calculate area (length × width)
-// Calculate perimeter (2 × (length + width))
-```
+### 🖼️ What is an Image Tag?
 
-<details>
-<summary>Click to see solution</summary>
+The `<img>` tag lets us embed a **picture** — a logo, a photo, a banner — into our webpage. Images make pages alive. Imagine Instagram without images. Unthinkable. 😅
 
-```js
-let length = 12;
-let width = 5;
-let area = length * width;
-let perimeter = 2 * (length + width);
-console.log("Area:", area);           // Area: 60
-console.log("Perimeter:", perimeter); // Perimeter: 34
-```
-</details>
+### 📋 What is a List?
+
+A **list** is a series of items. HTML gives us two main types:
+
+- **Ordered list** — numbered (1, 2, 3…) — use when **sequence matters** (recipes, steps).
+- **Unordered list** — bulleted (•) — use when **order doesn't matter** (favorite movies, grocery list).
+
+> 🛒 **Analogy:** Your **shopping list** = unordered. A **recipe's steps** = ordered.
+
+### 📊 What is a Table?
+
+A **table** organizes data into **rows** and **columns** — exactly like an Excel sheet or a newspaper's cricket scoreboard.
+
+> 📰 **Analogy:** Open any newspaper → stock market page → that's a table in HTML too!
 
 ---
 
-## Category 2 — Assignment Operators
+## 3. 💡 Visual Learning — How Links and Tables Work
 
-### Definition
+### 🔗 How a Link Works
 
-Assignment operators **store (assign) a value into a variable**. The basic one is `=`, but JavaScript provides **shorthand versions** that combine an arithmetic operation with assignment in a single step.
-
-| Operator | Name                  | Longhand      | Shorthand   | If x = 10 |
-|----------|-----------------------|---------------|-------------|-----------|
-| `=`      | Assign                | `x = 10`      | `x = 10`    | `10`      |
-| `+=`     | Add and assign        | `x = x + 5`  | `x += 5`    | `15`      |
-| `-=`     | Subtract and assign   | `x = x - 3`  | `x -= 3`    | `7`       |
-| `*=`     | Multiply and assign   | `x = x * 2`  | `x *= 2`    | `20`      |
-| `/=`     | Divide and assign     | `x = x / 4`  | `x /= 4`    | `2.5`     |
-| `%=`     | Modulus and assign    | `x = x % 4`  | `x %= 4`    | `2`       |
-
-> These shortcuts exist because updating a variable based on its current value is extremely common in programming. Writing `score += 10` is cleaner and less error-prone than `score = score + 10`.
-
-### Interactive Simulation
-
-[Click here to open the Assignment Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/assignment_operators_demo.html)
-
-Click each operator, change the operand, and press **Apply** — watch x update each time. Try doing `+=` five times with 10 — x grows from 10 → 20 → 30 → 40 → 50!
-
-### Practice Questions — Assignment Operators
-
-**Q1.** What is the final value of `x`?
-```js
-let x = 50;
-x += 20;
-x -= 10;
-x *= 2;
-console.log(x);
+```mermaid id="linkflow"
+flowchart LR
+    A[User sees<br/>link text] --> B[User clicks]
+    B --> C{Type of link?}
+    C -->|External| D[Opens another<br/>website]
+    C -->|Internal| E[Jumps to<br/>same site page]
+    C -->|Email| F[Opens email<br/>app]
 ```
 
-<details>
-<summary>Click to see solution</summary>
+### 📊 How a Table is Built
 
-```js
-let x = 50;
-x += 20;   // x = 50 + 20 = 70
-x -= 10;   // x = 70 - 10 = 60
-x *= 2;    // x = 60 * 2  = 120
-console.log(x);  // 120
-```
-</details>
-
----
-
-**Q2.** What is the final value of `price`?
-```js
-let price = 200;
-price /= 4;
-price += 15;
-price %= 7;
-console.log(price);
+```mermaid id="tablestructure"
+graph TD
+    table[table]
+    row1[tr - Row 1]
+    row2[tr - Row 2]
+    h1[th - Name]
+    h2[th - Marks]
+    c1[td - Ravi]
+    c2[td - 85]
+    table --> row1
+    table --> row2
+    row1 --> h1
+    row1 --> h2
+    row2 --> c1
+    row2 --> c2
 ```
 
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let price = 200;
-price /= 4;    // price = 200 / 4 = 50
-price += 15;   // price = 50 + 15  = 65
-price %= 7;    // price = 65 % 7   = 2  (65 ÷ 7 = 9 remainder 2)
-console.log(price);  // 2
-```
-</details>
-
----
-
-**Q3.** Rewrite each line using assignment shorthand operators.
-```js
-let a = 10;
-a = a + 5;
-a = a * 3;
-a = a - 10;
-a = a / 5;
-a = a % 3;
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let a = 10;
-a += 5;    // a = 15
-a *= 3;    // a = 45
-a -= 10;   // a = 35
-a /= 5;    // a = 7
-a %= 3;    // a = 1
-console.log(a);  // 1
-```
-</details>
-
----
-
-**Q4.** A player starts with 100 health points. They take 30 damage, then heal 15, then take 25 damage. What is their final health?
-```js
-let health = 100;
-// Use -= and += to update health
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let health = 100;
-health -= 30;   // took damage → 70
-health += 15;   // healed     → 85
-health -= 25;   // took damage → 60
-console.log(health);  // 60
-```
-</details>
-
----
-
-## Category 3 — Comparison Operators
-
-### Definition
-
-Comparison operators **compare two values** and always return a **boolean** — either `true` or `false`. These are the foundation of every `if` statement and conditional logic in JavaScript.
-
-| Operator | Name                     | Example       | Result  |
-|----------|--------------------------|---------------|---------|
-| `===`    | Strict equal (value + type) | `5 === 5`   | `true`  |
-| `===`    | Strict equal (type mismatch)| `5 === "5"` | `false` |
-| `!==`    | Strict not equal         | `5 !== 10`    | `true`  |
-| `>`      | Greater than             | `10 > 5`      | `true`  |
-| `<`      | Less than                | `10 < 5`      | `false` |
-| `>=`     | Greater than or equal    | `10 >= 10`    | `true`  |
-| `<=`     | Less than or equal       | `5 <= 10`     | `true`  |
-
-> **Why `===` instead of `==`?**
-> - `===` (strict equality) checks **both value AND type**. `5 === "5"` is `false` because one is a number and the other is a string.
-> - `==` (loose equality) only checks value and performs type coercion. `5 == "5"` is `true` — which often leads to bugs.
-> - **Always use `===` and `!==`** in your code. This is a best practice followed by professional developers.
-
-### Interactive Simulation
-
-[Click here to open the Comparison Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/comparison_operators_interactive.html)
-
-Click the tricky tests at the bottom — especially `5 === "5"` and `0 === false`. These are where beginners make mistakes every day!
-
-### Practice Questions — Comparison Operators
-
-**Q1.** Predict `true` or `false` for each line.
-```js
-console.log(10 === 10);
-console.log(10 === "10");
-console.log(10 !== "10");
-console.log(5 > 5);
-console.log(5 >= 5);
-console.log(3 < 8);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(10 === 10);    // true  — same value, same type (number)
-console.log(10 === "10");  // false — same value, different type (number vs string)
-console.log(10 !== "10");  // true  — they ARE different (type mismatch)
-console.log(5 > 5);        // false — 5 is NOT greater than 5
-console.log(5 >= 5);       // true  — 5 IS greater than or equal to 5
-console.log(3 < 8);        // true  — 3 IS less than 8
-```
-</details>
-
----
-
-**Q2.** A student scored 72 marks. Write comparison expressions to check:
-```js
-let marks = 72;
-// a) Did they score above 50?
-// b) Did they score exactly 100?
-// c) Did they score 72 or below?
-// d) Did they fail (below 35)?
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let marks = 72;
-console.log(marks > 50);    // true  — scored above 50
-console.log(marks === 100); // false — did not score exactly 100
-console.log(marks <= 72);   // true  — scored 72 or below
-console.log(marks < 35);    // false — did not fail
-```
-</details>
-
----
-
-**Q3.** What is the difference between `==` and `===`? Predict the output.
-```js
-console.log(0 == false);
-console.log(0 === false);
-console.log("" == false);
-console.log("" === false);
-console.log(null == undefined);
-console.log(null === undefined);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(0 == false);          // true  — == converts false to 0, then 0 == 0
-console.log(0 === false);         // false — number vs boolean, different types
-console.log("" == false);         // true  — == converts both to 0
-console.log("" === false);        // false — string vs boolean, different types
-console.log(null == undefined);   // true  — special rule: null and undefined are == to each other
-console.log(null === undefined);  // false — null is type "object", undefined is type "undefined"
-```
-**Takeaway:** `==` does sneaky type conversions that cause bugs. Always use `===`.
-</details>
-
----
-
-**Q4.** Write an expression to check if a person's age is between 18 and 65 (inclusive).
-```js
-let age = 30;
-// How would you check: 18 <= age <= 65 ?
-// Hint: you can't write it like maths — you need a logical operator (next topic!)
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let age = 30;
-console.log(age >= 18 && age <= 65);  // true
-// You need && (AND) to combine two comparisons
-// age >= 18 → true  AND  age <= 65 → true  → true
-```
-</details>
-
----
-
-## Category 4 — Logical Operators
-
-### Definition
-
-Logical operators **combine multiple conditions** together. Think of them as the words **"AND"**, **"OR"**, and **"NOT"** in English. They are essential for building complex decision-making logic.
-
-| Operator | Name | What it does                              | Example            | Result  |
-|----------|------|-------------------------------------------|--------------------|---------|
-| `&&`     | AND  | `true` only if **both** sides are true    | `true && true`     | `true`  |
-| `&&`     | AND  |                                           | `true && false`    | `false` |
-| `\|\|`   | OR   | `true` if **at least one** side is true   | `true \|\| false`  | `true`  |
-| `\|\|`   | OR   |                                           | `false \|\| false` | `false` |
-| `!`      | NOT  | **Flips** the value to its opposite       | `!true`            | `false` |
-| `!`      | NOT  |                                           | `!false`           | `true`  |
-
-> **Real-world analogy:**
-> - `&&` (AND) — A door opens only if you have the key **AND** the passcode. Both conditions must be true.
-> - `||` (OR) — You can pay with cash **OR** card. Either one works.
-> - `!` (NOT) — If `isLoggedIn` is `true`, then `!isLoggedIn` is `false` — the user is NOT logged in.
-
-### Interactive Simulation
-
-[Click here to open the Logical Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/logical_operators_interactive.html)
-
-Toggle the two switches — watch all three results update instantly. Try switching one off and see how `&&` breaks but `||` still works. This is exactly what login and permission checks look like in a real app!
-
-### Practice Questions — Logical Operators
-
-**Q1.** Predict `true` or `false` for each line.
-```js
-console.log(true && true);
-console.log(true && false);
-console.log(false || true);
-console.log(false || false);
-console.log(!true);
-console.log(!false);
-console.log(!(5 > 3));
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(true && true);    // true  — both true
-console.log(true && false);   // false — one is false, AND fails
-console.log(false || true);   // true  — one is true, OR passes
-console.log(false || false);  // false — neither is true
-console.log(!true);           // false — flip true
-console.log(!false);          // true  — flip false
-console.log(!(5 > 3));        // false — 5 > 3 is true, !true = false
-```
-</details>
-
----
-
-**Q2.** A website allows login only if the user has entered both a valid email AND a correct password. Write the logic.
-```js
-let hasValidEmail = true;
-let hasCorrectPassword = false;
-// Can the user log in?
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let hasValidEmail = true;
-let hasCorrectPassword = false;
-let canLogin = hasValidEmail && hasCorrectPassword;
-console.log(canLogin);  // false — password is wrong, AND fails
-// Both must be true for login to succeed
-```
-</details>
-
----
-
-**Q3.** A movie ticket is free if the person is under 5 OR over 65. Write the check.
-```js
-let age = 70;
-// Is the ticket free?
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let age = 70;
-let isFree = age < 5 || age > 65;
-console.log(isFree);  // true — age 70 is over 65
-// Try with age = 3 → true (under 5)
-// Try with age = 30 → false (neither condition met)
-```
-</details>
-
----
-
-**Q4.** A user can access admin panel only if they are logged in AND are an admin AND are NOT banned. What is the result?
-```js
-let isLoggedIn = true;
-let isAdmin = true;
-let isBanned = true;
-// Can they access the admin panel?
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let isLoggedIn = true;
-let isAdmin = true;
-let isBanned = true;
-let canAccess = isLoggedIn && isAdmin && !isBanned;
-console.log(canAccess);  // false
-// isLoggedIn = true ✓
-// isAdmin = true ✓
-// !isBanned = !true = false ✗  ← blocked because they are banned
-// true && true && false = false
-```
-</details>
-
----
-
-**Q5.** What is the output? Think carefully!
-```js
-console.log(true || false && false);
-console.log((true || false) && false);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(true || false && false);
-// && runs first: false && false = false
-// then: true || false = true
-// Answer: true
-
-console.log((true || false) && false);
-// Brackets first: true || false = true
-// then: true && false = false
-// Answer: false
-
-// Same operators, different result — brackets change everything!
-```
-</details>
-
----
-
-## Category 5 — String & Ternary Operators
-
-### Definition
-
-**String operators** let you **join (concatenate) text** together. The `+` operator, when used with strings, glues them side by side. Template literals (backticks) offer a modern, cleaner way to embed variables inside strings.
-
-**The ternary operator** (`? :`) is a **one-line shortcut for if/else**. It takes three parts: a condition, a value if true, and a value if false.
-
-| Operator | Name              | Example                               | Result             |
-|----------|-------------------|---------------------------------------|--------------------|
-| `+`      | String concatenation | `"Hello" + " " + "World"`         | `"Hello World"`    |
-| `` ` ` ``| Template literal   | `` `My name is ${"Alice"}` ``        | `"My name is Alice"`|
-| `? :`    | Ternary            | `age >= 18 ? "Adult" : "Minor"`      | `"Adult"` (if age=20)|
-
-```js
-// String concatenation
-let firstName = "John";
-let lastName = "Doe";
-let fullName = firstName + " " + lastName;  // "John Doe"
-
-// Template literal (modern way — use backticks)
-let greeting = `Hello, ${firstName} ${lastName}!`;  // "Hello, John Doe!"
-
-// Ternary operator (one-line if/else)
-let age = 20;
-let status = age >= 18 ? "Adult" : "Minor";  // "Adult"
-```
-
-> **When to use the ternary operator:** Use it for simple, short conditions where you need to pick between two values. If the logic is complex, stick with a regular `if/else` block for readability.
-
-![String & Ternary Operators](../images/day2/logical_operators_interactive.webp)
-
-### Interactive Simulation
-
-[Click here to open the String & Ternary Operators Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/string_ternary_operators.html)
-
-On the left — type your own words and see how `+` joins them. On the right — change `age` and `min` to see the ternary flip between Adult and Minor. Try all 4 real-world examples at the bottom!
-
-### Practice Questions — String & Ternary Operators
-
-**Q1.** Join these variables into a single sentence using `+` concatenation.
-```js
-let city = "Mumbai";
-let country = "India";
-// Output: "I live in Mumbai, India."
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let city = "Mumbai";
-let country = "India";
-let sentence = "I live in " + city + ", " + country + ".";
-console.log(sentence);  // "I live in Mumbai, India."
-```
-</details>
-
----
-
-**Q2.** Rewrite Q1 using template literals (backticks).
-```js
-let city = "Mumbai";
-let country = "India";
-// Use backticks `` and ${} to build the same sentence
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let city = "Mumbai";
-let country = "India";
-let sentence = `I live in ${city}, ${country}.`;
-console.log(sentence);  // "I live in Mumbai, India."
-// Template literals are cleaner — no need for + and extra quotes
-```
-</details>
-
----
-
-**Q3.** Use the ternary operator to set `result` to "Pass" if `marks >= 35`, otherwise "Fail".
-```js
-let marks = 28;
-// Write one line using ternary
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let marks = 28;
-let result = marks >= 35 ? "Pass" : "Fail";
-console.log(result);  // "Fail" — 28 is less than 35
-```
-</details>
-
----
-
-**Q4.** Use the ternary operator to check if a number is even or odd.
-```js
-let num = 7;
-// Output: "odd" or "even"
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let num = 7;
-let type = num % 2 === 0 ? "even" : "odd";
-console.log(type);  // "odd" — 7 % 2 = 1, which is not 0
-```
-</details>
-
----
-
-**Q5.** Build a greeting message using template literals and ternary together.
-```js
-let name = "Rahul";
-let hour = 14;  // 24-hour format
-// Output: "Good afternoon, Rahul!" (if hour >= 12)
-// Output: "Good morning, Rahul!"   (if hour < 12)
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let name = "Rahul";
-let hour = 14;
-let greeting = `Good ${hour >= 12 ? "afternoon" : "morning"}, ${name}!`;
-console.log(greeting);  // "Good afternoon, Rahul!"
-// This combines template literals + ternary — very common in real apps!
-```
-</details>
-
----
-
-**Q6.** Nested ternary — assign a shipping label based on weight.
-```js
-let weight = 12;  // kg
-// "Light" if weight < 5
-// "Medium" if weight >= 5 and < 20
-// "Heavy" if weight >= 20
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let weight = 12;
-let label = weight < 5 ? "Light" : weight < 20 ? "Medium" : "Heavy";
-console.log(label);  // "Medium" — 12 is >= 5 but < 20
-
-// How it works step by step:
-// weight < 5?  → 12 < 5 = false → go to else
-// weight < 20? → 12 < 20 = true → "Medium"
-```
-</details>
-
----
-
-## Complete Cheat Sheet — All Operators
-
-```js
-// ── ARITHMETIC ──────────────────────────────────
-10 + 3    // 13   addition
-10 - 3    // 7    subtraction
-10 * 3    // 30   multiplication
-10 / 3    // 3.33 division
-10 % 3    // 1    remainder (modulus)
-2  ** 8   // 256  power (2 to the 8th)
-let n=5; n++;  // n is now 6   (increment)
-let m=5; m--;  // m is now 4   (decrement)
-
-// ── ASSIGNMENT ──────────────────────────────────
-let x = 10;   // store 10
-x += 5;       // x = x + 5  → 15
-x -= 3;       // x = x - 3  → 12
-x *= 2;       // x = x * 2  → 24
-x /= 4;       // x = x / 4  → 6
-x %= 4;       // x = x % 4  → 2
-
-// ── COMPARISON (always returns true/false) ──────
-5 === 5       // true   (same value, same type)
-5 === "5"     // false  (different type!)
-5 !== 10      // true   (they ARE different)
-10 > 5        // true
-10 < 5        // false
-10 >= 10      // true   (equal counts!)
-5  <= 10      // true
-
-// ── LOGICAL ─────────────────────────────────────
-true && true  // true   (AND — both must be true)
-true && false // false
-true || false // true   (OR  — one is enough)
-false|| false // false
-!true         // false  (NOT — flip it)
-!false        // true
-
-// ── STRING ──────────────────────────────────────
-"Hello" + " " + "World"     // "Hello World"
-`My name is ${"Alice"}`     // "My name is Alice"
-
-// ── TERNARY (one-line if/else) ───────────────────
-let age = 20;
-let label = age >= 18 ? "Adult" : "Minor"; // "Adult"
+### 📋 List Types at a Glance
+
+```mermaid id="listtypes"
+flowchart TD
+    Lists --> Ordered[Ordered List<br/>ol<br/>1, 2, 3...]
+    Lists --> Unordered[Unordered List<br/>ul<br/>• • •]
+    Lists --> Nested[Nested List<br/>List inside a list]
 ```
 
 ---
 
-## Homework — Operators Practice
+## 4. 📝 Syntax + Code Examples
 
-Paste this in your browser console (`F12` → Console tab):
+### 🔗 4.1 Anchor Tag — `<a>`
 
-```js
-let score = 85;
+The anchor tag creates a **clickable link**. The `href` attribute tells the browser **where to go**.
 
-// 1. Arithmetic
-console.log(score + 10);  // add bonus → 95
-console.log(score % 10);  // last digit → 5
+```html
+<a href="https://www.google.com">Go to Google</a>
+```
 
-// 2. Assignment shortcut
-score += 5;
-console.log(score);       // → 90
+Breakdown:
 
-// 3. Comparison
-console.log(score >= 90); // → true
-console.log(score === 90);// → true
+- `<a>` = the tag
+- `href="..."` = **H**ypertext **Ref**erence — the destination URL
+- Text between `<a>` and `</a>` = what the user sees and clicks
 
-// 4. Logical
-let passed  = score >= 50;
-let topMark = score >= 90;
-console.log(passed && topMark);  // both true? → true
-console.log(passed || topMark);  // either true? → true
+### 🌍 External Link (to another website)
 
-// 5. Ternary
-let grade = score >= 90 ? "A" : score >= 75 ? "B" : "C";
-console.log(grade);  // → "A"
+```html
+<a href="https://www.youtube.com">Visit YouTube</a>
+```
+
+### 🏠 Internal Link (to another page in YOUR site)
+
+```html
+<a href="about.html">About Me</a>
+<a href="contact.html">Contact</a>
+```
+
+> 💡 Both files must be in the **same folder** for this to work.
+
+### 📧 Email Link
+
+```html
+<a href="mailto:teacher@example.com">Email the teacher</a>
+```
+
+Clicking this opens the user's **email app** automatically.
+
+### 🎯 Open Link in a New Tab
+
+Add `target="_blank"`:
+
+```html
+<a href="https://www.google.com" target="_blank">Open Google in new tab</a>
+```
+
+> ⚠️ Useful for external sites so users don't leave your page.
+
+### 🔖 Jump to a Section on the Same Page
+
+```html
+<a href="#about">Go to About section</a>
+
+<!-- Somewhere else on the same page: -->
+<h2 id="about">About Me</h2>
+```
+
+The `#about` matches the `id="about"`.
+
+---
+
+### 🖼️ 4.2 Image Tag — `<img>`
+
+The `<img>` tag is **self-closing** (no closing tag). It has 2 important attributes:
+
+```html
+<img src="photo.jpg" alt="A description of the photo">
+```
+
+- `src` = **source** — path to the image file
+- `alt` = **alternative text** — description shown if the image fails to load (also read by screen readers for blind users — very important for accessibility!)
+
+### 🖼️ Image from Your Own Folder
+
+```html
+<img src="images/dog.jpg" alt="My cute dog">
+```
+
+### 🌐 Image from the Internet
+
+```html
+<img src="https://via.placeholder.com/300" alt="Placeholder image">
+```
+
+### 📏 Controlling Size
+
+```html
+<img src="photo.jpg" alt="Photo" width="300" height="200">
+```
+
+> 💡 **Tip:** Prefer setting only `width` — the height adjusts automatically to keep proportions.
+
+### ❌ Wrong vs ✅ Correct
+
+```html
+<!-- ❌ Wrong: missing alt -->
+<img src="photo.jpg">
+
+<!-- ❌ Wrong: invalid closing tag -->
+<img src="photo.jpg"></img>
+
+<!-- ✅ Correct -->
+<img src="photo.jpg" alt="A sunset over the mountains">
 ```
 
 ---
 
-# Operator Precedence (BODMAS / BIDMAS)
+### 📋 4.3 Lists
 
-## What is Operator Precedence?
+### Unordered List — `<ul>`
 
-**Operator precedence** determines the **order in which operators are evaluated** when multiple operators appear in a single expression. It is the same concept as **BODMAS / BIDMAS** from school maths.
+```html
+<h3>My Favorite Fruits</h3>
+<ul>
+  <li>Apple</li>
+  <li>Banana</li>
+  <li>Mango</li>
+</ul>
+```
 
-When JavaScript sees `2 + 3 * 4`, it doesn't just read left to right. It follows a strict priority system — **multiplication runs before addition**, so the answer is `14`, not `20`.
+**Output (browser):**
 
-> **Simple rule:** Higher precedence = executes first. When two operators have the **same** precedence, they are evaluated **left to right** (except exponentiation `**` which goes right to left).
+- Apple
+- Banana
+- Mango
 
-Here is the full precedence tower — **higher = runs first**:
+Each item is wrapped in `<li>` (**l**ist **i**tem).
 
-![Operator Precedence Tower](../images/day2/operator_precedence_tower.svg)
+### Ordered List — `<ol>`
+
+```html
+<h3>How to Make Tea ☕</h3>
+<ol>
+  <li>Boil water</li>
+  <li>Add tea leaves</li>
+  <li>Add milk and sugar</li>
+  <li>Pour into a cup</li>
+</ol>
+```
+
+**Output (browser):**
+
+1. Boil water
+2. Add tea leaves
+3. Add milk and sugar
+4. Pour into a cup
+
+### Nested List (list inside a list)
+
+```html
+<h3>My Courses</h3>
+<ul>
+  <li>Frontend
+    <ul>
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JavaScript</li>
+    </ul>
+  </li>
+  <li>Backend
+    <ul>
+      <li>Node.js</li>
+      <li>Express</li>
+    </ul>
+  </li>
+  <li>Database
+    <ol>
+      <li>MongoDB</li>
+      <li>MySQL</li>
+    </ol>
+  </li>
+</ul>
+```
+
+> ✅ **Indent** nested lists so your code is easy to read.
 
 ---
 
-## Part 1 — BODMAS in Action: Step-by-Step Solver
+### 📊 4.4 Tables — The Star of Today
 
-### The BODMAS Rule
+Table anatomy:
 
-| Letter | Stands For      | Operators        | Priority |
-|--------|-----------------|------------------|----------|
-| **B**  | Brackets        | `( )`            | 1st (highest) |
-| **O**  | Orders / Power  | `**`             | 2nd      |
-| **D**  | Division        | `/`              | 3rd      |
-| **M**  | Multiplication  | `*`, `%`         | 3rd (same as D) |
-| **A**  | Addition        | `+`              | 4th      |
-| **S**  | Subtraction     | `-`              | 4th (same as A) |
+| Tag | Meaning |
+|-----|---------|
+| `<table>` | The whole table container |
+| `<tr>` | **T**able **R**ow — one horizontal row |
+| `<th>` | **T**able **H**eader — bold heading cell |
+| `<td>` | **T**able **D**ata — normal cell |
+| `<caption>` | Title above the table |
 
-Then in JavaScript, after maths:
+### 🟢 A Simple Table
 
-| Priority | Category       | Operators           |
-|----------|----------------|---------------------|
-| 5th      | Comparison     | `>`, `<`, `>=`, `<=`|
-| 6th      | Equality       | `===`, `!==`        |
-| 7th      | Logical AND    | `&&`                |
-| 8th      | Logical OR     | `\|\|`              |
-| Last     | Assignment     | `=`, `+=`, `-=` etc.|
-
-### Interactive Simulation
-
-[Click here to open the BODMAS Step-by-Step Solver](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/bodmas_step_solver.html)
-
-Press **Play all** on each expression — watch the steps reveal one by one. Try `2 + 3 * 4` first — most beginners get this wrong thinking the answer is 20!
-
-### Practice Questions — BODMAS
-
-**Q1.** Solve step by step — what is the output?
-```js
-console.log(4 + 6 * 2 - 3);
+```html
+<table border="1">
+  <caption>My Weekly Schedule</caption>
+  <tr>
+    <th>Day</th>
+    <th>Subject</th>
+  </tr>
+  <tr>
+    <td>Monday</td>
+    <td>HTML</td>
+  </tr>
+  <tr>
+    <td>Tuesday</td>
+    <td>CSS</td>
+  </tr>
+  <tr>
+    <td>Wednesday</td>
+    <td>JavaScript</td>
+  </tr>
+</table>
 ```
 
-<details>
-<summary>Click to see solution</summary>
+> 💡 `border="1"` is a quick way to draw lines. For real projects we use CSS — but today this is perfect.
 
-```js
-// Step 1: 6 * 2 = 12  (multiplication first)
-// Step 2: 4 + 12 = 16  (addition)
-// Step 3: 16 - 3 = 13  (subtraction)
-console.log(4 + 6 * 2 - 3);  // 13
+### 🟠 `colspan` — Merge Cells Horizontally
+
+```html
+<table border="1">
+  <tr>
+    <th colspan="2">Name</th>
+    <th>Marks</th>
+  </tr>
+  <tr>
+    <td>Ravi</td>
+    <td>Kumar</td>
+    <td>85</td>
+  </tr>
+</table>
 ```
-</details>
+
+Here, the **Name** header spans across 2 columns (First + Last name).
+
+### 🟣 `rowspan` — Merge Cells Vertically
+
+```html
+<table border="1">
+  <tr>
+    <th>Class</th>
+    <th>Subject</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Grade 10</td>
+    <td>Math</td>
+  </tr>
+  <tr>
+    <td>Science</td>
+  </tr>
+</table>
+```
+
+"Grade 10" is written **once** but spans **2 rows**.
 
 ---
 
-**Q2.** What is the output?
-```js
-console.log((4 + 6) * (2 - 3));
+### 🏫 4.5 Real-World Example: Student Marks Table
+
+Here is a complete, working example you can copy:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Class Marks Sheet</title>
+  </head>
+  <body>
+    <h1>Grade 10 - Mid-Term Marks Sheet 📊</h1>
+
+    <table border="1" cellpadding="8">
+      <caption><b>Academic Year 2025-26</b></caption>
+
+      <tr>
+        <th rowspan="2">Roll No</th>
+        <th rowspan="2">Name</th>
+        <th colspan="3">Subjects</th>
+        <th rowspan="2">Total</th>
+      </tr>
+      <tr>
+        <th>Math</th>
+        <th>Science</th>
+        <th>English</th>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td>Ravi Kumar</td>
+        <td>85</td>
+        <td>90</td>
+        <td>78</td>
+        <td>253</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Anita Sharma</td>
+        <td>92</td>
+        <td>88</td>
+        <td>95</td>
+        <td>275</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Suresh Patel</td>
+        <td>70</td>
+        <td>75</td>
+        <td>80</td>
+        <td>225</td>
+      </tr>
+    </table>
+  </body>
+</html>
 ```
 
-<details>
-<summary>Click to see solution</summary>
+### 👀 What Will This Look Like?
 
-```js
-// Step 1: (4 + 6) = 10  (brackets first)
-// Step 2: (2 - 3) = -1  (brackets first)
-// Step 3: 10 * -1 = -10
-console.log((4 + 6) * (2 - 3));  // -10
-```
-</details>
+A clean marks sheet with:
+
+- A caption **"Academic Year 2025-26"** on top
+- Two header rows (first row uses `rowspan` + `colspan` neatly)
+- Three student rows with their marks and total
 
 ---
 
-**Q3.** What is the output?
-```js
-console.log(100 / 5 / 2);
-console.log(100 / (5 / 2));
+## 5. 🌐 Live Output Explanation — Full Webpage
+
+Combine everything into one real page:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Profile</title>
+  </head>
+  <body>
+    <h1>Hi, I'm Ravi 👋</h1>
+
+    <img src="https://via.placeholder.com/150" alt="My profile picture" width="150">
+
+    <h2>About Me</h2>
+    <p>I am a student learning web development.</p>
+
+    <h2>My Favorite Websites</h2>
+    <ul>
+      <li><a href="https://www.google.com" target="_blank">Google</a></li>
+      <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+      <li><a href="https://www.wikipedia.org" target="_blank">Wikipedia</a></li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p><a href="mailto:ravi@example.com">Email me</a></p>
+
+    <h2>My Weekly Study Plan</h2>
+    <table border="1" cellpadding="6">
+      <tr>
+        <th>Day</th>
+        <th>Topic</th>
+      </tr>
+      <tr>
+        <td>Mon</td>
+        <td>HTML</td>
+      </tr>
+      <tr>
+        <td>Tue</td>
+        <td>CSS</td>
+      </tr>
+      <tr>
+        <td>Wed</td>
+        <td>JavaScript</td>
+      </tr>
+    </table>
+  </body>
+</html>
 ```
 
-<details>
-<summary>Click to see solution</summary>
+### 👀 What You See in the Browser
 
-```js
-console.log(100 / 5 / 2);
-// Left to right: 100 / 5 = 20, then 20 / 2 = 10
-// Answer: 10
+- Your name as a big heading
+- A circular placeholder image
+- A clickable list of favorite websites (opens in new tab!)
+- An **Email me** link that opens the mail app
+- A mini weekly study table with borders
 
-console.log(100 / (5 / 2));
-// Brackets first: 5 / 2 = 2.5, then 100 / 2.5 = 40
-// Answer: 40
-
-// Same numbers, different grouping — completely different answers!
-```
-</details>
+This is already starting to look like a **real website!** 🎉
 
 ---
 
-**Q4.** Add brackets to make this expression equal `36`.
-```js
-// Original: 2 + 4 * 8 - 2
-// Currently: 2 + 32 - 2 = 32  (not 36!)
-// Add brackets so it equals 36
-```
+## 6. 🧪 Hands-on Practice — 5 Tasks
 
-<details>
-<summary>Click to see solution</summary>
+### ✏️ Task 1 — My Favorite Websites
 
-```js
-console.log((2 + 4) * (8 - 2));  // 6 * 6 = 36
-```
-</details>
+Create `links.html` with a `<ul>` of **5 favorite websites**, each as a clickable link that opens in a **new tab**.
 
----
+### ✏️ Task 2 — Photo Gallery
 
-## Part 2 — Common Precedence Mistakes (Animated)
+Create `gallery.html` with:
 
-These are the **exact mistakes** every beginner makes in their first week. Knowing them now saves you hours of debugging later!
+- A `<h1>` "My Photo Gallery"
+- **4 images** (use placeholder URLs if you don't have photos) with proper `alt` text
+- Each image with `width="200"`
 
-| Mistake | What beginners think | What actually happens | Why |
-|---------|---------------------|----------------------|-----|
-| `2 + 3 * 4 = 20` | Left to right | `3 * 4` first → `14` | `*` has higher precedence than `+` |
-| `true \|\| false && false = false` | Left to right | `&&` first → `true` | `&&` has higher precedence than `\|\|` |
-| `10 > 5 + 4 = true then > 4` | `10 > 5` first | `5 + 4` first → `10 > 9` → `true` | `+` has higher precedence than `>` |
+### ✏️ Task 3 — Recipe Page
 
-### Interactive Simulation
+Create `recipe.html` describing how to make **Maggi noodles** 🍜:
 
-[Click here to open the Common Mistakes Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/precedence_common_mistakes.html)
+- `<h1>` title
+- **Unordered list** of ingredients
+- **Ordered list** of cooking steps
+- An image at the top
 
-Open every card — these are the traps you need to know!
+### ✏️ Task 4 — Multi-Page Website
 
-### Practice Questions — Precedence Traps
+Create **3 files** in the same folder:
 
-**Q1.** What is the output? Most beginners get this wrong.
-```js
-console.log(5 + 3 > 7);
-console.log(5 > 3 + 2);
-```
+- `home.html`
+- `about.html`
+- `contact.html`
 
-<details>
-<summary>Click to see solution</summary>
+At the top of each page, create a menu with **3 internal links** to navigate between them. Congratulations — you've built a multi-page site! 🎉
 
-```js
-console.log(5 + 3 > 7);
-// Step 1: 5 + 3 = 8  (+ before >)
-// Step 2: 8 > 7 = true
-// Answer: true
+### ✏️ Task 5 — Class Timetable Table
 
-console.log(5 > 3 + 2);
-// Step 1: 3 + 2 = 5  (+ before >)
-// Step 2: 5 > 5 = false  (not greater, just equal!)
-// Answer: false
-```
-</details>
+Create `timetable.html` with a 6-period-per-day timetable for Monday to Friday. Use `<th>` for headers. Bonus: use `colspan` to merge the **Lunch** cell across multiple columns.
 
 ---
 
-**Q2.** What is the output?
-```js
-console.log(true || false && false);
-console.log(false || true && true);
-console.log(false && true || true);
+## 7. ⚠️ Common Mistakes
+
+### Mistake 1 — Forgetting `alt` in images
+
+```html
+<!-- ❌ Wrong -->
+<img src="dog.jpg">
+
+<!-- ✅ Correct -->
+<img src="dog.jpg" alt="A golden retriever playing in the garden">
 ```
 
-<details>
-<summary>Click to see solution</summary>
+`alt` matters for **accessibility** and **SEO**.
 
-```js
-console.log(true || false && false);
-// && first: false && false = false
-// then: true || false = true
-// Answer: true
+### Mistake 2 — Broken image paths
 
-console.log(false || true && true);
-// && first: true && true = true
-// then: false || true = true
-// Answer: true
+```html
+<!-- ❌ Wrong: file is in 'images/' folder but we wrote only filename -->
+<img src="dog.jpg">
 
-console.log(false && true || true);
-// && first: false && true = false
-// then: false || true = true
-// Answer: true
+<!-- ✅ Correct -->
+<img src="images/dog.jpg">
 ```
-**Rule:** `&&` always runs before `||`, no matter the position.
-</details>
+
+If the image doesn't load, the path is probably wrong.
+
+### Mistake 3 — Forgetting `href` in links
+
+```html
+<!-- ❌ Wrong -->
+<a>Click me</a>
+
+<!-- ✅ Correct -->
+<a href="https://google.com">Click me</a>
+```
+
+Without `href`, it's just plain text — not a link.
+
+### Mistake 4 — Wrong list structure
+
+```html
+<!-- ❌ Wrong -->
+<ul>
+  <p>Item 1</p>
+  <p>Item 2</p>
+</ul>
+
+<!-- ✅ Correct -->
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+```
+
+Inside `<ul>` / `<ol>`, **only `<li>` is allowed** as a direct child.
+
+### Mistake 5 — Mismatched rows/columns
+
+If a table header row has **4 columns** but a data row has **3**, the table will look broken. Always check that each `<tr>` has the correct number of cells (considering `colspan` / `rowspan`).
+
+### Mistake 6 — Typing `URL` in wrong case
+
+Some servers are **case-sensitive**: `image.JPG` and `image.jpg` are different files. Always match the exact case in your filenames.
 
 ---
 
-**Q3.** What is the value of `x`?
-```js
-let x = 2 + 3 * 4 > 10 + 2;
-console.log(x);
-```
+## 8. 📝 Mini Assignment — "My Online Resume" Page
 
-<details>
-<summary>Click to see solution</summary>
+Create a file **`resume.html`** that includes:
 
-```js
-let x = 2 + 3 * 4 > 10 + 2;
-// Step 1: 3 * 4 = 12          (multiplication)
-// Step 2: 2 + 12 = 14         (addition left side)
-// Step 3: 10 + 2 = 12         (addition right side)
-// Step 4: 14 > 12 = true      (comparison)
-// Step 5: x = true            (assignment — always last)
-console.log(x);  // true
-```
-</details>
+- Proper HTML5 skeleton
+- Browser tab title: **"[Your Name] — Resume"**
+- `<h1>` with your name
+- A profile **image** (any placeholder)
+- An **About Me** paragraph
+- **Skills** as an unordered list (at least 5 skills)
+- **Education** as a table (School/College, Year, Grade) — at least 2 rows
+- **Experience/Projects** as an ordered list (at least 3 items)
+- A **Contact** section with:
+  - An email link (`mailto:`)
+  - A clickable link to your GitHub/LinkedIn (opens in new tab)
+- Use at least **3 comments** in the code
 
----
+### 🌟 Bonus
 
-## Part 3 — Precedence Quiz
-
-**Guess before you click!** This quiz has 8 questions covering all the tricky cases. The explanation below each answer tells you exactly *why* the answer is what it is.
-
-### Interactive Simulation
-
-[Click here to open the Precedence Quiz](https://ak9347128658.github.io/MERN_Batch_April_2026/day2/precedence_quiz_tester.html)
+Use `colspan` or `rowspan` somewhere meaningfully in the Education table.
 
 ---
 
-## Part 4 — The BODMAS / Precedence Cheat Card
+## 9. 🔁 Recap — What Did We Learn Today?
 
-![Precedence Cheat Card](../images/day2/precedence_cheat_card.webp)
+- ✅ **Links** are made with `<a href="...">text</a>`.
+- ✅ Links can be **external**, **internal**, **email** (`mailto:`), or **anchor links** (`#id`).
+- ✅ `target="_blank"` opens the link in a new tab.
+- ✅ **Images** use `<img src="..." alt="...">` — always provide `alt`.
+- ✅ **Unordered lists** (`<ul>`) = bullets. **Ordered lists** (`<ol>`) = numbers. Both use `<li>` for items.
+- ✅ Lists can be **nested** (list inside a list).
+- ✅ **Tables** are built with `<table>`, `<tr>` (row), `<th>` (header), `<td>` (data).
+- ✅ Use `colspan` to merge cells **horizontally**, `rowspan` to merge **vertically**.
+- ✅ `<caption>` adds a title to a table.
+- ✅ Use `border="1"` for a quick visible grid (we'll use CSS later for beautiful styling).
 
----
+### 🎯 Your Mission Before Day 3
 
-## Complete Precedence Summary
+1. Finish **all 5 hands-on tasks**.
+2. Complete the **Online Resume** assignment.
+3. Explore real websites and **observe how they use lists and tables**.
+4. Come ready for Day 3: **Forms, Semantic HTML, and a Mini Project!** 🚀
 
-```js
-// ── BODMAS RULE — same as school maths ─────────────────
-// B  → Brackets      ( )          runs 1st
-// O  → Orders/Power  **           runs 2nd
-// D  → Division      /            runs 3rd (with M)
-// M  → Multiplication *  %        runs 3rd
-// A  → Addition      +            runs 4th (with S)
-// S  → Subtraction   -            runs 4th
-
-// ── THEN in JavaScript: ────────────────────────────────
-// Comparison   > < >= <=          runs 5th
-// Equality     === !==            runs 6th
-// Logical AND  &&                 runs 7th
-// Logical OR   ||                 runs 8th
-// Assignment   = += -= etc.       runs LAST
-
-// ── EXAMPLES ───────────────────────────────────────────
-2 + 3 * 4          // 14  (not 20 — * before +)
-(2 + 3) * 4        // 20  (brackets first)
-10 - 2 ** 3        // 2   (** before -)
-20 / 4 + 3 * 2     // 11  (/ and * before +)
-5 + 3 > 2 * 4      // false  (8 > 8 → false)
-true || false && false  // true  (&& before ||)
-let x = 2 + 3 * 4  // x = 14  (right side first, then =)
-
-// ── GOLDEN RULE ────────────────────────────────────────
-// When in doubt — use BRACKETS!
-// (2 + 3) * 4   is better than hoping JS does what you think
-```
-
-### Practice Questions — Complete Precedence
-
-**Q1.** What is the output of each?
-```js
-console.log(2 ** 3 ** 2);
-console.log((2 ** 3) ** 2);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-console.log(2 ** 3 ** 2);
-// ** is right-to-left! So: 3 ** 2 = 9 first, then 2 ** 9 = 512
-// Answer: 512
-
-console.log((2 ** 3) ** 2);
-// Brackets first: 2 ** 3 = 8, then 8 ** 2 = 64
-// Answer: 64
-
-// Exponentiation is the ONLY operator that goes right to left!
-```
-</details>
-
----
-
-**Q2.** What is the value of `result`?
-```js
-let a = 10, b = 5, c = 3;
-let result = a - b + c * 2 > b * c && a % c === 1;
-console.log(result);
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let a = 10, b = 5, c = 3;
-let result = a - b + c * 2 > b * c && a % c === 1;
-
-// Step 1 — Multiplication & Modulus (same level, left to right):
-//   c * 2 = 6
-//   b * c = 15
-//   a % c = 1
-
-// Step 2 — Addition & Subtraction (left to right):
-//   a - b + 6 = 10 - 5 + 6 = 11
-
-// Step 3 — Comparison:
-//   11 > 15 = false
-
-// Step 4 — Equality:
-//   1 === 1 = true
-
-// Step 5 — Logical AND:
-//   false && true = false
-
-console.log(result);  // false
-```
-</details>
-
----
-
-**Q3.** Fix this expression using brackets so it works correctly.
-```js
-// A store gives 20% discount if customer is a member OR spent over 1000
-// Currently broken:
-let isMember = false;
-let totalSpent = 1500;
-let discount = 20;
-
-let finalPrice = totalSpent - totalSpent * discount / 100;
-// This always applies discount! We need it only when condition is true.
-// Fix it using ternary + proper brackets.
-```
-
-<details>
-<summary>Click to see solution</summary>
-
-```js
-let isMember = false;
-let totalSpent = 1500;
-let discount = 20;
-
-let finalPrice = (isMember || totalSpent > 1000)
-  ? totalSpent - (totalSpent * discount / 100)
-  : totalSpent;
-
-console.log(finalPrice);  // 1200
-// isMember = false, but totalSpent > 1000 = true
-// false || true = true → discount applied
-// 1500 - (1500 * 20 / 100) = 1500 - 300 = 1200
-```
-</details>
-
----
-
-## Homework — Predict Before You Run
-
-Predict each answer **before** running it in your console (`F12`):
-
-```js
-console.log( 2 + 5 * 3 );              // ? → 17  (* first)
-console.log( (2 + 5) * 3 );            // ? → 21  (brackets first)
-console.log( 10 - 3 + 2 );             // ? → 9   (left to right)
-console.log( 2 ** 2 ** 3 );            // ? → 256 (right to left!)
-console.log( 6 / 2 * 3 );              // ? → 9   (left to right)
-console.log( 10 > 5 + 4 );             // ? → true (5+4=9, 10>9)
-console.log( true || false && false );  // ? → true (&& first)
-console.log( !false && true );          // ? → true (! first)
-```
-
----
+> 💬 **Great job today!** You are no longer just writing HTML — you are **building websites**. Tomorrow, we make them **interactive** with forms. See you on **Day 3**! 👋
