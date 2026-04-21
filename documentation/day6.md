@@ -1215,3 +1215,423 @@ console.log(dog.showTricks());        // sit, shake
 console.log(dog instanceof Dog);    // true
 console.log(dog instanceof Animal); // true — because Dog extends Animal!
 ```
+
+---
+
+# Part 4 — Interfaces
+
+## What is an Interface?
+
+> **An Interface is a CONTRACT. It says: "Any object that claims to be ME must have these exact properties and methods."**
+
+Think of an interface like a **job description**. The description says: "The person we hire MUST know JavaScript, MUST know React, and MUST be able to write tests." The description itself doesn't do any work — it just defines the **rules** any real employee has to follow.
+
+> **An Interface defines the SHAPE of an object — what keys it must have and what types their values must be — without providing any actual implementation.**
+
+![alt](../images/day6/interface_contract_analogy.svg)
+
+**Important:** Interfaces are a **TypeScript** feature. Plain JavaScript does not have `interface` as a keyword. But the **concept** of interfaces exists everywhere in real MERN projects — React props, Mongoose schemas, Express request/response types — all of them follow interface-style contracts.
+
+---
+
+## Lesson 1 — Interface vs Class
+
+| Feature | Class | Interface |
+|---|---|---|
+| Purpose | Blueprint to **create** objects | Contract to **describe** object shape |
+| Has implementation? | Yes — real methods and logic | No — only property names and types |
+| Creates objects? | Yes, with `new` | No — cannot be instantiated |
+| Runtime code? | Yes, exists in compiled JS | No — removed after TypeScript compiles |
+| Used for | Building real objects | Type checking and documentation |
+
+```ts
+// INTERFACE — just the shape, no logic
+interface Student {
+  name: string;
+  age: number;
+  passed: boolean;
+}
+
+// CLASS — real implementation, can be created
+class StudentClass {
+  constructor(public name: string, public age: number, public passed: boolean) {}
+  greet() { return `Hi, I am ${this.name}`; }
+}
+```
+
+---
+
+## Lesson 2 — Basic Interface Example
+
+```ts
+// Define the contract
+interface User {
+  name: string;
+  age: number;
+  email: string;
+}
+
+// Any object typed as User MUST follow this shape
+const user1: User = {
+  name: "Ali",
+  age: 22,
+  email: "ali@gmail.com"
+};
+
+// ❌ This will FAIL to compile — missing 'email'
+const user2: User = {
+  name: "Sara",
+  age: 21
+};
+// Error: Property 'email' is missing in type
+
+// ❌ This will FAIL — age must be number, not string
+const user3: User = {
+  name: "Ravi",
+  age: "twenty",
+  email: "r@m.com"
+};
+// Error: Type 'string' is not assignable to type 'number'
+```
+
+### Example Question 21
+
+**Q: Create an interface `Product` with `id` (number), `title` (string), `price` (number), and `inStock` (boolean). Then create a product object that follows it.**
+
+**Solution:**
+```ts
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  inStock: boolean;
+}
+
+const phone: Product = {
+  id: 101,
+  title: "iPhone 15",
+  price: 79999,
+  inStock: true
+};
+
+console.log(phone.title);   // "iPhone 15"
+console.log(phone.price);   // 79999
+```
+
+---
+
+## Lesson 3 — Optional Properties and Methods in Interface
+
+Use `?` after a property name to mark it as **optional** — it may or may not be present.
+
+```ts
+interface Employee {
+  name: string;
+  age: number;
+  department: string;
+  phone?: string;        // optional — ? makes it allowed to skip
+  greet(): string;       // method signature — must return a string
+  raiseSalary(amount: number): number;   // takes number, returns number
+}
+
+const emp1: Employee = {
+  name: "Ali",
+  age: 28,
+  department: "Engineering",
+  // phone is optional — no error
+  greet() { return `Hello, I am ${this.name}`; },
+  raiseSalary(amount) { return 50000 + amount; }
+};
+
+const emp2: Employee = {
+  name: "Sara",
+  age: 30,
+  department: "HR",
+  phone: "9876543210",   // provided this time
+  greet() { return `Hi! ${this.name} from HR`; },
+  raiseSalary(amount) { return 60000 + amount; }
+};
+```
+
+---
+
+## Lesson 4 — Implementing an Interface in a Class
+
+A class can **implement** an interface using the `implements` keyword. This forces the class to have every property and method defined in the interface.
+
+```ts
+interface Animal {
+  name: string;
+  sound: string;
+  speak(): string;
+}
+
+// Class must match Animal interface exactly
+class Dog implements Animal {
+  name: string;
+  sound: string;
+
+  constructor(name: string) {
+    this.name = name;
+    this.sound = "Woof";
+  }
+
+  speak(): string {
+    return `${this.name} says ${this.sound}!`;
+  }
+}
+
+class Cat implements Animal {
+  name: string;
+  sound: string;
+
+  constructor(name: string) {
+    this.name = name;
+    this.sound = "Meow";
+  }
+
+  speak(): string {
+    return `${this.name} says ${this.sound}!`;
+  }
+}
+
+const d = new Dog("Bruno");
+const c = new Cat("Whiskers");
+console.log(d.speak());  // "Bruno says Woof!"
+console.log(c.speak());  // "Whiskers says Meow!"
+```
+
+### Example Question 22
+
+**Q: Create an interface `Vehicle` with `brand`, `speed`, and a `move()` method. Implement it with a `Car` class and a `Bike` class.**
+
+**Solution:**
+```ts
+interface Vehicle {
+  brand: string;
+  speed: number;
+  move(): string;
+}
+
+class Car implements Vehicle {
+  constructor(public brand: string, public speed: number) {}
+  move() { return `${this.brand} car moves at ${this.speed} km/h`; }
+}
+
+class Bike implements Vehicle {
+  constructor(public brand: string, public speed: number) {}
+  move() { return `${this.brand} bike zooms at ${this.speed} km/h`; }
+}
+
+const myCar = new Car("Toyota", 120);
+const myBike = new Bike("Yamaha", 90);
+console.log(myCar.move());   // "Toyota car moves at 120 km/h"
+console.log(myBike.move());  // "Yamaha bike zooms at 90 km/h"
+```
+
+---
+
+## Lesson 5 — Extending Interfaces
+
+An interface can **extend** another interface — it inherits all properties and adds its own. Useful for building up shapes step by step.
+
+```ts
+interface Person {
+  name: string;
+  age: number;
+}
+
+// Employee IS A Person + extra fields
+interface Employee extends Person {
+  company: string;
+  salary: number;
+}
+
+// Manager IS AN Employee + extra fields
+interface Manager extends Employee {
+  teamSize: number;
+}
+
+const m: Manager = {
+  name: "Ali",
+  age: 35,
+  company: "TechCorp",
+  salary: 100000,
+  teamSize: 8
+};
+```
+
+An interface can even extend multiple interfaces:
+```ts
+interface A { a: string; }
+interface B { b: number; }
+interface C extends A, B {
+  c: boolean;
+}
+
+const obj: C = { a: "hi", b: 10, c: true };
+```
+
+---
+
+## Lesson 6 — Real World MERN Example
+
+This is exactly how you'll use interfaces in a real MERN project:
+
+```ts
+// Interface for API response
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+// Interface for a User document from MongoDB
+interface IUser {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: "admin" | "user";
+  createdAt: Date;
+}
+
+// Interface for React component props
+interface UserCardProps {
+  user: IUser;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+// Express controller — fully typed
+function getUser(req: Request, res: Response): ApiResponse<IUser> {
+  const user: IUser = {
+    _id: "abc123",
+    name: "Ali",
+    email: "ali@mail.com",
+    password: "hashed",
+    role: "user",
+    createdAt: new Date()
+  };
+
+  return {
+    success: true,
+    message: "User fetched successfully",
+    data: user
+  };
+}
+```
+
+---
+
+## Complete Interface Notes
+
+```ts
+// ════════════════════════════════════════════
+//  INTERFACE — a contract describing shape
+//  TypeScript only. No runtime code.
+// ════════════════════════════════════════════
+
+// ─── BASIC INTERFACE ────────────────────────
+interface User {
+  name: string;        // required
+  age: number;         // required
+  email?: string;      // optional — ? mark
+  readonly id: number; // cannot be changed
+}
+
+// ─── METHOD SIGNATURES ──────────────────────
+interface Calculator {
+  a: number;
+  b: number;
+  add(): number;                 // returns number
+  multiply(x: number): number;   // takes number, returns number
+}
+
+// ─── EXTENDS ────────────────────────────────
+interface Animal { name: string; }
+interface Dog extends Animal {
+  breed: string;
+}
+
+// ─── IMPLEMENTS (on a class) ────────────────
+class Labrador implements Dog {
+  name: string;
+  breed: string;
+  constructor(name: string) {
+    this.name = name;
+    this.breed = "Labrador";
+  }
+}
+
+// ─── INTERFACE vs TYPE ──────────────────────
+// interface → can be extended, reopened, implemented
+// type      → more flexible (unions, intersections)
+// Use interface for object shapes, type for unions
+```
+
+---
+
+## Memory Tricks — Interfaces
+
+| Concept | Simple way to remember |
+|---|---|
+| Interface | A **contract** — describes the shape, not the logic |
+| `?` | Optional property — may or may not exist |
+| `readonly` | Property cannot be changed after creation |
+| `extends` (interface) | Child interface inherits from parent interface |
+| `implements` (class) | Class promises to follow the interface |
+| TypeScript only | Interface disappears after compilation |
+| When to use | React props, API responses, MongoDB schemas, function params |
+
+---
+
+**Homework — write this from scratch (TypeScript playground):**
+
+```ts
+// 1. Define an interface for a Book
+interface Book {
+  title: string;
+  author: string;
+  pages: number;
+  isAvailable: boolean;
+  rating?: number;          // optional
+  describe(): string;
+}
+
+// 2. Create a class that implements it
+class Novel implements Book {
+  constructor(
+    public title: string,
+    public author: string,
+    public pages: number,
+    public isAvailable: boolean,
+    public rating?: number
+  ) {}
+
+  describe() {
+    return `"${this.title}" by ${this.author} (${this.pages} pages)`;
+  }
+}
+
+// 3. Extend the interface
+interface EBook extends Book {
+  fileSize: number;
+  format: "PDF" | "EPUB" | "MOBI";
+}
+
+// 4. Test it!
+const b1 = new Novel("JS Guide", "Ali", 300, true, 4.5);
+console.log(b1.describe());   // "JS Guide" by Ali (300 pages)
+
+const ebook: EBook = {
+  title: "React Handbook",
+  author: "Sara",
+  pages: 250,
+  isAvailable: true,
+  fileSize: 15,
+  format: "PDF",
+  describe() { return `${this.title} — ${this.format}`; }
+};
+console.log(ebook.describe()); // "React Handbook — PDF"
+```
