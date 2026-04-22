@@ -652,3 +652,567 @@ console.log("Parsed back:", back.name);
 ```
 
 ---
+---
+
+# Part 3 — Classes
+
+## What is a Class?
+
+> **If you had to make 1000 student ID cards, would you design the template 1000 times — or design it ONCE and print 1000 copies?**
+
+Obviously once. **That's exactly what a Class is.**
+
+A **Class** is a blueprint or template for creating objects. It defines what properties and methods every object of that type should have. The objects created from a class are called **instances**.
+
+> **A Class is a template/blueprint. Objects are the copies made from that template.**
+
+![alt](../images/day6/class_blueprint_analogy.svg)
+
+One class — three different students, all with the same structure but different data.
+
+**Key terminology:**
+- **Class** — the blueprint/template
+- **Instance** — a real object created from the class
+- **`new`** — the keyword that creates an instance
+- **`constructor`** — a special method that runs automatically when `new` is called
+- **`this`** — refers to the current instance being created
+
+---
+
+## Lesson 1 — Anatomy of a Class
+
+![alt](../images/day6/class_anatomy_fully_labeled.svg)
+
+**6 things to memorise:**
+1. `class` — keyword to define a blueprint
+2. `Student` — class name — always Capital letter
+3. `constructor` — special function that runs automatically when you use `new`
+4. Parameters — data you pass in when creating
+5. `this` — means "the current object being created"
+6. `new` — creates an actual object from the class
+
+```js
+class Student {
+  constructor(name, age, score) {  // runs automatically
+    this.name  = name;             // this.name = property on the new object
+    this.age   = age;
+    this.score = score;
+  }
+
+  greet() {
+    return `Hi! I am ${this.name}`;
+  }
+}
+
+// Creating instances
+const ali  = new Student("Ali", 22, 88);
+const sara = new Student("Sara", 21, 95);
+
+console.log(ali.greet());   // "Hi! I am Ali"
+console.log(sara.greet());  // "Hi! I am Sara"
+```
+
+### Example Question 13
+
+**Q: Create a class `Car` with properties `brand`, `model`, and `speed`. Add a method `accelerate()` that increases speed by 10 and returns the new speed.**
+
+**Solution:**
+```js
+class Car {
+  constructor(brand, model, speed) {
+    this.brand = brand;
+    this.model = model;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    this.speed += 10;
+    return `${this.brand} ${this.model} speed: ${this.speed} km/h`;
+  }
+}
+
+const myCar = new Car("Toyota", "Corolla", 60);
+console.log(myCar.accelerate());  // "Toyota Corolla speed: 70 km/h"
+console.log(myCar.accelerate());  // "Toyota Corolla speed: 80 km/h"
+```
+
+### Example Question 14
+
+**Q: What happens if you forget to use `new` when creating an instance?**
+
+**Solution:**
+```js
+class Student {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+// Without new — throws an error!
+const s = Student("Ali");
+// TypeError: Class constructor Student cannot be invoked without 'new'
+
+// Correct way:
+const s = new Student("Ali");  // works!
+```
+
+---
+
+## Lesson 2 — Live Class Builder
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day6/class_live_builder.html)
+
+Create multiple students — change the name, age, score each time. Watch new cards appear. Then click `greet()`, `study()`, `getGrade()` on different cards — every instance works independently!
+
+---
+
+## Lesson 3 — Why Class is Better Than Plain Objects
+
+| Plain Object Approach | Class Approach |
+|---|---|
+| Copy-paste the structure every time | Define once, create many with `new` |
+| Methods must be repeated in each object | Methods defined once, shared by all instances |
+| No validation or consistency | Constructor enforces a consistent structure |
+| Hard to maintain with 100+ objects | Change the class once, all future instances get the update |
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day6/class_vs_plain_object.html)
+
+### Example Question 15
+
+**Q: You need 3 user objects with `name`, `email`, and a `login()` method. Show the plain object way vs the class way.**
+
+**Solution:**
+```js
+// ❌ Plain object way — repeated 3 times
+const user1 = { name: "Ali", email: "ali@mail.com", login() { return this.name + " logged in"; } };
+const user2 = { name: "Sara", email: "sara@mail.com", login() { return this.name + " logged in"; } };
+const user3 = { name: "Ravi", email: "ravi@mail.com", login() { return this.name + " logged in"; } };
+
+// ✅ Class way — define once, create many
+class User {
+  constructor(name, email) {
+    this.name = name;
+    this.email = email;
+  }
+  login() { return this.name + " logged in"; }
+}
+
+const u1 = new User("Ali", "ali@mail.com");
+const u2 = new User("Sara", "sara@mail.com");
+const u3 = new User("Ravi", "ravi@mail.com");
+```
+
+---
+
+## Lesson 4 — Inheritance: One Class Extending Another
+
+### What is Inheritance?
+
+**Inheritance** means one class can **inherit** (receive) all properties and methods from another class, and then add its own on top.
+
+> Think of it like this: every Teacher IS ALSO a Person. So Teacher inherits everything from Person and adds its own stuff.
+
+**Key rules:**
+- `extends` — keyword to inherit from a parent class
+- `super()` — calls the parent's constructor. **Must be called first** inside the child's constructor
+- The child class gets all parent methods for free
+
+![alt](../images/day6/inheritance_diagram_animated.svg)
+
+```js
+// Parent class
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age  = age;
+  }
+  greet() { return `Hello! I am ${this.name}`; }
+  introduce() { return `I am ${this.age} years old`; }
+}
+
+// Child class — inherits from Person
+class Teacher extends Person {
+  constructor(name, age, subject) {
+    super(name, age);          // MUST call super() first!
+    this.subject = subject;    // own property
+  }
+  teach() { return `${this.name} teaches ${this.subject}`; }
+}
+
+const t = new Teacher("Mr Ali", 35, "Maths");
+t.greet()      // "Hello! I am Mr Ali"     — inherited from Person
+t.introduce()  // "I am 35 years old"      — inherited from Person
+t.teach()      // "Mr Ali teaches Maths"   — own method
+```
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day6/inheritance_live_lab.html)
+
+Click every method button on both cards. Notice that both Teacher and Student can call `greet()` and `introduce()` — they got those for FREE from Person through inheritance!
+
+### Example Question 16
+
+**Q: Create a `Shape` class with a `color` property and a `describe()` method. Then create a `Circle` class that extends `Shape`, adds a `radius` property, and has an `area()` method.**
+
+**Solution:**
+```js
+class Shape {
+  constructor(color) {
+    this.color = color;
+  }
+  describe() { return `A ${this.color} shape`; }
+}
+
+class Circle extends Shape {
+  constructor(color, radius) {
+    super(color);            // call parent constructor
+    this.radius = radius;
+  }
+  area() { return (Math.PI * this.radius ** 2).toFixed(2); }
+}
+
+const c = new Circle("red", 5);
+console.log(c.describe());  // "A red shape"     — inherited
+console.log(c.area());      // "78.54"           — own method
+console.log(c.color);       // "red"             — inherited property
+```
+
+### Example Question 17
+
+**Q: What happens if you forget to call `super()` in a child constructor?**
+
+**Solution:**
+```js
+class Animal {
+  constructor(name) { this.name = name; }
+}
+
+class Dog extends Animal {
+  constructor(name, breed) {
+    // super(name);  — forgot this!
+    this.breed = breed;
+  }
+}
+
+const d = new Dog("Bruno", "Labrador");
+// ReferenceError: Must call super constructor in derived class
+//                 before accessing 'this'
+```
+You **must** call `super()` before using `this` in a child constructor.
+
+---
+
+## Lesson 5 — Getters, Setters & Static Methods
+
+### What are Getters and Setters?
+
+- **Getter (`get`)** — access a computed value like a regular property (no parentheses needed)
+- **Setter (`set`)** — validate or transform data before storing it
+
+### What is a Static Method?
+
+A **static method** belongs to the **class itself**, not to any instance. You call it on the class name directly.
+
+```js
+// Getter & Setter
+class Circle {
+  constructor(radius) { this._radius = radius; }
+
+  get area()    { return 3.14 * this._radius ** 2; }  // computed property
+  get radius()  { return this._radius; }
+  set radius(r) {
+    if (r <= 0) throw "Radius must be positive!";
+    this._radius = r;
+  }
+}
+
+const c = new Circle(5);
+c.area        // 78.5   — no parentheses!
+c.radius = 10;          // uses setter — validates
+// c.radius = -3;       // throws "Radius must be positive!"
+
+// Static method
+class MathHelper {
+  static add(a, b)  { return a + b; }
+  static PI = 3.14159;
+}
+MathHelper.add(5, 3)   // 8   — called on CLASS
+MathHelper.PI           // 3.14159
+
+// const m = new MathHelper();
+// m.add(5, 3);         // ERROR — static methods can't be called on instances
+```
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day6/getters_setters_static_lab.html)
+
+Try all 3 tabs! On **setter** — type `200` and press the button to see validation fail. On **static** — click the "see error" button to understand why static methods can't be called on instances.
+
+### Example Question 18
+
+**Q: Create a class `Temperature` with a private `_celsius` value. Add a getter `fahrenheit` that converts it, and a setter `celsius` that rejects values below -273.15 (absolute zero).**
+
+**Solution:**
+```js
+class Temperature {
+  constructor(celsius) {
+    this.celsius = celsius;    // uses the setter for validation
+  }
+
+  get fahrenheit() {
+    return (this._celsius * 9/5) + 32;
+  }
+
+  set celsius(value) {
+    if (value < -273.15) throw "Below absolute zero!";
+    this._celsius = value;
+  }
+
+  get celsius() {
+    return this._celsius;
+  }
+}
+
+const t = new Temperature(100);
+console.log(t.fahrenheit);     // 212
+t.celsius = 0;
+console.log(t.fahrenheit);     // 32
+// t.celsius = -300;            // throws "Below absolute zero!"
+```
+
+### Example Question 19
+
+**Q: Create a class `Counter` with a static method `count` that tracks how many instances have been created.**
+
+**Solution:**
+```js
+class Counter {
+  static count = 0;
+
+  constructor(name) {
+    this.name = name;
+    Counter.count++;     // increment on every new instance
+  }
+
+  static getCount() {
+    return `Total instances: ${Counter.count}`;
+  }
+}
+
+const a = new Counter("A");
+const b = new Counter("B");
+const c = new Counter("C");
+console.log(Counter.getCount());  // "Total instances: 3"
+```
+
+---
+
+## Lesson 6 — Real World Complete Example
+
+This is how classes look in a **real Node.js backend** — the exact kind of code you'll write in this course:
+
+```js
+class BankAccount {
+  constructor(owner, balance = 0) {
+    this.owner   = owner;
+    this.balance = balance;
+    this.history = [];
+  }
+
+  deposit(amount) {
+    if (amount <= 0) return "Invalid amount";
+    this.balance += amount;
+    this.history.push(`+${amount}`);
+    return `Deposited ₹${amount}. Balance: ₹${this.balance}`;
+  }
+
+  withdraw(amount) {
+    if (amount > this.balance) return "Insufficient funds!";
+    this.balance -= amount;
+    this.history.push(`-${amount}`);
+    return `Withdrew ₹${amount}. Balance: ₹${this.balance}`;
+  }
+
+  getStatement() {
+    return this.history.join(", ");
+  }
+}
+
+const acc = new BankAccount("Ali", 1000);
+acc.deposit(500);    // "Deposited ₹500. Balance: ₹1500"
+acc.withdraw(200);   // "Withdrew ₹200. Balance: ₹1300"
+acc.withdraw(5000);  // "Insufficient funds!"
+acc.getStatement();  // "+500, -200"
+```
+
+[Click link to open Simulation](https://ak9347128658.github.io/MERN_Batch_April_2026/javascript/day6/real_world_bankaccount_class.html)
+
+This is a real-world class! Deposit money, withdraw money. Try withdrawing more than the balance — see the validation error. This exact pattern is used in banking apps, e-commerce platforms, and every serious Node.js project!
+
+### Example Question 20
+
+**Q: Add a `transfer(amount, toAccount)` method to the `BankAccount` class that withdraws from one account and deposits into another.**
+
+**Solution:**
+```js
+class BankAccount {
+  constructor(owner, balance = 0) {
+    this.owner = owner;
+    this.balance = balance;
+  }
+
+  deposit(amount) {
+    this.balance += amount;
+    return `${this.owner} received ₹${amount}`;
+  }
+
+  withdraw(amount) {
+    if (amount > this.balance) return "Insufficient funds!";
+    this.balance -= amount;
+    return `${this.owner} sent ₹${amount}`;
+  }
+
+  transfer(amount, toAccount) {
+    if (amount > this.balance) return "Insufficient funds!";
+    this.balance -= amount;
+    toAccount.balance += amount;
+    return `₹${amount} transferred from ${this.owner} to ${toAccount.owner}`;
+  }
+}
+
+const ali  = new BankAccount("Ali", 5000);
+const sara = new BankAccount("Sara", 2000);
+console.log(ali.transfer(1500, sara));
+// "₹1500 transferred from Ali to Sara"
+console.log(ali.balance);   // 3500
+console.log(sara.balance);  // 3500
+```
+
+---
+
+## Complete Class Notes
+
+```js
+// ════════════════════════════════════════════
+//  CLASS — a blueprint for creating objects
+//  Always Capital letter. Use new to create.
+// ════════════════════════════════════════════
+
+// ─── BASIC CLASS ────────────────────────────
+class Student {
+  constructor(name, age, score) {   // runs when new is called
+    this.name  = name;              // this = the new object
+    this.age   = age;
+    this.score = score;
+  }
+  greet()    { return `Hi! I am ${this.name}`; }
+  getGrade() { return this.score >= 90 ? "A" : "B"; }
+}
+
+// Creating instances (objects from the class)
+const ali  = new Student("Ali",  22, 88); // instance 1
+const sara = new Student("Sara", 21, 95); // instance 2
+
+ali.greet()    // "Hi! I am Ali"
+sara.getGrade() // "A"
+
+
+// ─── INHERITANCE (extends) ──────────────────
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age  = age;
+  }
+  greet() { return `Hello! I am ${this.name}`; }
+}
+
+class Teacher extends Person {
+  constructor(name, age, subject) {
+    super(name, age);          // MUST call super first!
+    this.subject = subject;    // own property
+  }
+  teach() { return `${this.name} teaches ${this.subject}`; }
+}
+
+const t = new Teacher("Mr Ali", 35, "Maths");
+t.greet()  // ✓ inherited from Person
+t.teach()  // ✓ own method
+
+
+// ─── GETTER & SETTER ────────────────────────
+class Circle {
+  constructor(radius) { this._radius = radius; }
+
+  get area()     { return 3.14 * this._radius ** 2; }  // no ()
+  get radius()   { return this._radius; }
+  set radius(r)  {                                      // validate
+    if (r <= 0) throw "Radius must be positive!";
+    this._radius = r;
+  }
+}
+const c = new Circle(5);
+c.area     // 78.5   (no parentheses!)
+c.radius = 10;  // uses setter — validates first
+
+
+// ─── STATIC ─────────────────────────────────
+class MathHelper {
+  static add(a, b)  { return a + b; }
+  static PI = 3.14159;
+}
+MathHelper.add(5, 3)  // 8  — call on CLASS, not instance
+```
+
+---
+
+## Memory Tricks — Classes
+
+| Concept | Simple way to remember |
+|---|---|
+| Class | A blueprint / template / cookie cutter |
+| Instance | A real object made FROM the class |
+| `new` | Creates a new instance |
+| `constructor` | Runs automatically when `new` is called |
+| `this` | "The current object being worked with" |
+| `extends` | Child class inherits from parent class |
+| `super()` | Calls the parent's constructor — always first! |
+| `get` | Access computed value like a property |
+| `set` | Validate before storing a value |
+| `static` | Belongs to the CLASS itself, not instances |
+
+---
+
+**Homework — write this from scratch in your console:**
+
+```js
+// 1. Create an Animal class
+class Animal {
+  constructor(name, sound) {
+    this.name  = name;
+    this.sound = sound;
+  }
+  speak() { return `${this.name} says ${this.sound}!`; }
+}
+
+// 2. Create a Dog class that extends Animal
+class Dog extends Animal {
+  constructor(name) {
+    super(name, "Woof");   // Dog always says Woof
+    this.tricks = [];
+  }
+  learnTrick(trick) {
+    this.tricks.push(trick);
+    return `${this.name} learned: ${trick}`;
+  }
+  showTricks() { return this.tricks.join(", "); }
+}
+
+// 3. Test it!
+const dog = new Dog("Bruno");
+console.log(dog.speak());             // Bruno says Woof!
+console.log(dog.learnTrick("sit"));   // Bruno learned: sit
+console.log(dog.learnTrick("shake")); // Bruno learned: shake
+console.log(dog.showTricks());        // sit, shake
+
+// 4. instanceof check
+console.log(dog instanceof Dog);    // true
+console.log(dog instanceof Animal); // true — because Dog extends Animal!
+```
