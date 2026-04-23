@@ -574,10 +574,3 @@ Look carefully — we used **10+ built-in methods** together: `trim()`, `parseFl
 8. **`finally` always runs** — even if an error happens. Use it for cleanup.
 
 ---
-
-**Homework:**
-- Open the simulation link and try all 29 functions.
-- Write your own `registerUser()` function and test it with good and bad inputs.
-- Try to break your code on purpose and catch the error with `try...catch`.
-
-See you tomorrow!
