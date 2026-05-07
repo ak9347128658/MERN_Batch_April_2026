@@ -1,46 +1,12 @@
-import myexpress from "express";
+const express = require("express");
+const {router: todosRouter} = require('./src/routes/todos.js');
 
-const app = myexpress();
+const app = express();
 
-const todos =[
-    {
-     id: 1,
-     title:"Buy milk",
-     done: true
-    },
-    {
-      id: 2,
-      title:"cook food",
-      done: false
-    }
-]
+app.use(express.json());
 
-
-app.use(myexpress.json());
-
-app.get("/todos", (req,res,next) => {
-   return res.json(todos)
-});              // http://localhost:3001/todos
-
-app.post("/todos",(req,res,next) => {
-   try{
-       console.log("req : ",req);
-       const {id,title,done} = req.body;
-       todos.push({id,title,done});
-       return res.status(200).json({
-        message: 
-            "Todo added successfully.",
-        sucess: true
-       })
-   }catch(error){
-    return req.status(404).json({
-        error: "Opps! something went wrong."
-    })
-   }
-});
-
-
+app.use("/todos",todosRouter)
 
 app.listen(3001,() => {
-    console.log("Server is running on http://localhost:3001")
+    console.log("Server start successfully http://localhost:3001")
 })
