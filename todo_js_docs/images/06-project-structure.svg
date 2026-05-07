@@ -1,0 +1,68 @@
+<svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="700" height="380" fill="#f8fafc" rx="12"/>
+  <text x="350" y="28" text-anchor="middle" fill="#1e293b" font-size="16" font-weight="bold">Project Folder Structure</text>
+
+  <!-- Tree background -->
+  <rect x="30" y="44" width="310" height="310" rx="8" fill="#1e293b"/>
+
+  <!-- Root folder -->
+  <text x="50" y="72" fill="#fbbf24" font-size="13" font-family="monospace">📁 todo-app/</text>
+
+  <!-- package.json -->
+  <text x="56" y="94" fill="#94a3b8" font-size="12" font-family="monospace">├── 📄 package.json</text>
+  <!-- server.js -->
+  <text x="56" y="112" fill="#94a3b8" font-size="12" font-family="monospace">├── 📄 server.js</text>
+  <!-- .gitignore -->
+  <text x="56" y="130" fill="#94a3b8" font-size="12" font-family="monospace">├── 📄 .gitignore</text>
+
+  <!-- src/ folder -->
+  <text x="56" y="152" fill="#60a5fa" font-size="13" font-family="monospace">├── 📁 src/</text>
+
+  <!-- routes/ -->
+  <text x="68" y="170" fill="#4ade80" font-size="12" font-family="monospace">│   ├── 📁 routes/</text>
+  <text x="80" y="188" fill="#86efac" font-size="11" font-family="monospace">│   │   └── todos.js</text>
+
+  <!-- data/ -->
+  <text x="68" y="206" fill="#f59e0b" font-size="12" font-family="monospace">│   ├── 📁 data/</text>
+  <text x="80" y="224" fill="#fcd34d" font-size="11" font-family="monospace">│   │   └── todos.json</text>
+
+  <!-- utils/ -->
+  <text x="68" y="242" fill="#c084fc" font-size="12" font-family="monospace">│   └── 📁 utils/</text>
+  <text x="80" y="260" fill="#d8b4fe" font-size="11" font-family="monospace">│       └── fileHelper.js</text>
+
+  <!-- node_modules -->
+  <text x="56" y="280" fill="#475569" font-size="12" font-family="monospace">└── 📁 node_modules/</text>
+  <text x="68" y="296" fill="#475569" font-size="11" font-family="monospace">    └── (auto-generated)</text>
+
+  <!-- Legend / descriptions -->
+  <rect x="360" y="44" width="310" height="310" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="515" y="68" text-anchor="middle" fill="#1e293b" font-size="13" font-weight="bold">What Each File Does</text>
+
+  <rect x="372" y="78" width="8" height="8" rx="2" fill="#fbbf24"/>
+  <text x="390" y="88" fill="#374151" font-size="11" font-weight="bold">package.json</text>
+  <text x="390" y="102" fill="#6b7280" font-size="10">Project config, scripts, dependencies</text>
+
+  <rect x="372" y="112" width="8" height="8" rx="2" fill="#4ade80"/>
+  <text x="390" y="122" fill="#374151" font-size="11" font-weight="bold">server.js</text>
+  <text x="390" y="136" fill="#6b7280" font-size="10">Entry point — starts Express server</text>
+
+  <rect x="372" y="148" width="8" height="8" rx="2" fill="#60a5fa"/>
+  <text x="390" y="158" fill="#374151" font-size="11" font-weight="bold">src/routes/todos.js</text>
+  <text x="390" y="172" fill="#6b7280" font-size="10">All /todos API route handlers</text>
+  <text x="390" y="185" fill="#6b7280" font-size="10">GET, POST, PUT, DELETE logic</text>
+
+  <rect x="372" y="198" width="8" height="8" rx="2" fill="#f59e0b"/>
+  <text x="390" y="208" fill="#374151" font-size="11" font-weight="bold">src/data/todos.json</text>
+  <text x="390" y="222" fill="#6b7280" font-size="10">Our "database" — JSON file</text>
+  <text x="390" y="235" fill="#6b7280" font-size="10">Stores all todo records</text>
+
+  <rect x="372" y="248" width="8" height="8" rx="2" fill="#c084fc"/>
+  <text x="390" y="258" fill="#374151" font-size="11" font-weight="bold">src/utils/fileHelper.js</text>
+  <text x="390" y="272" fill="#6b7280" font-size="10">Helper: read &amp; write JSON file</text>
+  <text x="390" y="285" fill="#6b7280" font-size="10">Reusable utility functions</text>
+
+  <rect x="372" y="298" width="8" height="8" rx="2" fill="#475569"/>
+  <text x="390" y="308" fill="#374151" font-size="11" font-weight="bold">node_modules/</text>
+  <text x="390" y="322" fill="#6b7280" font-size="10">Auto-created by npm install</text>
+  <text x="390" y="335" fill="#ef4444" font-size="10">Never commit this to git!</text>
+</svg>

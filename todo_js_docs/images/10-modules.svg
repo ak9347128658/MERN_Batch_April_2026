@@ -1,0 +1,61 @@
+<svg viewBox="0 0 780 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="780" height="340" fill="#f8fafc" rx="12"/>
+  <text x="390" y="28" text-anchor="middle" fill="#1e293b" font-size="16" font-weight="bold">Node.js Module System — require() &amp; module.exports</text>
+
+  <defs>
+    <marker id="modArrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+
+  <!-- 3 types of modules -->
+  <rect x="20" y="44" width="220" height="130" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <rect x="20" y="44" width="220" height="28" rx="8" fill="#d97706"/>
+  <text x="130" y="63" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Built-in Modules</text>
+  <text x="130" y="92" text-anchor="middle" fill="#92400e" font-size="11">Come with Node.js itself</text>
+  <text x="30" y="110" fill="#374151" font-size="11" font-family="monospace">const fs = require('fs')</text>
+  <text x="30" y="127" fill="#374151" font-size="11" font-family="monospace">const path = require('path')</text>
+  <text x="30" y="144" fill="#374151" font-size="11" font-family="monospace">const http = require('http')</text>
+  <text x="30" y="161" fill="#6b7280" font-size="10">No npm install needed!</text>
+
+  <rect x="280" y="44" width="220" height="130" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="280" y="44" width="220" height="28" rx="8" fill="#7c3aed"/>
+  <text x="390" y="63" text-anchor="middle" fill="white" font-size="12" font-weight="bold">npm Packages</text>
+  <text x="390" y="92" text-anchor="middle" fill="#5b21b6" font-size="11">Downloaded from npm registry</text>
+  <text x="290" y="110" fill="#374151" font-size="11" font-family="monospace">const express = require('express')</text>
+  <text x="290" y="127" fill="#374151" font-size="11" font-family="monospace">const cors = require('cors')</text>
+  <text x="290" y="144" fill="#374151" font-size="11">npm install express first</text>
+  <text x="290" y="161" fill="#6b7280" font-size="10">Saved to node_modules/</text>
+
+  <rect x="540" y="44" width="220" height="130" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <rect x="540" y="44" width="220" height="28" rx="8" fill="#10b981"/>
+  <text x="650" y="63" text-anchor="middle" fill="white" font-size="12" font-weight="bold">Your Own Files</text>
+  <text x="650" y="92" text-anchor="middle" fill="#065f46" font-size="11">Files you write yourself</text>
+  <text x="550" y="110" fill="#374151" font-size="11" font-family="monospace">const r = require('./routes/todos')</text>
+  <text x="550" y="127" fill="#374151" font-size="11" font-family="monospace">const h = require('../utils/fileHelper')</text>
+  <text x="550" y="144" fill="#374151" font-size="11">Always starts with ./ or ../</text>
+  <text x="550" y="161" fill="#6b7280" font-size="10">Relative path to the file</text>
+
+  <!-- Export / Import flow -->
+  <rect x="20" y="196" width="340" height="120" rx="8" fill="#1e293b"/>
+  <rect x="20" y="196" width="160" height="22" rx="6" fill="#334155"/>
+  <text x="100" y="212" text-anchor="middle" fill="#f59e0b" font-size="11">fileHelper.js (exporting)</text>
+  <text x="30" y="234" fill="#f472b6" font-size="11" font-family="monospace">function readTodos() { ... }</text>
+  <text x="30" y="252" fill="#f472b6" font-size="11" font-family="monospace">function writeTodos() { ... }</text>
+  <text x="30" y="270" fill="#94a3b8" font-size="11" font-family="monospace">module.exports = {</text>
+  <text x="42" y="286" fill="#86efac" font-size="11" font-family="monospace">  readTodos, writeTodos</text>
+  <text x="30" y="302" fill="#94a3b8" font-size="11" font-family="monospace">};</text>
+
+  <!-- Arrow -->
+  <line x1="362" y1="256" x2="418" y2="256" stroke="#6366f1" stroke-width="2.5" marker-end="url(#modArrow)"/>
+  <text x="390" y="248" text-anchor="middle" fill="#6366f1" font-size="10" font-weight="bold">require()</text>
+
+  <rect x="420" y="196" width="340" height="120" rx="8" fill="#1e293b"/>
+  <rect x="420" y="196" width="150" height="22" rx="6" fill="#334155"/>
+  <text x="495" y="212" text-anchor="middle" fill="#f59e0b" font-size="11">todos.js (importing)</text>
+  <text x="430" y="234" fill="#94a3b8" font-size="11" font-family="monospace">const {</text>
+  <text x="442" y="250" fill="#86efac" font-size="11" font-family="monospace">  readTodos,</text>
+  <text x="442" y="266" fill="#86efac" font-size="11" font-family="monospace">  writeTodos</text>
+  <text x="430" y="282" fill="#94a3b8" font-size="11" font-family="monospace">} = require('../utils/fileHelper');</text>
+  <text x="430" y="302" fill="#60a5fa" font-size="11" font-family="monospace">const todos = readTodos(); // use it!</text>
+</svg>

@@ -1,0 +1,103 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="800" height="400" fill="#f8fafc" rx="12"/>
+  <text x="400" y="28" text-anchor="middle" fill="#1e293b" font-size="16" font-weight="bold">HTTP Request &amp; Response Anatomy</text>
+
+  <defs>
+    <marker id="ra" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="ra2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+
+  <!-- REQUEST box -->
+  <rect x="20" y="44" width="310" height="200" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <rect x="20" y="44" width="310" height="28" rx="8" fill="#f97316"/>
+  <text x="175" y="63" text-anchor="middle" fill="white" font-size="13" font-weight="bold">HTTP REQUEST (Client → Server)</text>
+
+  <!-- Request line -->
+  <rect x="32" y="82" width="286" height="22" rx="4" fill="#fed7aa"/>
+  <text x="175" y="96" text-anchor="middle" fill="#7c2d12" font-size="11" font-family="monospace" font-weight="bold">POST /todos HTTP/1.1</text>
+
+  <!-- Headers section -->
+  <text x="36" y="118" fill="#9a3412" font-size="10" font-weight="bold">HEADERS:</text>
+  <text x="36" y="133" fill="#374151" font-size="10" font-family="monospace">Host: localhost:3000</text>
+  <text x="36" y="147" fill="#374151" font-size="10" font-family="monospace">Content-Type: application/json</text>
+  <text x="36" y="161" fill="#374151" font-size="10" font-family="monospace">Accept: application/json</text>
+
+  <!-- Divider -->
+  <line x1="32" y1="172" x2="318" y2="172" stroke="#fdba74" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="36" y="188" fill="#9a3412" font-size="10" font-weight="bold">BODY (payload):</text>
+  <text x="36" y="202" fill="#374151" font-size="10" font-family="monospace">{"title": "Buy milk",</text>
+  <text x="36" y="216" fill="#374151" font-size="10" font-family="monospace"> "completed": false}</text>
+  <text x="36" y="232" fill="#6b7280" font-size="10" font-style="italic">← This is the PAYLOAD / req.body</text>
+
+  <!-- METHOD labels -->
+  <rect x="32" y="250" width="60" height="20" rx="4" fill="#22c55e"/>
+  <text x="62" y="264" text-anchor="middle" fill="white" font-size="10" font-weight="bold">GET</text>
+  <rect x="98" y="250" width="60" height="20" rx="4" fill="#3b82f6"/>
+  <text x="128" y="264" text-anchor="middle" fill="white" font-size="10" font-weight="bold">POST</text>
+  <rect x="164" y="250" width="60" height="20" rx="4" fill="#f59e0b"/>
+  <text x="194" y="264" text-anchor="middle" fill="white" font-size="10" font-weight="bold">PUT</text>
+  <rect x="230" y="250" width="68" height="20" rx="4" fill="#ef4444"/>
+  <text x="264" y="264" text-anchor="middle" fill="white" font-size="10" font-weight="bold">DELETE</text>
+
+  <!-- CENTER: Express processing -->
+  <rect x="345" y="90" width="110" height="150" rx="8" fill="#1e293b"/>
+  <text x="400" y="113" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="bold">Express</text>
+  <text x="400" y="130" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="bold">Server</text>
+  <rect x="358" y="140" width="84" height="20" rx="4" fill="#334155"/>
+  <text x="400" y="154" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="monospace">json()</text>
+  <rect x="358" y="166" width="84" height="20" rx="4" fill="#334155"/>
+  <text x="400" y="180" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="monospace">router</text>
+  <rect x="358" y="192" width="84" height="20" rx="4" fill="#334155"/>
+  <text x="400" y="206" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="monospace">handler</text>
+  <rect x="358" y="218" width="84" height="20" rx="4" fill="#334155"/>
+  <text x="400" y="232" text-anchor="middle" fill="#60a5fa" font-size="9" font-family="monospace">todos.json</text>
+
+  <!-- Request arrow -->
+  <line x1="332" y1="155" x2="343" y2="155" stroke="#f97316" stroke-width="2" marker-end="url(#ra)"/>
+
+  <!-- Response arrow -->
+  <line x1="457" y1="170" x2="468" y2="170" stroke="#22c55e" stroke-width="2" marker-end="url(#ra2)"/>
+
+  <!-- RESPONSE box -->
+  <rect x="470" y="44" width="310" height="200" rx="8" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <rect x="470" y="44" width="310" height="28" rx="8" fill="#22c55e"/>
+  <text x="625" y="63" text-anchor="middle" fill="white" font-size="13" font-weight="bold">HTTP RESPONSE (Server → Client)</text>
+
+  <!-- Status line -->
+  <rect x="482" y="82" width="286" height="22" rx="4" fill="#bbf7d0"/>
+  <text x="625" y="96" text-anchor="middle" fill="#14532d" font-size="11" font-family="monospace" font-weight="bold">HTTP/1.1  200  OK</text>
+
+  <!-- Response headers -->
+  <text x="486" y="118" fill="#15803d" font-size="10" font-weight="bold">HEADERS:</text>
+  <text x="486" y="133" fill="#374151" font-size="10" font-family="monospace">Content-Type: application/json</text>
+  <text x="486" y="147" fill="#374151" font-size="10" font-family="monospace">X-Powered-By: Express</text>
+
+  <!-- Divider -->
+  <line x1="482" y1="158" x2="768" y2="158" stroke="#86efac" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="486" y="174" fill="#15803d" font-size="10" font-weight="bold">BODY (JSON):</text>
+  <text x="486" y="188" fill="#374151" font-size="10" font-family="monospace">{"id": 1, "title": "Buy milk",</text>
+  <text x="486" y="202" fill="#374151" font-size="10" font-family="monospace"> "completed": false}</text>
+  <text x="486" y="220" fill="#6b7280" font-size="10" font-style="italic">← This is res.json(...)</text>
+
+  <!-- Status codes reference -->
+  <rect x="20" y="290" width="760" height="90" rx="8" fill="#fff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="400" y="310" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold">Common HTTP Status Codes</text>
+  <rect x="32" y="320" width="70" height="22" rx="4" fill="#22c55e"/>
+  <text x="67" y="335" text-anchor="middle" fill="white" font-size="11" font-weight="bold">200 OK</text>
+  <rect x="112" y="320" width="100" height="22" rx="4" fill="#22c55e"/>
+  <text x="162" y="335" text-anchor="middle" fill="white" font-size="11" font-weight="bold">201 Created</text>
+  <rect x="222" y="320" width="110" height="22" rx="4" fill="#f59e0b"/>
+  <text x="277" y="335" text-anchor="middle" fill="white" font-size="11" font-weight="bold">400 Bad Request</text>
+  <rect x="342" y="320" width="100" height="22" rx="4" fill="#f59e0b"/>
+  <text x="392" y="335" text-anchor="middle" fill="white" font-size="11" font-weight="bold">404 Not Found</text>
+  <rect x="452" y="320" width="120" height="22" rx="4" fill="#ef4444"/>
+  <text x="512" y="335" text-anchor="middle" fill="white" font-size="11" font-weight="bold">500 Server Error</text>
+  <rect x="582" y="320" width="104" height="22" rx="4" fill="#ef4444"/>
+  <text x="634" y="335" text-anchor="middle" fill="white" font-size="11" font-weight="bold">401 Unauth</text>
+
+  <text x="32" y="370" fill="#6b7280" font-size="10">2xx = Success  |  3xx = Redirect  |  4xx = Client Error (your fault)  |  5xx = Server Error (our fault)</text>
+</svg>

@@ -1,0 +1,76 @@
+<svg viewBox="0 0 780 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="780" height="300" fill="#f8fafc" rx="12"/>
+  <text x="390" y="28" text-anchor="middle" fill="#1e293b" font-size="16" font-weight="bold">Express Middleware Pipeline</text>
+
+  <defs>
+    <marker id="mp" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+
+  <!-- Request -->
+  <rect x="10" y="115" width="90" height="50" rx="8" fill="#1e293b"/>
+  <text x="55" y="137" text-anchor="middle" fill="#94a3b8" font-size="10">HTTP</text>
+  <text x="55" y="152" text-anchor="middle" fill="#60a5fa" font-size="11" font-weight="bold">Request</text>
+
+  <!-- Arrow -->
+  <line x1="102" y1="140" x2="118" y2="140" stroke="#6366f1" stroke-width="2" marker-end="url(#mp)"/>
+
+  <!-- Middleware 1: express.json() -->
+  <rect x="120" y="100" width="120" height="80" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="180" y="128" text-anchor="middle" fill="#5b21b6" font-size="11" font-weight="bold">express.json()</text>
+  <text x="180" y="145" text-anchor="middle" fill="#7c3aed" font-size="10">Parses JSON</text>
+  <text x="180" y="160" text-anchor="middle" fill="#7c3aed" font-size="10">body → req.body</text>
+  <text x="180" y="95" text-anchor="middle" fill="#6d28d9" font-size="9">Middleware 1</text>
+
+  <!-- Arrow -->
+  <line x1="242" y1="140" x2="258" y2="140" stroke="#6366f1" stroke-width="2" marker-end="url(#mp)"/>
+
+  <!-- Middleware 2: logger -->
+  <rect x="260" y="100" width="120" height="80" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="320" y="128" text-anchor="middle" fill="#92400e" font-size="11" font-weight="bold">Logger</text>
+  <text x="320" y="145" text-anchor="middle" fill="#b45309" font-size="10">Logs each</text>
+  <text x="320" y="160" text-anchor="middle" fill="#b45309" font-size="10">request to console</text>
+  <text x="320" y="95" text-anchor="middle" fill="#d97706" font-size="9">Middleware 2</text>
+
+  <!-- Arrow -->
+  <line x1="382" y1="140" x2="398" y2="140" stroke="#6366f1" stroke-width="2" marker-end="url(#mp)"/>
+
+  <!-- Middleware 3: Router -->
+  <rect x="400" y="100" width="120" height="80" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <text x="460" y="125" text-anchor="middle" fill="#065f46" font-size="11" font-weight="bold">Router</text>
+  <text x="460" y="142" text-anchor="middle" fill="#047857" font-size="10">Matches URL</text>
+  <text x="460" y="157" text-anchor="middle" fill="#047857" font-size="10">to handler</text>
+  <text x="460" y="95" text-anchor="middle" fill="#10b981" font-size="9">Middleware 3</text>
+
+  <!-- Arrow -->
+  <line x1="522" y1="140" x2="538" y2="140" stroke="#6366f1" stroke-width="2" marker-end="url(#mp)"/>
+
+  <!-- Handler -->
+  <rect x="540" y="100" width="120" height="80" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="600" y="125" text-anchor="middle" fill="#1e40af" font-size="11" font-weight="bold">Route Handler</text>
+  <text x="600" y="142" text-anchor="middle" fill="#1d4ed8" font-size="10">Your logic runs</text>
+  <text x="600" y="157" text-anchor="middle" fill="#1d4ed8" font-size="10">res.json(data)</text>
+  <text x="600" y="95" text-anchor="middle" fill="#3b82f6" font-size="9">Your Code</text>
+
+  <!-- Arrow -->
+  <line x1="662" y1="140" x2="678" y2="140" stroke="#6366f1" stroke-width="2" marker-end="url(#mp)"/>
+
+  <!-- Response -->
+  <rect x="680" y="115" width="90" height="50" rx="8" fill="#1e293b"/>
+  <text x="725" y="137" text-anchor="middle" fill="#94a3b8" font-size="10">HTTP</text>
+  <text x="725" y="152" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="bold">Response</text>
+
+  <!-- next() explanation -->
+  <rect x="120" y="198" width="540" height="60" rx="8" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="390" y="220" text-anchor="middle" fill="#475569" font-size="12" font-weight="bold">How it works: next()</text>
+  <text x="390" y="240" text-anchor="middle" fill="#64748b" font-size="11">Each middleware calls next() to pass control to the next step.</text>
+  <text x="390" y="256" text-anchor="middle" fill="#64748b" font-size="11">If it doesn't call next(), the chain stops (e.g. auth failed → stop here)</text>
+
+  <!-- Code snippet -->
+  <rect x="10" y="198" width="100" height="60" rx="8" fill="#1e293b"/>
+  <text x="60" y="218" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">(req,res,next)</text>
+  <text x="60" y="234" text-anchor="middle" fill="#86efac" font-size="9" font-family="monospace">  =&gt; {</text>
+  <text x="60" y="250" text-anchor="middle" fill="#fbbf24" font-size="9" font-family="monospace">  next()</text>
+  <text x="60" y="264" text-anchor="middle" fill="#86efac" font-size="9" font-family="monospace">}</text>
+</svg>
