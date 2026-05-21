@@ -1,0 +1,53 @@
+<svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="720" height="280" fill="#f0f4ff" rx="12"/>
+  <text x="360" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1e293b">CRUD — The 4 Core Database Operations</text>
+
+  <!-- CREATE -->
+  <rect x="40" y="55" width="148" height="170" fill="white" rx="10" stroke="#16a34a" stroke-width="2"/>
+  <rect x="40" y="55" width="148" height="46" fill="#16a34a" rx="10 10 0 0"/>
+  <text x="114" y="74" text-anchor="middle" font-size="22" fill="white">➕</text>
+  <text x="114" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">CREATE</text>
+  <text x="114" y="128" text-anchor="middle" font-size="20" fill="#16a34a">INSERT</text>
+  <text x="114" y="150" text-anchor="middle" font-size="11" fill="#64748b">INTO</text>
+  <text x="114" y="168" text-anchor="middle" font-size="11" fill="#475569">Add new rows</text>
+  <text x="114" y="184" text-anchor="middle" font-size="11" fill="#475569">to a table</text>
+  <text x="114" y="208" text-anchor="middle" font-size="10" fill="#16a34a" font-style="italic">"User signs up"</text>
+
+  <!-- READ -->
+  <rect x="208" y="55" width="148" height="170" fill="white" rx="10" stroke="#2563eb" stroke-width="2"/>
+  <rect x="208" y="55" width="148" height="46" fill="#2563eb" rx="10 10 0 0"/>
+  <text x="282" y="74" text-anchor="middle" font-size="22" fill="white">📖</text>
+  <text x="282" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">READ</text>
+  <text x="282" y="128" text-anchor="middle" font-size="20" fill="#2563eb">SELECT</text>
+  <text x="282" y="150" text-anchor="middle" font-size="11" fill="#64748b">FROM</text>
+  <text x="282" y="168" text-anchor="middle" font-size="11" fill="#475569">Retrieve data</text>
+  <text x="282" y="184" text-anchor="middle" font-size="11" fill="#475569">from a table</text>
+  <text x="282" y="208" text-anchor="middle" font-size="10" fill="#2563eb" font-style="italic">"Browse products"</text>
+
+  <!-- UPDATE -->
+  <rect x="376" y="55" width="148" height="170" fill="white" rx="10" stroke="#d97706" stroke-width="2"/>
+  <rect x="376" y="55" width="148" height="46" fill="#d97706" rx="10 10 0 0"/>
+  <text x="450" y="74" text-anchor="middle" font-size="22" fill="white">✏️</text>
+  <text x="450" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">UPDATE</text>
+  <text x="450" y="128" text-anchor="middle" font-size="20" fill="#d97706">UPDATE</text>
+  <text x="450" y="150" text-anchor="middle" font-size="11" fill="#64748b">SET … WHERE</text>
+  <text x="450" y="168" text-anchor="middle" font-size="11" fill="#475569">Modify existing</text>
+  <text x="450" y="184" text-anchor="middle" font-size="11" fill="#475569">rows</text>
+  <text x="450" y="208" text-anchor="middle" font-size="10" fill="#d97706" font-style="italic">"Edit profile"</text>
+
+  <!-- DELETE -->
+  <rect x="544" y="55" width="148" height="170" fill="white" rx="10" stroke="#dc2626" stroke-width="2"/>
+  <rect x="544" y="55" width="148" height="46" fill="#dc2626" rx="10 10 0 0"/>
+  <text x="618" y="74" text-anchor="middle" font-size="22" fill="white">🗑️</text>
+  <text x="618" y="92" text-anchor="middle" font-size="13" font-weight="bold" fill="white">DELETE</text>
+  <text x="618" y="128" text-anchor="middle" font-size="20" fill="#dc2626">DELETE</text>
+  <text x="618" y="150" text-anchor="middle" font-size="11" fill="#64748b">FROM … WHERE</text>
+  <text x="618" y="168" text-anchor="middle" font-size="11" fill="#475569">Remove rows</text>
+  <text x="618" y="184" text-anchor="middle" font-size="11" fill="#475569">from a table</text>
+  <text x="618" y="208" text-anchor="middle" font-size="10" fill="#dc2626" font-style="italic">"Delete account"</text>
+
+  <!-- Warning note -->
+  <rect x="208" y="238" width="316" height="30" fill="#fef3c7" rx="6" stroke="#fbbf24" stroke-width="1"/>
+  <text x="366" y="252" text-anchor="middle" font-size="11" fill="#92400e">⚠️  Always use WHERE with UPDATE and DELETE — or you'll affect ALL rows!</text>
+  <text x="366" y="264" text-anchor="middle" font-size="11" fill="#92400e"></text>
+</svg>

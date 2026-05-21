@@ -1,0 +1,64 @@
+<svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="300" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">ON DELETE Actions — What Happens When a Parent Row is Deleted</text>
+  <text x="370" y="40" text-anchor="middle" font-size="11" fill="#64748b">Scenario: deleting the "Engineering" department when team members reference it</text>
+
+  <!-- RESTRICT (top-left) -->
+  <rect x="20" y="50" width="165" height="140" fill="white" rx="8" stroke="#dc2626" stroke-width="2"/>
+  <rect x="20" y="50" width="165" height="26" fill="#dc2626" rx="8 8 0 0"/>
+  <text x="102" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="white">RESTRICT (default)</text>
+  <text x="102" y="92" text-anchor="middle" font-size="10" fill="#475569">DELETE FROM departments</text>
+  <text x="102" y="106" text-anchor="middle" font-size="10" fill="#475569">WHERE id = 1;</text>
+  <rect x="35" y="116" width="135" height="24" fill="#fef2f2" rx="4"/>
+  <text x="102" y="132" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">❌ BLOCKED!</text>
+  <text x="102" y="152" text-anchor="middle" font-size="10" fill="#475569">ERROR: foreign key</text>
+  <text x="102" y="165" text-anchor="middle" font-size="10" fill="#475569">constraint violated</text>
+  <text x="102" y="178" text-anchor="middle" font-size="9" fill="#64748b">Safest — prevents accidents</text>
+
+  <!-- CASCADE (top-right) -->
+  <rect x="200" y="50" width="165" height="140" fill="white" rx="8" stroke="#d97706" stroke-width="2"/>
+  <rect x="200" y="50" width="165" height="26" fill="#d97706" rx="8 8 0 0"/>
+  <text x="282" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="white">ON DELETE CASCADE</text>
+  <text x="282" y="92" text-anchor="middle" font-size="10" fill="#475569">DELETE FROM departments</text>
+  <text x="282" y="106" text-anchor="middle" font-size="10" fill="#475569">WHERE id = 1;</text>
+  <rect x="215" y="116" width="135" height="24" fill="#fef3c7" rx="4"/>
+  <text x="282" y="132" text-anchor="middle" font-size="11" font-weight="bold" fill="#d97706">⚡ ALL child rows deleted!</text>
+  <text x="282" y="152" text-anchor="middle" font-size="10" fill="#475569">Engineering dept deleted</text>
+  <text x="282" y="165" text-anchor="middle" font-size="10" fill="#475569">+ Rahul, Priya also deleted</text>
+  <text x="282" y="178" text-anchor="middle" font-size="9" fill="#64748b">Use for: orders → line_items</text>
+
+  <!-- SET NULL -->
+  <rect x="380" y="50" width="165" height="140" fill="white" rx="8" stroke="#2563eb" stroke-width="2"/>
+  <rect x="380" y="50" width="165" height="26" fill="#2563eb" rx="8 8 0 0"/>
+  <text x="462" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="white">ON DELETE SET NULL</text>
+  <text x="462" y="92" text-anchor="middle" font-size="10" fill="#475569">DELETE FROM departments</text>
+  <text x="462" y="106" text-anchor="middle" font-size="10" fill="#475569">WHERE id = 1;</text>
+  <rect x="395" y="116" width="135" height="24" fill="#dbeafe" rx="4"/>
+  <text x="462" y="132" text-anchor="middle" font-size="11" font-weight="bold" fill="#2563eb">dept_id → NULL</text>
+  <text x="462" y="152" text-anchor="middle" font-size="10" fill="#475569">Engineering dept deleted</text>
+  <text x="462" y="165" text-anchor="middle" font-size="10" fill="#475569">Rahul, Priya kept (dept=NULL)</text>
+  <text x="462" y="178" text-anchor="middle" font-size="9" fill="#64748b">Use for: optional relationships</text>
+
+  <!-- SET DEFAULT -->
+  <rect x="560" y="50" width="160" height="140" fill="white" rx="8" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="560" y="50" width="160" height="26" fill="#7c3aed" rx="8 8 0 0"/>
+  <text x="640" y="68" text-anchor="middle" font-size="11" font-weight="bold" fill="white">ON DELETE SET DEFAULT</text>
+  <text x="640" y="92" text-anchor="middle" font-size="10" fill="#475569">DELETE FROM departments</text>
+  <text x="640" y="106" text-anchor="middle" font-size="10" fill="#475569">WHERE id = 1;</text>
+  <rect x="575" y="116" width="130" height="24" fill="#f5f3ff" rx="4"/>
+  <text x="640" y="132" text-anchor="middle" font-size="11" font-weight="bold" fill="#7c3aed">dept_id → default value</text>
+  <text x="640" y="152" text-anchor="middle" font-size="10" fill="#475569">Engineering dept deleted</text>
+  <text x="640" y="165" text-anchor="middle" font-size="10" fill="#475569">Rahul, Priya → dept=99 (default)</text>
+  <text x="640" y="178" text-anchor="middle" font-size="9" fill="#64748b">Rare — needs a valid default</text>
+
+  <!-- Summary table -->
+  <rect x="20" y="206" width="700" height="80" fill="white" rx="8" stroke="#1e40af" stroke-width="1.5"/>
+  <rect x="20" y="206" width="700" height="26" fill="#1e40af" rx="8 8 0 0"/>
+  <text x="370" y="224" text-anchor="middle" font-size="12" font-weight="bold" fill="white">When to Use Each Action</text>
+  <text x="60" y="248" font-size="11" fill="#dc2626" font-weight="bold">RESTRICT:</text>
+  <text x="130" y="248" font-size="11" fill="#1e293b">when parent deletion should always require cleanup first (safest default)</text>
+  <text x="60" y="264" font-size="11" fill="#d97706" font-weight="bold">CASCADE:</text>
+  <text x="130" y="264" font-size="11" fill="#1e293b">when child rows are meaningless without parent (order → line items, post → comments)</text>
+  <text x="60" y="280" font-size="11" fill="#2563eb" font-weight="bold">SET NULL:</text>
+  <text x="130" y="280" font-size="11" fill="#1e293b">when child rows can exist independently but the link becomes optional (employee → dept)</text>
+</svg>

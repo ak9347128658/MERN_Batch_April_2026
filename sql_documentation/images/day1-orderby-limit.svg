@@ -1,0 +1,102 @@
+<svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="760" height="300" fill="#f0f4ff" rx="12"/>
+  <text x="380" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">ORDER BY and LIMIT — Sorting and Slicing Results</text>
+
+  <!-- Original table -->
+  <text x="115" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">Original (no ORDER BY)</text>
+  <rect x="20" y="54" width="185" height="26" fill="#475569" rx="4"/>
+  <line x1="100" y1="54" x2="100" y2="238" stroke="#334155" stroke-width="1"/>
+  <text x="60" y="71" text-anchor="middle" font-size="11" font-weight="bold" fill="white">name</text>
+  <text x="152" y="71" text-anchor="middle" font-size="11" font-weight="bold" fill="white">marks</text>
+
+  <rect x="20" y="80" width="185" height="26" fill="white" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="60" y="98" text-anchor="middle" font-size="12" fill="#1e293b">Rahul</text>
+  <text x="152" y="98" text-anchor="middle" font-size="12" fill="#1e293b">85</text>
+
+  <rect x="20" y="106" width="185" height="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="60" y="124" text-anchor="middle" font-size="12" fill="#1e293b">Priya</text>
+  <text x="152" y="124" text-anchor="middle" font-size="12" fill="#1e293b">92</text>
+
+  <rect x="20" y="132" width="185" height="26" fill="white" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="60" y="150" text-anchor="middle" font-size="12" fill="#1e293b">Amit</text>
+  <text x="152" y="150" text-anchor="middle" font-size="12" fill="#1e293b">78</text>
+
+  <rect x="20" y="158" width="185" height="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="60" y="176" text-anchor="middle" font-size="12" fill="#1e293b">Sneha</text>
+  <text x="152" y="176" text-anchor="middle" font-size="12" fill="#1e293b">95</text>
+
+  <rect x="20" y="184" width="185" height="26" fill="white" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="60" y="202" text-anchor="middle" font-size="12" fill="#1e293b">Vikram</text>
+  <text x="152" y="202" text-anchor="middle" font-size="12" fill="#1e293b">88</text>
+
+  <rect x="20" y="210" width="185" height="26" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="60" y="228" text-anchor="middle" font-size="12" fill="#1e293b">Meera</text>
+  <text x="152" y="228" text-anchor="middle" font-size="12" fill="#1e293b">97</text>
+
+  <!-- ORDER BY arrow -->
+  <rect x="218" y="118" width="150" height="50" fill="#7c3aed" rx="8"/>
+  <text x="293" y="138" text-anchor="middle" font-size="12" font-weight="bold" fill="white">ORDER BY</text>
+  <text x="293" y="155" text-anchor="middle" font-size="11" fill="#ddd6fe">marks DESC</text>
+  <line x1="205" y1="143" x2="216" y2="143" stroke="#7c3aed" stroke-width="2.5"/>
+  <polygon points="212,137 222,143 212,149" fill="#7c3aed"/>
+  <line x1="368" y1="143" x2="384" y2="143" stroke="#7c3aed" stroke-width="2.5"/>
+  <polygon points="380,137 390,143 380,149" fill="#7c3aed"/>
+
+  <!-- Sorted table (after ORDER BY) -->
+  <text x="500" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c3aed">After ORDER BY marks DESC</text>
+  <rect x="390" y="54" width="185" height="26" fill="#7c3aed" rx="4"/>
+  <line x1="470" y1="54" x2="470" y2="238" stroke="#6d28d9" stroke-width="1"/>
+  <text x="430" y="71" text-anchor="middle" font-size="11" font-weight="bold" fill="white">name</text>
+  <text x="535" y="71" text-anchor="middle" font-size="11" font-weight="bold" fill="white">marks</text>
+
+  <!-- Rank 1 - gold highlight -->
+  <rect x="390" y="80" width="185" height="26" fill="#fef9c3" stroke="#fde047" stroke-width="1.5"/>
+  <text x="430" y="98" text-anchor="middle" font-size="12" fill="#1e293b">Meera</text>
+  <text x="535" y="98" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c3aed">97  🥇</text>
+
+  <rect x="390" y="106" width="185" height="26" fill="#e0e7ff" stroke="#a5b4fc" stroke-width="1.5"/>
+  <text x="430" y="124" text-anchor="middle" font-size="12" fill="#1e293b">Sneha</text>
+  <text x="535" y="124" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c3aed">95  🥈</text>
+
+  <rect x="390" y="132" width="185" height="26" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1.5"/>
+  <text x="430" y="150" text-anchor="middle" font-size="12" fill="#1e293b">Priya</text>
+  <text x="535" y="150" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c3aed">92  🥉</text>
+
+  <rect x="390" y="158" width="185" height="26" fill="white" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="430" y="176" text-anchor="middle" font-size="12" fill="#94a3b8">Vikram</text>
+  <text x="535" y="176" text-anchor="middle" font-size="12" fill="#94a3b8">88</text>
+
+  <rect x="390" y="184" width="185" height="26" fill="white" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="430" y="202" text-anchor="middle" font-size="12" fill="#94a3b8">Rahul</text>
+  <text x="535" y="202" text-anchor="middle" font-size="12" fill="#94a3b8">85</text>
+
+  <rect x="390" y="210" width="185" height="26" fill="white" stroke="#cbd5e1" stroke-width="0.5"/>
+  <text x="430" y="228" text-anchor="middle" font-size="12" fill="#94a3b8">Amit</text>
+  <text x="535" y="228" text-anchor="middle" font-size="12" fill="#94a3b8">78</text>
+
+  <!-- LIMIT scissor -->
+  <rect x="585" y="118" width="28" height="70" fill="none"/>
+  <line x1="600" y1="155" x2="600" y2="155" stroke="none"/>
+  <line x1="390" y1="158" x2="585" y2="158" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <text x="580" y="152" font-size="16" fill="#dc2626">✂️</text>
+  <text x="597" y="152" font-size="11" font-weight="bold" fill="#dc2626">LIMIT 3</text>
+
+  <!-- Final result -->
+  <text x="680" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">After LIMIT 3</text>
+  <rect x="610" y="54" width="130" height="26" fill="#16a34a" rx="4"/>
+  <text x="675" y="71" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Top 3 students</text>
+
+  <rect x="610" y="80" width="130" height="26" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="675" y="98" text-anchor="middle" font-size="12" fill="#14532d" font-weight="bold">Meera — 97</text>
+
+  <rect x="610" y="106" width="130" height="26" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+  <text x="675" y="124" text-anchor="middle" font-size="12" fill="#14532d">Sneha — 95</text>
+
+  <rect x="610" y="132" width="130" height="26" fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
+  <text x="675" y="150" text-anchor="middle" font-size="12" fill="#14532d">Priya — 92</text>
+
+  <!-- SQL row at bottom -->
+  <rect x="20" y="254" width="720" height="34" fill="#1e40af" rx="6"/>
+  <text x="380" y="268" text-anchor="middle" font-size="11" font-weight="bold" fill="white">SELECT name, marks  FROM students  ORDER BY marks DESC  LIMIT 3;</text>
+  <text x="380" y="282" text-anchor="middle" font-size="10" fill="#bfdbfe">→ Returns the top 3 highest-scoring students, sorted highest first</text>
+</svg>

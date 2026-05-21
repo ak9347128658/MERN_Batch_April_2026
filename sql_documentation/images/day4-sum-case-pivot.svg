@@ -1,0 +1,87 @@
+<svg viewBox="0 0 740 280" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="280" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">SUM with CASE WHEN — Turning Rows into Columns (Pivot)</text>
+
+  <!-- Left: Normal GROUP BY output (multiple rows) -->
+  <rect x="20" y="36" width="220" height="180" fill="white" rx="8" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="20" y="36" width="220" height="28" fill="#7c3aed" rx="8 8 0 0"/>
+  <text x="130" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="white">GROUP BY (multiple rows)</text>
+
+  <!-- Table header -->
+  <rect x="30" y="72" width="100" height="22" fill="#e2e8f0" rx="3"/>
+  <text x="80" y="87" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">category</text>
+  <rect x="132" y="72" width="98" height="22" fill="#e2e8f0" rx="3"/>
+  <text x="181" y="87" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">revenue</text>
+
+  <rect x="30" y="94" width="100" height="22" fill="#dbeafe"/>
+  <text x="80" y="109" text-anchor="middle" font-size="11" fill="#1e293b">Electronics</text>
+  <rect x="132" y="94" width="98" height="22" fill="#dbeafe"/>
+  <text x="181" y="109" text-anchor="middle" font-size="11" fill="#1e293b">₹3,80,000</text>
+
+  <rect x="30" y="116" width="100" height="22" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="80" y="131" text-anchor="middle" font-size="11" fill="#1e293b">Clothing</text>
+  <rect x="132" y="116" width="98" height="22" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="181" y="131" text-anchor="middle" font-size="11" fill="#1e293b">₹55,400</text>
+
+  <rect x="30" y="138" width="100" height="22" fill="#dbeafe"/>
+  <text x="80" y="153" text-anchor="middle" font-size="11" fill="#1e293b">Footwear</text>
+  <rect x="132" y="138" width="98" height="22" fill="#dbeafe"/>
+  <text x="181" y="153" text-anchor="middle" font-size="11" fill="#1e293b">₹93,000</text>
+
+  <rect x="30" y="160" width="100" height="22" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="80" y="175" text-anchor="middle" font-size="11" fill="#1e293b">Accessories</text>
+  <rect x="132" y="160" width="98" height="22" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="181" y="175" text-anchor="middle" font-size="11" fill="#1e293b">₹44,400</text>
+
+  <text x="130" y="208" text-anchor="middle" font-size="10" fill="#7c3aed" font-weight="bold">4 result rows — need to join</text>
+  <text x="130" y="222" text-anchor="middle" font-size="10" fill="#7c3aed">or pivot in application code</text>
+
+  <!-- Arrow -->
+  <text x="280" y="126" text-anchor="middle" font-size="24" fill="#94a3b8">→</text>
+  <text x="280" y="144" text-anchor="middle" font-size="10" fill="#64748b">SUM+CASE</text>
+  <text x="280" y="158" text-anchor="middle" font-size="10" fill="#64748b">WHEN pivot</text>
+
+  <!-- Right: Pivot output (single row) -->
+  <rect x="310" y="36" width="410" height="180" fill="white" rx="8" stroke="#16a34a" stroke-width="2"/>
+  <rect x="310" y="36" width="410" height="28" fill="#16a34a" rx="8 8 0 0"/>
+  <text x="515" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="white">SUM(CASE WHEN) — everything in ONE ROW</text>
+
+  <!-- Table header row spanning all 4 categories -->
+  <rect x="320" y="72" width="92" height="22" fill="#e2e8f0" rx="3"/>
+  <text x="366" y="87" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e293b">electronics_rev</text>
+  <rect x="414" y="72" width="74" height="22" fill="#e2e8f0" rx="3"/>
+  <text x="451" y="87" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e293b">clothing_rev</text>
+  <rect x="490" y="72" width="74" height="22" fill="#e2e8f0" rx="3"/>
+  <text x="527" y="87" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e293b">footwear_rev</text>
+  <rect x="566" y="72" width="80" height="22" fill="#e2e8f0" rx="3"/>
+  <text x="606" y="87" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e293b">accessories_rev</text>
+  <rect x="648" y="72" width="62" height="22" fill="#e2e8f0" rx="3"/>
+  <text x="679" y="87" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e293b">total_rev</text>
+
+  <!-- Single result row -->
+  <rect x="320" y="94" width="92" height="28" fill="#dbeafe"/>
+  <text x="366" y="112" text-anchor="middle" font-size="10" fill="#1e293b">₹3,80,000</text>
+  <rect x="414" y="94" width="74" height="28" fill="#dcfce7"/>
+  <text x="451" y="112" text-anchor="middle" font-size="10" fill="#1e293b">₹55,400</text>
+  <rect x="490" y="94" width="74" height="28" fill="#fef3c7"/>
+  <text x="527" y="112" text-anchor="middle" font-size="10" fill="#1e293b">₹93,000</text>
+  <rect x="566" y="94" width="80" height="28" fill="#fce7f3"/>
+  <text x="606" y="112" text-anchor="middle" font-size="10" fill="#1e293b">₹44,400</text>
+  <rect x="648" y="94" width="62" height="28" fill="#1e40af"/>
+  <text x="679" y="112" text-anchor="middle" font-size="10" font-weight="bold" fill="white">₹5,72,800</text>
+
+  <!-- Query snippet -->
+  <rect x="320" y="130" width="390" height="76" fill="#f8fafc" rx="4"/>
+  <text x="330" y="146" font-size="10" font-weight="bold" fill="#16a34a">SELECT</text>
+  <text x="370" y="146" font-size="10" fill="#475569">SUM(CASE WHEN category = 'Electronics' THEN quantity*price ELSE 0 END) AS electronics_rev,</text>
+  <text x="370" y="160" font-size="10" fill="#475569">SUM(CASE WHEN category = 'Clothing' THEN quantity*price ELSE 0 END) AS clothing_rev,</text>
+  <text x="370" y="174" font-size="10" fill="#475569">SUM(CASE WHEN category = 'Footwear' THEN quantity*price ELSE 0 END) AS footwear_rev,</text>
+  <text x="370" y="188" font-size="10" fill="#475569">SUM(quantity * price) AS total_rev</text>
+  <text x="330" y="200" font-size="10" font-weight="bold" fill="#2563eb">FROM</text>
+  <text x="363" y="200" font-size="10" fill="#475569">sales;</text>
+
+  <!-- Bottom bar -->
+  <rect x="20" y="232" width="700" height="32" fill="#1e40af" rx="6"/>
+  <text x="370" y="248" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Pivot pattern: GROUP BY → many rows  |  SUM(CASE WHEN) → same data as ONE row</text>
+  <text x="370" y="262" text-anchor="middle" font-size="11" fill="#bfdbfe">Use the pivot when building dashboards that need all categories side-by-side in a single query result</text>
+</svg>

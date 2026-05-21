@@ -1,0 +1,70 @@
+<svg viewBox="0 0 740 220" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="220" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">BETWEEN — Range Filtering (Both Endpoints Inclusive)</text>
+
+  <!-- Number line -->
+  <line x1="60" y1="90" x2="680" y2="90" stroke="#94a3b8" stroke-width="3"/>
+  <!-- Ticks -->
+  <line x1="60" y1="80" x2="60" y2="100" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="170" y1="80" x2="170" y2="100" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="280" y1="80" x2="280" y2="100" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="390" y1="80" x2="390" y2="100" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="500" y1="80" x2="500" y2="100" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="610" y1="80" x2="610" y2="100" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="680" y1="80" x2="680" y2="100" stroke="#94a3b8" stroke-width="2"/>
+  <!-- Values -->
+  <text x="60" y="116" text-anchor="middle" font-size="12" fill="#64748b">30k</text>
+  <text x="170" y="116" text-anchor="middle" font-size="12" fill="#64748b">40k</text>
+  <text x="280" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">50k</text>
+  <text x="390" y="116" text-anchor="middle" font-size="12" fill="#16a34a">65k</text>
+  <text x="500" y="116" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">80k</text>
+  <text x="610" y="116" text-anchor="middle" font-size="12" fill="#64748b">90k</text>
+  <text x="680" y="116" text-anchor="middle" font-size="12" fill="#64748b">100k</text>
+
+  <!-- BETWEEN range highlighted -->
+  <rect x="280" y="74" width="220" height="32" fill="#3b82f6" fill-opacity="0.3" rx="0"/>
+  <line x1="280" y1="68" x2="280" y2="106" stroke="#2563eb" stroke-width="3"/>
+  <line x1="500" y1="68" x2="500" y2="106" stroke="#2563eb" stroke-width="3"/>
+
+  <!-- Endpoint markers (inclusive) -->
+  <circle cx="280" cy="90" r="8" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="280" y="94" text-anchor="middle" font-size="9" fill="white">✓</text>
+  <circle cx="500" cy="90" r="8" fill="#2563eb" stroke="white" stroke-width="2"/>
+  <text x="500" y="94" text-anchor="middle" font-size="9" fill="white">✓</text>
+
+  <!-- Included value marker -->
+  <circle cx="390" cy="90" r="8" fill="#16a34a" stroke="white" stroke-width="2"/>
+  <text x="390" y="94" text-anchor="middle" font-size="9" fill="white">✓</text>
+
+  <!-- Excluded markers -->
+  <circle cx="60" cy="90" r="8" fill="#dc2626" fill-opacity="0.4" stroke="#dc2626" stroke-width="2"/>
+  <text x="60" y="94" text-anchor="middle" font-size="9" fill="#dc2626">✗</text>
+  <circle cx="170" cy="90" r="8" fill="#dc2626" fill-opacity="0.4" stroke="#dc2626" stroke-width="2"/>
+  <text x="170" y="94" text-anchor="middle" font-size="9" fill="#dc2626">✗</text>
+  <circle cx="610" cy="90" r="8" fill="#dc2626" fill-opacity="0.4" stroke="#dc2626" stroke-width="2"/>
+  <text x="610" y="94" text-anchor="middle" font-size="9" fill="#dc2626">✗</text>
+  <circle cx="680" cy="90" r="8" fill="#dc2626" fill-opacity="0.4" stroke="#dc2626" stroke-width="2"/>
+  <text x="680" y="94" text-anchor="middle" font-size="9" fill="#dc2626">✗</text>
+
+  <!-- Labels above -->
+  <rect x="255" y="46" width="270" height="22" fill="#2563eb" rx="4"/>
+  <text x="390" y="61" text-anchor="middle" font-size="11" font-weight="bold" fill="white">WHERE salary BETWEEN 50000 AND 80000</text>
+
+  <!-- Arrow lines from label to endpoints -->
+  <line x1="280" y1="68" x2="290" y2="68" stroke="#2563eb" stroke-width="1.5"/>
+  <line x1="500" y1="68" x2="490" y2="68" stroke="#2563eb" stroke-width="1.5"/>
+
+  <!-- Bottom labels -->
+  <text x="280" y="135" text-anchor="middle" font-size="11" fill="#2563eb" font-weight="bold">✅ 50,000 included</text>
+  <text x="390" y="135" text-anchor="middle" font-size="11" fill="#16a34a">65,000 included</text>
+  <text x="500" y="135" text-anchor="middle" font-size="11" fill="#2563eb" font-weight="bold">✅ 80,000 included</text>
+
+  <!-- Equivalent expression -->
+  <rect x="100" y="152" width="540" height="28" fill="white" rx="6" stroke="#cbd5e1" stroke-width="1.5"/>
+  <text x="370" y="170" text-anchor="middle" font-size="12" fill="#475569">Equivalent to:</text>
+  <text x="480" y="170" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb">WHERE salary &gt;= 50000 AND salary &lt;= 80000</text>
+
+  <!-- NOT BETWEEN note -->
+  <rect x="100" y="188" width="540" height="26" fill="#fef3c7" rx="6" stroke="#fbbf24" stroke-width="1"/>
+  <text x="370" y="205" text-anchor="middle" font-size="11" fill="#92400e">NOT BETWEEN returns everything OUTSIDE the range: salary &lt; 50000 OR salary &gt; 80000</text>
+</svg>

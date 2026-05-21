@@ -1,0 +1,61 @@
+<svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="320" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">SQL Logical Execution Order — NOT the Same as Write Order</text>
+
+  <!-- Steps as pipeline boxes -->
+  <!-- Step 1: FROM -->
+  <rect x="20" y="36" width="700" height="32" fill="#1e40af" rx="6"/>
+  <text x="80" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="white">① FROM</text>
+  <text x="350" y="57" text-anchor="middle" font-size="12" fill="#bfdbfe">Identify table(s) to read — load data pages from disk</text>
+  <text x="680" y="57" text-anchor="end" font-size="11" fill="#93c5fd">All rows</text>
+
+  <polygon points="363,68 370,78 377,68" fill="#94a3b8"/>
+
+  <!-- Step 2: WHERE -->
+  <rect x="20" y="80" width="700" height="32" fill="#2563eb" rx="6"/>
+  <text x="80" y="101" text-anchor="middle" font-size="13" font-weight="bold" fill="white">② WHERE</text>
+  <text x="350" y="101" text-anchor="middle" font-size="12" fill="#bfdbfe">Filter individual rows — discard non-matching rows early</text>
+  <text x="680" y="101" text-anchor="end" font-size="11" fill="#93c5fd">Fewer rows</text>
+
+  <polygon points="363,112 370,122 377,112" fill="#94a3b8"/>
+
+  <!-- Step 3: GROUP BY -->
+  <rect x="20" y="124" width="700" height="32" fill="#7c3aed" rx="6"/>
+  <text x="80" y="145" text-anchor="middle" font-size="13" font-weight="bold" fill="white">③ GROUP BY</text>
+  <text x="350" y="145" text-anchor="middle" font-size="12" fill="#ddd6fe">Create buckets — one group per unique column value</text>
+  <text x="680" y="145" text-anchor="end" font-size="11" fill="#c4b5fd">Groups created</text>
+
+  <polygon points="363,156 370,166 377,156" fill="#94a3b8"/>
+
+  <!-- Step 4: HAVING -->
+  <rect x="20" y="168" width="700" height="32" fill="#9333ea" rx="6"/>
+  <text x="80" y="189" text-anchor="middle" font-size="13" font-weight="bold" fill="white">④ HAVING</text>
+  <text x="350" y="189" text-anchor="middle" font-size="12" fill="#f0abfc">Filter groups — aggregates are available here (COUNT, SUM, AVG...)</text>
+  <text x="680" y="189" text-anchor="end" font-size="11" fill="#e879f9">Fewer groups</text>
+
+  <polygon points="363,200 370,210 377,200" fill="#94a3b8"/>
+
+  <!-- Step 5: SELECT -->
+  <rect x="20" y="212" width="700" height="32" fill="#16a34a" rx="6"/>
+  <text x="80" y="233" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⑤ SELECT</text>
+  <text x="350" y="233" text-anchor="middle" font-size="12" fill="#bbf7d0">Compute columns, aliases, expressions — output columns chosen</text>
+  <text x="680" y="233" text-anchor="end" font-size="11" fill="#86efac">Aliases born</text>
+
+  <polygon points="363,244 370,254 377,244" fill="#94a3b8"/>
+
+  <!-- Step 6: ORDER BY -->
+  <rect x="20" y="256" width="700" height="32" fill="#d97706" rx="6"/>
+  <text x="80" y="277" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⑥ ORDER BY</text>
+  <text x="350" y="277" text-anchor="middle" font-size="12" fill="#fde68a">Sort results — can use aliases from SELECT (SELECT runs first!)</text>
+  <text x="680" y="277" text-anchor="end" font-size="11" fill="#fcd34d">Sorted rows</text>
+
+  <polygon points="363,288 370,298 377,288" fill="#94a3b8"/>
+
+  <!-- Step 7: LIMIT -->
+  <rect x="20" y="300" width="700" height="16" fill="#dc2626" rx="4"/>
+  <text x="80" y="312" text-anchor="middle" font-size="12" font-weight="bold" fill="white">⑦ LIMIT / OFFSET</text>
+  <text x="350" y="312" text-anchor="middle" font-size="11" fill="#fecaca">Cap the rows returned — final result sent to client</text>
+
+  <!-- Right side annotation boxes -->
+  <rect x="20" y="36" width="44" height="280" fill="none"/>
+</svg>

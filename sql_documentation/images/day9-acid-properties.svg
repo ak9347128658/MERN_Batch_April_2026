@@ -1,0 +1,52 @@
+<svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="760" height="340" fill="#f0f4ff" rx="12"/>
+  <text x="380" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">ACID Properties — 4 Guarantees of Reliable Transactions</text>
+
+  <!-- ATOMICITY -->
+  <rect x="20" y="46" width="340" height="128" fill="white" rx="10" stroke="#dc2626" stroke-width="2"/>
+  <rect x="20" y="46" width="340" height="38" fill="#dc2626" rx="10 10 0 0"/>
+  <text x="190" y="62" text-anchor="middle" font-size="18" fill="white">⚛️</text>
+  <text x="190" y="77" text-anchor="middle" font-size="14" font-weight="bold" fill="white">A — Atomicity</text>
+  <text x="190" y="107" text-anchor="middle" font-size="12" font-weight="bold" fill="#dc2626">"All or Nothing"</text>
+  <text x="190" y="125" text-anchor="middle" font-size="11" fill="#475569">All operations in a transaction</text>
+  <text x="190" y="141" text-anchor="middle" font-size="11" fill="#475569">succeed, or none of them do.</text>
+  <text x="190" y="158" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">Money deducted ↔ Money credited</text>
+  <text x="190" y="170" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">must both succeed or both fail.</text>
+
+  <!-- CONSISTENCY -->
+  <rect x="400" y="46" width="340" height="128" fill="white" rx="10" stroke="#16a34a" stroke-width="2"/>
+  <rect x="400" y="46" width="340" height="38" fill="#16a34a" rx="10 10 0 0"/>
+  <text x="570" y="62" text-anchor="middle" font-size="18" fill="white">✅</text>
+  <text x="570" y="77" text-anchor="middle" font-size="14" font-weight="bold" fill="white">C — Consistency</text>
+  <text x="570" y="107" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">"Rules Always Followed"</text>
+  <text x="570" y="125" text-anchor="middle" font-size="11" fill="#475569">Database always goes from one</text>
+  <text x="570" y="141" text-anchor="middle" font-size="11" fill="#475569">valid state to another valid state.</text>
+  <text x="570" y="158" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">CHECK (balance &gt;= 0) is ALWAYS</text>
+  <text x="570" y="170" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">enforced — no exceptions.</text>
+
+  <!-- ISOLATION -->
+  <rect x="20" y="190" width="340" height="128" fill="white" rx="10" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="20" y="190" width="340" height="38" fill="#7c3aed" rx="10 10 0 0"/>
+  <text x="190" y="206" text-anchor="middle" font-size="18" fill="white">🔒</text>
+  <text x="190" y="221" text-anchor="middle" font-size="14" font-weight="bold" fill="white">I — Isolation</text>
+  <text x="190" y="251" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c3aed">"Transactions Don't Interfere"</text>
+  <text x="190" y="269" text-anchor="middle" font-size="11" fill="#475569">Concurrent transactions run as if</text>
+  <text x="190" y="285" text-anchor="middle" font-size="11" fill="#475569">they were the only transaction.</text>
+  <text x="190" y="302" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">Implemented via MVCC —</text>
+  <text x="190" y="314" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">readers don't block writers.</text>
+
+  <!-- DURABILITY -->
+  <rect x="400" y="190" width="340" height="128" fill="white" rx="10" stroke="#2563eb" stroke-width="2"/>
+  <rect x="400" y="190" width="340" height="38" fill="#2563eb" rx="10 10 0 0"/>
+  <text x="570" y="206" text-anchor="middle" font-size="18" fill="white">💾</text>
+  <text x="570" y="221" text-anchor="middle" font-size="14" font-weight="bold" fill="white">D — Durability</text>
+  <text x="570" y="251" text-anchor="middle" font-size="12" font-weight="bold" fill="#2563eb">"Changes Survive Crashes"</text>
+  <text x="570" y="269" text-anchor="middle" font-size="11" fill="#475569">Once committed, changes persist</text>
+  <text x="570" y="285" text-anchor="middle" font-size="11" fill="#475569">even if the server crashes.</text>
+  <text x="570" y="302" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">WAL (Write-Ahead Log) records</text>
+  <text x="570" y="314" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">every change before it happens.</text>
+
+  <!-- Centre badge -->
+  <rect x="330" y="156" width="100" height="30" fill="#1e40af" rx="15"/>
+  <text x="380" y="176" text-anchor="middle" font-size="14" font-weight="bold" fill="white">ACID</text>
+</svg>

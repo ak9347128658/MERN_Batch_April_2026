@@ -1,0 +1,58 @@
+<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="240" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Common Data Types — What Each Column Can Hold</text>
+
+  <!-- INT -->
+  <rect x="20" y="38" width="165" height="86" fill="white" rx="8" stroke="#2563eb" stroke-width="2"/>
+  <rect x="20" y="38" width="165" height="32" fill="#2563eb" rx="8 8 0 0"/>
+  <text x="102" y="51" text-anchor="middle" font-size="18" fill="white">🔢</text>
+  <text x="102" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="white">INT</text>
+  <text x="102" y="90" text-anchor="middle" font-size="11" fill="#475569">Whole numbers</text>
+  <text x="102" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#2563eb">42,  -7,  1000</text>
+  <text x="102" y="122" text-anchor="middle" font-size="10" fill="#64748b">age, stock, quantity</text>
+
+  <!-- VARCHAR -->
+  <rect x="200" y="38" width="165" height="86" fill="white" rx="8" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="200" y="38" width="165" height="32" fill="#7c3aed" rx="8 8 0 0"/>
+  <text x="282" y="51" text-anchor="middle" font-size="18" fill="white">🔤</text>
+  <text x="282" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="white">VARCHAR(n)</text>
+  <text x="282" y="90" text-anchor="middle" font-size="11" fill="#475569">Text (max n chars)</text>
+  <text x="282" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#7c3aed">'Rahul',  'Mumbai'</text>
+  <text x="282" y="122" text-anchor="middle" font-size="10" fill="#64748b">name, city, email</text>
+
+  <!-- DECIMAL -->
+  <rect x="380" y="38" width="165" height="86" fill="white" rx="8" stroke="#d97706" stroke-width="2"/>
+  <rect x="380" y="38" width="165" height="32" fill="#d97706" rx="8 8 0 0"/>
+  <text x="462" y="51" text-anchor="middle" font-size="18" fill="white">💰</text>
+  <text x="462" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="white">DECIMAL(p,s)</text>
+  <text x="462" y="90" text-anchor="middle" font-size="11" fill="#475569">Precise decimals</text>
+  <text x="462" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#d97706">99.99,  1500.50</text>
+  <text x="462" y="122" text-anchor="middle" font-size="10" fill="#64748b">price, salary, score</text>
+
+  <!-- BOOLEAN -->
+  <rect x="560" y="38" width="165" height="86" fill="white" rx="8" stroke="#16a34a" stroke-width="2"/>
+  <rect x="560" y="38" width="165" height="32" fill="#16a34a" rx="8 8 0 0"/>
+  <text x="642" y="51" text-anchor="middle" font-size="18" fill="white">✅</text>
+  <text x="642" y="62" text-anchor="middle" font-size="12" font-weight="bold" fill="white">BOOLEAN</text>
+  <text x="642" y="90" text-anchor="middle" font-size="11" fill="#475569">True or False only</text>
+  <text x="642" y="108" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">true,  false</text>
+  <text x="642" y="122" text-anchor="middle" font-size="10" fill="#64748b">is_active, in_stock</text>
+
+  <!-- DATE -->
+  <rect x="110" y="138" width="165" height="86" fill="white" rx="8" stroke="#0369a1" stroke-width="2"/>
+  <rect x="110" y="138" width="165" height="32" fill="#0369a1" rx="8 8 0 0"/>
+  <text x="192" y="151" text-anchor="middle" font-size="18" fill="white">📅</text>
+  <text x="192" y="163" text-anchor="middle" font-size="12" font-weight="bold" fill="white">DATE</text>
+  <text x="192" y="190" text-anchor="middle" font-size="11" fill="#475569">Calendar date</text>
+  <text x="192" y="208" text-anchor="middle" font-size="11" font-weight="bold" fill="#0369a1">'2026-04-14'</text>
+  <text x="192" y="222" text-anchor="middle" font-size="10" fill="#64748b">order_date, birthday</text>
+
+  <!-- SERIAL -->
+  <rect x="465" y="138" width="165" height="86" fill="white" rx="8" stroke="#dc2626" stroke-width="2"/>
+  <rect x="465" y="138" width="165" height="32" fill="#dc2626" rx="8 8 0 0"/>
+  <text x="547" y="151" text-anchor="middle" font-size="18" fill="white">🔑</text>
+  <text x="547" y="163" text-anchor="middle" font-size="12" font-weight="bold" fill="white">SERIAL</text>
+  <text x="547" y="190" text-anchor="middle" font-size="11" fill="#475569">Auto-incrementing ID</text>
+  <text x="547" y="208" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">1, 2, 3, 4… (auto)</text>
+  <text x="547" y="222" text-anchor="middle" font-size="10" fill="#64748b">id (primary key)</text>
+</svg>

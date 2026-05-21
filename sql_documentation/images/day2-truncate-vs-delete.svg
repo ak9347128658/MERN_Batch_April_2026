@@ -1,0 +1,78 @@
+<svg viewBox="0 0 740 290" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="290" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">DELETE vs TRUNCATE — When to Use Each</text>
+
+  <!-- DELETE side -->
+  <rect x="20" y="38" width="330" height="34" fill="#2563eb" rx="6 6 0 0"/>
+  <text x="185" y="61" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🗑️  DELETE FROM table</text>
+  <rect x="20" y="72" width="330" height="186" fill="white" rx="0 0 8 8" stroke="#93c5fd" stroke-width="1.5"/>
+
+  <!-- DELETE features -->
+  <rect x="30" y="82" width="150" height="22" fill="#dcfce7" rx="4"/>
+  <text x="105" y="97" text-anchor="middle" font-size="11" fill="#14532d">✅  WHERE clause</text>
+  <text x="215" y="97" font-size="11" fill="#475569">Remove specific rows</text>
+
+  <rect x="30" y="110" width="150" height="22" fill="#dcfce7" rx="4"/>
+  <text x="105" y="125" text-anchor="middle" font-size="11" fill="#14532d">✅  RETURNING</text>
+  <text x="215" y="125" font-size="11" fill="#475569">See deleted data</text>
+
+  <rect x="30" y="138" width="150" height="22" fill="#dcfce7" rx="4"/>
+  <text x="105" y="153" text-anchor="middle" font-size="11" fill="#14532d">✅  Triggers fire</text>
+  <text x="215" y="153" font-size="11" fill="#475569">Hooks execute</text>
+
+  <rect x="30" y="166" width="150" height="22" fill="#dcfce7" rx="4"/>
+  <text x="105" y="181" text-anchor="middle" font-size="11" fill="#14532d">✅  ROLLBACK</text>
+  <text x="215" y="181" font-size="11" fill="#475569">In a transaction</text>
+
+  <rect x="30" y="194" width="150" height="22" fill="#fee2e2" rx="4"/>
+  <text x="105" y="209" text-anchor="middle" font-size="11" fill="#991b1b">❌  SERIAL resets</text>
+  <text x="215" y="209" font-size="11" fill="#475569">IDs keep counting</text>
+
+  <rect x="30" y="222" width="150" height="22" fill="#fee2e2" rx="4"/>
+  <text x="105" y="237" text-anchor="middle" font-size="11" fill="#991b1b">🐢  Slower</text>
+  <text x="215" y="237" font-size="11" fill="#475569">Row-by-row with logging</text>
+
+  <rect x="30" y="246" width="310" height="8" fill="#2563eb" rx="3"/>
+  <text x="185" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#2563eb">Use when: removing some rows with conditions</text>
+
+  <!-- TRUNCATE side -->
+  <rect x="390" y="38" width="330" height="34" fill="#dc2626" rx="6 6 0 0"/>
+  <text x="555" y="61" text-anchor="middle" font-size="13" font-weight="bold" fill="white">💥  TRUNCATE TABLE table</text>
+  <rect x="390" y="72" width="330" height="186" fill="white" rx="0 0 8 8" stroke="#fca5a5" stroke-width="1.5"/>
+
+  <rect x="400" y="82" width="150" height="22" fill="#fee2e2" rx="4"/>
+  <text x="475" y="97" text-anchor="middle" font-size="11" fill="#991b1b">❌  No WHERE</text>
+  <text x="585" y="97" font-size="11" fill="#475569">Always wipes all rows</text>
+
+  <rect x="400" y="110" width="150" height="22" fill="#fee2e2" rx="4"/>
+  <text x="475" y="125" text-anchor="middle" font-size="11" fill="#991b1b">❌  No RETURNING</text>
+  <text x="585" y="125" font-size="11" fill="#475569">Can't see what was removed</text>
+
+  <rect x="400" y="138" width="150" height="22" fill="#fee2e2" rx="4"/>
+  <text x="475" y="153" text-anchor="middle" font-size="11" fill="#991b1b">❌  Triggers skip</text>
+  <text x="585" y="153" font-size="11" fill="#475569">Hooks don't execute</text>
+
+  <rect x="400" y="166" width="150" height="22" fill="#dcfce7" rx="4"/>
+  <text x="475" y="181" text-anchor="middle" font-size="11" fill="#14532d">✅  ROLLBACK</text>
+  <text x="585" y="181" font-size="11" fill="#475569">In a transaction (PostgreSQL)</text>
+
+  <rect x="400" y="194" width="150" height="22" fill="#dcfce7" rx="4"/>
+  <text x="475" y="209" text-anchor="middle" font-size="11" fill="#14532d">✅  SERIAL resets</text>
+  <text x="585" y="209" font-size="11" fill="#475569">IDs restart from 1</text>
+
+  <rect x="400" y="222" width="150" height="22" fill="#dcfce7" rx="4"/>
+  <text x="475" y="237" text-anchor="middle" font-size="11" fill="#14532d">⚡  Much faster</text>
+  <text x="585" y="237" font-size="11" fill="#475569">Drops all data at once</text>
+
+  <rect x="400" y="246" width="310" height="8" fill="#dc2626" rx="3"/>
+  <text x="555" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">Use when: wiping entire table (reset test data)</text>
+
+  <!-- VS line -->
+  <line x1="370" y1="38" x2="370" y2="258" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="349" y="148" width="42" height="24" fill="#1e293b" rx="12"/>
+  <text x="370" y="165" text-anchor="middle" font-size="12" font-weight="bold" fill="white">VS</text>
+
+  <!-- Bottom rule -->
+  <rect x="20" y="270" width="700" height="16" fill="#1e40af" rx="4"/>
+  <text x="370" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Remember: DELETE removes rows, DROP TABLE removes the entire table (gone forever!)</text>
+</svg>

@@ -1,0 +1,58 @@
+<svg viewBox="0 0 740 260" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="260" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">AVG and NULL — It Does NOT Treat NULL as Zero!</text>
+
+  <!-- Column data (left) -->
+  <text x="110" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">score column</text>
+  <rect x="40" y="54" width="140" height="28" fill="#1e40af" rx="4"/>
+  <text x="110" y="72" text-anchor="middle" font-size="12" font-weight="bold" fill="white">score</text>
+  <rect x="40" y="82" width="140" height="24" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="110" y="98" text-anchor="middle" font-size="12" fill="#1e293b">10</text>
+  <rect x="40" y="106" width="140" height="24" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="110" y="122" text-anchor="middle" font-size="12" fill="#1e293b">20</text>
+  <rect x="40" y="130" width="140" height="24" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="110" y="146" text-anchor="middle" font-size="12" fill="#dc2626" font-weight="bold">NULL</text>
+  <rect x="40" y="154" width="140" height="24" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="110" y="170" text-anchor="middle" font-size="12" fill="#1e293b">30</text>
+  <rect x="40" y="178" width="140" height="24" fill="#fef2f2" stroke="#fca5a5" stroke-width="1.5"/>
+  <text x="110" y="194" text-anchor="middle" font-size="12" fill="#dc2626" font-weight="bold">NULL</text>
+
+  <!-- Formula breakdown -->
+  <text x="220" y="46" text-anchor="middle" font-size="11" fill="#475569">5 rows, but 2 are NULL</text>
+
+  <!-- AVG(score) result (middle) -->
+  <rect x="195" y="54" width="240" height="150" fill="white" rx="8" stroke="#16a34a" stroke-width="2"/>
+  <rect x="195" y="54" width="240" height="28" fill="#16a34a" rx="8 8 0 0"/>
+  <text x="315" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="white">AVG(score) — ignores NULLs</text>
+
+  <text x="315" y="104" text-anchor="middle" font-size="12" fill="#475569">Sum of non-NULLs:</text>
+  <text x="315" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">10 + 20 + 30 = 60</text>
+  <text x="315" y="140" text-anchor="middle" font-size="12" fill="#475569">Divide by non-NULL count:</text>
+  <text x="315" y="156" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">60 ÷ 3 (not 5!)</text>
+
+  <rect x="210" y="168" width="210" height="28" fill="#15803d" rx="4"/>
+  <text x="315" y="187" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Result: 20.0</text>
+
+  <!-- AVG(COALESCE) result (right) -->
+  <rect x="465" y="54" width="255" height="150" fill="white" rx="8" stroke="#d97706" stroke-width="2"/>
+  <rect x="465" y="54" width="255" height="28" fill="#d97706" rx="8 8 0 0"/>
+  <text x="592" y="73" text-anchor="middle" font-size="12" font-weight="bold" fill="white">AVG(COALESCE(score, 0))</text>
+
+  <text x="592" y="104" text-anchor="middle" font-size="11" fill="#475569">NULLs replaced with 0:</text>
+  <text x="592" y="120" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">10 + 20 + 0 + 30 + 0 = 60</text>
+  <text x="592" y="140" text-anchor="middle" font-size="11" fill="#475569">Divide by ALL 5 rows:</text>
+  <text x="592" y="156" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">60 ÷ 5</text>
+
+  <rect x="480" y="168" width="225" height="28" fill="#b45309" rx="4"/>
+  <text x="592" y="187" text-anchor="middle" font-size="14" font-weight="bold" fill="white">Result: 12.0</text>
+
+  <!-- Different! annotation -->
+  <rect x="350" y="162" width="108" height="38" fill="#dc2626" rx="6"/>
+  <text x="404" y="176" text-anchor="middle" font-size="11" font-weight="bold" fill="white">DIFFERENT</text>
+  <text x="404" y="190" text-anchor="middle" font-size="11" font-weight="bold" fill="white">RESULTS! ⚠️</text>
+
+  <!-- Bottom warning -->
+  <rect x="40" y="220" width="660" height="32" fill="#fef3c7" rx="6" stroke="#fbbf24" stroke-width="1"/>
+  <text x="370" y="234" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">⚠️  Key Rule: AVG always divides by the count of NON-NULL rows, never by total rows.</text>
+  <text x="370" y="248" text-anchor="middle" font-size="11" fill="#92400e">Use COALESCE(col, 0) if you want NULLs treated as zero. Without it, your averages may be higher than expected.</text>
+</svg>

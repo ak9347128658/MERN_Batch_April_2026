@@ -1,0 +1,112 @@
+<svg viewBox="0 0 740 380" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="380" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">ShopKart Database — 7-Table ER Diagram</text>
+
+  <!-- USERS -->
+  <rect x="20" y="36" width="140" height="100" fill="white" rx="6" stroke="#2563eb" stroke-width="2"/>
+  <rect x="20" y="36" width="140" height="22" fill="#2563eb" rx="6 6 0 0"/>
+  <text x="90" y="52" text-anchor="middle" font-size="11" font-weight="bold" fill="white">USERS</text>
+  <text x="35" y="72" font-size="9" fill="#475569">🔑 id (PK)</text>
+  <text x="35" y="84" font-size="9" fill="#475569">username (UNIQUE)</text>
+  <text x="35" y="96" font-size="9" fill="#475569">email (UNIQUE)</text>
+  <text x="35" y="108" font-size="9" fill="#475569">full_name, phone, city</text>
+  <text x="35" y="120" font-size="9" fill="#94a3b8">created_at</text>
+
+  <!-- CATEGORIES -->
+  <rect x="580" y="36" width="140" height="80" fill="white" rx="6" stroke="#16a34a" stroke-width="2"/>
+  <rect x="580" y="36" width="140" height="22" fill="#16a34a" rx="6 6 0 0"/>
+  <text x="650" y="52" text-anchor="middle" font-size="11" font-weight="bold" fill="white">CATEGORIES</text>
+  <text x="595" y="72" font-size="9" fill="#475569">🔑 id (PK)</text>
+  <text x="595" y="84" font-size="9" fill="#475569">name (UNIQUE)</text>
+  <text x="595" y="96" font-size="9" fill="#475569">description</text>
+
+  <!-- PRODUCTS -->
+  <rect x="390" y="36" width="165" height="120" fill="white" rx="6" stroke="#16a34a" stroke-width="2"/>
+  <rect x="390" y="36" width="165" height="22" fill="#16a34a" rx="6 6 0 0"/>
+  <text x="472" y="52" text-anchor="middle" font-size="11" font-weight="bold" fill="white">PRODUCTS</text>
+  <text x="405" y="72" font-size="9" fill="#475569">🔑 id (PK)</text>
+  <text x="405" y="84" font-size="9" fill="#475569">name, description</text>
+  <text x="405" y="96" font-size="9" fill="#475569">price (CHECK &gt; 0)</text>
+  <text x="405" y="108" font-size="9" fill="#475569">stock (CHECK &gt;= 0)</text>
+  <text x="405" y="120" font-size="9" fill="#dc2626">🔗 category_id (FK)</text>
+  <text x="405" y="134" font-size="9" fill="#475569">is_active</text>
+
+  <!-- FK: products → categories -->
+  <line x1="555" y1="75" x2="580" y2="70" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="562" y="70" font-size="8" fill="#16a34a">FK</text>
+
+  <!-- ORDERS -->
+  <rect x="200" y="170" width="155" height="110" fill="white" rx="6" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="200" y="170" width="155" height="22" fill="#7c3aed" rx="6 6 0 0"/>
+  <text x="277" y="186" text-anchor="middle" font-size="11" font-weight="bold" fill="white">ORDERS</text>
+  <text x="215" y="206" font-size="9" fill="#475569">🔑 id (PK)</text>
+  <text x="215" y="218" font-size="9" fill="#dc2626">🔗 user_id (FK)</text>
+  <text x="215" y="230" font-size="9" fill="#475569">total_amount</text>
+  <text x="215" y="242" font-size="9" fill="#475569">status (CHECK)</text>
+  <text x="215" y="254" font-size="9" fill="#475569">shipping_address</text>
+  <text x="215" y="266" font-size="9" fill="#94a3b8">order_date</text>
+
+  <!-- FK: orders → users -->
+  <line x1="277" y1="170" x2="160" y2="136" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="195" y="158" font-size="8" fill="#7c3aed">FK user_id</text>
+
+  <!-- ORDER_ITEMS -->
+  <rect x="390" y="185" width="160" height="105" fill="white" rx="6" stroke="#d97706" stroke-width="2"/>
+  <rect x="390" y="185" width="160" height="22" fill="#d97706" rx="6 6 0 0"/>
+  <text x="470" y="201" text-anchor="middle" font-size="11" font-weight="bold" fill="white">ORDER_ITEMS</text>
+  <text x="405" y="221" font-size="9" fill="#475569">🔑 id (PK)</text>
+  <text x="405" y="233" font-size="9" fill="#dc2626">🔗 order_id (FK CASCADE)</text>
+  <text x="405" y="245" font-size="9" fill="#dc2626">🔗 product_id (FK)</text>
+  <text x="405" y="257" font-size="9" fill="#475569">quantity (CHECK &gt; 0)</text>
+  <text x="405" y="269" font-size="9" fill="#475569">price_at_purchase ← snapshot!</text>
+  <text x="405" y="281" font-size="9" fill="#475569">total_cost (computed)</text>
+
+  <!-- FK: order_items → orders -->
+  <line x1="390" y1="240" x2="355" y2="240" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="355" y="235" font-size="8" fill="#d97706">FK order_id</text>
+
+  <!-- FK: order_items → products -->
+  <line x1="470" y1="185" x2="472" y2="156" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="476" y="175" font-size="8" fill="#d97706">FK product_id</text>
+
+  <!-- PAYMENTS -->
+  <rect x="30" y="200" width="145" height="100" fill="white" rx="6" stroke="#0369a1" stroke-width="2"/>
+  <rect x="30" y="200" width="145" height="22" fill="#0369a1" rx="6 6 0 0"/>
+  <text x="102" y="216" text-anchor="middle" font-size="11" font-weight="bold" fill="white">PAYMENTS</text>
+  <text x="45" y="236" font-size="9" fill="#475569">🔑 id (PK)</text>
+  <text x="45" y="248" font-size="9" fill="#dc2626">🔗 order_id (FK, UNIQUE)</text>
+  <text x="45" y="260" font-size="9" fill="#475569">amount (CHECK &gt; 0)</text>
+  <text x="45" y="272" font-size="9" fill="#475569">payment_method (CHECK)</text>
+  <text x="45" y="284" font-size="9" fill="#475569">status (CHECK)</text>
+  <text x="45" y="296" font-size="9" fill="#94a3b8">payment_date</text>
+
+  <!-- FK: payments → orders -->
+  <line x1="175" y1="244" x2="200" y2="244" stroke="#0369a1" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="178" y="240" font-size="8" fill="#0369a1">FK</text>
+
+  <!-- REVIEWS -->
+  <rect x="560" y="185" width="155" height="110" fill="white" rx="6" stroke="#dc2626" stroke-width="2"/>
+  <rect x="560" y="185" width="155" height="22" fill="#dc2626" rx="6 6 0 0"/>
+  <text x="637" y="201" text-anchor="middle" font-size="11" font-weight="bold" fill="white">REVIEWS</text>
+  <text x="575" y="221" font-size="9" fill="#475569">🔑 id (PK)</text>
+  <text x="575" y="233" font-size="9" fill="#dc2626">🔗 user_id (FK)</text>
+  <text x="575" y="245" font-size="9" fill="#dc2626">🔗 product_id (FK)</text>
+  <text x="575" y="257" font-size="9" fill="#475569">rating (CHECK 1-5)</text>
+  <text x="575" y="269" font-size="9" fill="#475569">comment</text>
+  <text x="575" y="281" font-size="9" fill="#475569">UNIQUE(user_id, product_id)</text>
+  <text x="575" y="293" font-size="9" fill="#94a3b8">created_at</text>
+
+  <!-- FK: reviews → users -->
+  <line x1="637" y1="185" x2="180" y2="136" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- FK: reviews → products -->
+  <line x1="560" y1="245" x2="555" y2="120" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- Legend -->
+  <rect x="20" y="320" width="700" height="50" fill="white" rx="6" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="370" y="336" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">Key Design Decisions</text>
+  <text x="40" y="352" font-size="9" fill="#d97706">price_at_purchase = snapshot (price changes don't affect history)</text>
+  <text x="40" y="365" font-size="9" fill="#7c3aed">order_items.order_id ON DELETE CASCADE (items deleted with order)</text>
+  <text x="400" y="352" font-size="9" fill="#dc2626">reviews: UNIQUE(user_id, product_id) prevents fake review flooding</text>
+  <text x="400" y="365" font-size="9" fill="#16a34a">is_active = soft delete (preserves order history when product removed)</text>
+</svg>

@@ -1,0 +1,99 @@
+<svg viewBox="0 0 760 290" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="760" height="290" fill="#f0f4ff" rx="12"/>
+  <text x="380" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">How WHERE Works — Filtering Rows from the Table</text>
+
+  <!-- ALL ROWS table (left) -->
+  <text x="120" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">All rows in students</text>
+  <rect x="20" y="54" width="200" height="28" fill="#1e40af" rx="4"/>
+  <line x1="90" y1="54" x2="90" y2="238" stroke="#1d4ed8" stroke-width="1"/>
+  <line x1="150" y1="54" x2="150" y2="238" stroke="#1d4ed8" stroke-width="1"/>
+  <text x="55" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="white">name</text>
+  <text x="120" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="white">city</text>
+  <text x="180" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="white">marks</text>
+
+  <!-- Row 1 - PASS (Mumbai) -->
+  <rect x="20" y="82" width="200" height="24" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="55" y="98" text-anchor="middle" font-size="11" fill="#1e293b">Rahul</text>
+  <text x="120" y="98" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">Mumbai ✓</text>
+  <text x="180" y="98" text-anchor="middle" font-size="11" fill="#1e293b">85</text>
+
+  <!-- Row 2 - FAIL -->
+  <rect x="20" y="106" width="200" height="24" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="55" y="122" text-anchor="middle" font-size="11" fill="#94a3b8">Priya</text>
+  <text x="120" y="122" text-anchor="middle" font-size="11" fill="#94a3b8">Delhi ✗</text>
+  <text x="180" y="122" text-anchor="middle" font-size="11" fill="#94a3b8">92</text>
+
+  <!-- Row 3 - FAIL -->
+  <rect x="20" y="130" width="200" height="24" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="55" y="146" text-anchor="middle" font-size="11" fill="#94a3b8">Amit</text>
+  <text x="120" y="146" text-anchor="middle" font-size="11" fill="#94a3b8">Pune ✗</text>
+  <text x="180" y="146" text-anchor="middle" font-size="11" fill="#94a3b8">78</text>
+
+  <!-- Row 4 - PASS (Mumbai) -->
+  <rect x="20" y="154" width="200" height="24" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="55" y="170" text-anchor="middle" font-size="11" fill="#1e293b">Sneha</text>
+  <text x="120" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">Mumbai ✓</text>
+  <text x="180" y="170" text-anchor="middle" font-size="11" fill="#1e293b">95</text>
+
+  <!-- Row 5 - FAIL -->
+  <rect x="20" y="178" width="200" height="24" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="55" y="194" text-anchor="middle" font-size="11" fill="#94a3b8">Vikram</text>
+  <text x="120" y="194" text-anchor="middle" font-size="11" fill="#94a3b8">Chennai ✗</text>
+  <text x="180" y="194" text-anchor="middle" font-size="11" fill="#94a3b8">88</text>
+
+  <!-- Row 6 - PASS (Mumbai) -->
+  <rect x="20" y="202" width="200" height="24" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="55" y="218" text-anchor="middle" font-size="11" fill="#1e293b">Ravi</text>
+  <text x="120" y="218" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">Mumbai ✓</text>
+  <text x="180" y="218" text-anchor="middle" font-size="11" fill="#1e293b">82</text>
+
+  <text x="120" y="250" text-anchor="middle" font-size="11" fill="#64748b">10 rows total</text>
+
+  <!-- FILTER funnel (middle) -->
+  <rect x="248" y="120" width="180" height="56" fill="#1e40af" rx="8"/>
+  <text x="338" y="141" text-anchor="middle" font-size="12" font-weight="bold" fill="white">WHERE</text>
+  <text x="338" y="157" text-anchor="middle" font-size="11" fill="#bfdbfe">city = 'Mumbai'</text>
+  <text x="338" y="170" text-anchor="middle" font-size="11" fill="#93c5fd">✓ match → keep row</text>
+
+  <!-- Arrow left to funnel -->
+  <line x1="220" y1="148" x2="246" y2="148" stroke="#64748b" stroke-width="2.5"/>
+  <polygon points="242,142 252,148 242,154" fill="#64748b"/>
+
+  <!-- Crossed out rows annotation -->
+  <text x="338" y="198" text-anchor="middle" font-size="18" fill="#dc2626">🚫</text>
+  <text x="338" y="215" text-anchor="middle" font-size="11" fill="#dc2626">✗ no match → discard</text>
+
+  <!-- Arrow funnel to result -->
+  <line x1="430" y1="148" x2="456" y2="148" stroke="#64748b" stroke-width="2.5"/>
+  <polygon points="452,142 462,148 452,154" fill="#64748b"/>
+
+  <!-- RESULT table (right) -->
+  <text x="590" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">Only Mumbai students returned</text>
+  <rect x="462" y="54" width="280" height="28" fill="#15803d" rx="4"/>
+  <line x1="552" y1="54" x2="552" y2="202" stroke="#166534" stroke-width="1"/>
+  <line x1="640" y1="54" x2="640" y2="202" stroke="#166534" stroke-width="1"/>
+  <text x="507" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="white">name</text>
+  <text x="596" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="white">city</text>
+  <text x="700" y="73" text-anchor="middle" font-size="11" font-weight="bold" fill="white">marks</text>
+
+  <rect x="462" y="82" width="280" height="30" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="507" y="102" text-anchor="middle" font-size="12" fill="#1e293b">Rahul</text>
+  <text x="596" y="102" text-anchor="middle" font-size="12" fill="#15803d" font-weight="bold">Mumbai</text>
+  <text x="700" y="102" text-anchor="middle" font-size="12" fill="#1e293b">85</text>
+
+  <rect x="462" y="112" width="280" height="30" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="507" y="132" text-anchor="middle" font-size="12" fill="#1e293b">Sneha</text>
+  <text x="596" y="132" text-anchor="middle" font-size="12" fill="#15803d" font-weight="bold">Mumbai</text>
+  <text x="700" y="132" text-anchor="middle" font-size="12" fill="#1e293b">95</text>
+
+  <rect x="462" y="142" width="280" height="30" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="507" y="162" text-anchor="middle" font-size="12" fill="#1e293b">Ravi</text>
+  <text x="596" y="162" text-anchor="middle" font-size="12" fill="#15803d" font-weight="bold">Mumbai</text>
+  <text x="700" y="162" text-anchor="middle" font-size="12" fill="#1e293b">82</text>
+
+  <text x="602" y="218" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="bold">3 rows returned (only Mumbai)</text>
+
+  <!-- SQL label -->
+  <rect x="248" y="250" width="460" height="30" fill="#1e40af" rx="6"/>
+  <text x="478" y="270" text-anchor="middle" font-size="11" font-weight="bold" fill="white">SELECT * FROM students WHERE city = 'Mumbai';</text>
+</svg>

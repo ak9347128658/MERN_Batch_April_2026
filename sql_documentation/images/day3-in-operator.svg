@@ -1,0 +1,38 @@
+<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="240" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">IN Operator — Cleaner Than Multiple ORs</text>
+
+  <!-- OR version (left) - messy -->
+  <rect x="20" y="38" width="320" height="34" fill="#d97706" rx="6 6 0 0"/>
+  <text x="180" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="white">😩  Multiple OR (verbose, error-prone)</text>
+  <rect x="20" y="72" width="320" height="120" fill="white" rx="0 0 8 8" stroke="#fed7aa" stroke-width="1.5"/>
+  <rect x="30" y="82" width="300" height="100" fill="#fff7ed" rx="4"/>
+  <text x="180" y="100" text-anchor="middle" font-size="11" fill="#92400e">WHERE city = 'Mumbai'</text>
+  <text x="180" y="116" text-anchor="middle" font-size="11" fill="#92400e">OR city = 'Delhi'</text>
+  <text x="180" y="132" text-anchor="middle" font-size="11" fill="#92400e">OR city = 'Bangalore'</text>
+  <text x="180" y="148" text-anchor="middle" font-size="11" fill="#92400e">OR city = 'Chennai'</text>
+  <text x="180" y="164" text-anchor="middle" font-size="10" fill="#b45309">Easy to forget one, typos, hard to add more</text>
+
+  <!-- Arrow in middle -->
+  <rect x="350" y="110" width="40" height="26" fill="#16a34a" rx="13"/>
+  <text x="370" y="127" text-anchor="middle" font-size="14" font-weight="bold" fill="white">→</text>
+  <text x="370" y="153" text-anchor="middle" font-size="10" fill="#16a34a" font-weight="bold">same result</text>
+
+  <!-- IN version (right) - clean -->
+  <rect x="400" y="38" width="320" height="34" fill="#16a34a" rx="6 6 0 0"/>
+  <text x="560" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="white">✅  IN — Clean &amp; Readable</text>
+  <rect x="400" y="72" width="320" height="120" fill="white" rx="0 0 8 8" stroke="#86efac" stroke-width="1.5"/>
+  <rect x="410" y="82" width="300" height="60" fill="#dcfce7" rx="4"/>
+  <text x="560" y="103" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">WHERE city IN (</text>
+  <text x="560" y="120" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">  'Mumbai', 'Delhi', 'Bangalore', 'Chennai'</text>
+  <text x="560" y="137" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">)</text>
+  <text x="560" y="162" text-anchor="middle" font-size="11" fill="#16a34a">✅ Easier to read</text>
+  <text x="560" y="178" text-anchor="middle" font-size="11" fill="#16a34a">✅ Easy to add/remove values</text>
+  <text x="560" y="186" text-anchor="middle" font-size="10" fill="#16a34a">✅ Often optimised to hash lookup</text>
+
+  <!-- NOT IN warning -->
+  <rect x="20" y="204" width="700" height="30" fill="#fef3c7" rx="6" stroke="#fbbf24" stroke-width="1"/>
+  <text x="370" y="218" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">⚠️  NOT IN Warning:</text>
+  <text x="490" y="218" font-size="11" fill="#92400e">If the list contains a NULL, NOT IN returns ZERO rows — always filter NULLs first!</text>
+  <text x="370" y="230" text-anchor="middle" font-size="10" fill="#b45309">e.g. WHERE city NOT IN ('Mumbai', NULL)  →  returns nothing at all! Use NOT EXISTS instead.</text>
+</svg>

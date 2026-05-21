@@ -1,0 +1,61 @@
+<svg viewBox="0 0 740 260" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="260" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">How DELETE Works — Soft Deletion and VACUUM</text>
+
+  <!-- Step 1: Before delete -->
+  <text x="115" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">① Before DELETE</text>
+  <rect x="20" y="54" width="190" height="150" fill="white" rx="8" stroke="#3b82f6" stroke-width="2"/>
+  <rect x="20" y="54" width="190" height="22" fill="#3b82f6" rx="8 8 0 0"/>
+  <text x="115" y="69" text-anchor="middle" font-size="11" font-weight="bold" fill="white">products table</text>
+  <rect x="30" y="80" width="170" height="20" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="115" y="94" text-anchor="middle" font-size="11" fill="#1e293b">Laptop  ₹55,000</text>
+  <rect x="30" y="100" width="170" height="20" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="115" y="114" text-anchor="middle" font-size="11" fill="#1e293b">Notebook  ₹150</text>
+  <rect x="30" y="120" width="170" height="20" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="115" y="134" text-anchor="middle" font-size="11" fill="#1e293b">Phone  ₹25,000</text>
+  <rect x="30" y="140" width="170" height="20" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="115" y="154" text-anchor="middle" font-size="11" fill="#1e293b">Headphones  ₹2,500</text>
+  <rect x="30" y="160" width="170" height="20" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="115" y="174" text-anchor="middle" font-size="11" fill="#1e293b">Mouse  ₹800</text>
+  <text x="115" y="200" text-anchor="middle" font-size="10" fill="#64748b">5 live rows</text>
+
+  <!-- Step 2: Arrow + DELETE command -->
+  <line x1="214" y1="130" x2="235" y2="130" stroke="#dc2626" stroke-width="2"/>
+  <polygon points="231,124 241,130 231,136" fill="#dc2626"/>
+  <rect x="242" y="112" width="155" height="36" fill="#dc2626" rx="6"/>
+  <text x="319" y="127" text-anchor="middle" font-size="11" font-weight="bold" fill="white">DELETE FROM products</text>
+  <text x="319" y="142" text-anchor="middle" font-size="10" fill="#fca5a5">WHERE price &lt; 200;</text>
+  <line x1="397" y1="130" x2="420" y2="130" stroke="#dc2626" stroke-width="2"/>
+  <polygon points="416,124 426,130 416,136" fill="#dc2626"/>
+
+  <!-- Step 3: After delete - dead tuples -->
+  <text x="540" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">② Immediately After DELETE</text>
+  <rect x="428" y="54" width="190" height="150" fill="white" rx="8" stroke="#dc2626" stroke-width="2"/>
+  <rect x="428" y="54" width="190" height="22" fill="#dc2626" rx="8 8 0 0"/>
+  <text x="523" y="69" text-anchor="middle" font-size="11" font-weight="bold" fill="white">products table (on disk)</text>
+  <rect x="438" y="80" width="170" height="20" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="523" y="94" text-anchor="middle" font-size="11" fill="#1e293b">Laptop  ₹55,000</text>
+  <!-- "dead" row -->
+  <rect x="438" y="100" width="170" height="20" fill="#fef2f2" stroke="#fca5a5" stroke-width="0.5" stroke-dasharray="4,2"/>
+  <text x="523" y="114" text-anchor="middle" font-size="11" fill="#94a3b8" text-decoration="line-through">Notebook  ₹150</text>
+  <text x="635" y="114" font-size="9" fill="#dc2626">☠️ dead</text>
+  <rect x="438" y="120" width="170" height="20" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="523" y="134" text-anchor="middle" font-size="11" fill="#1e293b">Phone  ₹25,000</text>
+  <rect x="438" y="140" width="170" height="20" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="523" y="154" text-anchor="middle" font-size="11" fill="#1e293b">Headphones  ₹2,500</text>
+  <rect x="438" y="160" width="170" height="20" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.5"/>
+  <text x="523" y="174" text-anchor="middle" font-size="11" fill="#1e293b">Mouse  ₹800</text>
+  <text x="523" y="196" text-anchor="middle" font-size="10" fill="#dc2626">Row is dead but still on disk!</text>
+
+  <!-- VACUUM arrow -->
+  <rect x="330" y="195" width="88" height="36" fill="#d97706" rx="6"/>
+  <text x="374" y="209" text-anchor="middle" font-size="11" font-weight="bold" fill="white">🧹 VACUUM</text>
+  <text x="374" y="224" text-anchor="middle" font-size="10" fill="#fde68a">runs later</text>
+  <line x1="418" y1="213" x2="430" y2="186" stroke="#d97706" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="423,182 435,186 428,196" fill="#d97706"/>
+
+  <!-- Bottom explanation -->
+  <rect x="20" y="216" width="700" height="36" fill="#fef3c7" rx="6" stroke="#fbbf24" stroke-width="1"/>
+  <text x="370" y="231" text-anchor="middle" font-size="11" font-weight="bold" fill="#92400e">💡 Why does PostgreSQL do this?</text>
+  <text x="370" y="246" text-anchor="middle" font-size="11" fill="#92400e">MVCC: other transactions that started before this DELETE still need to see the row. VACUUM runs in the background and reclaims space when it's safe.</text>
+</svg>

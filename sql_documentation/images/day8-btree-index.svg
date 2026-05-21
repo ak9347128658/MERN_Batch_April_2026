@@ -1,0 +1,66 @@
+<svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="760" height="360" fill="#f0f4ff" rx="12"/>
+  <text x="380" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">B-Tree Index — How Lookups Work in O(log N)</text>
+
+  <!-- Root node -->
+  <rect x="300" y="42" width="160" height="36" fill="#1e40af" rx="6"/>
+  <text x="380" y="65" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🔝 Root:  M</text>
+
+  <!-- Level 2 -->
+  <line x1="330" y1="78" x2="200" y2="118" stroke="#64748b" stroke-width="2"/>
+  <line x1="430" y1="78" x2="560" y2="118" stroke="#64748b" stroke-width="2"/>
+
+  <rect x="130" y="118" width="140" height="34" fill="#2563eb" rx="6"/>
+  <text x="200" y="140" text-anchor="middle" font-size="12" font-weight="bold" fill="white">A – L</text>
+
+  <rect x="490" y="118" width="140" height="34" fill="#2563eb" rx="6"/>
+  <text x="560" y="140" text-anchor="middle" font-size="12" font-weight="bold" fill="white">M – Z</text>
+
+  <!-- Level 3 lines -->
+  <line x1="170" y1="152" x2="95" y2="192" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="230" y1="152" x2="210" y2="192" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="530" y1="152" x2="510" y2="192" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="590" y1="152" x2="655" y2="192" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <rect x="50" y="192" width="96" height="30" fill="#3b82f6" rx="5"/>
+  <text x="98" y="212" text-anchor="middle" font-size="11" fill="white">A – E</text>
+
+  <rect x="164" y="192" width="96" height="30" fill="#3b82f6" rx="5"/>
+  <text x="212" y="212" text-anchor="middle" font-size="11" fill="white">F – L</text>
+
+  <rect x="460" y="192" width="96" height="30" fill="#3b82f6" rx="5"/>
+  <text x="508" y="212" text-anchor="middle" font-size="11" fill="#fff">M – Q</text>
+
+  <rect x="620" y="192" width="90" height="30" fill="#3b82f6" rx="5"/>
+  <text x="665" y="212" text-anchor="middle" font-size="11" fill="white">R – Z  ✅</text>
+
+  <!-- Highlighted path annotation -->
+  <rect x="610" y="192" width="110" height="30" fill="none" stroke="#dc2626" stroke-width="2.5" rx="5"/>
+
+  <!-- Leaf node -->
+  <line x1="665" y1="222" x2="665" y2="252" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,2"/>
+
+  <rect x="580" y="252" width="175" height="48" fill="#fef2f2" rx="6" stroke="#dc2626" stroke-width="2"/>
+  <text x="667" y="270" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">🍃 Leaf Node</text>
+  <text x="667" y="284" text-anchor="middle" font-size="11" fill="#1e293b">'Rahul' → Row #3</text>
+  <text x="667" y="297" text-anchor="middle" font-size="11" fill="#64748b">TID: block 42, offset 7</text>
+
+  <!-- Arrow from leaf to heap -->
+  <line x1="755" y1="275" x2="755" y2="275" stroke="#dc2626" stroke-width="2"/>
+  <path d="M 752 275 L 760 275" stroke="none"/>
+
+  <!-- Table heap box -->
+  <rect x="400" y="315" width="180" height="34" fill="#15803d" rx="6"/>
+  <text x="490" y="337" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Table Heap (actual row)</text>
+  <line x1="665" y1="300" x2="490" y2="315" stroke="#15803d" stroke-width="2"/>
+  <polygon points="486,309 490,320 498,311" fill="#15803d"/>
+
+  <!-- Steps label -->
+  <rect x="30" y="252" width="320" height="98" fill="white" rx="8" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="190" y="271" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">Search for  'Rahul'  — 4 steps:</text>
+  <text x="190" y="289" text-anchor="middle" font-size="11" fill="#475569">① Root: 'R' ≥ M  →  go right</text>
+  <text x="190" y="305" text-anchor="middle" font-size="11" fill="#475569">② Internal: 'R' ≥ R  →  go to R–Z node</text>
+  <text x="190" y="321" text-anchor="middle" font-size="11" fill="#475569">③ Leaf: found 'Rahul' → TID (block 42)</text>
+  <text x="190" y="337" text-anchor="middle" font-size="11" fill="#475569">④ Fetch actual row from table heap</text>
+  <text x="190" y="349" text-anchor="middle" font-size="10" fill="#16a34a" font-weight="bold">Total: ~4 reads vs scanning 100,000 rows!</text>
+</svg>

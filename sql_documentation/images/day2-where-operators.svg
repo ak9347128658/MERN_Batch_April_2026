@@ -1,0 +1,61 @@
+<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="240" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">WHERE Comparison Operators — Quick Reference</text>
+
+  <!-- Row 1 -->
+  <rect x="20" y="38" width="105" height="56" fill="white" rx="8" stroke="#2563eb" stroke-width="2"/>
+  <text x="72" y="62" text-anchor="middle" font-size="28" font-weight="bold" fill="#2563eb">=</text>
+  <text x="72" y="80" text-anchor="middle" font-size="11" fill="#475569">Equal to</text>
+  <text x="72" y="92" text-anchor="middle" font-size="10" fill="#64748b">city = 'Mumbai'</text>
+
+  <rect x="135" y="38" width="105" height="56" fill="white" rx="8" stroke="#dc2626" stroke-width="2"/>
+  <text x="187" y="58" text-anchor="middle" font-size="22" font-weight="bold" fill="#dc2626">!=</text>
+  <text x="187" y="73" text-anchor="middle" font-size="18" font-weight="bold" fill="#dc2626">&lt;&gt;</text>
+  <text x="187" y="87" text-anchor="middle" font-size="11" fill="#475569">Not equal to</text>
+  <text x="187" y="92" text-anchor="middle" font-size="10" fill="#64748b"></text>
+
+  <rect x="250" y="38" width="105" height="56" fill="white" rx="8" stroke="#16a34a" stroke-width="2"/>
+  <text x="302" y="62" text-anchor="middle" font-size="28" font-weight="bold" fill="#16a34a">&gt;</text>
+  <text x="302" y="80" text-anchor="middle" font-size="11" fill="#475569">Greater than</text>
+  <text x="302" y="92" text-anchor="middle" font-size="10" fill="#64748b">age &gt; 25</text>
+
+  <rect x="365" y="38" width="105" height="56" fill="white" rx="8" stroke="#7c3aed" stroke-width="2"/>
+  <text x="417" y="62" text-anchor="middle" font-size="28" font-weight="bold" fill="#7c3aed">&lt;</text>
+  <text x="417" y="80" text-anchor="middle" font-size="11" fill="#475569">Less than</text>
+  <text x="417" y="92" text-anchor="middle" font-size="10" fill="#64748b">price &lt; 1000</text>
+
+  <rect x="480" y="38" width="105" height="56" fill="white" rx="8" stroke="#d97706" stroke-width="2"/>
+  <text x="532" y="62" text-anchor="middle" font-size="24" font-weight="bold" fill="#d97706">&gt;=</text>
+  <text x="532" y="80" text-anchor="middle" font-size="11" fill="#475569">Greater or equal</text>
+  <text x="532" y="92" text-anchor="middle" font-size="10" fill="#64748b">age &gt;= 18</text>
+
+  <rect x="595" y="38" width="125" height="56" fill="white" rx="8" stroke="#0369a1" stroke-width="2"/>
+  <text x="657" y="62" text-anchor="middle" font-size="24" font-weight="bold" fill="#0369a1">&lt;=</text>
+  <text x="657" y="80" text-anchor="middle" font-size="11" fill="#475569">Less or equal</text>
+  <text x="657" y="92" text-anchor="middle" font-size="10" fill="#64748b">stock &lt;= 100</text>
+
+  <!-- Row 2: logical operators -->
+  <rect x="20" y="106" width="220" height="56" fill="white" rx="8" stroke="#15803d" stroke-width="2"/>
+  <text x="130" y="128" text-anchor="middle" font-size="20" font-weight="bold" fill="#15803d">AND</text>
+  <text x="130" y="146" text-anchor="middle" font-size="11" fill="#475569">Both conditions must be true</text>
+  <text x="130" y="159" text-anchor="middle" font-size="10" fill="#64748b">city='Mumbai' AND age&gt;25</text>
+
+  <rect x="255" y="106" width="220" height="56" fill="white" rx="8" stroke="#d97706" stroke-width="2"/>
+  <text x="365" y="128" text-anchor="middle" font-size="20" font-weight="bold" fill="#d97706">OR</text>
+  <text x="365" y="146" text-anchor="middle" font-size="11" fill="#475569">Either condition can be true</text>
+  <text x="365" y="159" text-anchor="middle" font-size="10" fill="#64748b">city='Mumbai' OR city='Delhi'</text>
+
+  <rect x="490" y="106" width="230" height="56" fill="white" rx="8" stroke="#dc2626" stroke-width="2"/>
+  <text x="605" y="128" text-anchor="middle" font-size="20" font-weight="bold" fill="#dc2626">NOT</text>
+  <text x="605" y="146" text-anchor="middle" font-size="11" fill="#475569">Reverses the condition</text>
+  <text x="605" y="159" text-anchor="middle" font-size="10" fill="#64748b">NOT city = 'Mumbai'</text>
+
+  <!-- Row 3: real examples -->
+  <rect x="20" y="174" width="700" height="54" fill="white" rx="8" stroke="#1e40af" stroke-width="1.5"/>
+  <text x="370" y="192" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e40af">Real Examples</text>
+  <text x="185" y="210" text-anchor="middle" font-size="11" fill="#475569">WHERE age &gt;= 18 AND city = 'Mumbai'</text>
+  <text x="370" y="210" text-anchor="middle" font-size="18" fill="#94a3b8">|</text>
+  <text x="560" y="210" text-anchor="middle" font-size="11" fill="#475569">WHERE price &lt; 500 OR stock = 0</text>
+  <text x="185" y="224" text-anchor="middle" font-size="10" fill="#64748b">Both must match</text>
+  <text x="560" y="224" text-anchor="middle" font-size="10" fill="#64748b">Either matches</text>
+</svg>

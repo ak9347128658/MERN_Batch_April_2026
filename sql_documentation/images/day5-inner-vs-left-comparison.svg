@@ -1,0 +1,78 @@
+<svg viewBox="0 0 740 310" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="310" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">INNER JOIN vs LEFT JOIN — Same Data, Different Results</text>
+  <text x="370" y="40" text-anchor="middle" font-size="11" fill="#64748b">customers (5 rows) joined with orders — Sneha and Vikram have NO orders</text>
+
+  <!-- Shared source tables header -->
+  <rect x="20" y="50" width="160" height="130" fill="white" rx="6" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="20" y="50" width="160" height="24" fill="#475569" rx="6 6 0 0"/>
+  <text x="100" y="67" text-anchor="middle" font-size="11" font-weight="bold" fill="white">customers</text>
+  <text x="50" y="88" font-size="10" font-weight="bold" fill="#475569">id</text>
+  <text x="100" y="88" font-size="10" font-weight="bold" fill="#475569">name</text>
+  <line x1="20" y1="92" x2="180" y2="92" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="50" y="106" font-size="10" fill="#1e293b">1</text><text x="70" y="106" font-size="10" fill="#1e293b">Rahul</text>
+  <text x="50" y="120" font-size="10" fill="#1e293b">2</text><text x="70" y="120" font-size="10" fill="#1e293b">Priya</text>
+  <text x="50" y="134" font-size="10" fill="#1e293b">3</text><text x="70" y="134" font-size="10" fill="#1e293b">Amit</text>
+  <text x="50" y="148" font-size="10" fill="#dc2626">4</text><text x="70" y="148" font-size="10" fill="#dc2626">Sneha ← no orders</text>
+  <text x="50" y="162" font-size="10" fill="#dc2626">5</text><text x="70" y="162" font-size="10" fill="#dc2626">Vikram ← no orders</text>
+
+  <rect x="200" y="50" width="140" height="130" fill="white" rx="6" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="200" y="50" width="140" height="24" fill="#475569" rx="6 6 0 0"/>
+  <text x="270" y="67" text-anchor="middle" font-size="11" font-weight="bold" fill="white">orders</text>
+  <text x="220" y="88" font-size="10" font-weight="bold" fill="#475569">id</text>
+  <text x="255" y="88" font-size="10" font-weight="bold" fill="#475569">customer_id</text>
+  <line x1="200" y1="92" x2="340" y2="92" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="220" y="106" font-size="10" fill="#1e293b">1</text><text x="265" y="106" font-size="10" fill="#1e293b">1 (Rahul)</text>
+  <text x="220" y="120" font-size="10" fill="#1e293b">2</text><text x="265" y="120" font-size="10" fill="#1e293b">1 (Rahul)</text>
+  <text x="220" y="134" font-size="10" fill="#1e293b">3</text><text x="265" y="134" font-size="10" fill="#1e293b">2 (Priya)</text>
+  <text x="220" y="148" font-size="10" fill="#1e293b">4</text><text x="265" y="148" font-size="10" fill="#1e293b">3 (Amit)</text>
+  <text x="220" y="162" font-size="10" fill="#1e293b">7</text><text x="265" y="162" font-size="10" fill="#1e293b">2 (Priya)</text>
+
+  <!-- INNER JOIN result -->
+  <rect x="370" y="50" width="160" height="170" fill="white" rx="6" stroke="#2563eb" stroke-width="2"/>
+  <rect x="370" y="50" width="160" height="28" fill="#2563eb" rx="6 6 0 0"/>
+  <text x="450" y="65" text-anchor="middle" font-size="11" font-weight="bold" fill="white">INNER JOIN result</text>
+  <text x="450" y="79" text-anchor="middle" font-size="9" fill="#bfdbfe">Only rows matching in BOTH tables</text>
+  <text x="385" y="98" font-size="10" font-weight="bold" fill="#475569">name</text>
+  <text x="470" y="98" font-size="10" font-weight="bold" fill="#475569">order_id</text>
+  <line x1="370" y1="102" x2="530" y2="102" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="370" y="103" width="160" height="17" fill="#dbeafe"/>
+  <text x="385" y="115" font-size="10" fill="#1e293b">Rahul</text><text x="480" y="115" font-size="10" fill="#1e293b">1</text>
+  <text x="385" y="131" font-size="10" fill="#1e293b">Rahul</text><text x="480" y="131" font-size="10" fill="#1e293b">2</text>
+  <rect x="370" y="133" width="160" height="17" fill="#dbeafe"/>
+  <text x="385" y="145" font-size="10" fill="#1e293b">Priya</text><text x="480" y="145" font-size="10" fill="#1e293b">3</text>
+  <text x="385" y="161" font-size="10" fill="#1e293b">Amit</text><text x="480" y="161" font-size="10" fill="#1e293b">4</text>
+  <rect x="370" y="163" width="160" height="17" fill="#dbeafe"/>
+  <text x="385" y="175" font-size="10" fill="#1e293b">Priya</text><text x="480" y="175" font-size="10" fill="#1e293b">7</text>
+  <rect x="380" y="194" width="140" height="20" fill="#1d4ed8" rx="3"/>
+  <text x="450" y="208" text-anchor="middle" font-size="11" font-weight="bold" fill="white">5 rows — Sneha/Vikram gone</text>
+
+  <!-- LEFT JOIN result -->
+  <rect x="550" y="50" width="170" height="220" fill="white" rx="6" stroke="#16a34a" stroke-width="2"/>
+  <rect x="550" y="50" width="170" height="28" fill="#16a34a" rx="6 6 0 0"/>
+  <text x="635" y="65" text-anchor="middle" font-size="11" font-weight="bold" fill="white">LEFT JOIN result</text>
+  <text x="635" y="79" text-anchor="middle" font-size="9" fill="#bbf7d0">ALL customers + matching orders</text>
+  <text x="562" y="98" font-size="10" font-weight="bold" fill="#475569">name</text>
+  <text x="648" y="98" font-size="10" font-weight="bold" fill="#475569">order_id</text>
+  <line x1="550" y1="102" x2="720" y2="102" stroke="#e2e8f0" stroke-width="1"/>
+  <rect x="550" y="103" width="170" height="17" fill="#dcfce7"/>
+  <text x="562" y="115" font-size="10" fill="#1e293b">Rahul</text><text x="655" y="115" font-size="10" fill="#1e293b">1</text>
+  <text x="562" y="131" font-size="10" fill="#1e293b">Rahul</text><text x="655" y="131" font-size="10" fill="#1e293b">2</text>
+  <rect x="550" y="133" width="170" height="17" fill="#dcfce7"/>
+  <text x="562" y="145" font-size="10" fill="#1e293b">Priya</text><text x="655" y="145" font-size="10" fill="#1e293b">3</text>
+  <text x="562" y="161" font-size="10" fill="#1e293b">Amit</text><text x="655" y="161" font-size="10" fill="#1e293b">4</text>
+  <rect x="550" y="163" width="170" height="17" fill="#dcfce7"/>
+  <text x="562" y="175" font-size="10" fill="#1e293b">Priya</text><text x="655" y="175" font-size="10" fill="#1e293b">7</text>
+  <!-- NULL rows for Sneha and Vikram -->
+  <rect x="550" y="181" width="170" height="17" fill="#fef2f2" stroke="#fca5a5" stroke-width="0.5"/>
+  <text x="562" y="193" font-size="10" font-weight="bold" fill="#dc2626">Sneha</text><text x="655" y="193" font-size="10" fill="#dc2626">NULL</text>
+  <rect x="550" y="199" width="170" height="17" fill="#fef2f2" stroke="#fca5a5" stroke-width="0.5"/>
+  <text x="562" y="211" font-size="10" font-weight="bold" fill="#dc2626">Vikram</text><text x="655" y="211" font-size="10" fill="#dc2626">NULL</text>
+  <rect x="560" y="224" width="150" height="20" fill="#15803d" rx="3"/>
+  <text x="635" y="238" text-anchor="middle" font-size="11" font-weight="bold" fill="white">7 rows — everyone included</text>
+
+  <!-- Bottom summary bar -->
+  <rect x="20" y="250" width="700" height="48" fill="#1e40af" rx="6"/>
+  <text x="370" y="268" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Key Insight: INNER JOIN loses rows with no match. LEFT JOIN keeps them with NULL.</text>
+  <text x="370" y="285" text-anchor="middle" font-size="11" fill="#bfdbfe">INNER JOIN: "show only customers who ordered"  |  LEFT JOIN: "show ALL customers, mark those without orders as NULL"</text>
+</svg>

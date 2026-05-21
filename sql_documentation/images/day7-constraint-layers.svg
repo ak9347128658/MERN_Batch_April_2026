@@ -1,0 +1,39 @@
+<svg viewBox="0 0 740 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="240" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Data Integrity Layers — Defense in Depth</text>
+
+  <!-- Layer 1: Application -->
+  <rect x="40" y="38" width="660" height="44" fill="#dcfce7" rx="8" stroke="#16a34a" stroke-width="2"/>
+  <rect x="40" y="38" width="140" height="44" fill="#16a34a" rx="8 0 0 8"/>
+  <text x="110" y="57" text-anchor="middle" font-size="11" font-weight="bold" fill="white">① Application</text>
+  <text x="110" y="72" text-anchor="middle" font-size="10" fill="#bbf7d0">Validation (code)</text>
+  <text x="420" y="55" text-anchor="middle" font-size="11" fill="#14532d">User-friendly error messages • Complex business logic • External service checks</text>
+  <text x="420" y="71" text-anchor="middle" font-size="10" fill="#16a34a">Can be bypassed by direct DB access • Can have race conditions • Can have bugs</text>
+
+  <!-- Arrow -->
+  <polygon points="366,86 370,96 374,86" fill="#94a3b8"/>
+  <line x1="370" y1="82" x2="370" y2="96" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- Layer 2: DB Constraints -->
+  <rect x="60" y="100" width="620" height="44" fill="#dbeafe" rx="8" stroke="#2563eb" stroke-width="2"/>
+  <rect x="60" y="100" width="140" height="44" fill="#2563eb" rx="8 0 0 8"/>
+  <text x="130" y="119" text-anchor="middle" font-size="11" font-weight="bold" fill="white">② DB Constraints</text>
+  <text x="130" y="134" text-anchor="middle" font-size="10" fill="#bfdbfe">SQL rules</text>
+  <text x="390" y="117" text-anchor="middle" font-size="11" fill="#1e40af">PRIMARY KEY • FOREIGN KEY • UNIQUE • NOT NULL • CHECK • DEFAULT</text>
+  <text x="390" y="133" text-anchor="middle" font-size="10" fill="#2563eb">Always enforced • Cannot be bypassed • Fast (uses indexes) • Declarative</text>
+
+  <!-- Arrow -->
+  <polygon points="366,148 370,158 374,148" fill="#94a3b8"/>
+  <line x1="370" y1="144" x2="370" y2="158" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- Layer 3: Triggers -->
+  <rect x="80" y="162" width="580" height="44" fill="#fef3c7" rx="8" stroke="#d97706" stroke-width="2"/>
+  <rect x="80" y="162" width="140" height="44" fill="#d97706" rx="8 0 0 8"/>
+  <text x="150" y="181" text-anchor="middle" font-size="11" font-weight="bold" fill="white">③ Triggers</text>
+  <text x="150" y="196" text-anchor="middle" font-size="10" fill="#fde68a">PL/pgSQL code</text>
+  <text x="390" y="179" text-anchor="middle" font-size="11" fill="#92400e">Audit logging • Complex cross-table logic • Custom calculations • Derived data</text>
+  <text x="390" y="195" text-anchor="middle" font-size="10" fill="#d97706">More complex to debug • Can have performance overhead • Hidden side effects</text>
+
+  <!-- Data stored -->
+  <text x="370" y="224" text-anchor="middle" font-size="12" font-weight="bold" fill="#1e293b">💾 Data stored safely — only if ALL enforced rules pass</text>
+</svg>

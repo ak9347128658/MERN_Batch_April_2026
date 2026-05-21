@@ -1,0 +1,89 @@
+<svg viewBox="0 0 740 260" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="260" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1e293b">A Database = A Super-Organised Digital Filing Cabinet</text>
+
+  <!-- Cabinet body -->
+  <rect x="50" y="42" width="200" height="195" fill="#334155" rx="8"/>
+  <rect x="58" y="50" width="184" height="175" fill="#475569" rx="4"/>
+
+  <!-- Drawer 1 - students (open) -->
+  <rect x="62" y="54" width="176" height="50" fill="#1e40af" rx="4"/>
+  <rect x="62" y="54" width="176" height="4" fill="#3b82f6" rx="4 4 0 0"/>
+  <text x="150" y="76" text-anchor="middle" font-size="12" font-weight="bold" fill="white">📋  students</text>
+  <rect x="128" y="88" width="40" height="8" fill="#93c5fd" rx="3"/>
+  <text x="148" y="95" text-anchor="middle" font-size="8" fill="#1e293b">handle</text>
+
+  <!-- Drawer 2 - teachers -->
+  <rect x="62" y="112" width="176" height="50" fill="#0369a1" rx="4"/>
+  <rect x="62" y="112" width="176" height="4" fill="#38bdf8" rx="4 4 0 0"/>
+  <text x="150" y="134" text-anchor="middle" font-size="12" font-weight="bold" fill="white">📋  teachers</text>
+  <rect x="128" y="146" width="40" height="8" fill="#7dd3fc" rx="3"/>
+
+  <!-- Drawer 3 - courses -->
+  <rect x="62" y="170" width="176" height="50" fill="#075985" rx="4"/>
+  <rect x="62" y="170" width="176" height="4" fill="#0ea5e9" rx="4 4 0 0"/>
+  <text x="150" y="192" text-anchor="middle" font-size="12" font-weight="bold" fill="white">📋  courses</text>
+  <rect x="128" y="204" width="40" height="8" fill="#7dd3fc" rx="3"/>
+
+  <!-- Open drawer showing data -->
+  <rect x="260" y="42" width="220" height="130" fill="#1e40af" rx="8"/>
+  <rect x="260" y="42" width="220" height="28" fill="#3b82f6" rx="8 8 0 0"/>
+  <text x="370" y="61" text-anchor="middle" font-size="12" font-weight="bold" fill="white">students table</text>
+
+  <rect x="268" y="74" width="204" height="22" fill="#2563eb"/>
+  <line x1="320" y1="74" x2="320" y2="168" stroke="#1d4ed8" stroke-width="1"/>
+  <line x1="380" y1="74" x2="380" y2="168" stroke="#1d4ed8" stroke-width="1"/>
+  <line x1="432" y1="74" x2="432" y2="168" stroke="#1d4ed8" stroke-width="1"/>
+  <text x="294" y="89" text-anchor="middle" font-size="10" fill="white" font-weight="bold">id</text>
+  <text x="350" y="89" text-anchor="middle" font-size="10" fill="white" font-weight="bold">name</text>
+  <text x="406" y="89" text-anchor="middle" font-size="10" fill="white" font-weight="bold">age</text>
+  <text x="456" y="89" text-anchor="middle" font-size="10" fill="white" font-weight="bold">city</text>
+
+  <rect x="268" y="96" width="204" height="18" fill="white" fill-opacity="0.9"/>
+  <text x="294" y="109" text-anchor="middle" font-size="10" fill="#1e293b">1</text>
+  <text x="350" y="109" text-anchor="middle" font-size="10" fill="#1e293b">Rahul</text>
+  <text x="406" y="109" text-anchor="middle" font-size="10" fill="#1e293b">20</text>
+  <text x="456" y="109" text-anchor="middle" font-size="10" fill="#1e293b">Mumbai</text>
+
+  <rect x="268" y="114" width="204" height="18" fill="white" fill-opacity="0.6"/>
+  <text x="294" y="127" text-anchor="middle" font-size="10" fill="#1e293b">2</text>
+  <text x="350" y="127" text-anchor="middle" font-size="10" fill="#1e293b">Priya</text>
+  <text x="406" y="127" text-anchor="middle" font-size="10" fill="#1e293b">22</text>
+  <text x="456" y="127" text-anchor="middle" font-size="10" fill="#1e293b">Delhi</text>
+
+  <rect x="268" y="132" width="204" height="18" fill="white" fill-opacity="0.9"/>
+  <text x="294" y="145" text-anchor="middle" font-size="10" fill="#1e293b">3</text>
+  <text x="350" y="145" text-anchor="middle" font-size="10" fill="#1e293b">Amit</text>
+  <text x="406" y="145" text-anchor="middle" font-size="10" fill="#1e293b">21</text>
+  <text x="456" y="145" text-anchor="middle" font-size="10" fill="#1e293b">Pune</text>
+
+  <rect x="268" y="150" width="204" height="18" fill="white" fill-opacity="0.6"/>
+  <text x="370" y="163" text-anchor="middle" font-size="9" fill="#64748b">... 10,000 more rows ...</text>
+
+  <!-- Arrow from cabinet to table -->
+  <line x1="250" y1="79" x2="258" y2="79" stroke="#fbbf24" stroke-width="2.5"/>
+  <polygon points="254,73 264,79 254,85" fill="#fbbf24"/>
+  <text x="254" y="73" text-anchor="middle" font-size="9" fill="#fbbf24">open</text>
+
+  <!-- Labels below -->
+  <rect x="50" y="195" width="200" height="36" fill="#1e40af" rx="6"/>
+  <text x="150" y="210" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Each drawer = one Table</text>
+  <text x="150" y="225" text-anchor="middle" font-size="10" fill="#bfdbfe">Stores data about one topic</text>
+
+  <rect x="260" y="182" width="220" height="36" fill="#15803d" rx="6"/>
+  <text x="370" y="197" text-anchor="middle" font-size="11" fill="white" font-weight="bold">Inside = Rows &amp; Columns</text>
+  <text x="370" y="211" text-anchor="middle" font-size="10" fill="#bbf7d0">Structured, organised, fast</text>
+
+  <!-- App icons showing who uses databases -->
+  <text x="515" y="65" font-size="11" font-weight="bold" fill="#1e293b">Apps that use databases:</text>
+  <text x="515" y="88" font-size="20" fill="#1e293b">📱</text>
+  <text x="540" y="90" font-size="11" fill="#475569">Instagram — likes, posts</text>
+  <text x="515" y="118" font-size="20" fill="#1e293b">🛒</text>
+  <text x="540" y="120" font-size="11" fill="#475569">Amazon — products, orders</text>
+  <text x="515" y="148" font-size="20" fill="#1e293b">💬</text>
+  <text x="540" y="150" font-size="11" fill="#475569">WhatsApp — messages</text>
+  <text x="515" y="178" font-size="20" fill="#1e293b">▶️</text>
+  <text x="540" y="180" font-size="11" fill="#475569">YouTube — videos, views</text>
+
+  <text x="370" y="248" text-anchor="middle" font-size="11" fill="#64748b">Every interaction you have with a modern app is stored in a database.</text>
+</svg>

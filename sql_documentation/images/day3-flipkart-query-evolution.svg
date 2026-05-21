@@ -1,0 +1,85 @@
+<svg viewBox="0 0 740 360" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="360" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Real-World: How Riya's Flipkart Query Evolves Step by Step</text>
+
+  <!-- Timeline line -->
+  <line x1="370" y1="42" x2="370" y2="342" stroke="#cbd5e1" stroke-width="2"/>
+
+  <!-- Step 1 -->
+  <rect x="20" y="38" width="330" height="46" fill="white" rx="6" stroke="#3b82f6" stroke-width="1.5"/>
+  <rect x="20" y="38" width="100" height="46" fill="#2563eb" rx="6 0 0 6"/>
+  <text x="70" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Step 1</text>
+  <text x="70" y="70" text-anchor="middle" font-size="10" fill="#bfdbfe">Opens Electronics</text>
+  <text x="230" y="52" text-anchor="middle" font-size="10" fill="#1e293b">WHERE category = 'Electronics'</text>
+  <text x="230" y="67" text-anchor="middle" font-size="10" fill="#1e293b">ORDER BY rating DESC  LIMIT 20 OFFSET 0</text>
+  <text x="345" y="60" font-size="9" fill="#16a34a">+WHERE</text>
+
+  <!-- Arrow -->
+  <polygon points="365,88 370,98 375,88" fill="#94a3b8"/>
+
+  <!-- Step 2 -->
+  <rect x="20" y="100" width="330" height="46" fill="white" rx="6" stroke="#7c3aed" stroke-width="1.5"/>
+  <rect x="20" y="100" width="100" height="46" fill="#7c3aed" rx="6 0 0 6"/>
+  <text x="70" y="117" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Step 2</text>
+  <text x="70" y="132" text-anchor="middle" font-size="10" fill="#ddd6fe">Price Filter</text>
+  <text x="230" y="114" text-anchor="middle" font-size="10" fill="#1e293b">AND price &lt; 5000</text>
+  <text x="230" y="129" text-anchor="middle" font-size="10" fill="#475569">ORDER BY rating DESC  LIMIT 20</text>
+  <text x="345" y="122" font-size="9" fill="#7c3aed">+AND</text>
+
+  <polygon points="365,150 370,160 375,150" fill="#94a3b8"/>
+
+  <!-- Step 3 -->
+  <rect x="20" y="162" width="330" height="46" fill="white" rx="6" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="20" y="162" width="100" height="46" fill="#d97706" rx="6 0 0 6"/>
+  <text x="70" y="179" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Step 3</text>
+  <text x="70" y="194" text-anchor="middle" font-size="10" fill="#fde68a">Brand Filter</text>
+  <text x="230" y="176" text-anchor="middle" font-size="10" fill="#1e293b">AND brand IN ('SoundMax', 'TechBrand')</text>
+  <text x="230" y="191" text-anchor="middle" font-size="10" fill="#475569">ORDER BY rating DESC  LIMIT 20</text>
+  <text x="345" y="184" font-size="9" fill="#d97706">+IN</text>
+
+  <polygon points="365,212 370,222 375,212" fill="#94a3b8"/>
+
+  <!-- Step 4 -->
+  <rect x="20" y="224" width="330" height="46" fill="white" rx="6" stroke="#16a34a" stroke-width="1.5"/>
+  <rect x="20" y="224" width="100" height="46" fill="#16a34a" rx="6 0 0 6"/>
+  <text x="70" y="241" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Step 4</text>
+  <text x="70" y="256" text-anchor="middle" font-size="10" fill="#bbf7d0">Sort Changed</text>
+  <text x="230" y="238" text-anchor="middle" font-size="10" fill="#1e293b">AND brand IN ('SoundMax', 'TechBrand')</text>
+  <text x="230" y="253" text-anchor="middle" font-size="10" fill="#1e293b">ORDER BY price ASC  LIMIT 20</text>
+  <text x="345" y="248" font-size="9" fill="#16a34a">ORDER BY</text>
+
+  <polygon points="365,274 370,284 375,274" fill="#94a3b8"/>
+
+  <!-- Step 5 - scroll page 2 -->
+  <rect x="20" y="286" width="330" height="46" fill="white" rx="6" stroke="#0369a1" stroke-width="1.5"/>
+  <rect x="20" y="286" width="100" height="46" fill="#0369a1" rx="6 0 0 6"/>
+  <text x="70" y="303" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Step 5</text>
+  <text x="70" y="318" text-anchor="middle" font-size="10" fill="#bae6fd">Scrolls Page 2</text>
+  <text x="230" y="300" text-anchor="middle" font-size="10" fill="#1e293b">ORDER BY price ASC</text>
+  <text x="230" y="315" text-anchor="middle" font-size="10" font-weight="bold" fill="#0369a1">LIMIT 20  OFFSET 20  ← changes!</text>
+  <text x="345" y="310" font-size="9" fill="#0369a1">+OFFSET</text>
+
+  <!-- Right side: building SQL -->
+  <rect x="390" y="38" width="330" height="296" fill="white" rx="8" stroke="#cbd5e1" stroke-width="1.5"/>
+  <rect x="390" y="38" width="330" height="28" fill="#1e293b" rx="8 8 0 0"/>
+  <text x="555" y="57" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Final Combined Query (Step 5)</text>
+  <rect x="400" y="74" width="310" height="250" fill="#f8fafc" rx="4"/>
+  <text x="410" y="92" font-size="11" font-weight="bold" fill="#2563eb">SELECT</text>
+  <text x="425" y="108" font-size="10" fill="#475569">product_name, price, rating, brand</text>
+  <text x="410" y="124" font-size="11" font-weight="bold" fill="#2563eb">FROM products</text>
+  <text x="410" y="140" font-size="11" font-weight="bold" fill="#7c3aed">WHERE</text>
+  <text x="425" y="156" font-size="10" fill="#475569">category = 'Electronics'</text>
+  <text x="425" y="172" font-size="10" fill="#475569">AND price &lt; 5000</text>
+  <text x="425" y="188" font-size="10" fill="#475569">AND brand IN ('SoundMax', 'TechBrand')</text>
+  <text x="410" y="204" font-size="11" font-weight="bold" fill="#16a34a">ORDER BY</text>
+  <text x="425" y="220" font-size="10" fill="#475569">price ASC</text>
+  <text x="410" y="236" font-size="11" font-weight="bold" fill="#0369a1">LIMIT 20</text>
+  <text x="410" y="252" font-size="11" font-weight="bold" fill="#0369a1">OFFSET 20;</text>
+  <rect x="400" y="268" width="310" height="50" fill="#dcfce7" rx="4"/>
+  <text x="555" y="284" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">Every UI interaction = one WHERE/ORDER BY/OFFSET change</text>
+  <text x="555" y="299" text-anchor="middle" font-size="10" fill="#16a34a">Filter checkbox → AND clause</text>
+  <text x="555" y="312" text-anchor="middle" font-size="10" fill="#16a34a">Sort dropdown → ORDER BY change</text>
+  <text x="555" y="325" text-anchor="middle" font-size="10" fill="#16a34a">Scroll / Next page → OFFSET increases</text>
+
+  <text x="370" y="354" text-anchor="middle" font-size="11" fill="#64748b">This is real production SQL. You now understand how every e-commerce app's search &amp; filter system works!</text>
+</svg>

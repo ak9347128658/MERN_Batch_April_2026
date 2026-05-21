@@ -1,0 +1,88 @@
+<svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="300" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">ORDER BY Multiple Columns — Primary Sort, Then Secondary Sort</text>
+
+  <!-- Before (unsorted) -->
+  <text x="120" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#475569">Unsorted Data</text>
+  <rect x="20" y="54" width="220" height="24" fill="#475569" rx="4"/>
+  <line x1="120" y1="54" x2="120" y2="242" stroke="#334155" stroke-width="1"/>
+  <text x="70" y="70" text-anchor="middle" font-size="11" font-weight="bold" fill="white">dept</text>
+  <text x="180" y="70" text-anchor="middle" font-size="11" font-weight="bold" fill="white">salary</text>
+
+  <rect x="20" y="78" width="220" height="24" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="70" y="95" text-anchor="middle" font-size="11" fill="#1e293b">Sales</text>
+  <text x="180" y="95" text-anchor="middle" font-size="11" fill="#1e293b">45,000</text>
+  <rect x="20" y="102" width="220" height="24" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="70" y="119" text-anchor="middle" font-size="11" fill="#1e293b">Engineering</text>
+  <text x="180" y="119" text-anchor="middle" font-size="11" fill="#1e293b">82,000</text>
+  <rect x="20" y="126" width="220" height="24" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="70" y="143" text-anchor="middle" font-size="11" fill="#1e293b">Marketing</text>
+  <text x="180" y="143" text-anchor="middle" font-size="11" fill="#1e293b">55,000</text>
+  <rect x="20" y="150" width="220" height="24" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="70" y="167" text-anchor="middle" font-size="11" fill="#1e293b">Engineering</text>
+  <text x="180" y="167" text-anchor="middle" font-size="11" fill="#1e293b">90,000</text>
+  <rect x="20" y="174" width="220" height="24" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="70" y="191" text-anchor="middle" font-size="11" fill="#1e293b">Marketing</text>
+  <text x="180" y="191" text-anchor="middle" font-size="11" fill="#1e293b">60,000</text>
+  <rect x="20" y="198" width="220" height="24" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="70" y="215" text-anchor="middle" font-size="11" fill="#1e293b">Engineering</text>
+  <text x="180" y="215" text-anchor="middle" font-size="11" fill="#1e293b">75,000</text>
+  <rect x="20" y="222" width="220" height="24" fill="white" stroke="#e2e8f0" stroke-width="0.5"/>
+  <text x="70" y="239" text-anchor="middle" font-size="11" fill="#1e293b">Sales</text>
+  <text x="180" y="239" text-anchor="middle" font-size="11" fill="#1e293b">47,000</text>
+
+  <!-- ORDER BY box in middle -->
+  <rect x="252" y="126" width="200" height="54" fill="#7c3aed" rx="8"/>
+  <text x="352" y="146" text-anchor="middle" font-size="12" font-weight="bold" fill="white">ORDER BY</text>
+  <text x="352" y="162" text-anchor="middle" font-size="11" fill="#ddd6fe">dept ASC,</text>
+  <text x="352" y="175" text-anchor="middle" font-size="11" fill="#ddd6fe">salary DESC</text>
+
+  <line x1="240" y1="153" x2="250" y2="153" stroke="#7c3aed" stroke-width="2"/>
+  <polygon points="246,147 256,153 246,159" fill="#7c3aed"/>
+  <line x1="452" y1="153" x2="466" y2="153" stroke="#7c3aed" stroke-width="2"/>
+  <polygon points="462,147 472,153 462,159" fill="#7c3aed"/>
+
+  <!-- After (sorted) -->
+  <text x="590" y="46" text-anchor="middle" font-size="12" font-weight="bold" fill="#7c3aed">Sorted: dept ASC, salary DESC</text>
+  <rect x="472" y="54" width="248" height="24" fill="#7c3aed" rx="4"/>
+  <line x1="600" y1="54" x2="600" y2="242" stroke="#6d28d9" stroke-width="1"/>
+  <text x="536" y="70" text-anchor="middle" font-size="11" font-weight="bold" fill="white">dept</text>
+  <text x="678" y="70" text-anchor="middle" font-size="11" font-weight="bold" fill="white">salary</text>
+
+  <!-- Engineering rows first (sorted by salary desc) -->
+  <rect x="472" y="78" width="248" height="24" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="536" y="95" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="bold">Engineering</text>
+  <text x="678" y="95" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="bold">90,000 ↑</text>
+  <rect x="472" y="102" width="248" height="24" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="536" y="119" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="bold">Engineering</text>
+  <text x="678" y="119" text-anchor="middle" font-size="11" fill="#1e293b">82,000</text>
+  <rect x="472" y="126" width="248" height="24" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="536" y="143" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="bold">Engineering</text>
+  <text x="678" y="143" text-anchor="middle" font-size="11" fill="#1e293b">75,000 ↓</text>
+
+  <!-- Marketing rows -->
+  <rect x="472" y="150" width="248" height="24" fill="#fef3c7" stroke="#fde047" stroke-width="1"/>
+  <text x="536" y="167" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">Marketing</text>
+  <text x="678" y="167" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="bold">60,000 ↑</text>
+  <rect x="472" y="174" width="248" height="24" fill="#fffbeb" stroke="#fde047" stroke-width="1"/>
+  <text x="536" y="191" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">Marketing</text>
+  <text x="678" y="191" text-anchor="middle" font-size="11" fill="#1e293b">55,000 ↓</text>
+
+  <!-- Sales rows -->
+  <rect x="472" y="198" width="248" height="24" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+  <text x="536" y="215" text-anchor="middle" font-size="11" fill="#15803d" font-weight="bold">Sales</text>
+  <text x="678" y="215" text-anchor="middle" font-size="11" fill="#16a34a" font-weight="bold">47,000 ↑</text>
+  <rect x="472" y="222" width="248" height="24" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+  <text x="536" y="239" text-anchor="middle" font-size="11" fill="#15803d" font-weight="bold">Sales</text>
+  <text x="678" y="239" text-anchor="middle" font-size="11" fill="#1e293b">45,000 ↓</text>
+
+  <!-- Annotations -->
+  <text x="730" y="119" text-anchor="middle" font-size="9" fill="#1e40af" writing-mode="vertical-rl">Eng first</text>
+  <text x="730" y="178" text-anchor="middle" font-size="9" fill="#92400e" writing-mode="vertical-rl">then Mktg</text>
+  <text x="730" y="225" text-anchor="middle" font-size="9" fill="#15803d" writing-mode="vertical-rl">then Sales</text>
+
+  <!-- Bottom explanation -->
+  <rect x="20" y="256" width="700" height="36" fill="white" rx="6" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="370" y="271" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">Multi-column ORDER BY: Primary sort first, then secondary sort breaks ties within each primary group.</text>
+  <text x="370" y="285" text-anchor="middle" font-size="11" fill="#64748b">ORDER BY dept ASC, salary DESC  →  sort A→Z by department, then within each dept sort highest salary first</text>
+</svg>

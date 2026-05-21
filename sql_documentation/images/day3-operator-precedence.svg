@@ -1,0 +1,57 @@
+<svg viewBox="0 0 740 290" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="290" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Operator Precedence: NOT &gt; AND &gt; OR  (Use Parentheses!)</text>
+
+  <!-- Precedence bar -->
+  <rect x="80" y="36" width="580" height="30" fill="white" rx="6" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="80" y="36" width="145" height="30" fill="#dc2626" rx="6 0 0 6"/>
+  <text x="152" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="white">1st: NOT</text>
+  <rect x="295" y="36" width="145" height="30" fill="#2563eb"/>
+  <text x="367" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="white">2nd: AND</text>
+  <rect x="515" y="36" width="145" height="30" fill="#d97706" rx="0 6 6 0"/>
+  <text x="587" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="white">3rd: OR</text>
+  <text x="232" y="55" text-anchor="middle" font-size="11" fill="#64748b">evaluated first</text>
+  <text x="448" y="55" text-anchor="middle" font-size="11" fill="#64748b">then</text>
+
+  <!-- WRONG side -->
+  <rect x="20" y="80" width="330" height="38" fill="#dc2626" rx="6 6 0 0"/>
+  <text x="185" y="104" text-anchor="middle" font-size="13" font-weight="bold" fill="white">❌ WRONG — Missing parentheses!</text>
+
+  <rect x="20" y="118" width="330" height="152" fill="white" rx="0 0 8 8" stroke="#fca5a5" stroke-width="1.5"/>
+
+  <rect x="30" y="126" width="310" height="34" fill="#fee2e2" rx="4"/>
+  <text x="185" y="141" text-anchor="middle" font-size="11" font-weight="bold" fill="#991b1b">WHERE city = 'Mumbai'</text>
+  <text x="185" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="#991b1b">AND dept = 'Engineering' OR dept = 'Sales'</text>
+
+  <text x="185" y="178" text-anchor="middle" font-size="11" fill="#475569">SQL parses this as:</text>
+  <rect x="30" y="184" width="310" height="26" fill="#fef2f2" rx="4"/>
+  <text x="185" y="201" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">(city='Mumbai' AND dept='Engineering')</text>
+  <text x="185" y="215" text-anchor="middle" font-size="11" fill="#dc2626">AND is evaluated FIRST!</text>
+  <rect x="30" y="218" width="310" height="26" fill="#fef2f2" rx="4"/>
+  <text x="185" y="232" text-anchor="middle" font-size="11" fill="#dc2626">OR dept='Sales'  ← Sales from ANY city!</text>
+  <text x="185" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="#dc2626">Gets all Sales employees — not what you wanted!</text>
+  <text x="185" y="265" text-anchor="middle" font-size="10" fill="#dc2626">Result: Mumbai Engineers + ALL Sales people</text>
+
+  <!-- CORRECT side -->
+  <rect x="390" y="80" width="330" height="38" fill="#16a34a" rx="6 6 0 0"/>
+  <text x="555" y="104" text-anchor="middle" font-size="13" font-weight="bold" fill="white">✅ CORRECT — With parentheses</text>
+
+  <rect x="390" y="118" width="330" height="152" fill="white" rx="0 0 8 8" stroke="#86efac" stroke-width="1.5"/>
+
+  <rect x="400" y="126" width="310" height="34" fill="#dcfce7" rx="4"/>
+  <text x="555" y="141" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">WHERE city = 'Mumbai'</text>
+  <text x="555" y="155" text-anchor="middle" font-size="11" font-weight="bold" fill="#14532d">AND (dept='Engineering' OR dept='Sales')</text>
+
+  <text x="555" y="178" text-anchor="middle" font-size="11" fill="#475569">SQL parses this as:</text>
+  <rect x="400" y="184" width="310" height="26" fill="#f0fdf4" rx="4"/>
+  <text x="555" y="201" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">First: (dept='Engineering' OR dept='Sales')</text>
+  <text x="555" y="215" text-anchor="middle" font-size="11" fill="#16a34a">OR inside parentheses runs first</text>
+  <rect x="400" y="218" width="310" height="26" fill="#dcfce7" rx="4"/>
+  <text x="555" y="232" text-anchor="middle" font-size="11" fill="#16a34a">Then: city='Mumbai' AND (Engineering OR Sales)</text>
+  <text x="555" y="255" text-anchor="middle" font-size="11" font-weight="bold" fill="#16a34a">Mumbai employees in Eng OR Sales — correct! ✅</text>
+  <text x="555" y="265" text-anchor="middle" font-size="10" fill="#16a34a">Result: Only Mumbai Engineers + Mumbai Sales people</text>
+
+  <!-- Bottom rule -->
+  <rect x="20" y="278" width="700" height="8" fill="#fbbf24" rx="4"/>
+  <text x="370" y="285" text-anchor="middle" font-size="10" fill="#92400e">When mixing AND + OR, always use parentheses. The default precedence (AND before OR) will surprise you!</text>
+</svg>

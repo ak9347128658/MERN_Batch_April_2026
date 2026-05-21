@@ -1,0 +1,49 @@
+<svg viewBox="0 0 740 260" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="260" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Transaction Isolation Levels — When Snapshots Are Taken</text>
+
+  <!-- Header row labels -->
+  <text x="80" y="46" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Level</text>
+  <text x="270" y="46" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Snapshot taken when?</text>
+  <text x="480" y="46" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Can see committed changes mid-transaction?</text>
+  <text x="680" y="46" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Use case</text>
+  <line x1="20" y1="50" x2="720" y2="50" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- READ COMMITTED -->
+  <rect x="20" y="54" width="700" height="42" fill="#dcfce7" rx="4"/>
+  <rect x="20" y="54" width="140" height="42" fill="#16a34a" rx="4 0 0 4"/>
+  <text x="90" y="72" text-anchor="middle" font-size="11" font-weight="bold" fill="white">READ COMMITTED</text>
+  <text x="90" y="87" text-anchor="middle" font-size="10" fill="#bbf7d0">(PostgreSQL default)</text>
+  <text x="270" y="74" text-anchor="middle" font-size="10" fill="#1e293b">Each SQL statement</text>
+  <text x="270" y="88" text-anchor="middle" font-size="10" fill="#1e293b">gets fresh snapshot</text>
+  <text x="480" y="74" text-anchor="middle" font-size="10" fill="#16a34a" font-weight="bold">✅ YES — each statement sees</text>
+  <text x="480" y="88" text-anchor="middle" font-size="10" fill="#16a34a">latest committed data</text>
+  <text x="650" y="81" text-anchor="middle" font-size="10" fill="#1e293b">Most web apps &amp;</text>
+
+  <!-- REPEATABLE READ -->
+  <rect x="20" y="100" width="700" height="42" fill="#dbeafe" rx="4"/>
+  <rect x="20" y="100" width="140" height="42" fill="#2563eb" rx="4 0 0 4"/>
+  <text x="90" y="118" text-anchor="middle" font-size="11" font-weight="bold" fill="white">REPEATABLE READ</text>
+  <text x="270" y="114" text-anchor="middle" font-size="10" fill="#1e293b">Once at transaction</text>
+  <text x="270" y="128" text-anchor="middle" font-size="10" fill="#1e293b">BEGIN</text>
+  <text x="480" y="118" text-anchor="middle" font-size="10" fill="#dc2626" font-weight="bold">❌ NO — all queries see same</text>
+  <text x="480" y="132" text-anchor="middle" font-size="10" fill="#dc2626">snapshot (your "morning copy")</text>
+  <text x="650" y="125" text-anchor="middle" font-size="10" fill="#1e293b">Reports, exports,</text>
+
+  <!-- SERIALIZABLE -->
+  <rect x="20" y="146" width="700" height="42" fill="#fef3c7" rx="4"/>
+  <rect x="20" y="146" width="140" height="42" fill="#d97706" rx="4 0 0 4"/>
+  <text x="90" y="164" text-anchor="middle" font-size="11" font-weight="bold" fill="white">SERIALIZABLE</text>
+  <text x="270" y="160" text-anchor="middle" font-size="10" fill="#1e293b">Once at BEGIN + tracks</text>
+  <text x="270" y="174" text-anchor="middle" font-size="10" fill="#1e293b">read/write dependencies</text>
+  <text x="480" y="160" text-anchor="middle" font-size="10" fill="#dc2626" font-weight="bold">❌ NO + may ABORT if conflict</text>
+  <text x="480" y="174" text-anchor="middle" font-size="10" fill="#dc2626">detected (retry required)</text>
+  <text x="650" y="167" text-anchor="middle" font-size="10" fill="#1e293b">Financial systems,</text>
+
+  <!-- Phantom reads / dirty reads reference -->
+  <rect x="20" y="198" width="700" height="50" fill="white" rx="6" stroke="#94a3b8" stroke-width="1"/>
+  <text x="370" y="214" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e293b">What each level prevents:</text>
+  <text x="130" y="234" text-anchor="middle" font-size="10" fill="#16a34a">READ COMMITTED:  prevents dirty reads (seeing uncommitted data)</text>
+  <text x="450" y="234" text-anchor="middle" font-size="10" fill="#2563eb">REPEATABLE READ: also prevents non-repeatable reads (same query, different result)</text>
+  <text x="310" y="244" text-anchor="middle" font-size="10" fill="#d97706">SERIALIZABLE: also prevents phantom reads &amp; write skew anomalies</text>
+</svg>

@@ -1,0 +1,49 @@
+<svg viewBox="0 0 740 280" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="280" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">Correlated vs Non-Correlated Subqueries — Performance Impact</text>
+
+  <!-- Non-correlated (left) -->
+  <rect x="20" y="36" width="340" height="220" fill="white" rx="8" stroke="#16a34a" stroke-width="2"/>
+  <rect x="20" y="36" width="340" height="28" fill="#16a34a" rx="8 8 0 0"/>
+  <text x="190" y="56" text-anchor="middle" font-size="12" font-weight="bold" fill="white">✅ Non-Correlated — runs ONCE</text>
+
+  <rect x="35" y="72" width="310" height="52" fill="#f0fdf4" rx="4"/>
+  <text x="45" y="89" font-size="10" fill="#475569">SELECT name FROM employees</text>
+  <text x="45" y="105" font-size="10" fill="#475569">WHERE salary &gt; (SELECT AVG(salary) FROM employees);</text>
+  <text x="318" y="96" font-size="10" fill="#94a3b8">↑ no reference</text>
+  <text x="318" y="110" font-size="10" fill="#94a3b8">to outer query</text>
+
+  <text x="190" y="145" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Execution:</text>
+  <rect x="35" y="152" width="310" height="22" fill="#dcfce7" rx="3"/>
+  <text x="190" y="167" text-anchor="middle" font-size="11" fill="#1e293b">1. Run subquery → gets 65000 (once!)</text>
+  <rect x="35" y="176" width="310" height="22" fill="#dcfce7" rx="3"/>
+  <text x="190" y="191" text-anchor="middle" font-size="11" fill="#1e293b">2. Cache result: 65000</text>
+  <rect x="35" y="200" width="310" height="22" fill="#dcfce7" rx="3"/>
+  <text x="190" y="215" text-anchor="middle" font-size="11" fill="#1e293b">3. Run outer: WHERE salary &gt; 65000</text>
+
+  <rect x="50" y="232" width="280" height="16" fill="#15803d" rx="3"/>
+  <text x="190" y="244" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Subquery executes: 1 time (fast! ✅)</text>
+
+  <!-- Correlated (right) -->
+  <rect x="380" y="36" width="340" height="220" fill="white" rx="8" stroke="#dc2626" stroke-width="2"/>
+  <rect x="380" y="36" width="340" height="28" fill="#dc2626" rx="8 8 0 0"/>
+  <text x="550" y="56" text-anchor="middle" font-size="12" font-weight="bold" fill="white">⚠️ Correlated — runs ONCE PER ROW</text>
+
+  <rect x="395" y="72" width="310" height="52" fill="#fef2f2" rx="4"/>
+  <text x="405" y="89" font-size="10" fill="#475569">SELECT name FROM employees e</text>
+  <text x="405" y="105" font-size="10" fill="#475569">WHERE salary &gt; (SELECT AVG(salary) FROM employees</text>
+  <rect x="500" y="108" width="195" height="16" fill="#fecaca" rx="2"/>
+  <text x="405" y="120" font-size="10" fill="#dc2626">  WHERE department = e.department); ← outer ref!</text>
+
+  <text x="550" y="145" text-anchor="middle" font-size="11" font-weight="bold" fill="#475569">Execution (10 employees):</text>
+  <rect x="395" y="152" width="310" height="18" fill="#fee2e2" rx="3"/>
+  <text x="550" y="165" text-anchor="middle" font-size="10" fill="#1e293b">Row 1 (Rajesh/Engineering) → run subquery</text>
+  <rect x="395" y="172" width="310" height="18" fill="#fee2e2" rx="3"/>
+  <text x="550" y="185" text-anchor="middle" font-size="10" fill="#1e293b">Row 2 (Priya/Engineering) → run subquery again</text>
+  <rect x="395" y="192" width="310" height="18" fill="#fee2e2" rx="3"/>
+  <text x="550" y="205" text-anchor="middle" font-size="10" fill="#1e293b">Row 3 (Sneha/Marketing) → run subquery again</text>
+  <text x="550" y="224" text-anchor="middle" font-size="10" fill="#dc2626">... repeats for every single row ...</text>
+
+  <rect x="410" y="232" width="280" height="16" fill="#b91c1c" rx="3"/>
+  <text x="550" y="244" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Subquery executes: N times (N = row count) ⚠️</text>
+</svg>

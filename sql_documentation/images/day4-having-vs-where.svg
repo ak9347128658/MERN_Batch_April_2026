@@ -1,0 +1,99 @@
+<svg viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="300" fill="#f0f4ff" rx="12"/>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1e293b">WHERE vs HAVING — What Gets Filtered and When</text>
+
+  <!-- Pipeline row labels -->
+  <text x="370" y="44" text-anchor="middle" font-size="11" fill="#64748b">Same data, different filter timing — WHERE runs before groups exist, HAVING runs after</text>
+
+  <!-- Step boxes pipeline -->
+  <!-- FROM -->
+  <rect x="20" y="54" width="100" height="40" fill="#1e40af" rx="6"/>
+  <text x="70" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="white">FROM</text>
+
+  <!-- Arrow -->
+  <polygon points="124,74 134,74 129,80" fill="#94a3b8"/>
+  <line x1="120" y1="74" x2="134" y2="74" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- WHERE box (highlighted red border = filter point) -->
+  <rect x="138" y="54" width="120" height="40" fill="#dc2626" rx="6"/>
+  <text x="198" y="71" text-anchor="middle" font-size="12" font-weight="bold" fill="white">② WHERE</text>
+  <text x="198" y="85" text-anchor="middle" font-size="10" fill="#fecaca">Filters ROWS</text>
+
+  <!-- WHERE annotation -->
+  <rect x="138" y="104" width="120" height="52" fill="#fef2f2" rx="6" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="198" y="118" text-anchor="middle" font-size="10" font-weight="bold" fill="#dc2626">Runs on raw rows</text>
+  <text x="198" y="132" text-anchor="middle" font-size="10" fill="#1e293b">✅ price &gt; 1000</text>
+  <text x="198" y="146" text-anchor="middle" font-size="10" fill="#1e293b">✅ category = 'A'</text>
+  <text x="198" y="160" text-anchor="middle" font-size="10" fill="#dc2626">❌ COUNT(*) &gt; 5</text>
+
+  <line x1="198" y1="94" x2="198" y2="104" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- Arrow -->
+  <polygon points="262,74 272,74 267,80" fill="#94a3b8"/>
+  <line x1="258" y1="74" x2="272" y2="74" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- GROUP BY -->
+  <rect x="276" y="54" width="120" height="40" fill="#7c3aed" rx="6"/>
+  <text x="336" y="71" text-anchor="middle" font-size="12" font-weight="bold" fill="white">③ GROUP BY</text>
+  <text x="336" y="85" text-anchor="middle" font-size="10" fill="#ddd6fe">Creates buckets</text>
+
+  <!-- GROUP BY annotation -->
+  <rect x="276" y="104" width="120" height="52" fill="#f5f3ff" rx="6" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="336" y="118" text-anchor="middle" font-size="10" font-weight="bold" fill="#7c3aed">Groups are born here</text>
+  <text x="336" y="132" text-anchor="middle" font-size="10" fill="#1e293b">Electronics bucket</text>
+  <text x="336" y="146" text-anchor="middle" font-size="10" fill="#1e293b">Clothing bucket</text>
+  <text x="336" y="160" text-anchor="middle" font-size="10" fill="#1e293b">Footwear bucket</text>
+
+  <line x1="336" y1="94" x2="336" y2="104" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- Arrow -->
+  <polygon points="400,74 410,74 405,80" fill="#94a3b8"/>
+  <line x1="396" y1="74" x2="410" y2="74" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- HAVING box (highlighted green border = filter point) -->
+  <rect x="414" y="54" width="120" height="40" fill="#16a34a" rx="6"/>
+  <text x="474" y="71" text-anchor="middle" font-size="12" font-weight="bold" fill="white">④ HAVING</text>
+  <text x="474" y="85" text-anchor="middle" font-size="10" fill="#bbf7d0">Filters GROUPS</text>
+
+  <!-- HAVING annotation -->
+  <rect x="414" y="104" width="120" height="52" fill="#f0fdf4" rx="6" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="474" y="118" text-anchor="middle" font-size="10" font-weight="bold" fill="#16a34a">Runs on groups</text>
+  <text x="474" y="132" text-anchor="middle" font-size="10" fill="#dc2626">❌ price &gt; 1000</text>
+  <text x="474" y="146" text-anchor="middle" font-size="10" fill="#1e293b">✅ COUNT(*) &gt; 5</text>
+  <text x="474" y="160" text-anchor="middle" font-size="10" fill="#1e293b">✅ SUM(price) &gt; 50k</text>
+
+  <line x1="474" y1="94" x2="474" y2="104" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+  <!-- Arrow -->
+  <polygon points="538,74 548,74 543,80" fill="#94a3b8"/>
+  <line x1="534" y1="74" x2="548" y2="74" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- SELECT -->
+  <rect x="552" y="54" width="90" height="40" fill="#d97706" rx="6"/>
+  <text x="597" y="79" text-anchor="middle" font-size="12" font-weight="bold" fill="white">SELECT</text>
+
+  <!-- Arrow -->
+  <polygon points="646,74 656,74 651,80" fill="#94a3b8"/>
+  <line x1="642" y1="74" x2="656" y2="74" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- Result -->
+  <rect x="660" y="54" width="66" height="40" fill="#0369a1" rx="6"/>
+  <text x="693" y="79" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Result</text>
+
+  <!-- Combined example -->
+  <rect x="20" y="174" width="700" height="114" fill="white" rx="8" stroke="#1e40af" stroke-width="1.5"/>
+  <rect x="20" y="174" width="700" height="26" fill="#1e40af" rx="8 8 0 0"/>
+  <text x="370" y="191" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Combining WHERE + HAVING — Both Filters Together</text>
+  <text x="40" y="214" font-size="11" font-weight="bold" fill="#2563eb">SELECT</text>
+  <text x="100" y="214" font-size="11" fill="#475569">category, SUM(quantity * price) AS revenue</text>
+  <text x="40" y="230" font-size="11" font-weight="bold" fill="#2563eb">FROM</text>
+  <text x="80" y="230" font-size="11" fill="#475569">sales</text>
+  <text x="40" y="246" font-size="11" font-weight="bold" fill="#dc2626">WHERE</text>
+  <text x="90" y="246" font-size="11" fill="#475569">sale_date &gt;= '2024-02-01'</text>
+  <text x="265" y="246" font-size="11" fill="#dc2626" font-weight="bold">← filters individual rows first (reduces data)</text>
+  <text x="40" y="262" font-size="11" font-weight="bold" fill="#7c3aed">GROUP BY</text>
+  <text x="110" y="262" font-size="11" fill="#475569">category</text>
+  <text x="40" y="278" font-size="11" font-weight="bold" fill="#16a34a">HAVING</text>
+  <text x="95" y="278" font-size="11" fill="#475569">SUM(quantity * price) &gt; 30000;</text>
+  <text x="310" y="278" font-size="11" fill="#16a34a" font-weight="bold">← filters groups after aggregation</text>
+</svg>

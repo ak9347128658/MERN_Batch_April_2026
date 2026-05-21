@@ -1,0 +1,53 @@
+<svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="720" height="360" fill="#f0f4ff" rx="12"/>
+  <text x="360" y="28" text-anchor="middle" font-size="17" font-weight="bold" fill="#1e293b">SQL Join Types — Visual Guide</text>
+
+  <!-- INNER JOIN -->
+  <text x="130" y="55" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">INNER JOIN</text>
+  <circle cx="106" cy="110" r="52" fill="#93c5fd" fill-opacity="0.5" stroke="#2563eb" stroke-width="2"/>
+  <circle cx="154" cy="110" r="52" fill="#93c5fd" fill-opacity="0.5" stroke="#2563eb" stroke-width="2"/>
+  <!-- highlighted intersection -->
+  <clipPath id="clipR1"><circle cx="154" cy="110" r="52"/></clipPath>
+  <circle cx="106" cy="110" r="52" fill="#1d4ed8" fill-opacity="0.7" clip-path="url(#clipR1)"/>
+  <text x="82" y="114" text-anchor="middle" font-size="11" fill="#1e3a8a">A</text>
+  <text x="178" y="114" text-anchor="middle" font-size="11" fill="#1e3a8a">B</text>
+  <text x="130" y="172" text-anchor="middle" font-size="11" fill="#1e40af">Only matching rows</text>
+  <text x="130" y="187" text-anchor="middle" font-size="11" fill="#64748b">from both tables</text>
+
+  <!-- LEFT JOIN -->
+  <text x="360" y="55" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">LEFT JOIN</text>
+  <circle cx="336" cy="110" r="52" fill="#86efac" fill-opacity="0.8" stroke="#16a34a" stroke-width="2"/>
+  <circle cx="384" cy="110" r="52" fill="#86efac" fill-opacity="0.3" stroke="#16a34a" stroke-width="2"/>
+  <clipPath id="clipR2"><circle cx="384" cy="110" r="52"/></clipPath>
+  <circle cx="336" cy="110" r="52" fill="#15803d" fill-opacity="0.4" clip-path="url(#clipR2)"/>
+  <text x="312" y="114" text-anchor="middle" font-size="11" fill="#14532d">A</text>
+  <text x="408" y="114" text-anchor="middle" font-size="11" fill="#14532d">B</text>
+  <text x="360" y="172" text-anchor="middle" font-size="11" fill="#15803d">All rows from LEFT table</text>
+  <text x="360" y="187" text-anchor="middle" font-size="11" fill="#64748b">+ matching from right (NULL if none)</text>
+
+  <!-- RIGHT JOIN -->
+  <text x="590" y="55" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">RIGHT JOIN</text>
+  <circle cx="566" cy="110" r="52" fill="#fde68a" fill-opacity="0.3" stroke="#d97706" stroke-width="2"/>
+  <circle cx="614" cy="110" r="52" fill="#fde68a" fill-opacity="0.8" stroke="#d97706" stroke-width="2"/>
+  <clipPath id="clipR3"><circle cx="566" cy="110" r="52"/></clipPath>
+  <circle cx="614" cy="110" r="52" fill="#b45309" fill-opacity="0.4" clip-path="url(#clipR3)"/>
+  <text x="542" y="114" text-anchor="middle" font-size="11" fill="#78350f">A</text>
+  <text x="638" y="114" text-anchor="middle" font-size="11" fill="#78350f">B</text>
+  <text x="590" y="172" text-anchor="middle" font-size="11" fill="#b45309">All rows from RIGHT table</text>
+  <text x="590" y="187" text-anchor="middle" font-size="11" fill="#64748b">+ matching from left (NULL if none)</text>
+
+  <!-- FULL OUTER JOIN -->
+  <text x="360" y="225" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">FULL OUTER JOIN</text>
+  <circle cx="336" cy="280" r="52" fill="#f0abfc" fill-opacity="0.7" stroke="#9333ea" stroke-width="2"/>
+  <circle cx="384" cy="280" r="52" fill="#f0abfc" fill-opacity="0.7" stroke="#9333ea" stroke-width="2"/>
+  <text x="312" y="284" text-anchor="middle" font-size="11" fill="#3b0764">A</text>
+  <text x="408" y="284" text-anchor="middle" font-size="11" fill="#3b0764">B</text>
+  <text x="360" y="344" text-anchor="middle" font-size="11" fill="#7e22ce">All rows from BOTH tables</text>
+
+  <!-- Legend separator -->
+  <line x1="40" y1="205" x2="680" y2="205" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- CROSS JOIN note -->
+  <rect x="40" y="325" width="640" height="28" fill="#e0e7ff" rx="6"/>
+  <text x="360" y="343" text-anchor="middle" font-size="11" fill="#3730a3">CROSS JOIN — Every row from A paired with every row from B (no ON clause). Result size = rows_A × rows_B</text>
+</svg>
