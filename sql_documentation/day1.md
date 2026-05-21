@@ -1,9 +1,5 @@
 # 📅 Day 1: Introduction to SQL & Databases
 
-Hello students 👋
-
-Welcome to Day 1 of our 10-day SQL journey! Today is all about understanding the **big picture** — what databases are, why they exist, and writing your very first SQL query. By the end of today, you'll already be talking to a database!
-
 ---
 
 ## 📖 1. Introduction
@@ -851,16 +847,3 @@ Let's summarize what we learned today:
 
 ---
 
-## 🔮 Preview of Day 2
-
-Tomorrow we'll learn **CRUD operations** — the four fundamental things you can do with data:
-- **C**reate (INSERT)
-- **R**ead (SELECT — we started this today!)
-- **U**pdate (UPDATE)
-- **D**elete (DELETE)
-
-See you tomorrow! 🚀
-
----
-
-> 💬 **Remember:** The best way to learn SQL is by **doing**. Open psql and practice every example. Don't just read — type it out!
