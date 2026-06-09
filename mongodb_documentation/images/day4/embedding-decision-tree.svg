@@ -1,0 +1,86 @@
+<svg viewBox="0 0 710 340" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrDT" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <rect width="710" height="340" fill="#fafafa" rx="14"/>
+  <text x="355" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">The Embedding Decision Tree</text>
+
+  <!-- Start box -->
+  <rect x="255" y="36" width="200" height="36" rx="8" fill="#37474F"/>
+  <text x="355" y="59" text-anchor="middle" font-size="12" font-weight="bold" fill="white">Should I embed or reference?</text>
+  <line x1="355" y1="72" x2="355" y2="92" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+
+  <!-- Diamond 1: How often read together? -->
+  <polygon points="355,92 455,130 355,168 255,130" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
+  <text x="355" y="125" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">How often is this</text>
+  <text x="355" y="140" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">data read together?</text>
+
+  <!-- Rarely → REFERENCE (left far) -->
+  <line x1="255" y1="130" x2="150" y2="130" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+  <text x="202" y="123" text-anchor="middle" font-size="9" fill="#f44336" font-weight="bold">Rarely</text>
+  <rect x="48" y="112" width="102" height="36" rx="8" fill="#1565C0"/>
+  <text x="99" y="128" text-anchor="middle" font-size="11" font-weight="bold" fill="white">REFERENCE</text>
+  <text x="99" y="142" text-anchor="middle" font-size="8" fill="#BBDEFB">separate collection</text>
+
+  <!-- Sometimes → Diamond 2 (right) -->
+  <line x1="455" y1="130" x2="560" y2="130" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+  <text x="508" y="123" text-anchor="middle" font-size="9" fill="#FF9800" font-weight="bold">Sometimes</text>
+  <!-- Diamond 2: Updated frequently? -->
+  <polygon points="620,110 690,130 620,150 550,130" fill="#FFF8E1" stroke="#FF9800" stroke-width="2"/>
+  <text x="620" y="126" text-anchor="middle" font-size="9" font-weight="bold" fill="#e65100">Updated</text>
+  <text x="620" y="140" text-anchor="middle" font-size="9" font-weight="bold" fill="#e65100">frequently?</text>
+
+  <line x1="620" y1="150" x2="620" y2="185" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+  <text x="625" y="172" font-size="9" fill="#4CAF50" font-weight="bold">No</text>
+  <rect x="568" y="185" width="104" height="36" rx="8" fill="#FF9800"/>
+  <text x="620" y="200" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Consider</text>
+  <text x="620" y="213" text-anchor="middle" font-size="10" font-weight="bold" fill="white">EMBEDDING</text>
+  <line x1="690" y1="130" x2="720" y2="130" stroke="#546E7A" stroke-width="0"/>
+  <text x="700" y="120" font-size="9" fill="#f44336" font-weight="bold">Yes</text>
+  <line x1="690" y1="130" x2="710" y2="130" stroke="#f44336" stroke-width="1.5"/>
+  <line x1="710" y1="130" x2="710" y2="200" stroke="#f44336" stroke-width="1.5"/>
+  <!-- reference end -->
+  <text x="695" y="208" font-size="9" fill="#1565c0" font-weight="bold">REFERENCE</text>
+
+  <!-- Always → Diamond 3 (down) -->
+  <line x1="355" y1="168" x2="355" y2="188" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+  <text x="365" y="182" font-size="9" fill="#4CAF50" font-weight="bold">Always</text>
+
+  <!-- Diamond 3: Bounded? -->
+  <polygon points="355,188 455,226 355,264 255,226" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2"/>
+  <text x="355" y="221" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">Is the nested data</text>
+  <text x="355" y="236" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">bounded? (&lt;100 items)</text>
+
+  <!-- Yes → EMBED -->
+  <line x1="255" y1="226" x2="155" y2="226" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+  <text x="205" y="219" text-anchor="middle" font-size="9" fill="#4CAF50" font-weight="bold">Yes</text>
+  <rect x="48" y="208" width="107" height="36" rx="8" fill="#2E7D32"/>
+  <text x="101" y="224" text-anchor="middle" font-size="11" font-weight="bold" fill="white">EMBED ✅</text>
+  <text x="101" y="238" text-anchor="middle" font-size="8" fill="#A5D6A7">fastest option</text>
+
+  <!-- No → Diamond 4: Can it grow without limit? -->
+  <line x1="355" y1="264" x2="355" y2="284" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+  <text x="365" y="278" font-size="9" fill="#f44336" font-weight="bold">No</text>
+
+  <!-- Diamond 4 -->
+  <polygon points="355,284 450,314 355,340 260,314" fill="#FFEBEE" stroke="#f44336" stroke-width="2"/>
+  <text x="355" y="309" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828">Can it grow</text>
+  <text x="355" y="323" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828">without limit?</text>
+
+  <!-- Yes → REFERENCE (right) -->
+  <line x1="450" y1="314" x2="540" y2="314" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+  <text x="495" y="307" text-anchor="middle" font-size="9" fill="#f44336" font-weight="bold">Yes</text>
+  <rect x="540" y="296" width="102" height="36" rx="8" fill="#1565C0"/>
+  <text x="591" y="312" text-anchor="middle" font-size="11" font-weight="bold" fill="white">REFERENCE</text>
+  <text x="591" y="326" text-anchor="middle" font-size="8" fill="#BBDEFB">16MB limit risk</text>
+
+  <!-- No → EMBED (left) -->
+  <line x1="260" y1="314" x2="155" y2="314" stroke="#546E7A" stroke-width="2" marker-end="url(#arrDT)"/>
+  <text x="208" y="307" text-anchor="middle" font-size="9" fill="#4CAF50" font-weight="bold">No</text>
+  <rect x="48" y="296" width="107" height="36" rx="8" fill="#2E7D32"/>
+  <text x="101" y="312" text-anchor="middle" font-size="11" font-weight="bold" fill="white">EMBED ✅</text>
+  <text x="101" y="326" text-anchor="middle" font-size="8" fill="#A5D6A7">usually safe</text>
+</svg>

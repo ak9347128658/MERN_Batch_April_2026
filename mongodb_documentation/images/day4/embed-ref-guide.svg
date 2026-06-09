@@ -1,0 +1,54 @@
+<svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="700" height="210" fill="#fafafa" rx="14"/>
+  <text x="350" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">When to Embed vs When to Reference</text>
+
+  <!-- Header row -->
+  <rect x="12" y="36" width="220" height="30" rx="6" fill="#546E7A"/>
+  <text x="122" y="56" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Factor</text>
+
+  <rect x="238" y="36" width="220" height="30" rx="6" fill="#2E7D32"/>
+  <text x="348" y="56" text-anchor="middle" font-size="11" font-weight="bold" fill="white">✅ EMBED</text>
+
+  <rect x="464" y="36" width="224" height="30" rx="6" fill="#1565C0"/>
+  <text x="576" y="56" text-anchor="middle" font-size="11" font-weight="bold" fill="white">🔗 REFERENCE</text>
+
+  <!-- Row 1: Read together -->
+  <rect x="12"  y="70" width="220" height="26" rx="0" fill="#ECEFF1"/>
+  <rect x="238" y="70" width="220" height="26" rx="0" fill="#E8F5E9"/>
+  <rect x="464" y="70" width="224" height="26" rx="0" fill="#E3F2FD"/>
+  <text x="122" y="87" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Read pattern</text>
+  <text x="348" y="87" text-anchor="middle" font-size="10" fill="#2e7d32">Always read together</text>
+  <text x="576" y="87" text-anchor="middle" font-size="10" fill="#1565c0">Read independently</text>
+
+  <!-- Row 2: Size -->
+  <rect x="12"  y="98" width="220" height="26" rx="0" fill="#F5F5F5"/>
+  <rect x="238" y="98" width="220" height="26" rx="0" fill="#F1F8E9"/>
+  <rect x="464" y="98" width="224" height="26" rx="0" fill="#E8F5FD"/>
+  <text x="122" y="115" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Array size</text>
+  <text x="348" y="115" text-anchor="middle" font-size="10" fill="#2e7d32">Small, bounded (&lt; 100)</text>
+  <text x="576" y="115" text-anchor="middle" font-size="10" fill="#1565c0">Large or unbounded</text>
+
+  <!-- Row 3: Updates -->
+  <rect x="12"  y="126" width="220" height="26" rx="0" fill="#ECEFF1"/>
+  <rect x="238" y="126" width="220" height="26" rx="0" fill="#E8F5E9"/>
+  <rect x="464" y="126" width="224" height="26" rx="0" fill="#E3F2FD"/>
+  <text x="122" y="143" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Update frequency</text>
+  <text x="348" y="143" text-anchor="middle" font-size="10" fill="#2e7d32">Rarely changes</text>
+  <text x="576" y="143" text-anchor="middle" font-size="10" fill="#1565c0">Updated frequently</text>
+
+  <!-- Row 4: Performance -->
+  <rect x="12"  y="154" width="220" height="26" rx="0" fill="#F5F5F5"/>
+  <rect x="238" y="154" width="220" height="26" rx="0" fill="#F1F8E9"/>
+  <rect x="464" y="154" width="224" height="26" rx="0" fill="#E8F5FD"/>
+  <text x="122" y="171" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Query performance</text>
+  <text x="348" y="171" text-anchor="middle" font-size="10" fill="#2e7d32">⚡ Fast (1 query)</text>
+  <text x="576" y="171" text-anchor="middle" font-size="10" fill="#1565c0">Slower (multiple queries)</text>
+
+  <!-- Row 5: Example -->
+  <rect x="12"  y="182" width="220" height="24" rx="0" fill="#ECEFF1"/>
+  <rect x="238" y="182" width="220" height="24" rx="0" fill="#C8E6C9"/>
+  <rect x="464" y="182" width="224" height="24" rx="0" fill="#BBDEFB"/>
+  <text x="122" y="198" text-anchor="middle" font-size="10" fill="#333" font-weight="bold">Real example</text>
+  <text x="348" y="198" text-anchor="middle" font-size="10" fill="#1b5e20">Post → Comments</text>
+  <text x="576" y="198" text-anchor="middle" font-size="10" fill="#0D47A1">User → Orders</text>
+</svg>

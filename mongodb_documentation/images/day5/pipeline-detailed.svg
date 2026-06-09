@@ -1,0 +1,56 @@
+<svg viewBox="0 0 620 345" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrPD" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <rect width="620" height="345" fill="#fafafa" rx="14"/>
+  <text x="310" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Aggregation Pipeline — Step by Step</text>
+
+  <!-- Step 1: All documents -->
+  <rect x="170" y="36" width="280" height="38" rx="9" fill="#37474F"/>
+  <text x="310" y="60" text-anchor="middle" font-size="12" font-weight="bold" fill="white">📚 15 Order Documents (input)</text>
+  <line x1="310" y1="74" x2="310" y2="94" stroke="#546E7A" stroke-width="2" marker-end="url(#arrPD)"/>
+
+  <!-- Stage 1: $match -->
+  <rect x="190" y="94" width="245" height="38" rx="9" fill="#2E7D32"/>
+  <text x="312" y="113" text-anchor="middle" font-size="11" font-weight="bold" fill="white">$match: status = "delivered"</text>
+  <text x="560" y="118" font-size="10" fill="#4CAF50" font-weight="bold">← filter stage</text>
+  <line x1="310" y1="132" x2="310" y2="152" stroke="#546E7A" stroke-width="2" marker-end="url(#arrPD)"/>
+  <text x="330" y="146" font-size="10" fill="#2e7d32" font-weight="bold">11 documents</text>
+
+  <!-- Stage 2: $group -->
+  <rect x="190" y="152" width="245" height="38" rx="9" fill="#1565C0"/>
+  <text x="312" y="167" text-anchor="middle" font-size="11" font-weight="bold" fill="white">$group: by category</text>
+  <text x="312" y="182" text-anchor="middle" font-size="9" fill="#BBDEFB">$sum: amount, $sum: 1</text>
+  <text x="560" y="178" font-size="10" fill="#2196F3" font-weight="bold">← group stage</text>
+  <line x1="310" y1="190" x2="310" y2="210" stroke="#546E7A" stroke-width="2" marker-end="url(#arrPD)"/>
+  <text x="330" y="204" font-size="10" fill="#1565c0" font-weight="bold">5 groups</text>
+
+  <!-- Stage 3: $sort -->
+  <rect x="205" y="210" width="215" height="38" rx="9" fill="#E65100"/>
+  <text x="312" y="234" text-anchor="middle" font-size="11" font-weight="bold" fill="white">$sort: totalRevenue: -1</text>
+  <text x="560" y="234" font-size="10" fill="#FF9800" font-weight="bold">← sort stage</text>
+  <line x1="310" y1="248" x2="310" y2="268" stroke="#546E7A" stroke-width="2" marker-end="url(#arrPD)"/>
+  <text x="330" y="262" font-size="10" fill="#e65100" font-weight="bold">5 sorted groups</text>
+
+  <!-- Stage 4: $project -->
+  <rect x="205" y="268" width="215" height="38" rx="9" fill="#6A1B9A"/>
+  <text x="312" y="282" text-anchor="middle" font-size="11" font-weight="bold" fill="white">$project: rename fields</text>
+  <text x="312" y="296" text-anchor="middle" font-size="9" fill="#E1BEE7">category, revenue, count</text>
+  <text x="560" y="291" font-size="10" fill="#9C27B0" font-weight="bold">← reshape stage</text>
+  <line x1="310" y1="306" x2="310" y2="326" stroke="#546E7A" stroke-width="2" marker-end="url(#arrPD)"/>
+
+  <!-- Final output -->
+  <rect x="185" y="326" width="250" height="14" rx="7" fill="#1A237E"/>
+  <text x="310" y="337" text-anchor="middle" font-size="10" font-weight="bold" fill="white">✅ Top 3 Clean Results (after $limit: 3)</text>
+
+  <!-- Performance tip -->
+  <rect x="12" y="94" width="168" height="90" rx="8" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1.5"/>
+  <text x="96" y="112" text-anchor="middle" font-size="10" font-weight="bold" fill="#f57f17">⚡ Tip</text>
+  <text x="96" y="128" text-anchor="middle" font-size="9" fill="#555">Put $match FIRST</text>
+  <text x="96" y="143" text-anchor="middle" font-size="9" fill="#555">to reduce docs</text>
+  <text x="96" y="158" text-anchor="middle" font-size="9" fill="#555">early — makes</text>
+  <text x="96" y="173" text-anchor="middle" font-size="9" fill="#555">all stages faster!</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrUW" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <rect width="700" height="200" fill="#fafafa" rx="14"/>
+  <text x="350" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">$unwind — Flattening Arrays</text>
+
+  <!-- BEFORE panel -->
+  <rect x="12" y="36" width="240" height="152" rx="10" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <rect x="12" y="36" width="240" height="26" rx="10" fill="#1565C0"/>
+  <rect x="12" y="50" width="240" height="12" fill="#1565C0"/>
+  <text x="132" y="53" text-anchor="middle" font-size="11" font-weight="bold" fill="white">BEFORE $unwind</text>
+
+  <!-- Single document with array -->
+  <rect x="24" y="72" width="215" height="104" rx="8" fill="white" stroke="#42A5F5" stroke-width="1.5"/>
+  <text x="38" y="92"  font-size="10" font-weight="bold" fill="#1a1a2e">{</text>
+  <text x="50" y="108" font-size="10" fill="#555">  name: "Amit"</text>
+  <text x="50" y="124" font-size="10" fill="#1565c0" font-weight="bold">  skills: [</text>
+  <text x="62" y="140" font-size="10" fill="#1976D2">    "Python",</text>
+  <text x="62" y="154" font-size="10" fill="#1976D2">    "AWS",</text>
+  <text x="62" y="168" font-size="10" fill="#1976D2">    "Docker"</text>
+  <text x="50" y="170" font-size="10" fill="#1565c0">  ]</text>
+  <text x="38" y="170" font-size="10" fill="#1a1a2e">}</text>
+
+  <!-- Center arrow + label -->
+  <line x1="252" y1="112" x2="300" y2="112" stroke="#546E7A" stroke-width="2.5" marker-end="url(#arrUW)"/>
+  <rect x="253" y="93" width="100" height="38" rx="6" fill="#37474F"/>
+  <text x="303" y="107" text-anchor="middle" font-size="9" font-weight="bold" fill="white">$unwind:</text>
+  <text x="303" y="121" text-anchor="middle" font-size="9" fill="#90A4AE">"$skills"</text>
+
+  <!-- AFTER panel -->
+  <rect x="300" y="36" width="388" height="152" rx="10" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+  <rect x="300" y="36" width="388" height="26" rx="10" fill="#2E7D32"/>
+  <rect x="300" y="50" width="388" height="12" fill="#2E7D32"/>
+  <text x="494" y="53" text-anchor="middle" font-size="11" font-weight="bold" fill="white">AFTER $unwind — 3 documents from 1</text>
+
+  <!-- Three separate documents -->
+  <rect x="312" y="72" width="115" height="48" rx="7" fill="white" stroke="#66BB6A" stroke-width="1.5"/>
+  <text x="326" y="91"  font-size="9" fill="#555">name: "Amit"</text>
+  <text x="326" y="107" font-size="9" fill="#2e7d32" font-weight="bold">skills: "Python"</text>
+
+  <rect x="434" y="72" width="115" height="48" rx="7" fill="white" stroke="#66BB6A" stroke-width="1.5"/>
+  <text x="448" y="91"  font-size="9" fill="#555">name: "Amit"</text>
+  <text x="448" y="107" font-size="9" fill="#2e7d32" font-weight="bold">skills: "AWS"</text>
+
+  <rect x="556" y="72" width="120" height="48" rx="7" fill="white" stroke="#66BB6A" stroke-width="1.5"/>
+  <text x="570" y="91"  font-size="9" fill="#555">name: "Amit"</text>
+  <text x="570" y="107" font-size="9" fill="#2e7d32" font-weight="bold">skills: "Docker"</text>
+
+  <!-- Doc labels -->
+  <text x="370" y="135" text-anchor="middle" font-size="9" fill="#555">Document 1</text>
+  <text x="491" y="135" text-anchor="middle" font-size="9" fill="#555">Document 2</text>
+  <text x="616" y="135" text-anchor="middle" font-size="9" fill="#555">Document 3</text>
+
+  <!-- Note -->
+  <text x="494" y="162" text-anchor="middle" font-size="10" fill="#1b5e20" font-weight="bold">One array element per document — array is "unwound"</text>
+  <text x="494" y="177" text-anchor="middle" font-size="9" fill="#555">Use before $group to aggregate on array elements</text>
+</svg>

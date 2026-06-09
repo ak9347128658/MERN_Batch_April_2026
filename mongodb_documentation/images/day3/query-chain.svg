@@ -1,0 +1,43 @@
+<svg viewBox="0 0 720 110" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrQ" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="110" fill="#fafafa" rx="14"/>
+  <text x="360" y="22" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">MongoDB Query Chain</text>
+
+  <!-- find() -->
+  <rect x="10" y="35" width="115" height="55" rx="9" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+  <text x="67" y="58" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">find()</text>
+  <text x="67" y="76" text-anchor="middle" font-size="9" fill="#555">filter + project</text>
+
+  <line x1="125" y1="62" x2="145" y2="62" stroke="#546E7A" stroke-width="2" marker-end="url(#arrQ)"/>
+
+  <!-- sort() -->
+  <rect x="145" y="35" width="110" height="55" rx="9" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <text x="200" y="58" text-anchor="middle" font-size="12" font-weight="bold" fill="#1565c0">sort()</text>
+  <text x="200" y="76" text-anchor="middle" font-size="9" fill="#555">1 = asc, -1 = desc</text>
+
+  <line x1="255" y1="62" x2="275" y2="62" stroke="#546E7A" stroke-width="2" marker-end="url(#arrQ)"/>
+
+  <!-- skip() -->
+  <rect x="275" y="35" width="110" height="55" rx="9" fill="#fff8e1" stroke="#FF9800" stroke-width="2"/>
+  <text x="330" y="58" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">skip()</text>
+  <text x="330" y="76" text-anchor="middle" font-size="9" fill="#555">offset for pagination</text>
+
+  <line x1="385" y1="62" x2="405" y2="62" stroke="#546E7A" stroke-width="2" marker-end="url(#arrQ)"/>
+
+  <!-- limit() -->
+  <rect x="405" y="35" width="110" height="55" rx="9" fill="#f3e5f5" stroke="#9C27B0" stroke-width="2"/>
+  <text x="460" y="58" text-anchor="middle" font-size="12" font-weight="bold" fill="#6A1B9A">limit()</text>
+  <text x="460" y="76" text-anchor="middle" font-size="9" fill="#555">max docs returned</text>
+
+  <line x1="515" y1="62" x2="535" y2="62" stroke="#546E7A" stroke-width="2" marker-end="url(#arrQ)"/>
+
+  <!-- Results -->
+  <rect x="535" y="35" width="175" height="55" rx="9" fill="#1A237E"/>
+  <text x="622" y="58" text-anchor="middle" font-size="12" font-weight="bold" fill="white">✅ Results</text>
+  <text x="622" y="76" text-anchor="middle" font-size="9" fill="#90CAF9">filtered, sorted, paged</text>
+</svg>

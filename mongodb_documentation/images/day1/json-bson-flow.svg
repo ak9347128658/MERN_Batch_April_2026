@@ -1,0 +1,48 @@
+<svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#666"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="130" fill="#fafafa" rx="14"/>
+  <text x="360" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">JSON ↔ BSON Conversion Flow</text>
+
+  <!-- Step 1: You Write JSON -->
+  <rect x="12" y="38" width="122" height="72" rx="8" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <text x="73" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#1565c0">You Write</text>
+  <text x="73" y="80" text-anchor="middle" font-size="16" font-weight="bold" fill="#1976D2">JSON</text>
+  <text x="73" y="100" text-anchor="middle" font-size="9" fill="#555">Human-readable</text>
+
+  <line x1="134" y1="74" x2="152" y2="74" stroke="#666" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 2: Convert to BSON -->
+  <rect x="152" y="38" width="138" height="72" rx="8" fill="#fff8e1" stroke="#FFC107" stroke-width="2"/>
+  <text x="221" y="58" text-anchor="middle" font-size="10" font-weight="bold" fill="#f57f17">MongoDB</text>
+  <text x="221" y="74" text-anchor="middle" font-size="10" fill="#f57f17">converts to</text>
+  <text x="221" y="93" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">BSON</text>
+
+  <line x1="290" y1="74" x2="308" y2="74" stroke="#666" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 3: Stored on Disk -->
+  <rect x="308" y="38" width="130" height="72" rx="8" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+  <text x="373" y="60" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">Stored on</text>
+  <text x="373" y="76" text-anchor="middle" font-size="11" fill="#2e7d32">Disk as</text>
+  <text x="373" y="97" text-anchor="middle" font-size="14" font-weight="bold" fill="#1b5e20">BSON</text>
+
+  <line x1="438" y1="74" x2="456" y2="74" stroke="#666" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 4: Retrieved from Disk -->
+  <rect x="456" y="38" width="130" height="72" rx="8" fill="#fff8e1" stroke="#FFC107" stroke-width="2"/>
+  <text x="521" y="60" text-anchor="middle" font-size="11" font-weight="bold" fill="#f57f17">Retrieved</text>
+  <text x="521" y="76" text-anchor="middle" font-size="11" fill="#f57f17">from Disk</text>
+  <text x="521" y="97" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">BSON</text>
+
+  <line x1="586" y1="74" x2="604" y2="74" stroke="#666" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- Step 5: Shown as JSON -->
+  <rect x="604" y="38" width="106" height="72" rx="8" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <text x="657" y="60" text-anchor="middle" font-size="11" font-weight="bold" fill="#1565c0">Shown to</text>
+  <text x="657" y="76" text-anchor="middle" font-size="11" fill="#1565c0">you as</text>
+  <text x="657" y="97" text-anchor="middle" font-size="16" font-weight="bold" fill="#1976D2">JSON</text>
+</svg>

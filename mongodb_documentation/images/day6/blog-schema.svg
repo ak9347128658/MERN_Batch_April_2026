@@ -1,0 +1,66 @@
+<svg viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrBS" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#546E7A"/>
+    </marker>
+    <marker id="arrBSe" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#009688" opacity="0.7"/>
+    </marker>
+  </defs>
+
+  <rect width="620" height="280" fill="#fafafa" rx="14"/>
+  <text x="310" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Blog System — Schema Design</text>
+
+  <!-- authors collection (top-left) -->
+  <rect x="22" y="46" width="165" height="80" rx="10" fill="#2E7D32"/>
+  <text x="104" y="68" text-anchor="middle" font-size="13" font-weight="bold" fill="white">✍️ authors</text>
+  <text x="104" y="86" text-anchor="middle" font-size="9" fill="#A5D6A7">_id, name, username</text>
+  <text x="104" y="100" text-anchor="middle" font-size="9" fill="#A5D6A7">email (unique index)</text>
+  <text x="104" y="114" text-anchor="middle" font-size="9" fill="#A5D6A7">bio, socialLinks, isVerified</text>
+
+  <!-- posts collection (center) -->
+  <rect x="227" y="46" width="175" height="110" rx="10" fill="#1565C0"/>
+  <text x="314" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="white">📝 posts</text>
+  <text x="314" y="88" text-anchor="middle" font-size="9" fill="#BBDEFB">_id, title, slug (unique)</text>
+  <text x="314" y="103" text-anchor="middle" font-size="9" fill="#BBDEFB">authorId → (ref)</text>
+  <text x="314" y="118" text-anchor="middle" font-size="9" fill="#BBDEFB">category, isPublished</text>
+  <text x="314" y="133" text-anchor="middle" font-size="9" fill="#BBDEFB">tags [ ] ← embedded</text>
+  <text x="314" y="148" text-anchor="middle" font-size="9" fill="#BBDEFB">likes, views, publishedAt</text>
+
+  <!-- comments collection (bottom-center) -->
+  <rect x="227" y="195" width="175" height="72" rx="10" fill="#6A1B9A"/>
+  <text x="314" y="217" text-anchor="middle" font-size="13" font-weight="bold" fill="white">💬 comments</text>
+  <text x="314" y="234" text-anchor="middle" font-size="9" fill="#E1BEE7">postId → (ref)</text>
+  <text x="314" y="249" text-anchor="middle" font-size="9" fill="#E1BEE7">userId → (ref, optional)</text>
+  <text x="314" y="264" text-anchor="middle" font-size="9" fill="#E1BEE7">userName, text, likes</text>
+
+  <!-- tags bubble (right of posts - embedded) -->
+  <rect x="435" y="115" width="165" height="50" rx="10" fill="#00695C"/>
+  <text x="517" y="135" text-anchor="middle" font-size="12" font-weight="bold" fill="white">🏷️ tags [ ]</text>
+  <text x="517" y="153" text-anchor="middle" font-size="9" fill="#B2DFDB">embedded array in posts</text>
+
+  <!-- Arrow: authors → posts (authorId) -->
+  <line x1="187" y1="75" x2="227" y2="90" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrBS)"/>
+  <text x="204" y="74" text-anchor="middle" font-size="9" fill="#4CAF50" font-weight="bold">authorId</text>
+
+  <!-- Arrow: authors → comments (userId) -->
+  <line x1="104" y1="126" x2="227" y2="215" stroke="#9C27B0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrBS)"/>
+  <text x="148" y="188" text-anchor="middle" font-size="9" fill="#9C27B0" font-weight="bold">userId (optional)</text>
+
+  <!-- Arrow: posts → comments (postId) -->
+  <line x1="314" y1="156" x2="314" y2="195" stroke="#9C27B0" stroke-width="2" marker-end="url(#arrBS)"/>
+  <text x="328" y="180" font-size="9" fill="#7B1FA2" font-weight="bold">postId</text>
+
+  <!-- Arrow: posts → tags (embedded) -->
+  <line x1="402" y1="133" x2="435" y2="138" stroke="#009688" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#arrBSe)"/>
+  <text x="418" y="124" text-anchor="middle" font-size="9" fill="#009688" font-weight="bold">embedded</text>
+
+  <!-- Legend -->
+  <rect x="22" y="196" width="195" height="72" rx="8" fill="white" stroke="#ddd" stroke-width="1.5"/>
+  <text x="119" y="214" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">Legend</text>
+  <line x1="35" y1="226" x2="65" y2="226" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrBS)"/>
+  <text x="80" y="230" font-size="9" fill="#555">referenced (separate collection)</text>
+  <line x1="35" y1="244" x2="65" y2="244" stroke="#009688" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrBSe)"/>
+  <text x="80" y="248" font-size="9" fill="#555">embedded (inside document)</text>
+  <text x="35" y="264" font-size="9" fill="#555">🔍 = index created on this field</text>
+</svg>

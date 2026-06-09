@@ -1,0 +1,64 @@
+<svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrBA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="240" fill="#fafafa" rx="14"/>
+  <text x="360" y="26" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Update Operators in Action — Before &amp; After</text>
+
+  <!-- BEFORE panel -->
+  <rect x="14" y="40" width="295" height="186" rx="10" fill="#fff" stroke="#90A4AE" stroke-width="2"/>
+  <rect x="14" y="40" width="295" height="32" rx="10" fill="#90A4AE"/>
+  <rect x="14" y="60" width="295" height="12" rx="0" fill="#90A4AE"/>
+  <text x="161" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="white">BEFORE</text>
+
+  <text x="35" y="95" font-size="11" fill="#333">{</text>
+  <text x="50" y="113" font-size="11" fill="#555">  "_id": ObjectId("...")</text>
+  <text x="50" y="131" font-size="11" fill="#555">  "name": "iPhone 15"</text>
+  <text x="50" y="149" font-size="11" fill="#555">  "price": 79999</text>
+  <text x="50" y="167" font-size="11" fill="#555">  "stock": 50</text>
+  <text x="50" y="185" font-size="11" fill="#555">  "ratings": [5, 4, 5]</text>
+  <text x="35" y="203" font-size="11" fill="#333">}</text>
+
+  <!-- Arrow + operator box in center -->
+  <rect x="320" y="88" width="80" height="72" rx="8" fill="#4A148C"/>
+  <text x="360" y="108" text-anchor="middle" font-size="9" font-weight="bold" fill="white">$set color</text>
+  <text x="360" y="122" text-anchor="middle" font-size="9" fill="#CE93D8">+ "Blue"</text>
+  <text x="360" y="138" text-anchor="middle" font-size="9" font-weight="bold" fill="white">$inc stock</text>
+  <text x="360" y="152" text-anchor="middle" font-size="9" fill="#CE93D8">- 1</text>
+  <text x="360" y="166" text-anchor="middle" font-size="9" font-weight="bold" fill="white">$push rating</text>
+  <text x="360" y="152" text-anchor="middle" font-size="9" fill="#CE93D8">- 1</text>
+
+  <line x1="309" y1="130" x2="320" y2="130" stroke="#546E7A" stroke-width="2" marker-end="url(#arrBA)"/>
+  <line x1="400" y1="130" x2="411" y2="130" stroke="#546E7A" stroke-width="2" marker-end="url(#arrBA)"/>
+
+  <!-- AFTER panel -->
+  <rect x="411" y="40" width="295" height="186" rx="10" fill="#fff" stroke="#66BB6A" stroke-width="2.5"/>
+  <rect x="411" y="40" width="295" height="32" rx="10" fill="#43A047"/>
+  <rect x="411" y="60" width="295" height="12" rx="0" fill="#43A047"/>
+  <text x="558" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="white">AFTER</text>
+
+  <text x="430" y="95" font-size="11" fill="#333">{</text>
+  <text x="445" y="113" font-size="11" fill="#555">  "_id": ObjectId("...")</text>
+  <text x="445" y="131" font-size="11" fill="#555">  "name": "iPhone 15"</text>
+  <text x="445" y="149" font-size="11" fill="#555">  "price": 79999</text>
+
+  <!-- Changed: stock -->
+  <rect x="440" y="154" width="240" height="17" rx="3" fill="#FFF9C4"/>
+  <text x="445" y="167" font-size="11" fill="#e65100" font-weight="bold">  "stock": 49</text>
+  <text x="655" y="167" font-size="9" fill="#e65100">← $inc -1</text>
+
+  <!-- Changed: ratings -->
+  <rect x="440" y="171" width="240" height="17" rx="3" fill="#E8F5E9"/>
+  <text x="445" y="184" font-size="11" fill="#2e7d32" font-weight="bold">  "ratings": [5, 4, 5, 4]</text>
+  <text x="655" y="184" font-size="9" fill="#2e7d32">← $push</text>
+
+  <!-- New field: color -->
+  <rect x="440" y="188" width="240" height="17" rx="3" fill="#E3F2FD"/>
+  <text x="445" y="201" font-size="11" fill="#1565c0" font-weight="bold">  "color": "Blue"</text>
+  <text x="655" y="201" font-size="9" fill="#1565c0">← $set new</text>
+
+  <text x="430" y="219" font-size="11" fill="#333">}</text>
+</svg>

@@ -1,0 +1,70 @@
+<svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#888"/>
+    </marker>
+  </defs>
+
+  <rect width="720" height="240" fill="#fafafa" rx="14"/>
+  <text x="360" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">REST API ↔ MongoDB CRUD Mapping</text>
+
+  <!-- Client box -->
+  <rect x="12" y="44" width="118" height="180" rx="10" fill="#e8eaf6" stroke="#3F51B5" stroke-width="2"/>
+  <text x="71" y="66" text-anchor="middle" font-size="12" font-weight="bold" fill="#283593">🖥️ Client</text>
+  <text x="71" y="82" text-anchor="middle" font-size="9" fill="#5C6BC0">(Browser / App)</text>
+
+  <rect x="24" y="92" width="94" height="26" rx="6" fill="#4CAF50"/>
+  <text x="71" y="110" text-anchor="middle" font-size="12" font-weight="bold" fill="white">POST</text>
+
+  <rect x="24" y="126" width="94" height="26" rx="6" fill="#2196F3"/>
+  <text x="71" y="144" text-anchor="middle" font-size="12" font-weight="bold" fill="white">GET</text>
+
+  <rect x="24" y="160" width="94" height="26" rx="6" fill="#FF9800"/>
+  <text x="71" y="178" text-anchor="middle" font-size="12" font-weight="bold" fill="white">PUT</text>
+
+  <rect x="24" y="194" width="94" height="26" rx="6" fill="#f44336"/>
+  <text x="71" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="white">DELETE</text>
+
+  <!-- Arrows client → API, with route labels -->
+  <line x1="130" y1="105" x2="260" y2="105" stroke="#4CAF50" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="130" y1="139" x2="260" y2="139" stroke="#2196F3" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="130" y1="173" x2="260" y2="173" stroke="#FF9800" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="130" y1="207" x2="260" y2="207" stroke="#f44336" stroke-width="2" marker-end="url(#arr)"/>
+
+  <text x="195" y="99" text-anchor="middle" font-size="9" fill="#2e7d32">POST /products</text>
+  <text x="195" y="133" text-anchor="middle" font-size="9" fill="#1565c0">GET /products</text>
+  <text x="195" y="167" text-anchor="middle" font-size="9" fill="#e65100">PUT /products/:id</text>
+  <text x="195" y="201" text-anchor="middle" font-size="9" fill="#c62828">DELETE /products/:id</text>
+
+  <!-- API box -->
+  <rect x="260" y="44" width="198" height="180" rx="10" fill="#f3e5f5" stroke="#9C27B0" stroke-width="2"/>
+  <text x="359" y="66" text-anchor="middle" font-size="12" font-weight="bold" fill="#6A1B9A">⚙️ Backend API</text>
+  <text x="359" y="82" text-anchor="middle" font-size="9" fill="#AB47BC">(Express / FastAPI)</text>
+
+  <rect x="274" y="92" width="170" height="26" rx="6" fill="#4CAF50" opacity="0.75"/>
+  <text x="359" y="110" text-anchor="middle" font-size="11" fill="white">Create new resource</text>
+
+  <rect x="274" y="126" width="170" height="26" rx="6" fill="#2196F3" opacity="0.75"/>
+  <text x="359" y="144" text-anchor="middle" font-size="11" fill="white">Read resource(s)</text>
+
+  <rect x="274" y="160" width="170" height="26" rx="6" fill="#FF9800" opacity="0.75"/>
+  <text x="359" y="178" text-anchor="middle" font-size="11" fill="white">Update resource</text>
+
+  <rect x="274" y="194" width="170" height="26" rx="6" fill="#f44336" opacity="0.75"/>
+  <text x="359" y="212" text-anchor="middle" font-size="11" fill="white">Delete resource</text>
+
+  <!-- Arrows API → MongoDB -->
+  <line x1="458" y1="105" x2="582" y2="105" stroke="#4CAF50" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="458" y1="139" x2="582" y2="139" stroke="#2196F3" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="458" y1="173" x2="582" y2="173" stroke="#FF9800" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="458" y1="207" x2="582" y2="207" stroke="#f44336" stroke-width="2" marker-end="url(#arr)"/>
+
+  <!-- MongoDB box -->
+  <rect x="582" y="44" width="128" height="180" rx="10" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+  <text x="646" y="66" text-anchor="middle" font-size="12" font-weight="bold" fill="#2e7d32">🍃 MongoDB</text>
+
+  <text x="646" y="109" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">insertOne()</text>
+  <text x="646" y="143" text-anchor="middle" font-size="11" font-weight="bold" fill="#1565c0">find()</text>
+  <text x="646" y="177" text-anchor="middle" font-size="11" font-weight="bold" fill="#e65100">updateOne()</text>
+  <text x="646" y="211" text-anchor="middle" font-size="11" font-weight="bold" fill="#c62828">deleteOne()</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="660" height="210" fill="#fafafa" rx="14"/>
+  <text x="330" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">Logical Operators</text>
+
+  <!-- Root -->
+  <rect x="205" y="38" width="250" height="38" rx="10" fill="#4A148C"/>
+  <text x="330" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🧠 Logical Operators</text>
+
+  <!-- Lines to 4 children at centers 82, 247, 413, 578 -->
+  <line x1="330" y1="76" x2="82"  y2="108" stroke="#7B1FA2" stroke-width="2"/>
+  <line x1="330" y1="76" x2="247" y2="108" stroke="#7B1FA2" stroke-width="2"/>
+  <line x1="330" y1="76" x2="413" y2="108" stroke="#7B1FA2" stroke-width="2"/>
+  <line x1="330" y1="76" x2="578" y2="108" stroke="#7B1FA2" stroke-width="2"/>
+
+  <!-- $and -->
+  <rect x="14" y="108" width="135" height="82" rx="10" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+  <text x="81" y="133" text-anchor="middle" font-size="16" font-weight="bold" fill="#2e7d32">$and</text>
+  <text x="81" y="153" text-anchor="middle" font-size="10" fill="#555">ALL conditions</text>
+  <text x="81" y="168" text-anchor="middle" font-size="10" fill="#555">must be true</text>
+  <text x="81" y="183" text-anchor="middle" font-size="9" fill="#388E3C">SQL: AND</text>
+
+  <!-- $or -->
+  <rect x="179" y="108" width="135" height="82" rx="10" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <text x="246" y="133" text-anchor="middle" font-size="16" font-weight="bold" fill="#1565c0">$or</text>
+  <text x="246" y="153" text-anchor="middle" font-size="10" fill="#555">AT LEAST ONE</text>
+  <text x="246" y="168" text-anchor="middle" font-size="10" fill="#555">condition true</text>
+  <text x="246" y="183" text-anchor="middle" font-size="9" fill="#1976D2">SQL: OR</text>
+
+  <!-- $not -->
+  <rect x="345" y="108" width="135" height="82" rx="10" fill="#fff8e1" stroke="#FF9800" stroke-width="2"/>
+  <text x="412" y="133" text-anchor="middle" font-size="16" font-weight="bold" fill="#e65100">$not</text>
+  <text x="412" y="153" text-anchor="middle" font-size="10" fill="#555">Negates a single</text>
+  <text x="412" y="168" text-anchor="middle" font-size="10" fill="#555">condition</text>
+  <text x="412" y="183" text-anchor="middle" font-size="9" fill="#F57C00">SQL: NOT</text>
+
+  <!-- $nor -->
+  <rect x="511" y="108" width="135" height="82" rx="10" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+  <text x="578" y="133" text-anchor="middle" font-size="16" font-weight="bold" fill="#c62828">$nor</text>
+  <text x="578" y="153" text-anchor="middle" font-size="10" fill="#555">NONE of the</text>
+  <text x="578" y="168" text-anchor="middle" font-size="10" fill="#555">conditions true</text>
+  <text x="578" y="183" text-anchor="middle" font-size="9" fill="#D32F2F">SQL: NOT (A OR B)</text>
+</svg>

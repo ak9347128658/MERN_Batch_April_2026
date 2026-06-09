@@ -1,0 +1,63 @@
+<svg viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrEC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <rect width="600" height="300" fill="#fafafa" rx="14"/>
+  <text x="300" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">E-Commerce Schema — Collections &amp; Relationships</text>
+
+  <!-- Users node (left) -->
+  <rect x="22" y="115" width="120" height="50" rx="10" fill="#2E7D32"/>
+  <text x="82" y="137" text-anchor="middle" font-size="13" font-weight="bold" fill="white">👤 Users</text>
+  <text x="82" y="155" text-anchor="middle" font-size="9" fill="#A5D6A7">+ embedded addresses</text>
+
+  <!-- Orders node (center) -->
+  <rect x="232" y="60" width="130" height="50" rx="10" fill="#1565C0"/>
+  <text x="297" y="82" text-anchor="middle" font-size="13" font-weight="bold" fill="white">📦 Orders</text>
+  <text x="297" y="100" text-anchor="middle" font-size="9" fill="#BBDEFB">+ embedded items</text>
+
+  <!-- Products node (right) -->
+  <rect x="450" y="115" width="130" height="50" rx="10" fill="#E65100"/>
+  <text x="515" y="137" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🛒 Products</text>
+  <text x="515" y="155" text-anchor="middle" font-size="9" fill="#FFCCBC">+ embedded specs</text>
+
+  <!-- Reviews node (bottom-center) -->
+  <rect x="232" y="200" width="130" height="50" rx="10" fill="#6A1B9A"/>
+  <text x="297" y="222" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⭐ Reviews</text>
+  <text x="297" y="240" text-anchor="middle" font-size="9" fill="#E1BEE7">userId + productId refs</text>
+
+  <!-- Categories node (bottom-right) -->
+  <rect x="450" y="220" width="130" height="50" rx="10" fill="#00695C"/>
+  <text x="515" y="242" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🏷️ Categories</text>
+  <text x="515" y="258" text-anchor="middle" font-size="9" fill="#B2DFDB">hierarchy tree</text>
+
+  <!-- Arrow: Users → Orders (places) -->
+  <line x1="142" y1="130" x2="232" y2="95" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrEC)"/>
+  <text x="178" y="104" text-anchor="middle" font-size="9" fill="#2e7d32" font-weight="bold">places</text>
+
+  <!-- Arrow: Orders → Products (contains) -->
+  <line x1="362" y1="88" x2="450" y2="125" stroke="#FF9800" stroke-width="2" marker-end="url(#arrEC)"/>
+  <text x="416" y="97" text-anchor="middle" font-size="9" fill="#e65100" font-weight="bold">contains</text>
+
+  <!-- Arrow: Users → Reviews (writes) -->
+  <line x1="142" y1="155" x2="232" y2="210" stroke="#9C27B0" stroke-width="2" marker-end="url(#arrEC)"/>
+  <text x="175" y="198" text-anchor="middle" font-size="9" fill="#6A1B9A" font-weight="bold">writes</text>
+
+  <!-- Arrow: Reviews → Products (about) -->
+  <line x1="362" y1="225" x2="450" y2="165" stroke="#9C27B0" stroke-width="2" marker-end="url(#arrEC)"/>
+  <text x="416" y="190" text-anchor="middle" font-size="9" fill="#6A1B9A" font-weight="bold">about</text>
+
+  <!-- Arrow: Products → Categories (belongs to) -->
+  <line x1="515" y1="165" x2="515" y2="220" stroke="#009688" stroke-width="2" marker-end="url(#arrEC)"/>
+  <text x="530" y="198" font-size="9" fill="#00695C" font-weight="bold">belongs to</text>
+
+  <!-- Legend -->
+  <rect x="22" y="240" width="185" height="48" rx="8" fill="white" stroke="#ddd" stroke-width="1.5"/>
+  <text x="114" y="256" text-anchor="middle" font-size="10" font-weight="bold" fill="#333">Legend</text>
+  <line x1="35" y1="268" x2="65" y2="268" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrEC)"/>
+  <text x="80" y="272" font-size="9" fill="#555">referenced link</text>
+  <rect x="35" y="276" width="30" height="7" rx="2" fill="#C8E6C9" stroke="#4CAF50" stroke-width="1"/>
+  <text x="80" y="284" font-size="9" fill="#555">embedded data</text>
+</svg>

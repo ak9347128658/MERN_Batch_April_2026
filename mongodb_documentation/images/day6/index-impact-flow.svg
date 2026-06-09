@@ -1,0 +1,52 @@
+<svg viewBox="0 0 600 265" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrIF" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <rect width="600" height="265" fill="#fafafa" rx="14"/>
+  <text x="300" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Index Impact — Query Execution Flow</text>
+
+  <!-- Query box -->
+  <rect x="165" y="36" width="270" height="36" rx="8" fill="#37474F"/>
+  <text x="300" y="59" text-anchor="middle" font-size="11" font-weight="bold" fill="white">find({email: 'emp5000@company.com'})</text>
+  <line x1="300" y1="72" x2="300" y2="92" stroke="#546E7A" stroke-width="2" marker-end="url(#arrIF)"/>
+
+  <!-- Decision diamond -->
+  <polygon points="300,92 410,130 300,168 190,130" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
+  <text x="300" y="124" text-anchor="middle" font-size="11" font-weight="bold" fill="#1565c0">Does an index</text>
+  <text x="300" y="140" text-anchor="middle" font-size="11" font-weight="bold" fill="#1565c0">exist on 'email'?</text>
+
+  <!-- No branch (left) → COLLSCAN -->
+  <line x1="190" y1="130" x2="95" y2="130" stroke="#f44336" stroke-width="2" marker-end="url(#arrIF)"/>
+  <text x="140" y="122" text-anchor="middle" font-size="10" fill="#f44336" font-weight="bold">No</text>
+
+  <rect x="10" y="110" width="85" height="40" rx="8" fill="#C62828"/>
+  <text x="52" y="127" text-anchor="middle" font-size="11" font-weight="bold" fill="white">COLLSCAN</text>
+  <text x="52" y="142" text-anchor="middle" font-size="9" fill="#FFCDD2">all 10K docs</text>
+
+  <line x1="52" y1="150" x2="52" y2="172" stroke="#f44336" stroke-width="2" marker-end="url(#arrIF)"/>
+  <rect x="10" y="172" width="145" height="58" rx="8" fill="#FFCDD2" stroke="#f44336" stroke-width="1.5"/>
+  <text x="82" y="192" text-anchor="middle" font-size="10" font-weight="bold" fill="#B71C1C">Found 1 document</text>
+  <text x="82" y="208" text-anchor="middle" font-size="9" fill="#C62828">after checking 10,000</text>
+  <text x="82" y="222" text-anchor="middle" font-size="11" font-weight="bold" fill="#B71C1C">~15ms ❌ Slow</text>
+
+  <!-- Yes branch (right) → IXSCAN -->
+  <line x1="410" y1="130" x2="505" y2="130" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrIF)"/>
+  <text x="460" y="122" text-anchor="middle" font-size="10" fill="#4CAF50" font-weight="bold">Yes</text>
+
+  <rect x="505" y="110" width="82" height="40" rx="8" fill="#2E7D32"/>
+  <text x="546" y="127" text-anchor="middle" font-size="11" font-weight="bold" fill="white">IXSCAN</text>
+  <text x="546" y="142" text-anchor="middle" font-size="9" fill="#A5D6A7">B-tree lookup</text>
+
+  <line x1="546" y1="150" x2="546" y2="172" stroke="#4CAF50" stroke-width="2" marker-end="url(#arrIF)"/>
+  <rect x="448" y="172" width="145" height="58" rx="8" fill="#C8E6C9" stroke="#4CAF50" stroke-width="1.5"/>
+  <text x="520" y="192" text-anchor="middle" font-size="10" font-weight="bold" fill="#1B5E20">Found 1 document</text>
+  <text x="520" y="208" text-anchor="middle" font-size="9" fill="#2e7d32">checked only 1</text>
+  <text x="520" y="222" text-anchor="middle" font-size="11" font-weight="bold" fill="#1B5E20">~1ms ✅ Fast!</text>
+
+  <!-- Bottom: create index command -->
+  <rect x="130" y="244" width="340" height="16" rx="6" fill="#1A237E"/>
+  <text x="300" y="256" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Fix: db.employees.createIndex({ email: 1 })</text>
+</svg>

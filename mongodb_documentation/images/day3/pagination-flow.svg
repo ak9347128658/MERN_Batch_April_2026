@@ -1,0 +1,43 @@
+<svg viewBox="0 0 680 185" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrP" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#5C6BC0"/>
+    </marker>
+  </defs>
+
+  <rect width="680" height="185" fill="#fafafa" rx="14"/>
+  <text x="340" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">Pagination with skip() + limit()</text>
+
+  <!-- Formula bar -->
+  <rect x="180" y="38" width="320" height="28" rx="7" fill="#1A237E"/>
+  <text x="340" y="57" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Formula: skip( (page - 1) × pageSize ).limit( pageSize )</text>
+
+  <!-- Page 1 box -->
+  <rect x="20" y="80" width="170" height="90" rx="10" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+  <text x="105" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#2e7d32">📄 Page 1</text>
+  <text x="105" y="123" text-anchor="middle" font-size="10" fill="#555">Documents 1 – 10</text>
+  <text x="105" y="140" text-anchor="middle" font-size="10" fill="#555">skip(0).limit(10)</text>
+  <text x="105" y="158" text-anchor="middle" font-size="9" fill="#388E3C">skip = (1-1) × 10 = 0</text>
+
+  <!-- Arrow Page1→Page2 -->
+  <line x1="190" y1="125" x2="254" y2="125" stroke="#5C6BC0" stroke-width="2.5" marker-end="url(#arrP)"/>
+  <text x="222" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#3949AB">skip(10)</text>
+
+  <!-- Page 2 box -->
+  <rect x="254" y="80" width="170" height="90" rx="10" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <text x="339" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#1565c0">📄 Page 2</text>
+  <text x="339" y="123" text-anchor="middle" font-size="10" fill="#555">Documents 11 – 20</text>
+  <text x="339" y="140" text-anchor="middle" font-size="10" fill="#555">skip(10).limit(10)</text>
+  <text x="339" y="158" text-anchor="middle" font-size="9" fill="#1976D2">skip = (2-1) × 10 = 10</text>
+
+  <!-- Arrow Page2→Page3 -->
+  <line x1="424" y1="125" x2="488" y2="125" stroke="#5C6BC0" stroke-width="2.5" marker-end="url(#arrP)"/>
+  <text x="456" y="116" text-anchor="middle" font-size="10" font-weight="bold" fill="#3949AB">skip(20)</text>
+
+  <!-- Page 3 box -->
+  <rect x="488" y="80" width="170" height="90" rx="10" fill="#f3e5f5" stroke="#9C27B0" stroke-width="2"/>
+  <text x="573" y="103" text-anchor="middle" font-size="13" font-weight="bold" fill="#6A1B9A">📄 Page 3</text>
+  <text x="573" y="123" text-anchor="middle" font-size="10" fill="#555">Documents 21 – 30</text>
+  <text x="573" y="140" text-anchor="middle" font-size="10" fill="#555">skip(20).limit(10)</text>
+  <text x="573" y="158" text-anchor="middle" font-size="9" fill="#7B1FA2">skip = (3-1) × 10 = 20</text>
+</svg>

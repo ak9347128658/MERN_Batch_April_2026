@@ -1,0 +1,79 @@
+<svg viewBox="0 0 720 265" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="720" height="265" fill="#fafafa" rx="14"/>
+  <text x="360" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">When to Create Which Index</text>
+
+  <!-- Single-Field Index -->
+  <rect x="12" y="36" width="163" height="218" rx="10" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+  <rect x="12" y="36" width="163" height="28" rx="10" fill="#2E7D32"/>
+  <rect x="12" y="52" width="163" height="12" fill="#2E7D32"/>
+  <text x="93" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Single-Field</text>
+
+  <text x="93" y="80"  text-anchor="middle" font-size="22">1️⃣</text>
+  <text x="93" y="102" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">Use when:</text>
+  <text x="93" y="118" text-anchor="middle" font-size="9" fill="#555">Filter by one field</text>
+  <text x="93" y="132" text-anchor="middle" font-size="9" fill="#555">e.g. find by email</text>
+  <text x="93" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">Syntax:</text>
+  <rect x="22" y="156" width="144" height="28" rx="5" fill="#1B5E20"/>
+  <text x="94" y="172" text-anchor="middle" font-size="9" fill="white">createIndex({email: 1})</text>
+  <text x="93" y="200" text-anchor="middle" font-size="9" fill="#388E3C">Example queries:</text>
+  <text x="93" y="214" text-anchor="middle" font-size="9" fill="#555">find({email: "..."})</text>
+  <text x="93" y="228" text-anchor="middle" font-size="9" fill="#555">find({salary: {$gt: N}})</text>
+  <text x="93" y="244" text-anchor="middle" font-size="9" fill="#888" font-style="italic">SQL: CREATE INDEX</text>
+
+  <!-- Compound Index -->
+  <rect x="185" y="36" width="163" height="218" rx="10" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <rect x="185" y="36" width="163" height="28" rx="10" fill="#1565C0"/>
+  <rect x="185" y="52" width="163" height="12" fill="#1565C0"/>
+  <text x="266" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Compound</text>
+
+  <text x="266" y="80"  text-anchor="middle" font-size="22">2️⃣</text>
+  <text x="266" y="102" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">Use when:</text>
+  <text x="266" y="118" text-anchor="middle" font-size="9" fill="#555">Filter by multiple</text>
+  <text x="266" y="132" text-anchor="middle" font-size="9" fill="#555">fields + sort</text>
+  <text x="266" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">Syntax:</text>
+  <rect x="195" y="156" width="144" height="28" rx="5" fill="#0D47A1"/>
+  <text x="267" y="168" text-anchor="middle" font-size="8" fill="white">createIndex(</text>
+  <text x="267" y="180" text-anchor="middle" font-size="8" fill="white">{dept:1, salary:-1})</text>
+  <text x="266" y="200" text-anchor="middle" font-size="9" fill="#1565c0">Field order matters!</text>
+  <text x="266" y="214" text-anchor="middle" font-size="9" fill="#555">Equality → Sort →</text>
+  <text x="266" y="228" text-anchor="middle" font-size="9" fill="#555">Range</text>
+  <text x="266" y="244" text-anchor="middle" font-size="9" fill="#888" font-style="italic">SQL: CREATE INDEX multi</text>
+
+  <!-- Unique Index -->
+  <rect x="358" y="36" width="163" height="218" rx="10" fill="#fff8e1" stroke="#FF9800" stroke-width="2"/>
+  <rect x="358" y="36" width="163" height="28" rx="10" fill="#E65100"/>
+  <rect x="358" y="52" width="163" height="12" fill="#E65100"/>
+  <text x="439" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Unique</text>
+
+  <text x="439" y="80"  text-anchor="middle" font-size="22">🔒</text>
+  <text x="439" y="102" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">Use when:</text>
+  <text x="439" y="118" text-anchor="middle" font-size="9" fill="#555">No duplicates allowed</text>
+  <text x="439" y="132" text-anchor="middle" font-size="9" fill="#555">email, username, slug</text>
+  <text x="439" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">Syntax:</text>
+  <rect x="368" y="156" width="144" height="28" rx="5" fill="#BF360C"/>
+  <text x="440" y="166" text-anchor="middle" font-size="8" fill="white">createIndex({email:1},</text>
+  <text x="440" y="178" text-anchor="middle" font-size="8" fill="white">{unique: true})</text>
+  <text x="439" y="200" text-anchor="middle" font-size="9" fill="#e65100">Blocks duplicates!</text>
+  <text x="439" y="214" text-anchor="middle" font-size="9" fill="#555">E11000 error on</text>
+  <text x="439" y="228" text-anchor="middle" font-size="9" fill="#555">duplicate insert</text>
+  <text x="439" y="244" text-anchor="middle" font-size="9" fill="#888" font-style="italic">SQL: UNIQUE INDEX</text>
+
+  <!-- Text Index -->
+  <rect x="531" y="36" width="177" height="218" rx="10" fill="#f3e5f5" stroke="#9C27B0" stroke-width="2"/>
+  <rect x="531" y="36" width="177" height="28" rx="10" fill="#6A1B9A"/>
+  <rect x="531" y="52" width="177" height="12" fill="#6A1B9A"/>
+  <text x="619" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Text Search</text>
+
+  <text x="619" y="80"  text-anchor="middle" font-size="22">🔍</text>
+  <text x="619" y="102" text-anchor="middle" font-size="10" font-weight="bold" fill="#6A1B9A">Use when:</text>
+  <text x="619" y="118" text-anchor="middle" font-size="9" fill="#555">Full-text search on</text>
+  <text x="619" y="132" text-anchor="middle" font-size="9" fill="#555">articles, posts, names</text>
+  <text x="619" y="150" text-anchor="middle" font-size="10" font-weight="bold" fill="#6A1B9A">Syntax:</text>
+  <rect x="541" y="156" width="156" height="28" rx="5" fill="#4A148C"/>
+  <text x="619" y="166" text-anchor="middle" font-size="8" fill="white">createIndex({title:"text",</text>
+  <text x="619" y="178" text-anchor="middle" font-size="8" fill="white">content:"text"})</text>
+  <text x="619" y="200" text-anchor="middle" font-size="9" fill="#6A1B9A">Query with $text:</text>
+  <text x="619" y="214" text-anchor="middle" font-size="9" fill="#555">find({$text:{$search:</text>
+  <text x="619" y="228" text-anchor="middle" font-size="9" fill="#555">"mongodb"}})</text>
+  <text x="619" y="244" text-anchor="middle" font-size="9" fill="#888" font-style="italic">1 per collection only</text>
+</svg>

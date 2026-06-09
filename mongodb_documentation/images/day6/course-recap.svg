@@ -1,0 +1,88 @@
+<svg viewBox="0 0 740 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="740" height="230" fill="#fafafa" rx="14"/>
+  <text x="370" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">MongoDB Learning Series — 6-Day Journey</text>
+
+  <!-- Day 1 -->
+  <rect x="10" y="36" width="112" height="182" rx="10" fill="#e8f5e9" stroke="#4CAF50" stroke-width="2"/>
+  <rect x="10" y="36" width="112" height="32" rx="10" fill="#2E7D32"/>
+  <rect x="10" y="56" width="112" height="12" fill="#2E7D32"/>
+  <text x="66" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Day 1</text>
+  <text x="66" y="82" text-anchor="middle" font-size="16">🏁</text>
+  <text x="66" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">Introduction</text>
+  <text x="66" y="116" text-anchor="middle" font-size="9" fill="#555">NoSQL basics</text>
+  <text x="66" y="130" text-anchor="middle" font-size="9" fill="#555">JSON / BSON</text>
+  <text x="66" y="144" text-anchor="middle" font-size="9" fill="#555">Collections &amp;</text>
+  <text x="66" y="157" text-anchor="middle" font-size="9" fill="#555">Documents</text>
+  <text x="66" y="172" text-anchor="middle" font-size="9" fill="#555">insertOne()</text>
+  <text x="66" y="186" text-anchor="middle" font-size="9" fill="#555">find()</text>
+
+  <!-- Day 2 -->
+  <rect x="128" y="36" width="112" height="182" rx="10" fill="#e3f2fd" stroke="#2196F3" stroke-width="2"/>
+  <rect x="128" y="36" width="112" height="32" rx="10" fill="#1565C0"/>
+  <rect x="128" y="56" width="112" height="12" fill="#1565C0"/>
+  <text x="184" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Day 2</text>
+  <text x="184" y="82" text-anchor="middle" font-size="16">⚙️</text>
+  <text x="184" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">CRUD Ops</text>
+  <text x="184" y="116" text-anchor="middle" font-size="9" fill="#555">insertMany()</text>
+  <text x="184" y="130" text-anchor="middle" font-size="9" fill="#555">updateOne()</text>
+  <text x="184" y="144" text-anchor="middle" font-size="9" fill="#555">deleteOne()</text>
+  <text x="184" y="158" text-anchor="middle" font-size="9" fill="#555">$set $inc $push</text>
+  <text x="184" y="172" text-anchor="middle" font-size="9" fill="#555">$pull $unset</text>
+  <text x="184" y="186" text-anchor="middle" font-size="9" fill="#555">$addToSet</text>
+
+  <!-- Day 3 -->
+  <rect x="246" y="36" width="112" height="182" rx="10" fill="#fff8e1" stroke="#FF9800" stroke-width="2"/>
+  <rect x="246" y="36" width="112" height="32" rx="10" fill="#E65100"/>
+  <rect x="246" y="56" width="112" height="12" fill="#E65100"/>
+  <text x="302" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Day 3</text>
+  <text x="302" y="82" text-anchor="middle" font-size="16">🔍</text>
+  <text x="302" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">Queries</text>
+  <text x="302" y="116" text-anchor="middle" font-size="9" fill="#555">$gt $lt $in</text>
+  <text x="302" y="130" text-anchor="middle" font-size="9" fill="#555">$and $or $not</text>
+  <text x="302" y="144" text-anchor="middle" font-size="9" fill="#555">Projection</text>
+  <text x="302" y="158" text-anchor="middle" font-size="9" fill="#555">sort() limit()</text>
+  <text x="302" y="172" text-anchor="middle" font-size="9" fill="#555">skip()</text>
+  <text x="302" y="186" text-anchor="middle" font-size="9" fill="#555">Pagination</text>
+
+  <!-- Day 4 -->
+  <rect x="364" y="36" width="112" height="182" rx="10" fill="#f3e5f5" stroke="#9C27B0" stroke-width="2"/>
+  <rect x="364" y="36" width="112" height="32" rx="10" fill="#6A1B9A"/>
+  <rect x="364" y="56" width="112" height="12" fill="#6A1B9A"/>
+  <text x="420" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Day 4</text>
+  <text x="420" y="82" text-anchor="middle" font-size="16">🏗️</text>
+  <text x="420" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#6A1B9A">Schema Design</text>
+  <text x="420" y="116" text-anchor="middle" font-size="9" fill="#555">Embed vs Ref</text>
+  <text x="420" y="130" text-anchor="middle" font-size="9" fill="#555">1:1 1:Many</text>
+  <text x="420" y="144" text-anchor="middle" font-size="9" fill="#555">Many:Many</text>
+  <text x="420" y="158" text-anchor="middle" font-size="9" fill="#555">Real schemas</text>
+  <text x="420" y="172" text-anchor="middle" font-size="9" fill="#555">E-commerce</text>
+  <text x="420" y="186" text-anchor="middle" font-size="9" fill="#555">Blog / Social</text>
+
+  <!-- Day 5 -->
+  <rect x="482" y="36" width="112" height="182" rx="10" fill="#fce4ec" stroke="#E91E63" stroke-width="2"/>
+  <rect x="482" y="36" width="112" height="32" rx="10" fill="#880E4F"/>
+  <rect x="482" y="56" width="112" height="12" fill="#880E4F"/>
+  <text x="538" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Day 5</text>
+  <text x="538" y="82" text-anchor="middle" font-size="16">📊</text>
+  <text x="538" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#880E4F">Aggregation</text>
+  <text x="538" y="116" text-anchor="middle" font-size="9" fill="#555">$match $group</text>
+  <text x="538" y="130" text-anchor="middle" font-size="9" fill="#555">$sort $project</text>
+  <text x="538" y="144" text-anchor="middle" font-size="9" fill="#555">$unwind</text>
+  <text x="538" y="158" text-anchor="middle" font-size="9" fill="#555">$lookup (JOIN)</text>
+  <text x="538" y="172" text-anchor="middle" font-size="9" fill="#555">Analytics</text>
+  <text x="538" y="186" text-anchor="middle" font-size="9" fill="#555">Pipelines</text>
+
+  <!-- Day 6 -->
+  <rect x="600" y="36" width="128" height="182" rx="10" fill="#e8eaf6" stroke="#3F51B5" stroke-width="2"/>
+  <rect x="600" y="36" width="128" height="32" rx="10" fill="#1A237E"/>
+  <rect x="600" y="56" width="128" height="12" fill="#1A237E"/>
+  <text x="664" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="white">Day 6 🎉</text>
+  <text x="664" y="82" text-anchor="middle" font-size="16">⚡</text>
+  <text x="664" y="100" text-anchor="middle" font-size="10" font-weight="bold" fill="#1A237E">Indexing</text>
+  <text x="664" y="116" text-anchor="middle" font-size="9" fill="#555">createIndex()</text>
+  <text x="664" y="130" text-anchor="middle" font-size="9" fill="#555">Compound index</text>
+  <text x="664" y="144" text-anchor="middle" font-size="9" fill="#555">Unique index</text>
+  <text x="664" y="158" text-anchor="middle" font-size="9" fill="#555">explain()</text>
+  <text x="664" y="172" text-anchor="middle" font-size="9" fill="#555">Mini Project</text>
+  <text x="664" y="186" text-anchor="middle" font-size="9" fill="#555">Blog System 🚀</text>
+</svg>

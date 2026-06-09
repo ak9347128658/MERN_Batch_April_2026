@@ -1,0 +1,73 @@
+<svg viewBox="0 0 730 265" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="730" height="265" fill="#fafafa" rx="14"/>
+  <text x="365" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">MongoDB Update Operators</text>
+
+  <!-- Root -->
+  <rect x="255" y="38" width="220" height="38" rx="10" fill="#4A148C"/>
+  <text x="365" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="white">⚙️ Update Operators</text>
+
+  <!-- Row 1: 5 operators — centers at 65, 195, 365, 535, 665 -->
+  <!-- $set -->
+  <line x1="365" y1="76" x2="65" y2="108" stroke="#7B1FA2" stroke-width="1.5"/>
+  <rect x="5" y="108" width="118" height="58" rx="8" fill="#e8f5e9" stroke="#4CAF50" stroke-width="1.5"/>
+  <text x="64" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">$set</text>
+  <text x="64" y="148" text-anchor="middle" font-size="9" fill="#555">Set a field value</text>
+  <text x="64" y="161" text-anchor="middle" font-size="9" fill="#555">(create if missing)</text>
+
+  <!-- $unset -->
+  <line x1="365" y1="76" x2="195" y2="108" stroke="#7B1FA2" stroke-width="1.5"/>
+  <rect x="135" y="108" width="118" height="58" rx="8" fill="#ffebee" stroke="#f44336" stroke-width="1.5"/>
+  <text x="194" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#c62828">$unset</text>
+  <text x="194" y="148" text-anchor="middle" font-size="9" fill="#555">Remove a field</text>
+  <text x="194" y="161" text-anchor="middle" font-size="9" fill="#555">from document</text>
+
+  <!-- $inc -->
+  <line x1="365" y1="76" x2="365" y2="108" stroke="#7B1FA2" stroke-width="1.5"/>
+  <rect x="305" y="108" width="118" height="58" rx="8" fill="#e3f2fd" stroke="#2196F3" stroke-width="1.5"/>
+  <text x="364" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">$inc</text>
+  <text x="364" y="148" text-anchor="middle" font-size="9" fill="#555">Increment or</text>
+  <text x="364" y="161" text-anchor="middle" font-size="9" fill="#555">decrement a number</text>
+
+  <!-- $push -->
+  <line x1="365" y1="76" x2="535" y2="108" stroke="#7B1FA2" stroke-width="1.5"/>
+  <rect x="475" y="108" width="118" height="58" rx="8" fill="#fff8e1" stroke="#FF9800" stroke-width="1.5"/>
+  <text x="534" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">$push</text>
+  <text x="534" y="148" text-anchor="middle" font-size="9" fill="#555">Add an element</text>
+  <text x="534" y="161" text-anchor="middle" font-size="9" fill="#555">to an array</text>
+
+  <!-- $pull -->
+  <line x1="365" y1="76" x2="665" y2="108" stroke="#7B1FA2" stroke-width="1.5"/>
+  <rect x="607" y="108" width="118" height="58" rx="8" fill="#fce4ec" stroke="#E91E63" stroke-width="1.5"/>
+  <text x="666" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#880E4F">$pull</text>
+  <text x="666" y="148" text-anchor="middle" font-size="9" fill="#555">Remove elements</text>
+  <text x="666" y="161" text-anchor="middle" font-size="9" fill="#555">from an array</text>
+
+  <!-- Row 2: 4 operators — centers at 100, 265, 465, 630 -->
+  <!-- $addToSet -->
+  <line x1="365" y1="76" x2="100" y2="183" stroke="#7B1FA2" stroke-width="1" stroke-dasharray="5,3"/>
+  <rect x="42" y="183" width="118" height="58" rx="8" fill="#f3e5f5" stroke="#9C27B0" stroke-width="1.5"/>
+  <text x="101" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#6A1B9A">$addToSet</text>
+  <text x="101" y="222" text-anchor="middle" font-size="9" fill="#555">Add to array</text>
+  <text x="101" y="235" text-anchor="middle" font-size="9" fill="#555">only if unique</text>
+
+  <!-- $rename -->
+  <line x1="365" y1="76" x2="265" y2="183" stroke="#7B1FA2" stroke-width="1" stroke-dasharray="5,3"/>
+  <rect x="207" y="183" width="118" height="58" rx="8" fill="#e0f2f1" stroke="#009688" stroke-width="1.5"/>
+  <text x="266" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#004D40">$rename</text>
+  <text x="266" y="222" text-anchor="middle" font-size="9" fill="#555">Rename a field</text>
+  <text x="266" y="235" text-anchor="middle" font-size="9" fill="#555">in the document</text>
+
+  <!-- $min -->
+  <line x1="365" y1="76" x2="465" y2="183" stroke="#7B1FA2" stroke-width="1" stroke-dasharray="5,3"/>
+  <rect x="405" y="183" width="118" height="58" rx="8" fill="#e8eaf6" stroke="#3F51B5" stroke-width="1.5"/>
+  <text x="464" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#283593">$min</text>
+  <text x="464" y="222" text-anchor="middle" font-size="9" fill="#555">Set only if value</text>
+  <text x="464" y="235" text-anchor="middle" font-size="9" fill="#555">is less than current</text>
+
+  <!-- $max -->
+  <line x1="365" y1="76" x2="630" y2="183" stroke="#7B1FA2" stroke-width="1" stroke-dasharray="5,3"/>
+  <rect x="570" y="183" width="118" height="58" rx="8" fill="#fbe9e7" stroke="#FF5722" stroke-width="1.5"/>
+  <text x="629" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#BF360C">$max</text>
+  <text x="629" y="222" text-anchor="middle" font-size="9" fill="#555">Set only if value</text>
+  <text x="629" y="235" text-anchor="middle" font-size="9" fill="#555">is greater than current</text>
+</svg>

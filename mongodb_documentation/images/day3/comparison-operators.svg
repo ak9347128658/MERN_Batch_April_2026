@@ -1,0 +1,70 @@
+<svg viewBox="0 0 660 270" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="660" height="270" fill="#fafafa" rx="14"/>
+  <text x="330" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">Comparison Operators</text>
+
+  <!-- Root -->
+  <rect x="205" y="38" width="250" height="38" rx="10" fill="#1565C0"/>
+  <text x="330" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🔍 Comparison Operators</text>
+
+  <!-- Row 1 lines (solid) from root y=76 -->
+  <line x1="330" y1="76" x2="87"  y2="108" stroke="#1976D2" stroke-width="1.5"/>
+  <line x1="330" y1="76" x2="247" y2="108" stroke="#1976D2" stroke-width="1.5"/>
+  <line x1="330" y1="76" x2="407" y2="108" stroke="#1976D2" stroke-width="1.5"/>
+  <line x1="330" y1="76" x2="567" y2="108" stroke="#1976D2" stroke-width="1.5"/>
+
+  <!-- Row 2 lines (dashed) -->
+  <line x1="330" y1="76" x2="87"  y2="185" stroke="#90CAF9" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="330" y1="76" x2="247" y2="185" stroke="#90CAF9" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="330" y1="76" x2="407" y2="185" stroke="#90CAF9" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="330" y1="76" x2="567" y2="185" stroke="#90CAF9" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- Row 1: $eq, $ne, $gt, $gte -->
+  <!-- $eq -->
+  <rect x="17" y="108" width="140" height="68" rx="8" fill="#e8f5e9" stroke="#4CAF50" stroke-width="1.5"/>
+  <text x="87" y="130" text-anchor="middle" font-size="15" font-weight="bold" fill="#2e7d32">$eq</text>
+  <text x="87" y="148" text-anchor="middle" font-size="10" fill="#555">Equal to</text>
+  <text x="87" y="164" text-anchor="middle" font-size="10" fill="#777">price = 79999</text>
+
+  <!-- $ne -->
+  <rect x="177" y="108" width="140" height="68" rx="8" fill="#ffebee" stroke="#f44336" stroke-width="1.5"/>
+  <text x="247" y="130" text-anchor="middle" font-size="15" font-weight="bold" fill="#c62828">$ne</text>
+  <text x="247" y="148" text-anchor="middle" font-size="10" fill="#555">Not equal to</text>
+  <text x="247" y="164" text-anchor="middle" font-size="10" fill="#777">brand != "Apple"</text>
+
+  <!-- $gt -->
+  <rect x="337" y="108" width="140" height="68" rx="8" fill="#e3f2fd" stroke="#2196F3" stroke-width="1.5"/>
+  <text x="407" y="130" text-anchor="middle" font-size="15" font-weight="bold" fill="#1565c0">$gt</text>
+  <text x="407" y="148" text-anchor="middle" font-size="10" fill="#555">Greater than</text>
+  <text x="407" y="164" text-anchor="middle" font-size="10" fill="#777">price > 70000</text>
+
+  <!-- $gte -->
+  <rect x="497" y="108" width="145" height="68" rx="8" fill="#e8eaf6" stroke="#3F51B5" stroke-width="1.5"/>
+  <text x="569" y="130" text-anchor="middle" font-size="15" font-weight="bold" fill="#283593">$gte</text>
+  <text x="569" y="148" text-anchor="middle" font-size="10" fill="#555">Greater than or equal</text>
+  <text x="569" y="164" text-anchor="middle" font-size="10" fill="#777">price >= 70000</text>
+
+  <!-- Row 2: $lt, $lte, $in, $nin -->
+  <!-- $lt -->
+  <rect x="17" y="185" width="140" height="68" rx="8" fill="#fff8e1" stroke="#FF9800" stroke-width="1.5"/>
+  <text x="87" y="207" text-anchor="middle" font-size="15" font-weight="bold" fill="#e65100">$lt</text>
+  <text x="87" y="225" text-anchor="middle" font-size="10" fill="#555">Less than</text>
+  <text x="87" y="241" text-anchor="middle" font-size="10" fill="#777">price &lt; 30000</text>
+
+  <!-- $lte -->
+  <rect x="177" y="185" width="140" height="68" rx="8" fill="#fbe9e7" stroke="#FF5722" stroke-width="1.5"/>
+  <text x="247" y="207" text-anchor="middle" font-size="15" font-weight="bold" fill="#BF360C">$lte</text>
+  <text x="247" y="225" text-anchor="middle" font-size="10" fill="#555">Less than or equal</text>
+  <text x="247" y="241" text-anchor="middle" font-size="10" fill="#777">stock &lt;= 30</text>
+
+  <!-- $in -->
+  <rect x="337" y="185" width="140" height="68" rx="8" fill="#f3e5f5" stroke="#9C27B0" stroke-width="1.5"/>
+  <text x="407" y="207" text-anchor="middle" font-size="15" font-weight="bold" fill="#6A1B9A">$in</text>
+  <text x="407" y="225" text-anchor="middle" font-size="10" fill="#555">Value in a list</text>
+  <text x="407" y="241" text-anchor="middle" font-size="10" fill="#777">brand IN [...]</text>
+
+  <!-- $nin -->
+  <rect x="497" y="185" width="145" height="68" rx="8" fill="#e0f2f1" stroke="#009688" stroke-width="1.5"/>
+  <text x="569" y="207" text-anchor="middle" font-size="15" font-weight="bold" fill="#004D40">$nin</text>
+  <text x="569" y="225" text-anchor="middle" font-size="10" fill="#555">Value NOT in list</text>
+  <text x="569" y="241" text-anchor="middle" font-size="10" fill="#777">brand NOT IN [...]</text>
+</svg>

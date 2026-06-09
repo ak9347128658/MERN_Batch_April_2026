@@ -1,0 +1,49 @@
+<svg viewBox="0 0 600 270" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrGR" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#546E7A"/>
+    </marker>
+  </defs>
+
+  <rect width="600" height="270" fill="#fafafa" rx="14"/>
+  <text x="300" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">The Golden Rules — Embed or Reference?</text>
+
+  <!-- Diamond 1: Read together? -->
+  <polygon points="300,40 390,85 300,130 210,85" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
+  <text x="300" y="80" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">Do you always read</text>
+  <text x="300" y="95" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">this data together?</text>
+
+  <!-- No branch → REFERENCE (right) -->
+  <line x1="390" y1="85" x2="490" y2="85" stroke="#546E7A" stroke-width="2" marker-end="url(#arrGR)"/>
+  <text x="440" y="78" text-anchor="middle" font-size="10" fill="#f44336" font-weight="bold">No</text>
+  <rect x="490" y="65" width="100" height="40" rx="8" fill="#1565C0"/>
+  <text x="540" y="82" text-anchor="middle" font-size="11" font-weight="bold" fill="white">REFERENCE</text>
+  <text x="540" y="96" text-anchor="middle" font-size="9" fill="#BBDEFB">✅ safer choice</text>
+
+  <!-- Yes branch → Diamond 2 (down) -->
+  <line x1="300" y1="130" x2="300" y2="148" stroke="#546E7A" stroke-width="2" marker-end="url(#arrGR)"/>
+  <text x="310" y="143" font-size="10" fill="#4CAF50" font-weight="bold">Yes</text>
+
+  <!-- Diamond 2: Small and bounded? -->
+  <polygon points="300,148 390,193 300,238 210,193" fill="#E8F5E9" stroke="#4CAF50" stroke-width="2"/>
+  <text x="300" y="188" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">Is the nested data</text>
+  <text x="300" y="203" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">small and bounded?</text>
+
+  <!-- Yes → EMBED (left) -->
+  <line x1="210" y1="193" x2="115" y2="193" stroke="#546E7A" stroke-width="2" marker-end="url(#arrGR)"/>
+  <text x="162" y="186" text-anchor="middle" font-size="10" fill="#4CAF50" font-weight="bold">Yes</text>
+  <rect x="10" y="173" width="105" height="40" rx="8" fill="#2E7D32"/>
+  <text x="62" y="190" text-anchor="middle" font-size="11" font-weight="bold" fill="white">EMBED</text>
+  <text x="62" y="204" text-anchor="middle" font-size="9" fill="#A5D6A7">✅ best choice</text>
+
+  <!-- No → REFERENCE (right) -->
+  <line x1="390" y1="193" x2="490" y2="193" stroke="#546E7A" stroke-width="2" marker-end="url(#arrGR)"/>
+  <text x="440" y="186" text-anchor="middle" font-size="10" fill="#f44336" font-weight="bold">No (can grow)</text>
+  <rect x="490" y="173" width="100" height="40" rx="8" fill="#1565C0"/>
+  <text x="540" y="190" text-anchor="middle" font-size="11" font-weight="bold" fill="white">REFERENCE</text>
+  <text x="540" y="204" text-anchor="middle" font-size="9" fill="#BBDEFB">✅ safer choice</text>
+
+  <!-- Golden rule quote -->
+  <rect x="12" y="248" width="576" height="16" rx="6" fill="#FFF9C4" stroke="#FBC02D" stroke-width="1"/>
+  <text x="300" y="260" text-anchor="middle" font-size="10" font-style="italic" fill="#f57f17">"Data that is accessed together should be stored together."</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect width="680" height="230" fill="#fafafa" rx="14"/>
+  <text x="340" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a1a2e">Index Performance Impact</text>
+
+  <!-- Header row -->
+  <text x="175" y="46" text-anchor="middle" font-size="11" fill="#546E7A" font-weight="bold">Collection Size</text>
+  <text x="410" y="46" text-anchor="middle" font-size="11" fill="#C62828" font-weight="bold">COLLSCAN (no index)</text>
+  <text x="590" y="46" text-anchor="middle" font-size="11" fill="#2e7d32" font-weight="bold">IXSCAN (with index)</text>
+
+  <!-- Divider -->
+  <line x1="12" y1="52" x2="668" y2="52" stroke="#ddd" stroke-width="1"/>
+
+  <!-- Row 1: 10K docs -->
+  <rect x="12" y="58" width="155" height="42" rx="6" fill="#ECEFF1"/>
+  <text x="89" y="76" text-anchor="middle" font-size="11" font-weight="bold" fill="#37474F">10,000 docs</text>
+  <text x="89" y="92" text-anchor="middle" font-size="9" fill="#555">small dataset</text>
+
+  <!-- COLLSCAN bar: 15ms → width ~120px -->
+  <rect x="175" y="66" width="120" height="26" rx="5" fill="#C62828"/>
+  <text x="305" y="84" font-size="10" font-weight="bold" fill="#C62828"> ~15ms</text>
+  <text x="180" y="84" font-size="10" fill="white">███████████████</text>
+
+  <!-- IXSCAN bar: 1ms → width ~8px -->
+  <rect x="530" y="66" width="8" height="26" rx="3" fill="#2E7D32"/>
+  <text x="548" y="84" font-size="10" font-weight="bold" fill="#2E7D32"> ~1ms ✅</text>
+
+  <!-- Row 2: 100K docs -->
+  <rect x="12" y="108" width="155" height="42" rx="6" fill="#ECEFF1"/>
+  <text x="89" y="126" text-anchor="middle" font-size="11" font-weight="bold" fill="#37474F">100,000 docs</text>
+  <text x="89" y="142" text-anchor="middle" font-size="9" fill="#555">medium dataset</text>
+
+  <!-- COLLSCAN bar: 150ms → width ~200px -->
+  <rect x="175" y="116" width="250" height="26" rx="5" fill="#e53935"/>
+  <text x="435" y="134" font-size="10" font-weight="bold" fill="#c62828"> ~150ms</text>
+  <text x="180" y="134" font-size="10" fill="white">████████████████████████████</text>
+
+  <!-- IXSCAN bar: 1ms -->
+  <rect x="530" y="116" width="8" height="26" rx="3" fill="#2E7D32"/>
+  <text x="548" y="134" font-size="10" font-weight="bold" fill="#2E7D32"> ~1ms ✅</text>
+
+  <!-- Row 3: 1M docs -->
+  <rect x="12" y="158" width="155" height="42" rx="6" fill="#ECEFF1"/>
+  <text x="89" y="176" text-anchor="middle" font-size="11" font-weight="bold" fill="#37474F">1,000,000 docs</text>
+  <text x="89" y="192" text-anchor="middle" font-size="9" fill="#555">production scale</text>
+
+  <!-- COLLSCAN bar: 1500ms → full width ~500px  -->
+  <rect x="175" y="166" width="500" height="26" rx="5" fill="#B71C1C"/>
+  <text x="180" y="184" font-size="10" fill="white">~1,500ms  (1.5 seconds!) ❌</text>
+
+  <!-- IXSCAN bar: 1ms (still tiny!) -->
+  <rect x="530" y="166" width="8" height="26" rx="3" fill="#2E7D32"/>
+  <text x="548" y="184" font-size="10" font-weight="bold" fill="#2E7D32"> ~1ms ✅</text>
+
+  <!-- Grid lines and axis -->
+  <line x1="175" y1="55" x2="175" y2="215" stroke="#ccc" stroke-width="1"/>
+  <line x1="530" y1="55" x2="530" y2="215" stroke="#ccc" stroke-width="1"/>
+
+  <!-- Bottom note -->
+  <rect x="12" y="213" width="656" height="14" rx="6" fill="#FFF9C4"/>
+  <text x="340" y="224" text-anchor="middle" font-size="9" fill="#f57f17" font-style="italic">⚡ Index query time stays constant (~1ms) regardless of dataset size. COLLSCAN grows linearly with data!</text>
+</svg>

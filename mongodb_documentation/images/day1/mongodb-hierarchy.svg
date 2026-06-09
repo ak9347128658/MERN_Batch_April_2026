@@ -1,0 +1,59 @@
+<svg viewBox="0 0 680 310" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrH" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#7986CB"/>
+    </marker>
+  </defs>
+
+  <rect width="680" height="310" fill="#fafafa" rx="14"/>
+  <text x="340" y="28" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">MongoDB Data Hierarchy</text>
+
+  <!-- Database -->
+  <rect x="215" y="42" width="250" height="46" rx="10" fill="#7B1FA2"/>
+  <text x="340" y="71" text-anchor="middle" font-size="14" font-weight="bold" fill="white">🗄️  Database: myShop</text>
+
+  <!-- Lines to collections -->
+  <line x1="280" y1="88" x2="135" y2="130" stroke="#9C27B0" stroke-width="2" marker-end="url(#arrH)"/>
+  <line x1="340" y1="88" x2="340" y2="130" stroke="#9C27B0" stroke-width="2" marker-end="url(#arrH)"/>
+  <line x1="400" y1="88" x2="545" y2="130" stroke="#9C27B0" stroke-width="2" marker-end="url(#arrH)"/>
+
+  <!-- Collections -->
+  <rect x="40" y="130" width="185" height="38" rx="8" fill="#1976D2"/>
+  <text x="132" y="154" text-anchor="middle" font-size="12" font-weight="bold" fill="white">📁 Collection: users</text>
+
+  <rect x="248" y="130" width="185" height="38" rx="8" fill="#1976D2"/>
+  <text x="340" y="154" text-anchor="middle" font-size="12" font-weight="bold" fill="white">📁 Collection: products</text>
+
+  <rect x="456" y="130" width="185" height="38" rx="8" fill="#1976D2"/>
+  <text x="548" y="154" text-anchor="middle" font-size="12" font-weight="bold" fill="white">📁 Collection: orders</text>
+
+  <!-- Lines from users to documents -->
+  <line x1="105" y1="168" x2="68" y2="205" stroke="#42A5F5" stroke-width="1.5" marker-end="url(#arrH)"/>
+  <line x1="158" y1="168" x2="190" y2="205" stroke="#42A5F5" stroke-width="1.5" marker-end="url(#arrH)"/>
+
+  <!-- Documents under users -->
+  <rect x="18" y="205" width="138" height="72" rx="7" fill="white" stroke="#42A5F5" stroke-width="2"/>
+  <text x="87" y="225" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">📄 Document 1</text>
+  <text x="87" y="243" text-anchor="middle" font-size="9" fill="#444">name: "Amit"</text>
+  <text x="87" y="258" text-anchor="middle" font-size="9" fill="#444">age: 25</text>
+  <text x="87" y="273" text-anchor="middle" font-size="9" fill="#388E3C">email: "amit@..."</text>
+
+  <rect x="168" y="205" width="145" height="72" rx="7" fill="white" stroke="#42A5F5" stroke-width="2"/>
+  <text x="240" y="225" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">📄 Document 2</text>
+  <text x="240" y="243" text-anchor="middle" font-size="9" fill="#444">name: "Sara"</text>
+  <text x="240" y="258" text-anchor="middle" font-size="9" fill="#444">age: 30</text>
+  <text x="240" y="273" text-anchor="middle" font-size="9" fill="#388E3C">phone: "+91..."</text>
+
+  <!-- Label: flexible -->
+  <text x="240" y="295" text-anchor="middle" font-size="10" fill="#888" font-style="italic">Sara has "phone" field — Amit doesn't. That's OK!</text>
+
+  <!-- Legend -->
+  <rect x="468" y="210" width="185" height="85" rx="8" fill="white" stroke="#ddd" stroke-width="1.5"/>
+  <text x="560" y="230" text-anchor="middle" font-size="11" font-weight="bold" fill="#333">Hierarchy Levels</text>
+  <circle cx="490" cy="250" r="7" fill="#7B1FA2"/>
+  <text x="505" y="254" font-size="10" fill="#555">Database</text>
+  <circle cx="490" cy="268" r="7" fill="#1976D2"/>
+  <text x="505" y="272" font-size="10" fill="#555">Collection</text>
+  <circle cx="490" cy="286" r="7" fill="#42A5F5"/>
+  <text x="505" y="290" font-size="10" fill="#555">Document</text>
+</svg>

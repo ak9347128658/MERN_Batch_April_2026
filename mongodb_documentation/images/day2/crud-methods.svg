@@ -1,0 +1,118 @@
+<svg viewBox="0 0 760 315" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <defs>
+    <marker id="arrM" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#888"/>
+    </marker>
+  </defs>
+
+  <rect width="760" height="315" fill="#fafafa" rx="14"/>
+  <text x="380" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a2e">CRUD Operations — Full Method Map</text>
+
+  <!-- Root -->
+  <rect x="280" y="38" width="200" height="38" rx="10" fill="#1A237E"/>
+  <text x="380" y="62" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🚀 Your Application</text>
+
+  <!-- Branch centers: CREATE=90, READ=258, UPDATE=468, DELETE=648 -->
+  <line x1="380" y1="76" x2="90" y2="112" stroke="#4CAF50" stroke-width="2.5" marker-end="url(#arrM)"/>
+  <line x1="380" y1="76" x2="258" y2="112" stroke="#2196F3" stroke-width="2.5" marker-end="url(#arrM)"/>
+  <line x1="380" y1="76" x2="468" y2="112" stroke="#FF9800" stroke-width="2.5" marker-end="url(#arrM)"/>
+  <line x1="380" y1="76" x2="648" y2="112" stroke="#f44336" stroke-width="2.5" marker-end="url(#arrM)"/>
+
+  <!-- CREATE branch (center 90) -->
+  <rect x="30" y="112" width="120" height="38" rx="9" fill="#4CAF50"/>
+  <text x="90" y="136" text-anchor="middle" font-size="13" font-weight="bold" fill="white">➕ CREATE</text>
+
+  <line x1="60" y1="150" x2="40" y2="178" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#arrM)"/>
+  <line x1="120" y1="150" x2="138" y2="178" stroke="#4CAF50" stroke-width="1.5" marker-end="url(#arrM)"/>
+
+  <rect x="3" y="178" width="80" height="50" rx="7" fill="white" stroke="#4CAF50" stroke-width="1.5"/>
+  <text x="43" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">insertOne()</text>
+  <text x="43" y="214" text-anchor="middle" font-size="9" fill="#555">Single</text>
+  <text x="43" y="225" text-anchor="middle" font-size="9" fill="#555">document</text>
+
+  <rect x="95" y="178" width="88" height="50" rx="7" fill="white" stroke="#4CAF50" stroke-width="1.5"/>
+  <text x="139" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">insertMany()</text>
+  <text x="139" y="214" text-anchor="middle" font-size="9" fill="#555">Bulk insert</text>
+  <text x="139" y="225" text-anchor="middle" font-size="9" fill="#555">many docs</text>
+
+  <!-- READ branch (center 258) -->
+  <rect x="198" y="112" width="120" height="38" rx="9" fill="#2196F3"/>
+  <text x="258" y="136" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🔍 READ</text>
+
+  <line x1="228" y1="150" x2="205" y2="178" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrM)"/>
+  <line x1="258" y1="150" x2="258" y2="178" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrM)"/>
+  <line x1="288" y1="150" x2="311" y2="178" stroke="#2196F3" stroke-width="1.5" marker-end="url(#arrM)"/>
+
+  <rect x="165" y="178" width="82" height="50" rx="7" fill="white" stroke="#2196F3" stroke-width="1.5"/>
+  <text x="206" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">find()</text>
+  <text x="206" y="214" text-anchor="middle" font-size="9" fill="#555">Many</text>
+  <text x="206" y="225" text-anchor="middle" font-size="9" fill="#555">documents</text>
+
+  <rect x="217" y="178" width="82" height="50" rx="7" fill="white" stroke="#2196F3" stroke-width="1.5"/>
+  <text x="258" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#1565c0">findOne()</text>
+  <text x="258" y="214" text-anchor="middle" font-size="9" fill="#555">First</text>
+  <text x="258" y="225" text-anchor="middle" font-size="9" fill="#555">match</text>
+
+  <rect x="271" y="178" width="82" height="50" rx="7" fill="white" stroke="#2196F3" stroke-width="1.5"/>
+  <text x="312" y="194" text-anchor="middle" font-size="9" font-weight="bold" fill="#1565c0">countDocs()</text>
+  <text x="312" y="210" text-anchor="middle" font-size="9" fill="#555">Count</text>
+  <text x="312" y="224" text-anchor="middle" font-size="9" fill="#555">matches</text>
+
+  <!-- UPDATE branch (center 468) -->
+  <rect x="408" y="112" width="120" height="38" rx="9" fill="#FF9800"/>
+  <text x="468" y="136" text-anchor="middle" font-size="13" font-weight="bold" fill="white">✏️ UPDATE</text>
+
+  <line x1="438" y1="150" x2="408" y2="178" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrM)"/>
+  <line x1="468" y1="150" x2="468" y2="178" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrM)"/>
+  <line x1="498" y1="150" x2="528" y2="178" stroke="#FF9800" stroke-width="1.5" marker-end="url(#arrM)"/>
+
+  <rect x="365" y="178" width="87" height="50" rx="7" fill="white" stroke="#FF9800" stroke-width="1.5"/>
+  <text x="408" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">updateOne()</text>
+  <text x="408" y="214" text-anchor="middle" font-size="9" fill="#555">First</text>
+  <text x="408" y="225" text-anchor="middle" font-size="9" fill="#555">match</text>
+
+  <rect x="425" y="178" width="90" height="50" rx="7" fill="white" stroke="#FF9800" stroke-width="1.5"/>
+  <text x="470" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">updateMany()</text>
+  <text x="470" y="214" text-anchor="middle" font-size="9" fill="#555">All</text>
+  <text x="470" y="225" text-anchor="middle" font-size="9" fill="#555">matches</text>
+
+  <rect x="488" y="178" width="90" height="50" rx="7" fill="white" stroke="#FF9800" stroke-width="1.5"/>
+  <text x="533" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">replaceOne()</text>
+  <text x="533" y="214" text-anchor="middle" font-size="9" fill="#555">Full doc</text>
+  <text x="533" y="225" text-anchor="middle" font-size="9" fill="#555">replace</text>
+
+  <!-- DELETE branch (center 648) -->
+  <rect x="588" y="112" width="120" height="38" rx="9" fill="#f44336"/>
+  <text x="648" y="136" text-anchor="middle" font-size="13" font-weight="bold" fill="white">🗑️ DELETE</text>
+
+  <line x1="618" y1="150" x2="598" y2="178" stroke="#f44336" stroke-width="1.5" marker-end="url(#arrM)"/>
+  <line x1="648" y1="150" x2="648" y2="178" stroke="#f44336" stroke-width="1.5" marker-end="url(#arrM)"/>
+  <line x1="678" y1="150" x2="700" y2="178" stroke="#f44336" stroke-width="1.5" marker-end="url(#arrM)"/>
+
+  <rect x="555" y="178" width="87" height="50" rx="7" fill="white" stroke="#f44336" stroke-width="1.5"/>
+  <text x="598" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828">deleteOne()</text>
+  <text x="598" y="214" text-anchor="middle" font-size="9" fill="#555">First</text>
+  <text x="598" y="225" text-anchor="middle" font-size="9" fill="#555">match</text>
+
+  <rect x="606" y="178" width="87" height="50" rx="7" fill="white" stroke="#f44336" stroke-width="1.5"/>
+  <text x="649" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828">deleteMany()</text>
+  <text x="649" y="214" text-anchor="middle" font-size="9" fill="#555">All</text>
+  <text x="649" y="225" text-anchor="middle" font-size="9" fill="#555">matches</text>
+
+  <rect x="658" y="178" width="80" height="50" rx="7" fill="white" stroke="#f44336" stroke-width="1.5"/>
+  <text x="698" y="198" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828">drop()</text>
+  <text x="698" y="214" text-anchor="middle" font-size="9" fill="#555">Remove</text>
+  <text x="698" y="225" text-anchor="middle" font-size="9" fill="#555">collection</text>
+
+  <!-- SQL Equivalents bar -->
+  <rect x="12" y="244" width="736" height="58" rx="8" fill="#fff9c4" stroke="#FBC02D" stroke-width="1.5"/>
+  <text x="380" y="262" text-anchor="middle" font-size="11" font-weight="bold" fill="#f57f17">SQL Equivalents</text>
+  <text x="90" y="282" text-anchor="middle" font-size="10" fill="#555">INSERT INTO</text>
+  <text x="258" y="282" text-anchor="middle" font-size="10" fill="#555">SELECT * FROM</text>
+  <text x="468" y="282" text-anchor="middle" font-size="10" fill="#555">UPDATE ... SET</text>
+  <text x="648" y="282" text-anchor="middle" font-size="10" fill="#555">DELETE FROM</text>
+  <text x="90" y="295" text-anchor="middle" font-size="9" fill="#888">/ VALUES (...)</text>
+  <text x="258" y="295" text-anchor="middle" font-size="9" fill="#888">WHERE ...</text>
+  <text x="468" y="295" text-anchor="middle" font-size="9" fill="#888">WHERE ...</text>
+  <text x="648" y="295" text-anchor="middle" font-size="9" fill="#888">WHERE ... / DROP TABLE</text>
+</svg>
