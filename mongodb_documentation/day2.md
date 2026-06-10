@@ -1,4 +1,4 @@
-# Day 3: Query Operators, Projection, Sorting & Limiting
+# Day 2: Query Operators, Projection, Sorting & Limiting
 
 ## 1. Introduction
 
